@@ -1,0 +1,57 @@
+{% from 'components/icons.html' import icon as svg_icon %}
+{% macro status_badge(status) -%}
+  {%- set key = (status or '')|string|upper -%}
+  {%- set m = {
+    'PENDING': ('pending', 'hourglass-split', 'Pending', 'Naghihintay'),
+    'UNDER_REVIEW': ('progress', 'search', 'Under review', 'Sinasuri'),
+    'PROCESSING': ('progress', 'gear', 'Processing', 'Pinoproseso'),
+    'APPROVED': ('success', 'check-circle', 'Approved', 'Aprubado'),
+    'READY': ('success', 'box-seam', 'Ready', 'Handa na'),
+    'READY_FOR_RELEASE': ('success', 'box-seam', 'Ready for release', 'Handa nang ibigay'),
+    'RELEASED': ('success', 'check2-all', 'Released', 'Naibigay na'),
+    'REJECTED': ('danger', 'x-circle', 'Rejected', 'Tinanggihan'),
+    'OPEN': ('pending', 'folder2-open', 'Open', 'Bukas'),
+    'UNDER_MEDIATION': ('progress', 'people', 'Under mediation', 'Nasa mediation'),
+    'HEARING_SCHEDULED': ('progress', 'calendar-event', 'Hearing scheduled', 'May hearing'),
+    'SETTLED': ('success', 'handshake', 'Settled', 'Naayos'),
+    'ENDORSED': ('danger', 'send', 'Endorsed', 'Na-endorse'),
+    'CLOSED': ('neutral', 'lock', 'Closed', 'Sarado'),
+    'SCHEDULED': ('progress', 'clock', 'Scheduled', 'Naka-iskedyul'),
+    'COMPLETED': ('success', 'check-circle', 'Completed', 'Tapos na'),
+    'ACTIVE': ('success', 'check-circle', 'Active', 'Aktibo'),
+    'INACTIVE': ('neutral', 'pause-circle', 'Inactive', 'Hindi aktibo'),
+    'PUBLISHED': ('danger', 'megaphone', 'Published', 'Nai-publish')
+  } -%}
+  {%- set t = m.get(key) -%}
+  {%- if t -%}
+    <span class="badge-status badge-status--{{ t[0] }}">{{ svg_icon(t[1], '') }}{{ t[2] }}<span class="fw-normal opacity-75"> · {{ t[3] }}</span></span>
+  {%- else -%}
+    <span class="badge-status badge-status--neutral">{{ (status or '—')|string|replace('_',' ')|title }}</span>
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro dt(value, mode='datetime') -%}
+  {%- if value -%}
+    <time datetime="{{ value.isoformat() if value.isoformat is defined else value }}" data-fmt="{{ mode }}">{{ value }}</time>
+  {%- else -%}—{%- endif -%}
+{%- endmacro %}
+
+{% macro empty_state(icon, title_en, title_fil, action_url=None, action_label=None) -%}
+  <div class="empty-state">{{ svg_icon(icon|replace('bi-',''), '') }}
+    <h3 class="h6 mt-2 mb-1">{{ title_en }}</h3><p class="small mb-3">{{ title_fil }}</p>
+    {% if action_url %}<a class="btn btn-primary btn-sm" href="{{ action_url }}">{{ action_label }}</a>{% endif %}
+  </div>
+{%- endmacro %}
+
+{% macro nav_item(endpoint, icon, label_en, label_fil=None, prefix=None) -%}
+  {%- set ep = request.endpoint or '' -%}
+  {%- set active = (ep == endpoint) or (prefix and ep.startswith(prefix)) -%}
+  <a class="nav-link {{ 'active' if active }}" href="{{ url_for(endpoint) }}" {% if active %}aria-current="page"{% endif %}>
+    {{ svg_icon(icon|replace('bi-',''), '') }}
+    <span>{{ label_en }}{% if label_fil %}<small>{{ label_fil }}</small>{% endif %}</span>
+  </a>
+{%- endmacro %}
+
+{% macro field_error(errors, name) -%}
+  {% if errors and errors.get(name) %}<div class="invalid-feedback">{{ errors.get(name) }}</div>{% endif %}
+{%- endmacro %}

@@ -1,0 +1,57 @@
+{% extends "official/_official_base.html" %}
+{% block active_nav %}official.account_approvals{% endblock %}
+{% block title %}Resident Account Approvals{% endblock %}
+
+{% block content %}
+<h1 class="text-headline-sm font-headline-sm text-on-surface">Resident account approvals</h1>
+<p class="text-body-sm text-on-surface-muted -mt-4">Admin at barangay officials lamang. Click "Activate" para ma-activate ang account at makapag-login na ang resident.</p>
+<div class="overflow-x-auto bg-surface-card rounded-xl border border-outline-border">
+<table class="civic-table">
+<thead>
+<tr>
+<th>Petsa ng Registration</th>
+<th>Pangalan</th>
+<th>Email</th>
+<th>Birthdate</th>
+<th>Aksyon</th>
+</tr>
+</thead>
+<tbody>
+{% for account in pending_accounts %}
+<tr>
+<td>{{ account.created_at.strftime('%Y-%m-%d %H:%M') if account.created_at else '—' }}</td>
+<td>
+{% if account.resident %}
+<a class="text-primary underline" href="{{ url_for('official.resident_detail', resident_id=account.resident.id) }}">Review profile / uploads</a><br>{{ account.resident.first_name }} 
+{% if account.resident.middle_name %}{{ account.resident.middle_name }} {% endif %}
+{{ account.resident.last_name }}
+{% if account.resident.suffix %} {{ account.resident.suffix }}{% endif %}
+{% else %}
+<span class="text-on-surface-muted">No resident profile</span>
+{% endif %}
+</td>
+<td>{{ account.email }}</td>
+<td>
+{% if account.resident and account.resident.birth_date %}
+{{ account.resident.birth_date.strftime('%Y-%m-%d') }}
+{% else %}
+<span class="text-error">Walang birthdate</span>
+{% endif %}
+</td>
+<td>
+<form method="post" action="{{ url_for('official.approve_resident_account', user_id=account.id) }}" class="d-inline" data-confirm="Approve at i-activate ang account na ito? Magsisimula ang email notification.">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button class="civic-btn-sm" {% if not account.resident or not account.resident.birth_date %}disabled{% endif %}>Activate</button>
+</form>
+</td>
+</tr>
+{% else %}
+<tr>
+<td colspan="5" class="text-center text-on-surface-muted py-8">Walang pending resident account registrations.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% include "partials/_pagination.html" %}
+{% endblock %}

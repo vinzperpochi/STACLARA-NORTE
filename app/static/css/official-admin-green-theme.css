@@ -1,0 +1,187 @@
+/* Admin and Official Green Theme Override - Force green colors for Super Admin and Official/Staff workspaces */
+
+/* Override Bootstrap's blue primary to green for both admin and official workspaces */
+.workspace-admin .bg-primary,
+.workspace-official .bg-primary {
+  background-color: #12902B !important;
+  background-image: linear-gradient(135deg, #12902B, #22B33A) !important;
+  border-color: #12902B !important;
+}
+
+.workspace-admin .text-primary,
+.workspace-official .text-primary {
+  color: #12902B !important;
+}
+
+/* Buttons - all primary buttons should be green */
+.workspace-admin .btn-primary,
+.workspace-admin button.btn-primary,
+.workspace-admin input[type="submit"].btn-primary,
+.workspace-admin a.btn-primary,
+.workspace-official .btn-primary,
+.workspace-official button.btn-primary,
+.workspace-official input[type="submit"].btn-primary,
+.workspace-official a.btn-primary {
+  background-color: #12902B !important;
+  background-image: linear-gradient(135deg, #12902B, #22B33A) !important;
+  border-color: #12902B !important;
+  color: #fff !important;
+}
+
+.workspace-admin .btn-primary:hover,
+.workspace-admin button.btn-primary:hover,
+.workspace-admin .bg-primary:hover,
+.workspace-official .btn-primary:hover,
+.workspace-official button.btn-primary:hover,
+.workspace-official .bg-primary:hover {
+  background-color: #22B33A !important;
+  background-image: linear-gradient(135deg, #0A5C1E, #12902B) !important;
+  border-color: #22B33A !important;
+}
+
+.workspace-admin .btn-primary:focus,
+.workspace-admin .bg-primary:focus,
+.workspace-admin button.btn-primary:focus,
+.workspace-official .btn-primary:focus,
+.workspace-official .bg-primary:focus,
+.workspace-official button.btn-primary:focus {
+  box-shadow: 0 0 0 0.25rem rgba(34, 179, 58, 0.3) !important;
+  border-color: #12902B !important;
+}
+
+.workspace-admin .btn-primary:active,
+.workspace-admin button.btn-primary:active,
+.workspace-official .btn-primary:active,
+.workspace-official button.btn-primary:active {
+  background-color: #0A5C1E !important;
+  border-color: #0A5C1E !important;
+}
+
+/* Navigation active state - force green */
+.workspace-admin nav a.bg-primary,
+.workspace-admin aside nav a.bg-primary,
+.workspace-official nav a.bg-primary,
+.workspace-official aside nav a.bg-primary {
+  background-color: #12902B !important;
+  background-image: linear-gradient(135deg, #12902B, #22B33A) !important;
+  border-color: #12902B !important;
+}
+
+/* Links and hover states */
+.workspace-admin .hover\:text-primary:hover,
+.workspace-admin a.hover\:text-primary:hover,
+.workspace-official .hover\:text-primary:hover,
+.workspace-official a.hover\:text-primary:hover {
+  color: #12902B !important;
+}
+
+.workspace-admin a:hover,
+.workspace-official a:hover {
+  color: #12902B;
+}
+
+/* Icon colors */
+.workspace-admin .text-primary-dark,
+.workspace-official .text-primary-dark {
+  color: #0A5C1E !important;
+}
+
+/* Bootstrap badge override */
+.workspace-admin .badge.bg-primary,
+.workspace-admin .badge-primary,
+.workspace-official .badge.bg-primary,
+.workspace-official .badge-primary {
+  background-color: #12902B !important;
+  color: #fff !important;
+}
+
+/* Border colors */
+.workspace-admin .border-primary,
+.workspace-official .border-primary {
+  border-color: #12902B !important;
+}
+
+/* Form controls focus - green focus state */
+.workspace-admin .form-control:focus,
+.workspace-admin .form-select:focus,
+.workspace-admin input:focus,
+.workspace-admin select:focus,
+.workspace-admin textarea:focus,
+.workspace-official .form-control:focus,
+.workspace-official .form-select:focus,
+.workspace-official input:focus,
+.workspace-official select:focus,
+.workspace-official textarea:focus {
+  border-color: #12902B !important;
+  box-shadow: 0 0 0 0.25rem rgba(34, 179, 58, 0.2) !important;
+}
+
+/* Buttons with outline */
+.workspace-admin .btn-outline-primary,
+.workspace-official .btn-outline-primary {
+  color: #12902B !important;
+  border-color: #12902B !important;
+  background-color: transparent !important;
+}
+
+.workspace-admin .btn-outline-primary:hover,
+.workspace-official .btn-outline-primary:hover {
+  background-color: #12902B !important;
+  border-color: #12902B !important;
+  color: #fff !important;
+}
+
+/* Active links in navigation */
+.workspace-admin nav a[aria-current="page"],
+.workspace-admin aside nav a[aria-current="page"],
+.workspace-official nav a[aria-current="page"],
+.workspace-official aside nav a[aria-current="page"] {
+  background-color: #12902B !important;
+  background-image: linear-gradient(135deg, #12902B, #22B33A) !important;
+  color: #fff !important;
+}
+
+/* Alerts and badges */
+.workspace-admin .alert-primary,
+.workspace-official .alert-primary {
+  background-color: rgba(18, 144, 43, 0.1) !important;
+  border-color: #12902B !important;
+  color: #0A5C1E !important;
+}
+
+/* Dropdown active items */
+.workspace-admin .dropdown-item.active,
+.workspace-admin .dropdown-item:active,
+.workspace-official .dropdown-item.active,
+.workspace-official .dropdown-item:active {
+  background-color: #12902B !important;
+  color: #fff !important;
+}
+
+/* Pagination */
+.workspace-admin .page-link,
+.workspace-official .page-link {
+  color: #12902B !important;
+}
+
+.workspace-admin .page-item.active .page-link,
+.workspace-official .page-item.active .page-link {
+  background-color: #12902B !important;
+  border-color: #12902B !important;
+}
+
+/* Progress bars */
+.workspace-admin .progress-bar,
+.workspace-official .progress-bar {
+  background-color: #12902B !important;
+}
+
+/* List group active items */
+.workspace-admin .list-group-item.active,
+.workspace-official .list-group-item.active {
+  background-color: #12902B !important;
+  border-color: #12902B !important;
+}
+
+/* Local SVG icon system */
+.icon-svg { display:inline-block; vertical-align:-0.125em; flex:0 0 auto; }

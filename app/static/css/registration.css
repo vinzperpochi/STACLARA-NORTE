@@ -1,0 +1,10 @@
+.registration-fields-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.registration-input { width:100%; min-height:44px; padding:10px 14px; border:1px solid #d7e4d9; border-radius:12px; background:white; color:#083E14; font-size:14px; }
+.registration-input:focus-visible { outline:3px solid #22B33A; outline-offset:2px; }
+.registration-section-title { color:#0A5C1E; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; border-bottom:1px solid #d7e4d9; padding-bottom:8px; margin:20px 0 16px; }
+.registration-upload-card { padding:18px; border:1px dashed #9bcaaa; border-radius:14px; background:#f6fbf7; }
+.registration-image-preview { max-height:160px; max-width:100%; margin-top:12px; border-radius:10px; object-fit:contain; }
+.registration-image-preview[hidden] { display:none; }
+.registration-checkbox { display:flex; align-items:start; gap:10px; padding:14px; border:1px solid #d7e4d9; border-radius:10px; font-size:13px; cursor:pointer; }
+.registration-checkbox input { accent-color:#12902B; margin-top:3px; }
+@media (max-width:640px) { .registration-fields-grid { grid-template-columns:minmax(0,1fr); gap:16px; } }

@@ -1,0 +1,20 @@
+<footer class="portal-footer bg-surface-container-low border-t border-outline-variant mt-12">
+  <div class="w-full px-4 sm:px-6 lg:px-8 py-space-lg max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-space-md">
+    <div class="flex items-center space-x-3 text-left">
+      <span class="w-9 h-9 rounded-full bg-white p-0.5 border border-primary/30 shrink-0 block">
+        <img alt="Official Seal of Barangay Sta. Clara Norte, Pila, Laguna" class="w-full h-full object-contain rounded-full" src="{{ url_for('static', filename='img/barangay-seal.png') }}" width="36" height="36">
+      </span>
+      <div>
+        <span class="text-title-md font-title-md font-bold text-primary block leading-tight">Pamahalaang Barangay Sta. Clara Norte</span>
+        <p class="text-body-sm font-body-sm text-on-surface-variant">
+          © <span data-portal-year>2026</span> Pamahalaang Barangay Sta. Clara Norte, Municipality of Pila, Laguna. Republic of the Philippines.
+        </p>
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-2 text-label-sm font-label-sm text-on-surface-variant">
+      <a class="hover:text-secondary underline transition-colors" href="{{ url_for('main.privacy_notice') }}">Privacy Notice (RA 10173)</a>
+      <button type="button" class="hover:text-secondary underline transition-colors" data-portal-modal="charter">Citizen's Charter</button>
+      <a class="hover:text-secondary underline transition-colors" href="{{ url_for('main.help_page') }}">Assistance</a>
+    </div>
+  </div>
+</footer>

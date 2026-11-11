@@ -1,0 +1,2 @@
+/* Refresh real attendance only when the page is idle; never interrupt forms. */
+(()=>{const root=document.querySelector('[data-attendance-live]');if(!root)return;let dirty=false;root.addEventListener('input',()=>dirty=true);const olderPage=Array.from(new URLSearchParams(location.search)).some(([key,value])=>['page','feed_page','leave_page'].includes(key)&&Number(value)>1);setInterval(()=>{if(!olderPage&&!document.hidden&&!dirty&&!root.querySelector('details[open]')&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))location.reload();},30000);})();

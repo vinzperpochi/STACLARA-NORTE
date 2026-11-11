@@ -1,0 +1,61 @@
+/* Resident record views; uses the civic palette in both themes. */
+#portal-main .resident-detail { max-width:1160px; margin-inline:auto; display:grid; gap:24px; min-width:0; }
+.resident-detail .rd-heading { display:flex; justify-content:space-between; align-items:center; gap:20px; }
+.resident-detail .rd-back { display:inline-flex; align-items:center; gap:7px; font-size:12px; color:var(--civic-muted); text-decoration:none; margin-bottom:10px; }
+#portal-main .resident-detail h1 { margin:0 0 6px; font-size:28px; line-height:1.3; }
+.resident-detail .rd-heading p { margin:0; color:var(--civic-muted); font-size:13px; }
+.resident-detail .rd-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.resident-detail .rd-actions a { display:inline-flex; align-items:center; justify-content:center; gap:8px; }
+.resident-detail .rd-overview { display:grid; grid-template-columns:260px minmax(0,1fr); border:1px solid var(--civic-border); border-radius:18px; background:var(--civic-card); overflow:hidden; }
+.resident-detail .rd-identity { padding:28px 24px; text-align:center; border-right:1px solid var(--civic-border); background:var(--civic-page); }
+.resident-detail .rd-avatar { position:relative; display:grid; place-items:center; width:112px; height:112px; margin:0 auto 18px; overflow:hidden; border-radius:24px; border:4px solid var(--civic-card); box-shadow:0 0 0 1px var(--civic-border); background:var(--civic-mint); color:var(--civic-emerald); }
+.resident-detail .rd-avatar > span { font-size:34px; font-weight:700; }
+.resident-detail .rd-avatar { color:var(--civic-ink); }
+.resident-detail .rd-avatar img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.resident-detail .rd-avatar img[hidden],.resident-detail [hidden] { display:none !important; }
+#portal-main .resident-detail .rd-identity h2 { font-size:19px; line-height:1.5; margin:0 0 10px; overflow-wrap:anywhere; }
+.resident-detail .rd-status,.registration-details .rd-category { display:inline-flex; padding:5px 11px; border-radius:20px; background:var(--civic-mint); color:var(--civic-ink); font-size:11px; font-weight:600; }
+.resident-detail .rd-photo-note { margin:12px 0 0; font-size:11px; color:var(--civic-muted); }
+.resident-detail .rd-location { display:grid; gap:6px; margin-top:24px; padding-top:20px; border-top:1px solid var(--civic-border); text-align:left; }
+.resident-detail .rd-location span { font-size:11px; color:var(--civic-muted); }
+.resident-detail .rd-location strong { font-size:13px; font-weight:600; overflow-wrap:anywhere; }
+.resident-detail .rd-location strong + span { margin-top:8px; }
+.resident-detail .rd-information { padding:28px; min-width:0; }
+.registration-details { display:grid; gap:20px; margin-top:24px; min-width:0; }
+.resident-detail > .registration-details { margin-top:0; }
+.registration-details .rd-registration-grid { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:20px; }
+.registration-details .rd-card { padding:24px; border:1px solid var(--civic-border); border-radius:16px; background:var(--civic-card); min-width:0; }
+:is(.resident-detail,.registration-details) .rd-section-heading { display:flex; align-items:center; gap:10px; color:var(--civic-emerald); padding-bottom:18px; margin-bottom:20px; border-bottom:1px solid var(--civic-border); }
+:is(.resident-detail,.registration-details) .rd-section-heading > svg { color:var(--civic-ink); }
+#portal-main :is(.resident-detail,.registration-details) .rd-section-heading h2 { font-size:16px; font-weight:650; line-height:1.5; margin:0; color:var(--civic-ink); }
+:is(.resident-detail,.registration-details) .rd-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px 28px; margin:0; }
+:is(.resident-detail,.registration-details) .rd-fields > div { min-width:0; }
+:is(.resident-detail,.registration-details) .rd-fields dt { margin-bottom:6px; color:var(--civic-muted); font-size:12px; font-weight:400; line-height:1.5; }
+:is(.resident-detail,.registration-details) .rd-fields dd { margin:0; color:var(--civic-ink); font-size:13px; font-weight:500; line-height:1.6; overflow-wrap:anywhere; }
+:is(.resident-detail,.registration-details) .rd-field-wide { grid-column:1 / -1; }
+.registration-details .rd-fields-single { grid-template-columns:1fr; }
+#portal-main :is(.resident-detail,.registration-details) .rd-empty { color:var(--civic-muted); font-weight:400; }
+.registration-details .rd-categories { display:flex; flex-wrap:wrap; gap:8px; }
+.registration-details .rd-categories p { margin:0; font-size:13px; }
+.registration-details .rd-help { margin:12px 0 0; font-size:12px; line-height:1.7; color:var(--civic-muted); }
+.registration-details .rd-documents { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.registration-details .rd-document { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px; padding:18px; border:1px solid var(--civic-border); border-radius:12px; min-width:0; }
+.registration-details .rd-document > div { display:flex; align-items:center; gap:12px; }
+.registration-details .rd-document > div > svg { font-size:24px; color:var(--civic-muted); }
+#portal-main .registration-details .rd-document h3 { margin:0 0 4px; font-size:13px; font-weight:600; }
+.registration-details .rd-document p,.registration-details .rd-file-empty { margin:0; font-size:12px; color:var(--civic-muted); }
+.registration-details .rd-document a { display:inline-flex; align-items:center; gap:8px; }
+@media (max-width:900px) {
+  .resident-detail .rd-heading { align-items:flex-start; flex-direction:column; }
+  .resident-detail .rd-overview { grid-template-columns:220px minmax(0,1fr); }
+  .registration-details .rd-registration-grid,.registration-details .rd-documents { grid-template-columns:1fr; }
+}
+@media (max-width:600px) {
+  #portal-main .resident-detail { gap:18px; }
+  .resident-detail .rd-overview { grid-template-columns:1fr; }
+  .resident-detail .rd-identity { border-right:0; border-bottom:1px solid var(--civic-border); }
+  .resident-detail .rd-information,.registration-details .rd-card { padding:20px; }
+  :is(.resident-detail,.registration-details) .rd-fields { grid-template-columns:1fr; gap:18px; }
+  .resident-detail .rd-actions { width:100%; }
+  .resident-detail .rd-actions a { flex:1 1 auto; }
+}

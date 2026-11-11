@@ -1,0 +1,52 @@
+{% extends "layouts/auth_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Document verification | Barangay Sta. Clara Norte{% endblock %}
+{% block extra_head %}
+<style>
+  @media print {
+    body { background: #fff !important; }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="w-full max-w-[620px] mx-auto">
+  <div class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-6 sm:p-8 shadow-xl text-center">
+    {% if document %}
+      {% if is_valid %}
+      <div class="w-20 h-20 mx-auto rounded-full bg-[#E7F8E9] border-2 border-[#22B33A] text-[#12902B] flex items-center justify-center">
+        {{ icon('check-circle', 'text-4xl') }}
+      </div>
+      <p class="mt-4 text-[11px] font-bold uppercase tracking-wider text-[#12902B]">Verification result</p>
+      <h2 class="text-3xl font-extrabold text-[#12902B] mt-1">Valid</h2>
+      <p class="text-sm text-[#5F7265] mt-1">Valid official document</p>
+      {% else %}
+      <div class="w-20 h-20 mx-auto rounded-full bg-[#FFDAD6] border-2 border-[#D93025] text-[#D93025] flex items-center justify-center">
+        {{ icon('x-circle', 'text-4xl') }}
+      </div>
+      <p class="mt-4 text-[11px] font-bold uppercase tracking-wider text-[#D93025]">Verification result</p>
+      <h2 class="text-3xl font-extrabold text-[#D93025] mt-1">{{ verification_state or "Not found" }}</h2>
+      <p class="text-sm text-[#5F7265] mt-1">{{ verification_state }} document</p>
+      {% endif %}
+      <dl class="mt-6 text-left text-sm grid grid-cols-1 gap-2">
+        <div class="flex justify-between gap-4 border-b border-[#E2EDE3] py-2"><dt class="text-[#5F7265]">Document number</dt><dd class="font-semibold text-[#11291A]">{{ document.document_number }}</dd></div>
+        <div class="flex justify-between gap-4 border-b border-[#E2EDE3] py-2"><dt class="text-[#5F7265]">Document type</dt><dd class="font-semibold text-[#11291A]">{{ document.document_type.name }}</dd></div>
+        <div class="flex justify-between gap-4 border-b border-[#E2EDE3] py-2"><dt class="text-[#5F7265]">Issue date</dt><dd class="font-semibold text-[#11291A]">{{ document.snapshot.get('date_issued') if document.snapshot else document.issued_at.date() }}</dd></div>
+        <div class="flex justify-between gap-4 border-b border-[#E2EDE3] py-2"><dt class="text-[#5F7265]">Valid until</dt><dd class="font-semibold text-[#11291A]">{{ document.expires_at.date() if document.expires_at else 'No expiration' }}</dd></div>
+        <div class="flex justify-between gap-4 border-b border-[#E2EDE3] py-2"><dt class="text-[#5F7265]">Authorized signatory</dt><dd class="font-semibold text-[#11291A]">{{ document.authorized_signatory }}</dd></div>
+        <div class="flex justify-between gap-4 py-2"><dt class="text-[#5F7265]">Status</dt><dd class="font-semibold text-[#11291A]">{{ document.status.replace('_',' ').title() }}</dd></div>
+      </dl>
+      <p class="small text-[11px] text-[#5F7265] mt-4 mb-0">This public page displays verification details only. Personal resident information is intentionally not disclosed.</p>
+    {% else %}
+      <div class="w-20 h-20 mx-auto rounded-full bg-[#FFDAD6] border-2 border-[#D93025] text-[#D93025] flex items-center justify-center">
+        {{ icon('x-circle', 'text-4xl') }}
+      </div>
+      <h2 class="text-3xl font-extrabold text-[#D93025] mt-4">{{ verification_state or "Not found" }}</h2>
+      <p class="text-sm text-[#5F7265] mt-2">No official document was found for <strong class="text-[#11291A]">{{ document_number }}</strong>.</p>
+      <p class="text-xs text-[#5F7265] mt-1">Check the document number and try again.</p>
+    {% endif %}
+    <div class="mt-6 no-print">
+      <a class="inline-flex items-center justify-center h-[42px] px-5 rounded-[8px] border-[1.5px] border-[#E2EDE3] text-[#12902B] text-sm font-semibold no-underline" href="{{ url_for('main.index') }}">Back to home</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

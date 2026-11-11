@@ -1,0 +1,804 @@
+{
+  "widths": [
+    320,
+    375,
+    768,
+    1024,
+    1440
+  ],
+  "checks": [
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/auth/login",
+      "title": "Official Civic Login & Portal Authentication - Pamahalaang Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/auth/login",
+      "title": "Official Civic Login & Portal Authentication - Pamahalaang Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/auth/login",
+      "title": "Official Civic Login & Portal Authentication - Pamahalaang Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/auth/login",
+      "title": "Official Civic Login & Portal Authentication - Pamahalaang Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/auth/login",
+      "title": "Official Civic Login & Portal Authentication - Pamahalaang Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/auth/register",
+      "title": "Resident Registration | Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/auth/register",
+      "title": "Resident Registration | Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/auth/register",
+      "title": "Resident Registration | Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/auth/register",
+      "title": "Resident Registration | Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/auth/register",
+      "title": "Resident Registration | Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/auth/forgot-password",
+      "title": "Credential Recovery | Pamahalaang Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/auth/forgot-password",
+      "title": "Credential Recovery | Pamahalaang Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/auth/forgot-password",
+      "title": "Credential Recovery | Pamahalaang Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/auth/forgot-password",
+      "title": "Credential Recovery | Pamahalaang Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/auth/forgot-password",
+      "title": "Credential Recovery | Pamahalaang Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 320,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "resident",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "resident",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "resident",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "resident",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "resident",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/resident/",
+      "role": "resident",
+      "title": "Dashboard · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/resident/",
+      "role": "resident",
+      "title": "Dashboard · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/resident/",
+      "role": "resident",
+      "title": "Dashboard · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/resident/",
+      "role": "resident",
+      "title": "Dashboard · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/resident/",
+      "role": "resident",
+      "title": "Dashboard · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/resident/documents",
+      "role": "resident",
+      "title": "Documents & Clearances · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/resident/documents",
+      "role": "resident",
+      "title": "Documents & Clearances · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/resident/documents",
+      "role": "resident",
+      "title": "Documents & Clearances · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/resident/documents",
+      "role": "resident",
+      "title": "Documents & Clearances · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/resident/documents",
+      "role": "resident",
+      "title": "Documents & Clearances · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/resident/household",
+      "role": "resident",
+      "title": "My household · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/resident/household",
+      "role": "resident",
+      "title": "My household · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/resident/household",
+      "role": "resident",
+      "title": "My household · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/resident/household",
+      "role": "resident",
+      "title": "My household · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/resident/household",
+      "role": "resident",
+      "title": "My household · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "official",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "official",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "official",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "official",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "official",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/official/",
+      "role": "official",
+      "title": "Officials & Staff Workspace · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/official/",
+      "role": "official",
+      "title": "Officials & Staff Workspace · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/official/",
+      "role": "official",
+      "title": "Officials & Staff Workspace · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/official/",
+      "role": "official",
+      "title": "Officials & Staff Workspace · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/official/",
+      "role": "official",
+      "title": "Officials & Staff Workspace · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/official/residents",
+      "role": "official",
+      "title": "Resident records · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/official/residents",
+      "role": "official",
+      "title": "Resident records · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/official/residents",
+      "role": "official",
+      "title": "Resident records · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/official/residents",
+      "role": "official",
+      "title": "Resident records · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/official/residents",
+      "role": "official",
+      "title": "Resident records · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/official/report-center",
+      "role": "official",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/official/report-center",
+      "role": "official",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/official/report-center",
+      "role": "official",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/official/report-center",
+      "role": "official",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/official/report-center",
+      "role": "official",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/official/document-requests",
+      "role": "official",
+      "title": "Document Requests · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/official/document-requests",
+      "role": "official",
+      "title": "Document Requests · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/official/document-requests",
+      "role": "official",
+      "title": "Document Requests · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/official/document-requests",
+      "role": "official",
+      "title": "Document Requests · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/official/document-requests",
+      "role": "official",
+      "title": "Document Requests · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/official/residents/new",
+      "role": "official",
+      "title": "Add resident · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/official/residents/new",
+      "role": "official",
+      "title": "Add resident · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/official/residents/new",
+      "role": "official",
+      "title": "Add resident · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/official/residents/new",
+      "role": "official",
+      "title": "Add resident · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/official/residents/new",
+      "role": "official",
+      "title": "Add resident · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "admin",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "admin",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "admin",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "admin",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/workspace/profile",
+      "role": "admin",
+      "title": "My profile & account · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/admin/",
+      "role": "admin",
+      "title": "Super Admin Console & Analytics · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/admin/",
+      "role": "admin",
+      "title": "Super Admin Console & Analytics · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/admin/",
+      "role": "admin",
+      "title": "Super Admin Console & Analytics · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/admin/",
+      "role": "admin",
+      "title": "Super Admin Console & Analytics · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/admin/",
+      "role": "admin",
+      "title": "Super Admin Console & Analytics · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/admin/users",
+      "role": "admin",
+      "title": "User management · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/admin/users",
+      "role": "admin",
+      "title": "User management · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/admin/users",
+      "role": "admin",
+      "title": "User management · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/admin/users",
+      "role": "admin",
+      "title": "User management · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/admin/users",
+      "role": "admin",
+      "title": "User management · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/admin/official-accounts",
+      "role": "admin",
+      "title": "Official Accounts · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/admin/official-accounts",
+      "role": "admin",
+      "title": "Official Accounts · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/admin/official-accounts",
+      "role": "admin",
+      "title": "Official Accounts · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/admin/official-accounts",
+      "role": "admin",
+      "title": "Official Accounts · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/admin/official-accounts",
+      "role": "admin",
+      "title": "Official Accounts · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/admin/reports",
+      "role": "admin",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/admin/reports",
+      "role": "admin",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/admin/reports",
+      "role": "admin",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/admin/reports",
+      "role": "admin",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/admin/reports",
+      "role": "admin",
+      "title": "Report Center · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 320,
+      "overflow": false,
+      "path": "/admin/settings",
+      "role": "admin",
+      "title": "System Settings · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 375,
+      "overflow": false,
+      "path": "/admin/settings",
+      "role": "admin",
+      "title": "System Settings · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/admin/settings",
+      "role": "admin",
+      "title": "System Settings · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/admin/settings",
+      "role": "admin",
+      "title": "System Settings · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/admin/settings",
+      "role": "admin",
+      "title": "System Settings · Barangay Sta. Clara Norte",
+      "width": 1440
+    },
+    {
+      "documentWidth": 305,
+      "overflow": false,
+      "path": "/auth/change-password",
+      "role": "admin",
+      "title": "Change Password · Barangay Sta. Clara Norte",
+      "width": 320
+    },
+    {
+      "documentWidth": 360,
+      "overflow": false,
+      "path": "/auth/change-password",
+      "role": "admin",
+      "title": "Change Password · Barangay Sta. Clara Norte",
+      "width": 375
+    },
+    {
+      "documentWidth": 753,
+      "overflow": false,
+      "path": "/auth/change-password",
+      "role": "admin",
+      "title": "Change Password · Barangay Sta. Clara Norte",
+      "width": 768
+    },
+    {
+      "documentWidth": 1009,
+      "overflow": false,
+      "path": "/auth/change-password",
+      "role": "admin",
+      "title": "Change Password · Barangay Sta. Clara Norte",
+      "width": 1024
+    },
+    {
+      "documentWidth": 1425,
+      "overflow": false,
+      "path": "/auth/change-password",
+      "role": "admin",
+      "title": "Change Password · Barangay Sta. Clara Norte",
+      "width": 1440
+    }
+  ],
+  "manual": [
+    "Resident real photo preview, crop, POST save and refresh",
+    "Resident emergency contact save",
+    "Light/dark profile view",
+    "Desktop compact navigation and expandable groups",
+    "Mobile drawer keyboard focus and Escape close",
+    "Mobile Bootstrap photo modal and cancellation"
+  ]
+}

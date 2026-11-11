@@ -1,0 +1,39 @@
+{% extends 'resident/_portal_base.html' %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Complaints & Blotter{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static',filename='css/complaint-workspace.css') }}?v=1">{% endblock %}
+{% block content %}
+<div class="complaint-workspace">
+  <header class="cw-hero">
+    <div class="cw-hero-content"><span class="cw-eyebrow">RESIDENT SUPPORT &amp; SAFETY</span><h1>Complaints &amp; Blotter</h1><p>Mag-ulat ng insidente, subaybayan ang iyong mga kaso, at hanapin ang tulong na kailangan mo.</p></div>
+    <div class="cw-emergency"><span>May agarang panganib?</span><a href="tel:911">{{ icon('telephone', '', size='1em') }} Call 911</a></div>
+  </header>
+  <nav class="cw-actions" aria-label="Complaint workspace actions">
+    <a class="cw-action cw-action-primary" href="{{ url_for('incidents.submit') }}"><span class="cw-action-icon">{{ icon('megaphone', '', size='1.35em') }}</span><div><strong>Report an incident</strong><p>Submit a complaint or report an emergency.</p><span class="cw-action-link">Start a report {{ icon('arrow-right') }}</span></div></a>
+    <a class="cw-action" href="{{ url_for('resident.blotter_create') }}"><span class="cw-action-icon">{{ icon('gavel', '', size='1.35em') }}</span><div><strong>File a formal blotter</strong><p>Record a complaint for barangay case review.</p><span class="cw-action-link">File a complaint {{ icon('arrow-right') }}</span></div></a>
+    <a class="cw-action" href="{{ url_for('incidents.directory') }}"><span class="cw-action-icon">{{ icon('telephone', '', size='1.35em') }}</span><div><strong>Emergency hotlines</strong><p>Find contact numbers for emergency services.</p><span class="cw-action-link">View directory {{ icon('arrow-right') }}</span></div></a>
+  </nav>
+  <section class="cw-records" aria-labelledby="cw-records-title">
+    <header class="cw-records-heading"><div><span class="cw-eyebrow">YOUR CASE ACTIVITY</span><h2 id="cw-records-title">My complaints &amp; blotter records</h2><p>Your incident reports and formal blotter cases shared with your account.</p></div><span class="cw-record-count">{{ pagination.total }} {{ 'record' if pagination.total == 1 else 'records' }}</span></header>
+    <form method="get" class="cw-filter" role="search" aria-label="Search complaint records">
+      <div class="cw-field"><label for="cw-search">Reference or title</label><div class="cw-search-input">{{ icon('search') }}<input id="cw-search" name="q" value="{{ request.args.get('q','') }}" placeholder="Search your records" maxlength="100"></div></div>
+      <div class="cw-field"><label for="cw-kind">Record type</label><select id="cw-kind" name="kind"><option value="">All records</option><option value="incident" {{ 'selected' if request.args.get('kind')=='incident' }}>Complaints / incidents</option><option value="blotter" {{ 'selected' if request.args.get('kind')=='blotter' }}>Formal blotter cases</option></select></div>
+      <button class="cw-button" type="submit">{{ icon('search') }} Filter records</button><a class="cw-reset" href="{{ url_for('resident.blotter_cases') }}">Reset</a>
+    </form>
+    <div class="cw-record-list">
+    {% for report in reports %}
+      {% set record_url = url_for('incidents.detail',complaint_id=report.id) if report.kind=='incident' else url_for('resident.blotter_detail',case_id=report.id) %}
+      {% set status_key = report.status|lower %}
+      <article class="cw-record {{ 'cw-record-urgent' if report.emergency }}">
+        <span class="cw-record-icon">{{ icon('gavel' if report.kind=='blotter' else 'megaphone', '', size='1.3em') }}</span>
+        <div class="cw-record-info"><div class="cw-record-meta"><span>{{ 'Complaint / incident' if report.kind=='incident' else 'Formal blotter case' }}</span><span class="cw-reference">{{ report.reference }}</span></div><h3><a href="{{ record_url }}">{{ report.title }}</a></h3><p>{{ icon('calendar-event') }} {{ report.created_at|datetime_manila }} <span aria-hidden="true">·</span> {{ report.category }}</p>{% if report.emergency %}<span class="cw-priority">{{ icon('exclamation-triangle') }} Emergency priority</span>{% endif %}</div>
+        <div class="cw-record-controls"><span class="cw-status {{ 'cw-status-closed' if status_key in ['closed','resolved','dismissed','settled'] else 'cw-status-pending' if status_key in ['pending','submitted'] else '' }}">{{ report.status|replace('_',' ')|title }}</span><a class="cw-view" href="{{ record_url }}" aria-label="View record {{ report.reference }}">View record {{ icon('arrow-right') }}</a></div>
+      </article>
+    {% else %}
+      <div class="cw-empty"><span class="cw-empty-icon">{{ icon('journal-text', '', size='2em') }}</span><h3>{{ 'No matching records' if request.args.get('q') or request.args.get('kind') else 'Your reports will appear here' }}</h3><p>{{ 'Try a different reference, title, or record type.' if request.args.get('q') or request.args.get('kind') else 'Once you submit a complaint or incident, you can track its status here.' }}</p><a class="cw-reset" href="{{ url_for('resident.blotter_cases') if request.args.get('q') or request.args.get('kind') else url_for('incidents.submit') }}">{{ 'Clear filters' if request.args.get('q') or request.args.get('kind') else 'Start a report' }} {{ icon('arrow-right') }}</a></div>
+    {% endfor %}
+    </div>
+    <footer class="cw-records-footer">{% include 'partials/_pagination.html' %}<p>{{ icon('lock') }} Only records linked to your account are shown.</p></footer>
+  </section>
+</div>
+{% endblock %}

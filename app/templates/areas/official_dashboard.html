@@ -1,0 +1,173 @@
+{% extends "official/_official_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% from "partials/portal/_macros.html" import status_badge, empty_state, soon_button %}
+{% block title %}Officials &amp; Staff Workspace{% endblock %}
+{% block active_nav %}official.dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout"><div class="dashboard-content">
+
+{%- set official = current_user.official -%}
+{%- set display_name = official.full_name if official else current_user.username -%}
+
+<section class="civic-hero">
+  <div class="absolute right-0 top-0 w-80 h-full bg-gradient-to-l from-surface-container/60 to-transparent pointer-events-none" aria-hidden="true"></div>
+  <div class="civic-dashboard-person">{% include "partials/premium/_avatar.html" %}<span class="civic-overline">BARANGAY OPERATIONS · OFFICIALS & STAFF</span></div>
+  <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2 mb-1 flex-wrap">
+        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary-container text-primary-dark border border-[#22b33a]/30">OFFICIAL WORKSPACE</span>
+        <span class="text-body-sm text-on-surface-muted flex items-center gap-1">
+          {{ icon('calendar_today', '', size='14px') }}
+          <span data-portal-today></span>
+        </span>
+      </div>
+      <h2 class="font-headline-md text-headline-md text-on-surface">Welcome, {{ display_name }}</h2>
+      <p class="text-body-md text-on-surface-variant mt-0.5">
+        {{ official.position if official else 'Barangay Official' }} • Sangguniang Barangay Sta. Clara Norte
+      </p>
+    </div>
+    <div class="flex flex-wrap items-center gap-3">
+      <a class="civic-btn-gradient text-white font-label-md px-4 py-2.5 rounded-lg flex items-center gap-1.5 text-sm no-underline" href="{{ url_for('official.resident_create') }}">
+        {{ icon('add_circle', '', size='18px') }}
+        <span>New Walk-in Resident</span>
+      </a>
+      <a class="border border-primary text-primary hover:bg-primary hover:text-white transition-colors font-label-md px-4 py-2.5 rounded-lg flex items-center gap-1.5 text-sm no-underline" href="{{ url_for('official.blotter_map') }}">
+        {{ icon('fmd_bad', '', size='18px') }}
+        <span>Incident Map</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <a class="bg-surface-card rounded-xl p-5 border border-outline-border shadow-level-1 hover:border-primary/50 transition-all hover:shadow-level-2 group flex flex-col justify-between no-underline" href="{{ url_for('official.document_requests') }}">
+    <div class="flex items-start justify-between mb-3">
+      <div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+        {{ icon('hourglass-split', '') }}
+      </div>
+      <span class="text-[11px] font-semibold text-primary flex items-center gap-0.5">Review Queue {{ icon('chevron_right', '', size='14px') }}</span>
+    </div>
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-headline-xl text-[34px] leading-tight font-bold text-on-surface">{{ metrics.pending_documents }}</span>
+        <span class="text-body-md font-semibold text-primary">Pending Requests</span>
+      </div>
+      <p class="text-body-sm text-on-surface-muted mt-1">PENDING, UNDER_REVIEW, and PROCESSING document requests.</p>
+    </div>
+  </a>
+
+  <a class="bg-surface-card rounded-xl p-5 border border-outline-border shadow-level-1 hover:border-primary/50 transition-all hover:shadow-level-2 group flex flex-col justify-between no-underline" href="{{ url_for('official.blotter_list') }}">
+    <div class="flex items-start justify-between mb-3">
+      <div class="w-10 h-10 rounded-lg bg-error-container/60 flex items-center justify-center text-error">
+        {{ icon('gavel', '', size='24px') }}
+      </div>
+      {% if metrics.open_blotter %}
+      <span class="font-label-sm text-[11px] bg-[#FCE8E6] text-[#D93025] border border-[#D93025]/40 px-2 py-0.5 rounded">Open docket</span>
+      {% endif %}
+    </div>
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-headline-xl text-[34px] leading-tight font-bold text-on-surface">{{ metrics.open_blotter }}</span>
+        <span class="text-body-md font-semibold text-error">Open Cases</span>
+      </div>
+      <p class="text-body-sm text-on-surface-muted mt-1">OPEN, UNDER_MEDIATION, and HEARING_SCHEDULED blotter cases.</p>
+    </div>
+  </a>
+
+  <a class="bg-surface-card rounded-xl p-5 border border-outline-border shadow-level-1 hover:border-primary/50 transition-all hover:shadow-level-2 group flex flex-col justify-between no-underline" href="{{ url_for('official.queue_management') }}">
+    <div class="flex items-start justify-between mb-3">
+      <div class="w-10 h-10 rounded-lg bg-warning-pill flex items-center justify-center text-tertiary">
+        {{ icon('groups', '', size='24px') }}
+      </div>
+      <span class="font-label-sm text-[11px] bg-[#FDF4D8] text-[#11291A] border border-[#FFD328] px-2 py-0.5 rounded">Service queue</span>
+    </div>
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-headline-xl text-[34px] leading-tight font-bold text-on-surface">{{ metrics.queue_waiting }}</span>
+        <span class="text-body-md font-semibold text-tertiary">Citizens Waiting</span>
+      </div>
+      <p class="text-body-sm text-on-surface-muted mt-1">PENDING, PROCESSING, and SCHEDULED queue tickets.</p>
+    </div>
+  </a>
+</section>
+
+<section class="bg-gradient-to-r from-[#0A5C1E] via-[#12902B] to-[#0A5C1E] rounded-xl p-4 lg:p-5 text-white shadow-level-2 flex flex-col md:flex-row items-center justify-between gap-4 border border-[#4CD62B]/30">
+  <div class="flex items-center gap-4 w-full md:w-auto">
+    <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
+      {{ icon('megaphone', 'text-tertiary-fixed fill-icon') }}
+    </div>
+    <div>
+      <span class="bg-[#FFD700] text-[#002204] font-bold text-[10px] px-2 py-0.5 rounded uppercase tracking-wider">Queue desk</span>
+      <p class="font-headline-sm text-headline-sm text-white mt-0.5">
+        {% if metrics.queue_waiting %}
+        {{ metrics.queue_waiting }} ticket{{ 's' if metrics.queue_waiting != 1 else '' }} waiting — open the queue to call the next citizen.
+        {% else %}
+        Walang nakaabang sa pila ngayon.
+        {% endif %}
+      </p>
+      <p class="text-body-sm text-white/90">Pamahalaan ang mga queue ticket, appointment at nakatalagang opisyal sa Queue Console.</p>
+    </div>
+  </div>
+  <div class="flex items-center gap-2.5 w-full md:w-auto justify-end">
+
+    <a class="px-5 py-2 rounded-lg bg-tertiary-fixed text-[#002204] font-label-md font-bold hover:bg-[#ffe699] no-underline inline-flex items-center gap-1.5" href="{{ url_for('official.queue_management') }}">
+      {{ icon('volume_up', '', size='18px') }}
+      Open Queue Console
+    </a>
+  </div>
+</section>
+
+<section class="space-y-3">
+  <div class="flex items-center justify-between">
+    <h3 class="font-title-lg text-title-lg text-on-surface flex items-center gap-2">
+      {{ icon('tune', 'text-primary', size='20px') }}
+      Barangay Governance &amp; Operations Hub
+    </h3>
+    <span class="text-body-sm text-outline hidden sm:inline">Direct desk shortcuts</span>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {% set tiles = [
+      (url_for('official.queue_management'), 'queue', 'Queue Live Desk', 'Advance queue tickets, assign an official, and update appointment times.', metrics.queue_waiting ~ ' waiting', 'Open Queue Console'),
+      (url_for('official.document_requests'), 'history_edu', 'Document Processing Hub', 'Review requirements, change status, generate, and release documents.', metrics.pending_documents ~ ' to process', 'Open Issuance Desk'),
+      (url_for('official.resident_list'), 'contact_page', 'Resident Form B Profiling', 'Search and maintain the Registry of Barangay Inhabitants.', 'Registry', 'Manage Inhabitants'),
+      (url_for('official.blotter_list'), 'balance', 'Lupon Docket & Mediation', 'Track blotter cases, hearings, mediation, and endorsements.', metrics.open_blotter ~ ' open', 'Access Docket'),
+      (url_for('official.business_list'), 'store', 'Business Clearances & Renewals', 'Commercial registry, renewals, and clearance requests.', 'Business desk', 'View Businesses'),
+      (url_for('official.collections'), 'receipt_long', 'Collections Ledger', 'Record fees, Official Receipts and daily collections.', 'Cashier', 'Cashier Reconcile'),
+    ] %}
+    {% for link, icon_name, title, body, meta, cta in tiles %}
+    <div class="bg-surface-card rounded-xl p-5 border border-outline-border shadow-level-1 hover:border-primary/40 hover:shadow-level-2 transition-all flex flex-col justify-between">
+      <div>
+        <div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary mb-3">
+          {{ icon(icon_name, '', size='22px') }}
+        </div>
+        <h4 class="font-title-md text-title-md text-on-surface">{{ title }}</h4>
+        <p class="text-body-sm text-on-surface-muted mt-1.5 leading-relaxed">{{ body }}</p>
+      </div>
+      <div class="mt-5 pt-3 border-t border-outline-border flex items-center justify-between">
+        <span class="text-xs text-on-surface-variant font-medium">{{ meta }}</span>
+        <a class="text-primary font-semibold text-xs flex items-center gap-1 hover:underline no-underline" href="{{ link }}">
+          {{ cta }} {{ icon('arrow_forward', '', size='14px') }}
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="bg-surface-card rounded-xl border border-outline-border shadow-level-1 overflow-hidden">
+  <div class="p-4 lg:p-5 border-b border-outline-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div>
+      <h3 class="font-title-lg text-title-lg text-on-surface">Live Desk Operations &amp; Document Roster</h3>
+      <p class="text-body-sm text-on-surface-muted">Buksan ang Document Requests para makita ang mga aplikasyon, requirements at kasalukuyang status.</p>
+    </div>
+    <a class="h-9 px-3 rounded-lg bg-surface-container-low text-primary text-xs font-semibold hover:bg-surface-container inline-flex items-center gap-1 no-underline" href="{{ url_for('official.document_requests') }}">
+      {{ icon('arrow_forward', '', size='16px') }}
+      Open roster
+    </a>
+  </div>
+  {{ empty_state('assignment', 'Document processing desk', 'I-review, i-sign, at i-release ang mga aplikasyon sa Document Requests.', url_for('official.document_requests'), 'Document Requests') }}
+</section>
+
+</div>{% include 'partials/portal/_calendar.html' %}</div>
+{% endblock %}

@@ -1,0 +1,4 @@
+WeasyPrint 70.0 Windows standalone renderer
+https://github.com/Kozea/WeasyPrint/releases/download/v70.0/weasyprint-windows-onedir.zip
+sha256:ab1151f210b4e6bb7aa7a79e91a67e8ddb760094c107bfda55241b6aaefe7d53
+License: https://github.com/Kozea/WeasyPrint/blob/v70.0/LICENSE

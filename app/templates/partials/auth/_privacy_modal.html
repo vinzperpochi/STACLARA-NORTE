@@ -1,0 +1,60 @@
+{% from 'components/icons.html' import icon %}
+{% from "partials/_site_info.html" import v_dpo_name, v_dpo_email, v_dpo_phone, v_help_note, v_hotline, v_hall_address, v_office_hours, v_charter_note, v_fees_note, v_foi_note %}
+<div aria-modal="true" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 hidden" id="civic-modal" role="dialog" aria-labelledby="modal-title">
+  <div class="relative w-full max-w-lg bg-white rounded-xl shadow-2xl border border-[#E2EDE3] overflow-hidden transform transition-all flex flex-col max-h-[90vh]" id="civic-modal-box">
+    <div class="px-6 py-4 text-white flex items-center justify-between" style="background: linear-gradient(120deg, #0A5C1E 0%, #12902B 100%);">
+      <div class="flex items-center gap-2.5">
+        {{ icon('shield-check', 'text-[#FFD328] text-lg') }}
+        <h3 class="font-bold text-base text-white tracking-wide" id="modal-title">Privacy Notice</h3>
+      </div>
+      <button aria-label="Close dialog" class="text-white/80 hover:text-white rounded-lg p-1 hover:bg-white/10 transition-colors focus:outline-none cursor-pointer bg-transparent border-0" data-close-modal type="button">
+        {{ icon('x-lg', 'text-xl') }}
+      </button>
+    </div>
+    <div class="p-6 overflow-y-auto flex-1 text-sm text-[#11291A] leading-relaxed space-y-3.5" id="modal-body">
+      <div data-modal-panel="privacy" class="space-y-3 text-xs text-[#5F7265] leading-relaxed">
+        <p>This system processes personal information for legitimate barangay administration, public service delivery, document issuance, health and social-welfare assistance, disaster response, and statutory recordkeeping. Processing follows transparency, legitimate purpose, proportionality, and accountability under the Philippine Data Privacy Act of 2012 (RA 10173).</p>
+        <p>We collect only information reasonably needed for the selected service. Access is role-based and authenticated. Document verification exposes only the minimum facts needed to confirm authenticity.</p>
+        <p>Subject to legal limitations, data subjects may request information about processing, access or correction of their information, and raise concerns through the barangay office.</p>
+        <div class="p-3 bg-[#E7F8E9] border border-[#22B33A]/30 rounded-lg text-[#11291A] space-y-1">
+          <p class="font-bold text-[#12902B]">Data Protection Officer</p>
+          <p><strong>Name:</strong> {{ v_dpo_name() }}</p>
+          <p><strong>Email:</strong> {{ v_dpo_email() }}</p>
+          <p><strong>Phone:</strong> {{ v_dpo_phone() }}</p>
+        </div>
+        <p><a class="font-semibold text-[#12902B] underline" href="{{ url_for('main.privacy_notice') }}">Read the full Privacy Notice</a></p>
+      </div>
+      <div data-modal-panel="help" class="hidden space-y-3 text-xs text-[#5F7265] leading-relaxed">
+        <p>{{ v_help_note() }}</p>
+        <p>Hotline: <strong class="text-[#11291A]">{{ v_hotline() }}</strong></p>
+        <p>Hall: <strong class="text-[#11291A]">{{ v_hall_address() }}</strong></p>
+        <p>Office hours: <strong class="text-[#11291A]">{{ v_office_hours() }}</strong></p>
+      </div>
+      <div data-modal-panel="charter" class="hidden space-y-3 text-xs text-[#5F7265] leading-relaxed">
+        <p>{{ v_charter_note() }}</p>
+        <p>Fees: {{ v_fees_note() }}</p>
+        <p>Office hours: {{ v_office_hours() }}</p>
+      </div>
+      <div data-modal-panel="foi" class="hidden space-y-3 text-xs text-[#5F7265] leading-relaxed">
+        <p>{{ v_foi_note() }}</p>
+      </div>
+      <div data-modal-panel="dpa" class="hidden space-y-3 text-xs text-[#5F7265] leading-relaxed">
+        <p>This portal processes personal information under the Data Privacy Act of 2012 (RA 10173). Read the <a class="font-semibold text-[#12902B] underline" href="{{ url_for('main.privacy_notice') }}">full Privacy Notice</a>.</p>
+      </div>
+      <div data-modal-panel="dict" class="hidden space-y-3 text-xs text-[#5F7265] leading-relaxed">
+        <p>TODO: DICT eGov integration statement. This barangay portal is a local civic service and is not a verified DICT National Government Portal node.</p>
+      </div>
+      <div data-modal-panel="iso27001" class="hidden space-y-3 text-xs text-[#5F7265] leading-relaxed">
+        <p>TODO: ISO/IEC 27001 certification statement. Do not treat this badge as a verified certification until the barangay supplies documentation.</p>
+      </div>
+    </div>
+    <div class="px-6 py-3.5 bg-[#FAFDF9] border-t border-[#E2EDE3] flex items-center justify-between">
+      <span class="text-[11px] text-[#5F7265] flex items-center gap-1">
+        {{ icon('patch-check', 'text-[#12902B]') }} Pamahalaang Barangay Sta. Clara Norte
+      </span>
+      <button class="px-4 py-2 bg-[#12902B] hover:bg-[#0A5C1E] text-white text-xs font-semibold rounded-md shadow-xs transition-colors cursor-pointer border-0" data-close-modal type="button">
+        Close Window
+      </button>
+    </div>
+  </div>
+</div>

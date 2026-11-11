@@ -1,0 +1,48 @@
+/* Resident data entry shares the portal palette and adapts to narrow screens. */
+#portal-main .resident-form-page { max-width:1100px; margin-inline:auto; min-width:0; }
+.resident-form-page .rf-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; margin-bottom:24px; }
+.resident-form-page .rf-back { display:inline-flex; align-items:center; gap:7px; margin-bottom:10px; color:var(--civic-muted); font-size:12px; text-decoration:none; }
+#portal-main .resident-form-page h1 { margin:0 0 8px; font-size:28px; line-height:1.3; }
+.resident-form-page .rf-heading p { margin:0; color:var(--civic-muted); font-size:13px; line-height:1.7; }
+.resident-form-page .rf-card { padding:28px; margin-bottom:20px; min-width:0; border:1px solid var(--civic-border); border-radius:16px; background:var(--civic-card); }
+.resident-form-page .rf-section-title { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--civic-border); }
+.resident-form-page .rf-section-title > svg { margin-top:3px; color:var(--civic-ink); width:20px; height:20px; flex-shrink:0; }
+#portal-main .resident-form-page h2 { margin:0 0 5px; font-size:17px; line-height:1.5; font-weight:650; }
+.resident-form-page .rf-section-title p,.resident-form-page .rf-photo-input p,.resident-form-page .rf-upload p { margin:0; color:var(--civic-muted); font-size:12px; line-height:1.7; }
+.resident-form-page .rf-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; }
+.resident-form-page .rf-grid-three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.resident-form-page .rf-field { min-width:0; }
+.resident-form-page label:not(.rf-check) { display:block; margin:0 0 8px; color:var(--civic-ink); font-size:12px; line-height:1.5; font-weight:600; }
+.resident-form-page .rf-field .civic-input { display:block; width:100%; min-width:0; box-sizing:border-box; }
+.resident-form-page .rf-required,.resident-form-page .rf-error { color:var(--civic-error,#b42318); }
+.resident-form-page .rf-error p { margin:6px 0 0; font-size:12px; line-height:1.5; }
+.resident-form-page .rf-check-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0; padding:0; border:0; }
+.resident-form-page .rf-check { display:flex; align-items:center; gap:10px; margin:0; padding:15px; min-width:0; border:1px solid var(--civic-border); border-radius:10px; cursor:pointer; font-size:12px; line-height:1.6; }
+.resident-form-page .rf-check:has(input:checked) { background:var(--civic-mint); border-color:var(--civic-primary); }
+.resident-form-page .rf-check input { width:17px; height:17px; flex-shrink:0; accent-color:var(--civic-primary); }
+.resident-form-page .rf-photo-row { display:flex; align-items:center; gap:22px; margin-bottom:24px; }
+.resident-form-page .rf-avatar { position:relative; display:grid; place-items:center; width:100px; height:100px; flex:0 0 100px; border-radius:20px; overflow:hidden; background:var(--civic-mint); border:1px solid var(--civic-border); color:var(--civic-ink); font-size:30px; font-weight:700; }
+.resident-form-page .rf-avatar img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.resident-form-page [hidden] { display:none !important; }
+.resident-form-page .rf-photo-input { min-width:0; flex:1; }
+.resident-form-page .rf-file { display:block; width:100%; min-width:0; max-width:100%; padding:8px; margin-top:10px; border:1px solid var(--civic-border); border-radius:10px; font-size:12px; background:var(--civic-page); color:var(--civic-ink); box-sizing:border-box; }
+.resident-form-page .rf-file::file-selector-button { border:0; border-radius:6px; background:var(--civic-card); color:var(--civic-ink); padding:8px 10px; margin-right:10px; cursor:pointer; }
+.resident-form-page .rf-upload { padding:20px; border:1px solid var(--civic-border); border-radius:12px; min-width:0; }
+.resident-form-page .rf-upload label { display:flex; align-items:center; gap:8px; }
+.resident-form-page .rf-existing,.resident-form-page .rf-no-upload { display:inline-flex; align-items:center; gap:6px; margin-top:10px; font-size:12px; color:var(--civic-muted); }
+.resident-form-page .rf-existing { color:var(--civic-ink); }
+.resident-form-page .rf-footer { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:20px 0 8px; border-top:1px solid var(--civic-border); }
+.resident-form-page .rf-footer p { margin:0; font-size:12px; line-height:1.6; color:var(--civic-muted); }
+.resident-form-page .rf-footer > div { display:flex; flex-wrap:wrap; gap:10px; }
+.resident-form-page .rf-footer :is(a,button) { display:inline-flex; align-items:center; justify-content:center; gap:8px; }
+.resident-form-page .rf-notice { display:flex; align-items:flex-start; gap:12px; padding:20px; margin-bottom:20px; border:1px solid var(--civic-border); border-radius:12px; background:var(--civic-mint); color:var(--civic-ink); font-size:13px; line-height:1.7; }
+.resident-form-page .rf-notice p { margin:4px 0; font-size:12px; }
+@media (max-width:850px) { .resident-form-page .rf-grid-three,.resident-form-page .rf-check-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:600px) {
+  .resident-form-page .rf-card { padding:20px; }
+  .resident-form-page .rf-grid,.resident-form-page .rf-grid-three,.resident-form-page .rf-check-grid { grid-template-columns:1fr; }
+  .resident-form-page .rf-photo-row { align-items:flex-start; flex-direction:column; }
+  .resident-form-page .rf-photo-input { width:100%; }
+  .resident-form-page .rf-footer { align-items:stretch; flex-direction:column; }
+  .resident-form-page .rf-footer > div > * { flex:1; }
+}

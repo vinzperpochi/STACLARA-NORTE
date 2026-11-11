@@ -1,0 +1,68 @@
+<!doctype html>
+<html class="h-full" lang="fil">
+<head>
+  <link href="{{ url_for('static',filename='vendor/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>{% block title %}Resident Citizen Portal{% endblock %} · Barangay Sta. Clara Norte</title>
+  <link href="{{ url_for('static', filename='css/portal.css') }}?v=emerald-20261010-final" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/messaging.css') }}?v=emerald-20261010-final" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/ui-polish.css') }}?v=emerald-20261010-final" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/resident-dashboard.css') }}?v=emerald-20261010-final" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/stitch-resident.css') }}?v=emerald-20261010-final" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/ui-system.css') }}?v=emerald-20261010-final" rel="stylesheet">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="{{ url_for('static', filename='css/workspace.css') }}?v=emerald-20261010-final" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
+<link href="{{ url_for('static',filename='css/civic-premium.css') }}?v=emerald-20261010-final" rel="stylesheet">
+<link href="{{ url_for('static',filename='css/resident-sidebar.css') }}?v=emerald-20261010-final" rel="stylesheet">
+<script>try{document.documentElement.dataset.civicTheme=localStorage.getItem("scn-theme")||"light";}catch(e){}</script>
+<link href="{{ url_for('static',filename='css/civic-palette.css') }}?v=20261102" rel="stylesheet">
+<link href="{{ url_for('static',filename='css/workspace-refinement.css') }}?v=20261106-1" rel="stylesheet">
+<link href="{{ url_for('static',filename='css/civic-ribbon.css') }}?v=20261107-2" rel="stylesheet">
+{% include 'partials/_client_validation_assets.html' %}
+{% include 'partials/_favicon.html' %}
+</head>
+<body data-timezone="{{ system_timezone }}" class="workspace-resident portal-stitch {{ 'stitch-profile-print' if request.endpoint == 'resident.profile' else '' }} bg-surface-bg text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-highlight-lime selection:text-on-primary-fixed">
+  <a href="#portal-main" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[70] focus:px-4 focus:py-2 focus:bg-white focus:text-primary-dark focus:font-semibold focus:rounded-lg focus:shadow-lg">Skip to content</a>
+
+  {% include "partials/portal/_meta_bar.html" %}
+  {% include "partials/portal/_header.html" %}
+  {% include "partials/portal/_announcement_carousel.html" %}
+
+  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 block md:flex md:flex-row md:gap-6">
+    <div class="hidden fixed inset-0 bg-black/50 z-30 md:hidden" data-portal-drawer-backdrop></div>
+    <aside class="w-full md:w-64 lg:w-72 flex-shrink-0 max-md:hidden max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:z-40 max-md:w-[18rem] max-md:overflow-y-auto max-md:p-3 max-md:bg-surface-bg" id="portal-sidebar">
+      {% include "partials/portal/_sidebar.html" %}
+    </aside>
+
+    <main class="flex-1 w-full max-w-full min-w-0 space-y-6" id="portal-main">
+      {% set civic_page_title = self.title() %}{% include "partials/premium/_toolbar.html" %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  {% include "partials/portal/_footer.html" %}
+  {% include "partials/portal/_modals.html" %}
+  {% include "partials/messaging/_widget.html" %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="hidden" data-portal-flashes>
+      {% for category, message in messages %}<span data-flash-category="{{ category }}">{{ message }}</span>{% endfor %}
+    </div>
+    {% endif %}
+  {% endwith %}
+
+  <script src="{{ url_for('static',filename='vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/portal.js') }}?v=20261102"></script>
+  <script src="{{ url_for('static', filename='js/stitch-resident.js') }}?v=1"></script>
+  <script src="{{ url_for('static', filename='js/messaging.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/workspace.js') }}"></script>
+  {% block scripts %}{% endblock %}
+
+<script src="{{ url_for('static',filename='js/civic-premium.js') }}?v=20261102"></script>
+<script src="{{ url_for('static',filename='js/resident-sidebar.js') }}?v=2"></script>
+</body>
+</html>

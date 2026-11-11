@@ -1,0 +1,125 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/Inter-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/Inter-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/Inter-SemiBold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../fonts/Inter-ExtraBold.woff2") format("woff2");
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.header-gradient {
+  background: linear-gradient(rgb(10, 92, 30) 0%, rgb(18, 144, 43) 35%, rgb(34, 179, 58) 60%, rgb(250, 253, 249) 100%);
+}
+
+.page-gradient {
+  background: linear-gradient(180deg, #fafdf9 0%, #f2f9f1 100%);
+}
+
+.btn-civic-primary {
+  background: linear-gradient(135deg, #12902B, #22B33A);
+  transition: all 0.25s ease;
+}
+
+.btn-civic-primary:hover {
+  background: linear-gradient(135deg, #0A5C1E, #12902B);
+  box-shadow: 0 0 14px rgba(76, 214, 43, 0.35);
+}
+
+.btn-civic-primary:disabled {
+  opacity: 0.9;
+  cursor: not-allowed;
+}
+
+.btn-gradient {
+  background: linear-gradient(135deg, #12902B, #22B33A);
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #0A5C1E, #12902B);
+}
+
+.civic-input:focus {
+  border-color: #22B33A !important;
+  box-shadow: 0 0 0 3px rgba(18, 144, 43, 0.15) !important;
+  outline: none !important;
+}
+
+.civic-card-shadow {
+  box-shadow: 0 4px 20px -2px rgba(10, 92, 30, 0.08), 0 2px 6px -1px rgba(10, 92, 30, 0.04);
+}
+
+.civic-card-hover:hover {
+  border-color: rgba(18, 144, 43, 0.35);
+  box-shadow: 0 10px 24px -4px rgba(10, 92, 30, 0.12), 0 4px 8px -2px rgba(10, 92, 30, 0.06);
+}
+
+.diagonal-streaks {
+  background-image: repeating-linear-gradient(
+    60deg,
+    rgba(123, 234, 79, 0.16) 0px,
+    rgba(123, 234, 79, 0.16) 40px,
+    transparent 40px,
+    transparent 90px
+  );
+}
+
+:focus-visible {
+  outline: 2px solid #12902B;
+  outline-offset: 2px;
+}
+
+@media print {
+  .civic-ribbon,
+  .no-print,
+  footer,
+  #civic-modal,
+  #toast-notification {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+}
+
+/* Local SVG icon system */
+.icon-svg { display:inline-block; vertical-align:-0.125em; flex:0 0 auto; }

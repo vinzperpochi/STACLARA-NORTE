@@ -1,0 +1,45 @@
+/* Document settings only. Original printable templates have their own layout. */
+#portal-main .document-settings { display:grid; gap:28px; max-width:1120px; margin-inline:auto; min-width:0; }
+.document-settings .ds-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; }
+#portal-main .document-settings .ds-heading h1 { font-size:28px; line-height:1.3; margin:0 0 10px; }
+.document-settings .ds-heading > div { max-width:740px; min-width:0; }
+.document-settings .ds-heading > a { flex-shrink:0; }
+.document-settings .ds-heading p:not(.civic-overline),.document-settings .ds-section-heading p,.document-settings .ds-list-heading p { color:var(--civic-muted); font-size:13px; line-height:1.7; margin:0; }
+.document-settings .ds-section-heading { display:flex; align-items:flex-start; gap:12px; margin-bottom:24px; }
+.document-settings .ds-icon { display:grid; place-items:center; flex:0 0 40px; width:40px; height:40px; border-radius:11px; background:var(--civic-mint); color:var(--civic-emerald); }
+#portal-main .document-settings .ds-section-heading h2 { margin:0 0 5px; font-size:18px; line-height:1.4; }
+.document-settings .ds-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+.document-settings .ds-form-grid > div { min-width:0; }
+.document-settings label:not(.ds-active-toggle) { display:block; font-size:13px; font-weight:600; line-height:1.5; margin:0 0 8px; color:var(--civic-ink); }
+.document-settings label > span:not(.ds-optional) { color:var(--civic-emerald); }
+.document-settings .ds-optional { font-weight:400; color:var(--civic-muted); }
+.document-settings .civic-input { display:block; width:100%; min-width:0; }
+.document-settings .ds-form-footer { display:flex; align-items:center; justify-content:space-between; gap:24px; padding-top:20px; margin-top:24px; border-top:1px solid var(--civic-border); }
+.document-settings .ds-form-footer p { max-width:540px; font-size:12px; line-height:1.7; color:var(--civic-muted); margin:0; }
+.document-settings .ds-form-footer button { flex-shrink:0; }
+.document-settings .ds-list-heading { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
+#portal-main .document-settings .ds-list-heading h2 { font-size:18px; line-height:1.4; margin:0 0 4px; }
+.document-settings .ds-count { display:inline-flex; align-items:center; min-height:28px; padding:4px 10px; border:1px solid var(--civic-border); border-radius:20px; font-size:11px; color:var(--civic-muted); background:var(--civic-card); white-space:nowrap; }
+.document-settings .ds-signatories { background:var(--civic-card); border:1px solid var(--civic-border); border-radius:16px; overflow:hidden; }
+.document-settings .ds-signatory-row { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:20px 24px; }
+.document-settings .ds-signatory-row + .ds-signatory-row { border-top:1px solid var(--civic-border); }
+.document-settings .ds-person { display:flex; align-items:flex-start; gap:12px; min-width:0; }
+.document-settings .ds-person-icon { display:grid; place-items:center; width:36px; height:36px; flex:0 0 36px; border:1px solid var(--civic-border); border-radius:50%; color:var(--civic-muted); }
+#portal-main .document-settings .ds-person h3 { margin:0 0 3px; font-size:14px; line-height:1.5; }
+.document-settings .ds-person p { margin:0 0 4px; font-size:13px; color:var(--civic-muted); }
+.document-settings .ds-person small { display:block; font-size:12px; line-height:1.6; color:var(--civic-muted); }
+.document-settings .ds-row-actions { display:flex; align-items:center; gap:16px; flex-shrink:0; }
+.document-settings .ds-row-actions form { margin:0; }
+.document-settings .ds-status { padding:5px 10px; border-radius:20px; background:var(--civic-page); color:var(--civic-muted); font-size:11px; font-weight:600; }
+.document-settings .ds-status.is-active { background:var(--civic-mint); color:var(--civic-emerald); }
+.document-settings .ds-mapping-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.document-settings .ds-mapping-card { display:flex; flex-direction:column; min-width:0; padding:22px; border:1px solid var(--civic-border); border-radius:16px; background:var(--civic-card); box-shadow:var(--civic-shadow); }
+.document-settings .ds-mapping-heading { display:flex; align-items:center; gap:12px; margin-bottom:20px; min-height:44px; }
+#portal-main .document-settings .ds-mapping-heading h3 { margin:0; font-size:15px; line-height:1.5; }
+.document-settings .ds-mapping-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:20px; padding-top:16px; border-top:1px solid var(--civic-border); }
+.document-settings .ds-active-toggle { display:inline-flex; align-items:center; gap:9px; min-height:44px; margin:0; font-size:13px; color:var(--civic-ink); cursor:pointer; }
+.document-settings .ds-active-toggle input { appearance:auto !important; position:static !important; opacity:1 !important; width:18px !important; height:18px !important; margin:0; padding:0; flex-shrink:0; accent-color:var(--civic-emerald); }
+.document-settings .ds-empty { padding:24px; margin:0; color:var(--civic-muted); font-size:13px; line-height:1.7; }
+html[data-civic-theme="dark"] .document-settings :is(.ds-icon,.ds-status.is-active) { color:#b8e4c3; }
+@media(max-width:1000px) { .document-settings .ds-heading { flex-direction:column; gap:16px; } .document-settings .ds-form-footer { align-items:flex-start; flex-direction:column; gap:16px; } .document-settings .ds-form-footer button { align-self:flex-end; } }
+@media(max-width:640px) { #portal-main .document-settings { gap:24px; } #portal-main .document-settings .ds-heading h1 { font-size:24px; } .document-settings .ds-form-grid,.document-settings .ds-mapping-grid { grid-template-columns:minmax(0,1fr); } .document-settings .ds-form-grid { gap:16px; } .document-settings .ds-form-footer button { width:100%; } .document-settings .ds-signatory-row { align-items:flex-start; flex-direction:column; gap:16px; padding:20px; } .document-settings .ds-row-actions { width:100%; justify-content:space-between; } .document-settings .ds-mapping-card { padding:20px; } }

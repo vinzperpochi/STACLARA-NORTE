@@ -1,0 +1,35 @@
+{% extends 'official/_official_base.html' %}
+{% from 'components/icons.html' import icon %}
+{% block active_nav %}official.resident_list{% endblock %}
+{% block title %}Resident Detail{% endblock %}
+{% block extra_head %}{{ super() }}<link rel="stylesheet" href="{{ url_for('static', filename='css/resident-detail.css') }}?v=20261106-1"><script defer src="{{ url_for('static', filename='js/resident-detail.js') }}?v=20261106-1"></script>{% endblock %}
+{% block content %}
+<div class="resident-detail">
+  <header class="rd-heading">
+    <div><a class="rd-back" href="{{ url_for('official.resident_list') }}">{{ icon('chevron_left') }} Resident registry</a><h1>Resident profile</h1><p>Personal information and registration records.</p></div>
+    <div class="rd-actions"><a class="civic-btn-outline" href="{{ url_for('official.household_members', resident_id=resident.id) }}">{{ icon('group') }} Household members</a><a class="civic-btn" href="{{ url_for('official.resident_edit', resident_id=resident.id) }}">{{ icon('edit_note') }} Edit profile</a></div>
+  </header>
+  <section class="rd-overview" aria-labelledby="resident-name">
+    <div class="rd-identity">
+      <div class="rd-avatar" data-resident-avatar>
+        <span aria-hidden="true">{{ (resident.first_name or '')[:1] }}{{ (resident.last_name or '')[:1] }}</span>
+        {% if resident.profile_photo_filename %}<img data-resident-photo src="{{ url_for('official.resident_photo', resident_id=resident.id) }}" alt="Profile photo of {{ resident.first_name }} {{ resident.last_name }}">{% endif %}
+      </div>
+      <h2 id="resident-name">{{ resident.first_name }}{% if resident.middle_name %} {{ resident.middle_name }}{% endif %} {{ resident.last_name }}{% if resident.suffix %} {{ resident.suffix }}{% endif %}</h2>
+      <span class="rd-status">{{ (resident.status or 'Not recorded')|replace('_',' ')|title }}</span>
+      <p class="rd-photo-note" data-resident-photo-note{% if resident.profile_photo_filename %} hidden{% endif %}>No profile photo available</p>
+      <div class="rd-location"><span>Purok</span><strong>{{ resident.purok.name if resident.purok else 'Not recorded' }}</strong><span>Household</span><strong>{{ resident.household.household_number if resident.household else 'Not assigned' }}</strong></div>
+    </div>
+    <div class="rd-information">
+      <div class="rd-section-heading">{{ icon('person_badge') }}<h2>Personal information</h2></div>
+      <dl class="rd-fields">
+        {% for label, value in [('Birth date', resident.birth_date), ('Sex', resident.sex), ('Civil status', resident.civil_status), ('Nationality', resident.nationality), ('Occupation', resident.occupation), ('Voter status', resident.voter_status), ('Contact number', resident.contact_number), ('Email address', resident.email)] %}
+        <div><dt>{{ label }}</dt><dd{% if not value %} class="rd-empty"{% endif %}>{{ value or 'Not recorded' }}</dd></div>
+        {% endfor %}
+        <div class="rd-field-wide"><dt>Residential address</dt><dd{% if not resident.address_line %} class="rd-empty"{% endif %}>{{ resident.address_line or 'Not recorded' }}</dd></div>
+      </dl>
+    </div>
+  </section>
+  {% include 'partials/_registration_details.html' %}
+</div>
+{% endblock %}

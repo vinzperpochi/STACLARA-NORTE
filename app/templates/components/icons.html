@@ -1,0 +1,34 @@
+{# Local SVG icon component. Every public name resolves to a real symbol in icons.svg. #}
+{% macro icon(name, class='', size='1em', label=None) -%}
+{%- set icon_map = {
+  'grid': 'grid-1x2', 'dashboard': 'grid-1x2', 'group': 'people', 'holiday_village': 'house', 'home_work': 'house', 'storefront': 'shop', 'payments': 'cash-stack',
+  'account_circle': 'person-circle', 'add': 'list-check', 'add_circle': 'circle-fill',
+  'analytics': 'graph-up', 'arrow_forward': 'arrow-right', 'assignment': 'file-earmark-text',
+  'autorenew': 'clock', 'badge': 'person-badge', 'calendar_today': 'calendar-event',
+  'close': 'x-lg', 'chevron_left': 'arrow-left', 'check': 'check-circle', 'chevron_right': 'arrow-right', 'confirmation_number': 'card-checklist',
+  'contact_emergency': 'person-vcard', 'database': 'building', 'description': 'file-earmark-text',
+  'diversity_1': 'people', 'done_all': 'check2-all', 'download': 'file-earmark',
+  'edit_document': 'file-earmark-text', 'edit_note': 'pencil-square', 'event': 'calendar-event',
+  'expand_more': 'chevron-down', 'family_restroom': 'people', 'flag': 'megaphone',
+  'fmd_bad': 'exclamation-triangle', 'gavel': 'journal-text', 'groups': 'people',
+  'health_and_safety': 'shield-check', 'help': 'question-circle', 'home_pin': 'geo-alt-fill',
+  'how_to_vote': 'check2-all', 'logout': 'box-arrow-right', 'manage_accounts': 'person-badge',
+  'mark_email_unread': 'envelope', 'menu': 'list', 'notifications': 'bell', 'password': 'key',
+  'person_add': 'person-badge', 'policy': 'shield-lock', 'post_add': 'file-earmark-text',
+  'privacy_tip': 'shield-lock', 'query_stats': 'graph-up', 'shield_person': 'shield-check',
+  'support_agent': 'headset', 'swap_horiz': 'arrow-right', 'tune': 'sliders2',
+  'unfold_more': 'chevron-down', 'verified': 'patch-check', 'verified_user': 'patch-check',
+  'volume_up': 'megaphone', 'campaign': 'megaphone', 'forum': 'chat-left-text',
+  'queue': 'list-check', 'history_edu': 'journal-text', 'contact_page': 'person-vcard',
+  'balance': 'handshake', 'store': 'shop', 'receipt_long': 'file-earmark-text',
+  'pending_actions': 'hourglass-split', 'task': 'check-circle', 'home': 'house',
+  'elderly': 'person', 'accessible': 'person', 'volunteer_activism': 'heart-pulse',
+  'flood': 'exclamation-triangle', 'security': 'shield-check', 'schedule': 'clock', 'share_location': 'geo-alt-fill', 'assignment_turned_in': 'check-circle', 'qr_code_2': 'qr-code',
+  'person_check': 'person-check', 'map': 'map', 'warning': 'exclamation-triangle', 'hourglass_top': 'hourglass-split',
+  'insights': 'graph-up', 'summarize': 'file-earmark-bar-graph',
+  'person_badge': 'person-badge', 'admin_panel_settings': 'shield-lock'
+} -%}
+{%- set resolved_name = icon_map.get(name|replace('bi-', ''), name|replace('bi-', '')) -%}
+{%- set resolved_name = resolved_name if resolved_name in svg_symbols else 'question-circle' -%}
+<svg class="icon-svg {{ class }}" width="{{ size }}" height="{{ size }}" style="width: {{ size }}; height: {{ size }};" viewBox="0 0 16 16" fill="currentColor" aria-hidden="{{ 'false' if label else 'true' }}"{% if label %} role="img" aria-label="{{ label }}"{% else %} focusable="false"{% endif %}><use href="{{ url_for('static', filename='img/icons.svg') }}#{{ resolved_name }}"></use></svg>
+{%- endmacro %}

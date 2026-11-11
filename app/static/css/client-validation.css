@@ -1,0 +1,6 @@
+/* Validation feedback only; existing layout and field styling are preserved. */
+body :is(input,select,textarea).is-invalid { border-color:var(--civic-error,#d93025) !important; }
+body :is(input,select,textarea).is-invalid:focus { outline:2px solid var(--civic-error,#d93025); outline-offset:2px; }
+.civic-field-error { display:block; margin:6px 0 0; color:var(--civic-error,#d93025) !important; font-size:12px; line-height:1.5; font-weight:400; }
+.civic-field-error[hidden],.civic-field-error.hidden { display:none !important; }
+html[data-civic-theme="dark"] .civic-field-error { color:#ffb4ab !important; }

@@ -1,0 +1,52 @@
+{% extends 'admin/_admin_base.html' %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Official document settings{% endblock %}
+{% block extra_head %}{{ super() }}<link rel="stylesheet" href="{{ url_for('static',filename='css/document-settings.css') }}?v=20261106-1">{% endblock %}
+{% block content %}{% from 'macros/pagination.html' import render_pagination with context %}
+<div class="document-settings">
+  <header class="ds-heading">
+    <div><p class="civic-overline">DOCUMENT ADMINISTRATION</p><h1>Templates &amp; authorized signatories</h1><p>Manage the issuing signatory and original A4 template used for each document.</p></div>
+    <a class="civic-btn-outline" href="{{ url_for('admin.fees') }}">{{ icon('payments',size='17px') }} Fee schedules</a>
+  </header>
+  <section class="civic-panel" aria-labelledby="ds-signatory-title">
+    <div class="ds-section-heading"><span class="ds-icon" aria-hidden="true">{{ icon('person_check',size='22px') }}</span><div><h2 id="ds-signatory-title">Authorize issuing signatory</h2><p>Enter the approved name, designation and dates of authorization.</p></div></div>
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="signatory">
+      <div class="ds-form-grid">
+        <div><label for="ds-full-name">Full approved name <span aria-hidden="true">*</span></label><input id="ds-full-name" class="civic-input" required maxlength="200" name="full_name" placeholder="e.g. Hon. Juan Dela Cruz"></div>
+        <div><label for="ds-designation">Designation <span aria-hidden="true">*</span></label><input id="ds-designation" class="civic-input" required maxlength="100" name="designation" placeholder="e.g. Punong Barangay"></div>
+        <div><label for="ds-effective-from">Effective from <span aria-hidden="true">*</span></label><input id="ds-effective-from" class="civic-input" required type="date" name="effective_from" value="{{ today }}"></div>
+        <div><label for="ds-effective-until">Effective until <span class="ds-optional">(optional)</span></label><input id="ds-effective-until" class="civic-input" type="date" name="effective_until"></div>
+      </div>
+      <div class="ds-form-footer"><p>Names identify the authorized handwritten signatory. No digital signature or dry seal is applied.</p><button type="submit" class="civic-btn">Save authorized signatory</button></div>
+    </form>
+  </section>
+  <section aria-labelledby="ds-authorized-title">
+    <div class="ds-list-heading"><h2 id="ds-authorized-title">Authorized signatories</h2><span class="ds-count">{{ signatory_pagination.total }} {{ 'record' if signatory_pagination.total == 1 else 'records' }}</span></div>
+    <div class="ds-signatories">
+      {% for s in signatories %}
+      <article class="ds-signatory-row">
+        <div class="ds-person"><span class="ds-person-icon" aria-hidden="true">{{ icon('person_check',size='20px') }}</span><div><h3>{{ s.full_name }}</h3><p>{{ s.designation }}</p><small>Effective {{ s.effective_from.strftime('%b %d, %Y') }}{% if s.effective_until %} – {{ s.effective_until.strftime('%b %d, %Y') }}{% else %} · No end date{% endif %}</small></div></div>
+        <div class="ds-row-actions"><span class="ds-status {{ 'is-active' if s.status=='active' else '' }}">{{ s.status|title }}</span>{% if s.status=='active' %}<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="archive"><input type="hidden" name="signatory_id" value="{{ s.id }}"><button type="submit" class="civic-btn-outline">Deactivate</button></form>{% endif %}</div>
+      </article>
+      {% else %}<p class="ds-empty">No authorized signatories yet. Add the approved issuing signatory above.</p>{% endfor %}
+    </div>
+    {{ render_pagination(signatory_pagination,"signatories_page","ds-authorized-title","Signatories") }}
+  </section>
+  <section aria-labelledby="ds-mappings-title">
+    <div class="ds-list-heading"><div><h2 id="ds-mappings-title">Document template mappings</h2><p>Choose a template and save each document’s settings individually.</p></div><span class="ds-count">{{ type_pagination.total }} {{ 'document' if type_pagination.total == 1 else 'documents' }}</span></div>
+    <div class="ds-mapping-grid">
+      {% for t in types %}
+      <form method="post" class="ds-mapping-card">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="template"><input type="hidden" name="type_id" value="{{ t.id }}">
+        <div class="ds-mapping-heading"><span class="ds-icon" aria-hidden="true">{{ icon('description',size='20px') }}</span><h3>{{ t.name }}</h3></div>
+        <label for="ds-template-{{ t.id }}">Original A4 template</label>
+        <select id="ds-template-{{ t.id }}" name="template_code" class="civic-input">{% for code in codes %}<option value="{{ code }}" {{ 'selected' if t.template_code==code }}>{{ code }}</option>{% endfor %}</select>
+        <div class="ds-mapping-footer"><label class="ds-active-toggle" for="ds-active-{{ t.id }}"><input id="ds-active-{{ t.id }}" type="checkbox" name="active" {{ 'checked' if t.status=='active' }}>Active document</label><button type="submit" class="civic-btn-outline">Save mapping</button></div>
+      </form>
+      {% else %}<p class="ds-empty">No document types are configured yet.</p>{% endfor %}
+    </div>
+    {{ render_pagination(type_pagination,"types_page","ds-mappings-title","Document mappings") }}
+  </section>
+</div>
+{% endblock %}

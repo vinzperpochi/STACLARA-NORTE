@@ -1,0 +1,11 @@
+{% extends "official/_official_base.html" %}
+{% block active_nav %}official.reports{% endblock %}
+{% block title %}Official reports{% endblock %}
+{% block content %}
+<div class="page-head"><h1 class="text-headline-sm font-headline-sm text-on-surface">Reports</h1><p class="text-on-surface-muted">Preview operational reports. CSV/PDF export remains in the administrator report center.</p></div>
+<form method="get" class="civic-panel mb-4"><div class="row g-2"><div class="col-md-8"><label class="form-label" for="kind">Report</label><select class="civic-input" id="kind" name="kind">{% for value, label in catalog.items() %}<option value="{{ value }}" {% if kind == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div><div class="col-md-4 d-flex align-items-end"><button class="civic-btn w-100">Preview</button></div></div></form>
+{% if headers %}
+<div class="overflow-x-auto bg-surface-card rounded-xl border border-outline-border"><table class="civic-table"><thead><tr>{% for col in headers %}<th>{{ col }}</th>{% endfor %}</tr></thead><tbody>{% for row in rows %}<tr>{% for col in row %}<td>{{ col }}</td>{% endfor %}</tr>{% else %}<tr><td colspan="{{ headers|length }}" class="text-on-surface-muted">No rows.</td></tr>{% endfor %}</tbody></table></div>
+{% include "partials/_pagination.html" %}
+{% endif %}
+{% endblock %}

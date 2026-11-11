@@ -1,0 +1,41 @@
+<header class="relative w-full overflow-hidden text-white header-gradient" data-purpose="hero-header-band">
+  <div class="pointer-events-none absolute inset-0 opacity-15" style="background: repeating-linear-gradient(60deg, transparent, transparent 38px, rgb(123, 234, 79) 38px, rgb(123, 234, 79) 44px, transparent 44px, transparent 90px); mask-image: linear-gradient(rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.15) 35%, transparent 70%);"></div>
+  <div class="pointer-events-none absolute -top-16 -right-16 w-80 h-80 rounded-full blur-2xl" style="background: radial-gradient(circle, rgba(255, 211, 40, 0.16) 0%, rgba(255, 211, 40, 0) 70%);"></div>
+  <div class="pointer-events-none absolute -left-10 -bottom-10 w-44 h-44 rounded-full border-[6px] border-white/10 flex items-center justify-center opacity-40">
+    <div class="w-32 h-32 rounded-full border-[2px] border-dashed border-white/20 flex items-center justify-center">
+      <svg class="w-16 h-16 text-white/20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"></path>
+      </svg>
+    </div>
+  </div>
+  {% if show_home_nav %}
+  <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 pt-4 flex items-center justify-between gap-3">
+    <a href="{{ url_for('main.index') }}" class="inline-flex items-center gap-2 text-white no-underline">
+      <img src="{{ url_for('static', filename='img/barangay-seal.png') }}" alt="" class="h-9 w-9 rounded-full object-cover ring-2 ring-[#FFD328]/70 bg-white">
+      <span class="text-xs sm:text-sm font-semibold tracking-wide">Sta. Clara Norte</span>
+    </a>
+    <nav class="flex items-center gap-4 text-xs sm:text-sm font-semibold">
+      <button class="text-white/90 hover:text-white hover:underline bg-transparent border-0 cursor-pointer p-0" data-open-modal="privacy" type="button">Privacy</button>
+      {% if not current_user.is_authenticated %}
+      <a href="{{ url_for('auth.login') }}" class="inline-flex items-center px-3 py-1.5 rounded-[8px] bg-white text-[#12902B] hover:bg-[#E7F8E9] no-underline">Sign in</a>
+      {% endif %}
+    </nav>
+  </div>
+  {% endif %}
+  <div class="relative max-w-4xl mx-auto px-4 pt-8 {{ hero_bottom_class|default('pb-20 md:pt-12 md:pb-28') }} flex flex-col items-center text-center gap-3">
+    <div class="flex flex-col items-center text-center gap-2.5">
+      <div class="relative mb-3 flex items-center justify-center">
+        <div class="relative flex items-center justify-center">
+          <div class="absolute -inset-1.5 rounded-full bg-yellow-400/30 blur-sm"></div>
+          <div class="relative h-20 w-20 overflow-hidden rounded-full border-2 border-yellow-400/80 bg-white shadow-xl ring-2 ring-black/10">
+            <img alt="Official Seal of Barangay Sta. Clara Norte" class="h-full w-full object-cover" src="{{ url_for('static', filename='img/barangay-seal.png') }}">
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col items-center gap-1 mt-1">
+        <p class="text-[11px] sm:text-xs font-semibold tracking-wider text-white/90 uppercase">REPUBLIC OF THE PHILIPPINES • MUNICIPALITY OF PILA, LAGUNA</p>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight uppercase">PAMAHALAANG BARANGAY STA. CLARA NORTE</h1>
+      </div>
+    </div>
+  </div>
+</header>

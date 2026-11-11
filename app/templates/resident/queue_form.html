@@ -1,0 +1,37 @@
+{% extends "resident/_portal_base.html" %}
+{% block title %}New service request{% endblock %}
+{% block content %}
+<section class="bg-surface-card rounded-xl border border-outline-border civic-card-shadow max-w-3xl">
+  <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 border-b border-outline-border">
+    <h1 class="text-headline-sm font-headline-sm text-on-surface font-bold">New service request</h1>
+    <a class="text-label-md font-label-md text-primary font-bold no-underline hover:underline" href="{{ url_for('resident.queue_requests') }}">My requests</a>
+  </header>
+  <form method="post" class="p-5 space-y-4">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-label-md font-label-md text-on-surface mb-1.5" for="request_type">Request type</label>
+        <select required name="request_type" id="request_type" class="w-full rounded-xl border border-outline-variant px-4 py-2.5 text-body-md bg-white">
+          <option value="">Select type</option>
+          {% for code, label in request_types.items() %}
+          <option value="{{ code }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="block text-label-md font-label-md text-on-surface mb-1.5" for="description">Description / concern</label>
+        <input required name="description" id="description" class="w-full rounded-xl border border-outline-variant px-4 py-2.5 text-body-md bg-white" placeholder="Describe what you need">
+      </div>
+      <div>
+        <label class="block text-label-md font-label-md text-on-surface mb-1.5" for="appointment_date">Appointment date (optional)</label>
+        <input type="date" name="appointment_date" id="appointment_date" class="w-full rounded-xl border border-outline-variant px-4 py-2.5 text-body-md bg-white">
+      </div>
+      <div>
+        <label class="block text-label-md font-label-md text-on-surface mb-1.5" for="appointment_time">Appointment time (optional)</label>
+        <input type="time" name="appointment_time" id="appointment_time" class="w-full rounded-xl border border-outline-variant px-4 py-2.5 text-body-md bg-white">
+      </div>
+    </div>
+    <button class="civic-btn-gradient text-white font-semibold px-5 py-2.5 rounded-lg text-body-md cursor-pointer border-0" type="submit">Submit request</button>
+  </form>
+</section>
+{% endblock %}

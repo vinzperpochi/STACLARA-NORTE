@@ -1,0 +1,375 @@
+{% from 'components/icons.html' import icon %}
+<!-- OpenStreetMap Incident Location Component -->
+<div class="google-maps-incident-container osm-incident-container" data-field>
+  <label class="block text-[13px] font-bold text-ink mb-1.5">
+    Incident Location <span class="text-muted">(recommended)</span>
+  </label>
+  
+  <!-- Locate Me Button -->
+  <button type="button" id="locate-me-btn" class="w-full mb-2 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 text-sm font-medium transition-colors">
+    📍 Locate Me
+  </button>
+  
+  <!-- Map Container -->
+  <div id="incident-map" class="w-full h-[500px] rounded-xl border border-border-ui bg-gray-100 mb-3"></div>
+  
+  <!-- Location Info Display -->
+  <div id="location-info" class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3 hidden">
+    <div class="flex items-start gap-2">
+      {{ icon('geo-alt-fill', 'text-blue-600 mt-0.5') }}
+      <div class="flex-1">
+        <div class="font-medium text-blue-800">Selected Location:</div>
+        <div id="selected-address" class="text-sm text-blue-700"></div>
+        <div id="selected-coordinates" class="text-xs text-blue-600 mt-1"></div>
+      </div>
+      <button type="button" id="clear-location" aria-label="Clear selected location" class="text-blue-600 hover:text-blue-800">
+        {{ icon('x-circle', '') }}
+      </button>
+    </div>
+  </div>
+  
+  <!-- Hidden Inputs -->
+  <input type="hidden" id="incident_latitude" name="incident_latitude" value="{{ form.incident_latitude.data or '' }}">
+  <input type="hidden" id="incident_longitude" name="incident_longitude" value="{{ form.incident_longitude.data or '' }}">
+  <input type="hidden" id="incident_location" name="incident_location" value="{{ form.incident_location.data or '' }}">
+  
+  <!-- Manual Location Input (Fallback) -->
+  <div class="mt-3">
+    <label for="manual_location" class="block text-xs text-muted mb-1">Or type location manually:</label>
+    <input type="text" 
+           id="manual_location" 
+           class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-border-ui bg-white text-ink text-[14px]"
+           placeholder="E.g., Corner of Main St. and First Ave, Sta. Clara Norte"
+           value="{{ form.incident_location.data or '' }}">
+    <p class="text-xs text-muted mt-1">Click on the map to set precise location, or type address manually</p>
+  </div>
+  
+  <!-- Error Display -->
+  <p class="hidden text-[12px] text-danger mt-1 font-medium" id="location-error" data-field-error>
+    Please select an incident location on the map or enter it manually.
+  </p>
+</div>
+
+<!-- Load Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+      crossorigin="">
+
+<!-- Load Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+        crossorigin=""></script>
+
+<style>
+.google-maps-incident-container .gm-style-iw,
+.osm-incident-container .leaflet-popup-content-wrapper {
+  padding: 12px;
+  border-radius: 8px;
+}
+
+#incident-map {
+  transition: border-color 0.2s ease;
+}
+
+#incident-map:hover {
+  border-color: #12902B;
+}
+
+#incident-map.has-location {
+  border-color: #12902B;
+  border-width: 2px;
+}
+
+.google-maps-fallback,
+.osm-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+  color: #6c757d;
+  background-color: #f8f9fa;
+}
+
+.google-maps-fallback .icon-svg,
+.osm-fallback .icon-svg {
+  font-size: 48px;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+</style>
+
+<script>
+// OpenStreetMap Incident Location Handler with Nominatim Geocoding
+let _geocodeController = null;
+
+class OpenStreetMapIncidentHandler {
+  constructor() {
+    this.map = null;
+    this.marker = null;
+    this.defaultCenter = [14.2353, 121.3669]; // Sta. Clara Norte, Pila, Laguna
+    this.defaultZoom = 16;
+    this.lastGeocodeTime = 0;
+    this.geocodeMinInterval = 1000; // Nominatim rate limit
+    this.geocodeDebounceTimeout = null;
+    
+    this.init();
+  }
+  
+  init() {
+    // Wire manual input and clear button
+    this.setupManualInput();
+    const clearButton = document.getElementById('clear-location');
+    if (clearButton) clearButton.addEventListener('click', () => this.clearLocation());
+
+    // Check if Leaflet is available
+    if (typeof L === 'undefined') {
+      console.warn('Leaflet is unavailable; using manual location input.');
+      const mapContainer = document.getElementById('incident-map');
+      if (mapContainer) {
+        mapContainer.innerHTML = '<div class="osm-fallback">{{ icon('geo-alt-fill', '') }}<span>Map view is unavailable. You can still type the location below.</span></div>';
+      }
+      return;
+    }
+    
+    // Initialize map with OSM tiles
+    this.map = L.map('incident-map').setView(this.defaultCenter, this.defaultZoom);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19
+    }).addTo(this.map);
+    
+    // Map click handler
+    this.map.on('click', (e) => {
+      this.setLocation(e.latlng.lat, e.latlng.lng);
+    });
+    
+    // Load existing location if any
+    this.loadExistingLocation();
+    
+    // Setup Locate Me button
+    const locateBtn = document.getElementById('locate-me-btn');
+    if (locateBtn) {
+      locateBtn.addEventListener('click', () => this.geolocateUser());
+    }
+    
+    // Try initial geolocation if no existing location
+    if (!this.hasExistingLocation()) {
+      this.geolocateUser();
+    }
+  }
+  
+  geolocateUser() {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
+    }
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        this.map.setView([lat, lng], 16);
+        // Don't auto-place marker, let user click
+      },
+      (error) => {
+        console.log('Geolocation error:', error.message);
+        alert('Unable to get your location. Please click on the map or type the address manually.');
+      }
+    );
+  }
+  
+  setLocation(lat, lng, address = null) {
+    // Remove existing marker
+    if (this.marker) {
+      this.map.removeLayer(this.marker);
+    }
+    
+    // Add new draggable marker
+    this.marker = L.marker([lat, lng], { draggable: true }).addTo(this.map);
+    
+    // Handle marker drag
+    this.marker.on('dragend', (e) => {
+      const pos = e.target.getLatLng();
+      this.updateLocation(pos.lat, pos.lng);
+    });
+    
+    // Update form fields and UI
+    this.updateLocation(lat, lng, address);
+    
+    // Center map on location
+    this.map.panTo([lat, lng]);
+    if (this.map.getZoom() < 16) {
+      this.map.setZoom(16);
+    }
+  }
+  
+  updateLocation(lat, lng, address = null) {
+    // Update hidden form fields
+    document.getElementById('incident_latitude').value = lat.toFixed(6);
+    document.getElementById('incident_longitude').value = lng.toFixed(6);
+    
+    // Update coordinates display
+    document.getElementById('selected-coordinates').textContent = 
+      `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+    
+    // If no address provided, reverse geocode
+    if (!address) {
+      this.reverseGeocode(lat, lng);
+    } else {
+      this.updateLocationDisplay(address);
+    }
+    
+    // Show location info
+    document.getElementById('location-info').classList.remove('hidden');
+    document.getElementById('incident-map').classList.add('has-location');
+    
+    // Hide error
+    document.getElementById('location-error').classList.add('hidden');
+    
+    // Update manual input
+    if (address) {
+      document.getElementById('manual_location').value = address;
+      document.getElementById('incident_location').value = address;
+    }
+  }
+  
+  async reverseGeocode(lat, lng) {
+    // Cancel any pending geocode request
+    if (_geocodeController) { _geocodeController.abort(); }
+    _geocodeController = new AbortController();
+    
+    // Rate limit guard
+    const now = Date.now();
+    if (now - this.lastGeocodeTime < this.geocodeMinInterval) {
+      await new Promise(resolve => setTimeout(resolve, this.geocodeMinInterval - (now - this.lastGeocodeTime)));
+    }
+    
+    try {
+      const response = await fetch(
+        `/api/geocode/reverse?lat=${lat}&lon=${lng}`,
+        {
+          signal: _geocodeController.signal
+        }
+      );
+      this.lastGeocodeTime = Date.now();
+      
+      if (response.ok) {
+        const data = await response.json();
+        const address = data.display_name || `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+        this.updateLocationDisplay(address);
+        document.getElementById('manual_location').value = address;
+        document.getElementById('incident_location').value = address;
+      } else {
+        this.updateLocationDisplay(`Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+        document.getElementById('incident_location').value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      }
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+      console.error('Reverse geocode error:', error);
+      this.updateLocationDisplay(`Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+      document.getElementById('incident_location').value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+    }
+  }
+  
+  updateLocationDisplay(address) {
+    document.getElementById('selected-address').textContent = address;
+  }
+  
+  clearLocation() {
+    // Remove marker
+    if (this.marker) {
+      this.map.removeLayer(this.marker);
+      this.marker = null;
+    }
+    
+    // Clear form fields
+    document.getElementById('incident_latitude').value = '';
+    document.getElementById('incident_longitude').value = '';
+    document.getElementById('incident_location').value = '';
+    document.getElementById('manual_location').value = '';
+    
+    // Hide location info
+    document.getElementById('location-info').classList.add('hidden');
+    document.getElementById('incident-map').classList.remove('has-location');
+  }
+  
+  loadExistingLocation() {
+    const lat = document.getElementById('incident_latitude').value;
+    const lng = document.getElementById('incident_longitude').value;
+    const location = document.getElementById('incident_location').value;
+    
+    if (lat && lng) {
+      this.setLocation(parseFloat(lat), parseFloat(lng), location);
+    }
+  }
+  
+  hasExistingLocation() {
+    const lat = document.getElementById('incident_latitude').value;
+    const lng = document.getElementById('incident_longitude').value;
+    return lat && lng;
+  }
+  
+  setupManualInput() {
+    const manualInput = document.getElementById('manual_location');
+    
+    manualInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim();
+      
+      // Update hidden field immediately
+      document.getElementById('incident_location').value = query;
+      
+      // Debounced geocoding search
+      clearTimeout(this.geocodeDebounceTimeout);
+      if (query.length > 3 && this.map) {
+        this.geocodeDebounceTimeout = setTimeout(() => {
+          this.forwardGeocode(query);
+        }, 600);
+      }
+    });
+  }
+  
+  async forwardGeocode(query) {
+    // Cancel any pending geocode request
+    if (_geocodeController) { _geocodeController.abort(); }
+    _geocodeController = new AbortController();
+    
+    // Rate limit guard
+    const now = Date.now();
+    if (now - this.lastGeocodeTime < this.geocodeMinInterval) {
+      return; // Skip if too soon
+    }
+    
+    try {
+      const response = await fetch(
+        `/api/geocode/search?q=${encodeURIComponent(query)}&countrycodes=ph&limit=1`,
+        {
+          signal: _geocodeController.signal
+        }
+      );
+      this.lastGeocodeTime = Date.now();
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length > 0) {
+          const result = data[0];
+          this.setLocation(parseFloat(result.lat), parseFloat(result.lon), result.display_name);
+        }
+      }
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+      console.error('Forward geocode error:', error);
+    }
+  }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  if (document.getElementById('incident-map')) {
+    new OpenStreetMapIncidentHandler();
+  }
+});
+</script>

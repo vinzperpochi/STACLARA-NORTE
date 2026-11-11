@@ -1,0 +1,189 @@
+{% extends "admin/_admin_base.html" %}
+{% block title %}Incident Location Map{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0">Incident Location Map</h1>
+            <p class="text-muted mb-0">Geographic view of all reported incidents with GPS coordinates</p>
+        </div>
+        <div class="d-flex gap-2">
+            <span class="badge bg-secondary fs-6">{{ total_cases }} incidents mapped</span>
+            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Map Container -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    {% include 'components/openstreetmap_cases_view.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-exclamation-circle fa-2x me-3"></i>
+                        <div>
+                            <h5 class="card-title mb-0">Open Cases</h5>
+                            <h3 class="mb-0" id="open-count">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-search fa-2x me-3"></i>
+                        <div>
+                            <h5 class="card-title mb-0">Investigating</h5>
+                            <h3 class="mb-0" id="investigating-count">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle fa-2x me-3"></i>
+                        <div>
+                            <h5 class="card-title mb-0">Resolved</h5>
+                            <h3 class="mb-0" id="resolved-count">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-ban fa-2x me-3"></i>
+                        <div>
+                            <h5 class="card-title mb-0">Dismissed</h5>
+                            <h3 class="mb-0" id="dismissed-count">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Incident Management</h6>
+                            <div class="d-grid gap-2">
+                                <a href="{{ url_for('admin.reports') }}" class="btn btn-outline-primary">
+                                    <i class="fas fa-chart-bar"></i> Generate Reports
+                                </a>
+                                <a href="{{ url_for('admin.analytics') }}" class="btn btn-outline-info">
+                                    <i class="fas fa-analytics"></i> View Analytics
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Data Export</h6>
+                            <div class="d-grid gap-2">
+                                <button id="export-csv" class="btn btn-outline-success">
+                                    <i class="fas fa-file-csv"></i> Export as CSV
+                                </button>
+                                <button id="export-pdf" class="btn btn-outline-danger">
+                                    <i class="fas fa-file-pdf"></i> Export Map as PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cases = {{ cases_data|tojson|safe }};
+    
+    // Update statistics cards
+    const statusCounts = {
+        'OPEN': 0,
+        'INVESTIGATING': 0,
+        'RESOLVED': 0,
+        'DISMISSED': 0
+    };
+    
+    cases.forEach(caseData => {
+        if (statusCounts.hasOwnProperty(caseData.status)) {
+            statusCounts[caseData.status]++;
+        }
+    });
+    
+    document.getElementById('open-count').textContent = statusCounts.OPEN;
+    document.getElementById('investigating-count').textContent = statusCounts.INVESTIGATING;
+    document.getElementById('resolved-count').textContent = statusCounts.RESOLVED;
+    document.getElementById('dismissed-count').textContent = statusCounts.DISMISSED;
+    
+    // Export functionality
+    document.getElementById('export-csv').addEventListener('click', function() {
+        // Create CSV content
+        let csvContent = "Case Number,Category,Status,Incident Date,Location,Latitude,Longitude,Complainant,Respondent\n";
+        
+        cases.forEach(caseData => {
+            const row = [
+                caseData.case_number,
+                caseData.category,
+                caseData.status,
+                caseData.incident_date || '',
+                caseData.incident_location || '',
+                caseData.incident_latitude,
+                caseData.incident_longitude,
+                caseData.complainant,
+                caseData.respondent_name
+            ].map(field => `"${field}"`).join(',');
+            
+            csvContent += row + "\n";
+        });
+        
+        // Download CSV
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `incident_locations_${new Date().toISOString().slice(0,10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    });
+    
+    document.getElementById('export-pdf').addEventListener('click', function() {
+        window.print();
+    });
+});
+</script>
+{% endblock %}

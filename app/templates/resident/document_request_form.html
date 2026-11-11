@@ -1,0 +1,52 @@
+{% extends "resident/_portal_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Request a document{% endblock %}
+{% block content %}
+<div class="civic-document-intake">
+  <section class="civic-hero mb-4">
+    <p class="civic-overline">DOCUMENT SERVICES</p>
+    <h1>Request a barangay document</h1>
+    <p class="mb-0">Choose your document and submit your request using your registered resident information.</p>
+  </section>
+  <form method="post" class="row g-4" data-document-intake>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="request_stage" value="initial">
+    <div class="col-lg-7">
+      <section class="card h-100">
+        <div class="card-body">
+          <div class="civic-section-heading mb-4"><div><p class="civic-overline">YOUR APPLICATION</p><h2>Select your document</h2></div><span class="civic-service-icon" aria-hidden="true">{{ icon('description', '', size='24px') }}</span></div>
+          <label class="form-label" for="choose-document">Document type <span class="text-error">*</span></label>
+          <select required class="form-select" id="choose-document" name="document_type_id" aria-describedby="document-selection-help">
+            {% if not document_types %}<option value="">No documents available</option>{% endif %}
+            {% for item in document_types %}<option value="{{ item.id }}" {% if selected and selected.id==item.id %}selected{% endif %} data-document-fee="{% if item.fee_confirmed %}₱{{ '%.2f'|format(item.request_fee) }}{% else %}To be confirmed by the barangay{% endif %}">{{ item.name }}</option>{% endfor %}
+          </select>
+          <p class="small text-muted mt-2" id="document-selection-help">The barangay will review your request and confirm the requirements for this document.</p>
+          {% for error in form.document_type_id.errors %}<p class="text-error" role="alert">{{ error }}</p>{% endfor %}
+          <div class="mt-4">
+            <label class="form-label" for="document-purpose">Purpose of document</label>
+            <textarea class="form-control" id="document-purpose" name="description" rows="3" maxlength="500" aria-describedby="document-purpose-help" placeholder="Example: Employment, school enrollment, or business permit application">{{ form.description.data or '' }}</textarea>
+            <p class="small text-muted mt-2" id="document-purpose-help">This purpose will appear on your printed document. Maximum 500 characters.</p>
+            {% for error in form.description.errors %}<p class="text-error" role="alert">{{ error }}</p>{% endfor %}
+          </div>
+          <div class="civic-document-fee mt-4"><span>{{ icon('receipt_long', '', size='20px') }} <strong>Document fee</strong></span><span data-document-fee aria-live="polite">{% if selected and selected.fee_confirmed %}₱{{ '%.2f'|format(selected.request_fee) }}{% else %}To be confirmed by the barangay{% endif %}</span></div>
+          <div class="civic-note mt-4"><strong>What happens next?</strong><p class="mb-0 mt-2">After submission, upload the requirements shown in your request. If more information is needed, the barangay will send instructions before approving your document.</p></div>
+          <div class="civic-document-submit mt-4"><button class="btn btn-success" type="submit" {% if not document_types %}disabled{% endif %}>{{ icon('send', '', size='18px') }} Submit request</button><a class="btn btn-outline-secondary" href="{{ url_for('resident.documents') }}">Back to documents</a></div>
+        </div>
+      </section>
+    </div>
+    <div class="col-lg-5">
+      <section class="card">
+        <div class="card-body">
+          <p class="civic-overline">Registered information</p><h2 class="h5">Your resident record</h2>
+          <p class="small text-muted">Automatically retrieved from your account.</p>
+          <dl class="civic-document-resident mb-0">
+            {% for key,label in [('full_name','Full name'),('birth_date','Date of birth'),('sex','Sex'),('civil_status','Civil status'),('complete_address','Address'),('contact_number','Contact number'),('email','Email')] %}<div><dt>{{ label }}</dt><dd>{{ resident_info[key] or 'Not recorded' }}</dd></div>{% endfor %}
+          </dl>
+          <a class="small d-inline-flex align-items-center gap-2 mt-4" href="{{ url_for('resident.correction_requests') }}">{{ icon('edit', '', size='16px') }} Request a record correction</a>
+        </div>
+      </section>
+    </div>
+  </form>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static',filename='js/document-request.js') }}?v=3"></script>{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'attendance/_base.html' %}
+{% from 'attendance/_controls.html' import duty_days %}
+{% from 'attendance/_lists.html' import toolbar,pager with context %}
+{% block title %}Personnel & RFID registration{% endblock %}
+{% block extra_head %}{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/rfid-registration.css') }}?v=20261106-2">
+<style>
+#rfidScanDialog [hidden],#rfidOtherRole[hidden],#rfidAccountPicker[hidden]{display:none!important}
+#rfidReactivation[hidden]{display:none!important}.rfid-reactivation-note{padding:16px;border:1px solid #dab56b;border-radius:12px;background:#fff7e6;color:#694711}.rfid-reactivation-note p{font-size:13px;line-height:1.5;margin:7px 0 12px}.rfid-reactivation-note label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}.rfid-reactivation-note input[type=checkbox]{appearance:auto!important;position:static!important;opacity:1!important;width:20px!important;height:20px!important;flex-shrink:0;accent-color:var(--civic-primary)}
+#rfidSavedAssignment[hidden]{display:none!important}.rfid-saved-notice{padding:18px;border:1px solid var(--civic-primary);border-radius:14px;background:var(--civic-mint);color:var(--civic-emerald)}.rfid-saved-notice p{font-size:13px;line-height:1.5;margin:8px 0}
+.rfid-account-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.rfid-account-choices .rfid-account-option{display:flex;align-items:center;gap:12px;border:2px solid var(--civic-border);border-radius:14px;padding:18px;background:var(--civic-card);cursor:pointer;min-height:100px;transition:border-color .15s,background .15s,box-shadow .15s}.rfid-account-option:hover{border-color:var(--civic-primary);box-shadow:0 3px 12px #0001}.rfid-account-option.is-selected,.rfid-account-option:has(input:checked){border-color:var(--civic-primary);background:var(--civic-mint)}.rfid-account-option:focus-within{outline:3px solid var(--civic-primary);outline-offset:3px}.rfid-account-option input[type=radio]{appearance:auto!important;position:static!important;opacity:1!important;width:20px!important;height:20px!important;margin:0;accent-color:var(--civic-primary);flex-shrink:0;cursor:pointer}.rfid-account-copy{flex:1}.rfid-account-copy strong{display:block;font-size:14px}.rfid-account-copy small{display:block;font-size:12px;line-height:1.5;color:var(--civic-muted);margin-top:4px}.rfid-choice-mark{display:none;color:var(--civic-primary);font-size:20px;font-weight:800}.rfid-account-option.is-selected .rfid-choice-mark,.rfid-account-option:has(input:checked) .rfid-choice-mark{display:block}.rfid-card-attached{padding:12px 14px;border:1px solid var(--civic-primary);border-radius:12px;background:var(--civic-mint);color:var(--civic-emerald)!important;font-weight:650}@media(max-width:600px){.rfid-account-choices{grid-template-columns:1fr}}
+</style>{% endblock %}
+{% block content %}
+{% set selected_account_mode = request.form.get('account_mode', 'existing' if registered and registered.user_id else 'none') %}
+{% set selected_user_id = request.form.get('user_id', registered.user_id|string if registered and registered.user_id else '') %}
+<div class="ops-page ops-attendance">
+  <header class="ops-hero"><div><p class="civic-eyebrow">SUPER ADMIN · ATTENDANCE</p><h1>Personnel &amp; RFID registration</h1><p>Register the person, work schedule and scanned RFID card in one form.</p></div></header>
+  {% include 'attendance/_nav.html' %}
+  {% if registered %}<section class="rfid-saved-notice" role="status"><h2 class="h5">Saved RFID assignment</h2><p><strong>{{ registered.full_name }}</strong> · {{ registered.user.username if registered.user else 'No system account — personnel record' }}</p>{% set card=registered.cards|sort(attribute="id",reverse=true)|first %}<p>RFID ending <strong>{{ card.uid_suffix }}</strong> · {{ 'Active' if card.active else 'Revoked — retained in history' }} · saved to this record.</p><a class="civic-btn-outline" href="{{ url_for('attendance.personnel_detail',personnel_id=registered.id) }}">View saved record</a></section>{% endif %}
+
+  <section class="civic-panel ops-panel">
+    <h2>Register personnel &amp; RFID</h2>
+    <details id="personnel-registration"{% if not total_personnel or registration_error %} open{% endif %}><summary>Add personnel, schedule &amp; RFID card</summary><div class="ops-registration-body">
+    <p class="ops-muted">Complete the details and first work schedule, scan a card, then save everything together.</p>
+    <form method="post" enctype="multipart/form-data" class="ops-form" id="rfidRegistrationForm" data-start-url="{{ url_for('attendance.registration_start') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="register_card">
+      {% if registration_error %}<div class="ops-full alert alert-danger" role="alert"><strong>Registration was not saved.</strong><p class="mb-0">{{ registration_error }}</p></div>{% endif %}
+      <fieldset class="ops-full"><legend class="ops-field">Does this person have a system account?</legend><div class="rfid-account-choices">
+        <label class="rfid-account-option"><input type="radio" name="account_mode" value="existing" required {{ 'checked' if selected_account_mode=='existing' else '' }}><span class="rfid-account-copy"><strong>Has a system account</strong><small>Click to select and link an existing account.</small></span><span class="rfid-choice-mark" aria-hidden="true">✓</span></label>
+        <label class="rfid-account-option"><input type="radio" name="account_mode" value="none" required {{ 'checked' if selected_account_mode=='none' else '' }}><span class="rfid-account-copy"><strong>No system account</strong><small>Click to register barangay personnel without a login.</small></span><span class="rfid-choice-mark" aria-hidden="true">✓</span></label>
+      </div><p class="ops-muted mt-2 mb-0">Barangay personnel can register without a login account. Linking an account does not change its access permissions.</p></fieldset>
+      <label class="ops-full" id="rfidAccountPicker" {{ 'hidden' if selected_account_mode!='existing' else '' }}>Existing system account<select class="form-select" name="user_id" id="rfidUserAccount" data-searchable-select {{ 'required' if selected_account_mode=='existing' else 'disabled' }}><option value="">Select the person's account</option>{% for account in account_options %}<option value="{{ account.id }}" data-first-name="{{ account.first_name }}" data-last-name="{{ account.last_name }}" data-position="{{ account.position }}" data-email="{{ account.email }}" data-rfid-registered="{{ "yes" if account.rfid_registered else "no" }}" data-rfid-suffix="{{ account.rfid_suffix }}" data-rfid-active="{{ "yes" if account.rfid_active else "no" }}" data-personnel-id="{{ account.personnel_id or "" }}" data-personnel-active="{{ "yes" if account.personnel_active else "no" }}" data-personnel-name="{{ account.personnel_name }}" data-personnel-url="{{ url_for("attendance.personnel_detail",personnel_id=account.personnel_id) if account.personnel_id else "" }}" {{ 'selected' if selected_user_id==account.id|string else '' }}>{{ account.username }} · {{ account.email }}{% if account.rfid_registered %} · RFID already registered{% endif %}{% if not account.personnel_active %} · Inactive personnel{% endif %}{% if account.roles %} · {{ account.roles }}{% endif %}</option>{% endfor %}</select><small class="ops-muted">Only active official/staff and Super Admin accounts are listed. Resident accounts are excluded from RFID attendance.</small></label>
+      <section class="ops-full rfid-reactivation-note" id="rfidReactivation" data-mode="{{ selected_account_mode }}" data-personnel-id="{{ inactive_person.id if inactive_person else '' }}" data-personnel-name="{{ inactive_person.full_name if inactive_person else '' }}" data-personnel-url="{{ url_for('attendance.personnel_detail',personnel_id=inactive_person.id) if inactive_person else '' }}" {{ 'hidden' if not inactive_person else '' }}>
+        <strong>Existing personnel record is inactive</strong><p><span id="rfidReactivationName">{{ inactive_person.full_name if inactive_person else '' }}</span> has a saved personnel record that was deactivated. Confirm below to reactivate that same record and register this card.</p>
+        <input type="hidden" name="reactivate_personnel_id" id="rfidReactivationId" value="{{ inactive_person.id if inactive_person else '' }}">
+        <label><input type="checkbox" name="reactivate_personnel" value="yes" id="rfidReactivateCheck" {{ 'checked' if inactive_person and request.form.get('reactivate_personnel')=='yes' and request.form.get('reactivate_personnel_id')==inactive_person.id|string else '' }} {{ 'required' if inactive_person else 'disabled' }}><span>Reactivate this personnel record when saving this RFID card.</span></label>
+        <a id="rfidReactivationLink" class="d-inline-block mt-2" href="{{ url_for('attendance.personnel_detail',personnel_id=inactive_person.id) if inactive_person else '#' }}">Review personnel record</a>
+      </section>
+      <section class="ops-full rfid-saved-notice" id="rfidSavedAssignment" hidden><strong>This account already has an RFID registration</strong><p id="rfidSavedAssignmentText"></p><p>Registration is allowed only once per person/account. Use Manage record to link an existing card or perform an explicit replacement.</p><a class="civic-btn-outline" id="rfidSavedAssignmentLink" href="#">Manage saved record</a></section>
+      <label>First name<input required class="form-control" name="first_name" maxlength="100" autocomplete="given-name" value="{{ request.form.get('first_name','') }}"></label>
+      <label>Last name<input required class="form-control" name="last_name" maxlength="99" autocomplete="family-name" value="{{ request.form.get('last_name','') }}"></label>
+      <label>Barangay role<select required name="barangay_role" class="form-select"><option value="">Select role</option>{% for role in barangay_roles %}<option {{ 'selected' if request.form.get('barangay_role')==role else '' }}>{{ role }}</option>{% endfor %}</select></label>
+      <label id="rfidOtherRole" hidden>Specify role<input class="form-control" name="other_role" maxlength="100" value="{{ request.form.get('other_role','') }}"></label>
+      <details class="ops-full"><summary>Additional personnel details (optional)</summary><div class="ops-form mt-3">
+        <label>Employee ID<input class="form-control" name="employee_id" maxlength="50" value="{{ request.form.get('employee_id','') }}" placeholder="Generated automatically if blank"></label>
+        <label>Department<input class="form-control" name="department" maxlength="100" value="{{ request.form.get('department','') }}"></label>
+        <label>Mobile number<input class="form-control" name="mobile" type="tel" maxlength="30" value="{{ request.form.get('mobile','') }}"></label>
+        <label>Email address<input class="form-control" name="email" type="email" maxlength="255" value="{{ request.form.get('email','') }}"></label>
+        <label>Employment status<input class="form-control" name="employment_status" maxlength="40" value="{{ request.form.get('employment_status','') }}"></label>
+        <label>Profile picture<input class="form-control" type="file" name="photo" accept="image/jpeg,image/png,image/webp"><small class="ops-muted">JPEG, PNG or WebP, up to 5 MB.</small></label>
+      </div></details>
+      <h3 class="ops-full mb-0">First work schedule</h3>
+      <p class="ops-muted ops-full mb-0">Time In opens 5 minutes before shift start. Applied when the person has no schedule yet. Existing schedules and attendance history are kept; changes can be made from Manage record.</p>
+      <label>Shift starts (Philippine time)<input required class="form-control" name="start_time" type="time" value="{{ request.form.get('start_time','08:00') }}"></label>
+      <label>Shift ends (Philippine time)<input required class="form-control" name="end_time" type="time" value="{{ request.form.get('end_time','17:00') }}"></label>
+      <label>Effective from<input required class="form-control" name="effective_from" type="date" value="{{ request.form.get('effective_from',today.isoformat()) }}"></label>
+      <label>Grace period (minutes)<input required class="form-control" name="grace_minutes" type="number" min="0" max="120" value="{{ request.form.get('grace_minutes','15') }}"></label>
+      {{ duty_days('registration-duty', request.form.getlist('weekdays') if request.method=='POST' else ['0','1','2','3','4']) }}
+      <h3 class="ops-full mb-0">RFID card or tag</h3>
+      <p class="ops-muted ops-full mb-0">Your single reader connects automatically. Open the scan window and tap the card to attach it here.</p>
+      <div class="ops-full"><input type="hidden" name="capture_id" id="rfidCaptureId" value="{{ retained_capture.id if retained_capture else '' }}"><button type="button" class="civic-btn-outline" id="rfidScanButton">{{ 'Scan a different card' if retained_capture else 'Scan RFID Card/Tag' }}</button><p class="ops-muted mt-2 mb-0 {{ 'rfid-card-attached' if retained_capture else '' }}" id="rfidAttachedStatus" role="status">{% if retained_capture %}✓ Card confirmed · ending {{ retained_capture.suffix }}. Fix the form and save while this capture is still valid.{% else %}No card scanned yet.{% endif %}</p></div>
+      <button class="civic-btn ops-full" id="rfidSaveButton" {{ 'disabled' if not retained_capture else '' }}>Save personnel, schedule &amp; RFID</button>
+    </form></div></details>
+  </section>
+
+  <section class="civic-panel ops-panel ops-list-section" id="personnel-directory">
+    <h2>Personnel &amp; RFID directory</h2><p class="ops-muted">{{ total_personnel }} personnel · {{ active_cards }} active cards overall. Open a record to manage card history and schedules.</p>
+    <form method="get" action="#personnel-directory" class="ops-filter">
+      <input type="hidden" name="per_page" value="{{ pagination.per_page }}">
+      <label class="ops-field">Name or employee ID<input class="form-control" name="q" value="{{ request.args.get('q','') }}" placeholder="Search personnel"></label>
+      <label class="ops-field">Department<input class="form-control" name="department" value="{{ request.args.get('department','') }}" placeholder="All departments"></label>
+      <label class="ops-field">Personnel status<select class="form-select" name="active"><option value="">All statuses</option><option value="yes" {{ 'selected' if request.args.get('active')=='yes' }}>Active</option><option value="no" {{ 'selected' if request.args.get('active')=='no' }}>Inactive</option></select></label>
+      <button class="civic-btn">Apply filters</button><a class="civic-btn-outline" href="{{ url_for('attendance.devices',_anchor='personnel-directory') }}">Clear filters</a>
+    </form>
+    {{ toolbar(pagination,anchor='personnel-directory') }}
+    {% for person in people %}<article class="ops-contact" data-personnel-id="{{ person.id }}"><div><strong>{{ person.full_name }}</strong><p>{{ person.employee_id }} · {{ person.position }}{% if person.department %} · {{ person.department }}{% endif %} · {{ 'Active' if person.active else 'Inactive' }}</p><p class="ops-muted">System account: {{ person.user.username if person.user else "None — attendance only" }}</p>{% for card in person.cards if card.active %}<span class="ops-status">Active · UID ending {{ card.uid_suffix }}</span> {% else %}<p>No active RFID card.</p>{% endfor %}{% if not person.schedules %}<p>No work schedule assigned yet.</p>{% endif %}</div><a class="civic-btn-outline" href="{{ url_for('attendance.personnel_detail',personnel_id=person.id) }}">Manage record</a></article>{% else %}<p class="ops-empty">{% if total_personnel %}No personnel match these filters. Try another search or clear the filters.{% else %}No personnel records yet. Register the first person and RFID card above.{% endif %}</p>{% endfor %}
+    {{ pager(pagination,anchor='personnel-directory',label='Personnel directory') }}
+  </section>
+
+</div>
+<dialog id="rfidScanDialog" class="ops-attendance-dialog" aria-labelledby="rfidScanTitle" aria-describedby="rfidScanHint" data-stage="waiting" data-reader="connecting">
+  <div class="rfid-scan-header">
+    <p class="rfid-scan-eyebrow">Personnel registration</p>
+    <span class="rfid-reader-badge"><span aria-hidden="true"></span><span id="rfidReaderLabel">Connecting</span></span>
+  </div>
+  <ol class="rfid-scan-steps" aria-label="Card scanning progress">
+    <li id="rfidStepConnect" aria-current="step"><span class="rfid-step-number" aria-hidden="true">1</span>Connect</li>
+    <li id="rfidStepScan"><span class="rfid-step-number" aria-hidden="true">2</span>Scan card</li>
+    <li id="rfidStepConfirm"><span class="rfid-step-number" aria-hidden="true">3</span>Confirm</li>
+  </ol>
+  <div class="rfid-scan-visual" aria-hidden="true">
+    <svg class="rfid-scan-art" viewBox="0 0 260 164" fill="none" focusable="false">
+      <circle class="rfid-orbit rfid-orbit-outer" cx="130" cy="78" r="72" />
+      <circle class="rfid-orbit rfid-orbit-inner" cx="130" cy="78" r="55" />
+      <g class="rfid-card-art">
+        <rect class="rfid-card-shadow" x="62" y="35" width="136" height="87" rx="14" />
+        <rect class="rfid-card-face" x="62" y="29" width="136" height="87" rx="14" />
+        <path d="M149 29h35a14 14 0 0 1 14 14v33c-24-2-43-21-49-47Z" fill="white" opacity=".07" />
+        <rect x="79" y="48" width="26" height="22" rx="5" fill="#ffd328" />
+        <path d="M88 48v22m9-22v22M79 55h9m9 8h8" stroke="#92761c" stroke-width="1" />
+        <g class="rfid-contactless" stroke="white" stroke-width="2.4" stroke-linecap="round">
+          <path d="M170 47a19 19 0 0 1 0 25" /><path d="M164 51a13 13 0 0 1 0 17" /><path d="M158 55a7 7 0 0 1 0 9" />
+        </g>
+        <path d="M79 88h43m-43 8h27" stroke="white" stroke-width="3" stroke-linecap="round" opacity=".5" />
+        <text x="163" y="98" fill="white" font-family="inherit" font-size="11" font-weight="700" letter-spacing="1">SCN</text>
+      </g>
+      <rect class="rfid-reader-base" x="91" y="139" width="78" height="9" rx="4.5" />
+      <rect class="rfid-reader-light" x="115" y="139" width="30" height="3" rx="1.5" />
+    </svg>
+    <span class="rfid-scan-symbol" id="rfidScanSymbol"></span>
+  </div>
+  <h2 id="rfidScanTitle" tabindex="-1" autofocus>Scan RFID Card/Tag</h2>
+  <p class="rfid-scan-subtitle">One tap closer to completing registration.</p>
+  <div class="rfid-scan-status-box">
+    <span class="rfid-status-icon" aria-hidden="true">
+      <svg class="rfid-status-check" viewBox="0 0 24 24" fill="none"><path d="m6 12 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      <span class="rfid-status-alert">!</span>
+    </span>
+    <p id="rfidScanStatus" role="status" aria-live="polite" aria-atomic="true">Connecting to reader… Make sure the scanner is powered on and connected.</p>
+  </div>
+  <div class="rfid-scan-note">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 4.5 6v5c0 4.5 3.1 7.8 7.5 10 4.4-2.2 7.5-5.5 7.5-10V6L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /><path d="m8.5 12 2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    <p id="rfidScanHint">You’re in control. Confirm <strong>Use this card</strong> after scanning, then save the form to finish registration.</p>
+  </div>
+  <div class="ops-actions rfid-scan-actions">
+    <span class="rfid-scan-keyboard"><kbd>Esc</kbd> to cancel</span>
+    <button type="button" class="civic-btn-outline" id="rfidScanCancel">Cancel</button>
+    <button type="button" class="civic-btn-outline" id="rfidScanAgain" hidden>Scan again</button>
+    <button type="button" class="civic-btn" id="rfidScanDone" hidden>Use this card</button>
+  </div>
+</dialog>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static',filename='js/rfid-registration.js') }}?v=8"></script>{% endblock %}

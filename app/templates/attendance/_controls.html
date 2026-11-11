@@ -1,0 +1,20 @@
+{% macro duty_days(id, selected) -%}
+<fieldset class="ops-full ops-duty-days" data-duty-days aria-describedby="{{ id }}-hint">
+  <legend>Duty days <span class="ops-multi-badge">Select multiple</span></legend>
+  <p class="ops-muted" id="{{ id }}-hint">Select every day this person is on duty. You can choose more than one day; checked days are saved together.</p>
+  <div class="ops-duty-presets" aria-label="Quick duty day selections">
+    <button type="button" class="ops-choice-button" data-duty-preset="weekdays">Mon–Fri</button>
+    <button type="button" class="ops-choice-button" data-duty-preset="all">Select all 7 days</button>
+    <button type="button" class="ops-choice-button" data-duty-preset="clear">Clear selection</button>
+  </div>
+  <div class="ops-day-grid">
+    {% for day in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'] %}
+    <label class="ops-day-option" for="{{ id }}-{{ loop.index0 }}">
+      <input type="checkbox" id="{{ id }}-{{ loop.index0 }}" name="weekdays" value="{{ loop.index0 }}" {{ 'checked' if loop.index0|string in selected else '' }}>
+      <span class="ops-day-copy"><strong>{{ day }}</strong><small class="ops-day-on">On duty</small><small class="ops-day-off">Not selected</small></span>
+    </label>
+    {% endfor %}
+  </div>
+  <p class="ops-duty-summary" data-duty-summary role="status" aria-live="polite">{{ selected|length }} {{ 'day' if selected|length==1 else 'days' }} selected. Select at least one duty day.</p>
+</fieldset>
+{%- endmacro %}

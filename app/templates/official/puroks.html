@@ -1,0 +1,31 @@
+{% extends "official/_official_base.html" %}
+{% block active_nav %}official.purok_list{% endblock %}
+{% block title %}Puroks{% endblock %}
+{% block content %}
+<section class="civic-list-page civic-purok-page">
+  <header class="civic-list-heading">
+    <div>
+      <p class="civic-overline">Geographic directory</p>
+      <h1 class="text-headline-sm">Puroks</h1>
+      <p class="civic-list-description">View the official geographic records. Contact a system administrator to make changes.</p>
+    </div>
+    <span class="civic-record-count">{{ pagination.total }} record{{ '' if pagination.total == 1 else 's' }}</span>
+  </header>
+
+  <form method="get" class="civic-list-search" role="search">
+    <label for="purok-search">Search Puroks</label>
+    <div class="civic-list-search-controls">
+      <input class="civic-input" id="purok-search" name="q" value="{{ request.args.get('q','') }}" placeholder="Search by purok name" autocomplete="off">
+      <button class="civic-btn" type="submit">Search</button>
+      {% if request.args.get('q') %}<a class="civic-btn-outline" href="{{ url_for('official.purok_list') }}">Clear</a>{% endif %}
+    </div>
+  </form>
+
+  <div class="civic-panel civic-list-table-panel">
+    <div class="civic-table-scroll" tabindex="0">
+      <table class="civic-table"><thead><tr><th>Name</th><th>Description</th><th>Status</th></tr></thead><tbody>{% for item in puroks %}<tr><td><strong>{{ item.name }}</strong></td><td>{{ item.description or 'No description provided' }}</td><td><span class="civic-status civic-status-{{ item.status|lower }}">{{ item.status }}</span></td></tr>{% else %}<tr><td colspan="3" class="civic-table-empty">No Puroks match your search.</td></tr>{% endfor %}</tbody></table>
+    </div>
+  </div>
+</section>
+{% include "partials/_pagination.html" %}
+{% endblock %}

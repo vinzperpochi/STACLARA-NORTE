@@ -1,0 +1,113 @@
+{% extends "layouts/auth_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Official Civic Login &amp; Portal Authentication - Pamahalaang Barangay Sta. Clara Norte{% endblock %}
+{% block content %}
+<div class="w-full max-w-[620px] mx-auto flex flex-col gap-4">
+  <div class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-6 sm:p-8 flex flex-col gap-5 shadow-xl" style="box-shadow: 0 10px 25px -5px rgba(10, 92, 30, 0.1), 0 8px 10px -6px rgba(10, 92, 30, 0.06);">
+    <div class="pb-3 border-b border-gray-100 flex flex-col items-center justify-center text-center">
+      <p class="civic-overline">CIVIC SERVICES, WITH YOU AT THE CENTER</p>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-[#11291A] tracking-tight">Welcome to your barangay</h2>
+      <p class="text-xs sm:text-sm text-[#5F7265] mt-1">Sign in to manage your records, requests and barangay services.</p>
+    </div>
+    <div class="flex items-center justify-between pb-1 border-b border-[#E2EDE3]/70">
+      <div class="flex items-center gap-2.5">
+        <div class="w-[3px] h-5 bg-[#22B33A] rounded-full"></div>
+        <div>
+          <h3 class="text-[13px] font-semibold text-[#11291A] tracking-tight uppercase">Choose your account type</h3>
+          <p class="text-[11px] text-[#5F7265] mt-0.5">Use the account provided to you by the barangay.</p>
+        </div>
+      </div>
+      <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-[#E7F8E9] text-[#12902B] border border-[#22B33A]/25 shrink-0">SECURE SIGN-IN</span>
+    </div>
+    <div class="w-full bg-[#FAFDF9] rounded-[10px] p-1.5 flex gap-1.5 border-[1.5px] border-[#E2EDE3]" id="role-selector-tab" role="tablist" aria-label="Sign-in role">
+      <button class="flex-1 py-2 px-2.5 rounded-[8px] text-center transition-all bg-[#12902B] text-white shadow-xs flex items-center justify-center gap-1.5 text-xs font-semibold focus:outline-none cursor-pointer border-0" aria-controls="login-panel" data-role-tab="resident" id="tab-resident" role="tab" aria-selected="true" type="button">
+        <span class="truncate">Resident Citizen</span>
+      </button>
+      <button class="flex-1 py-2 px-2.5 rounded-[8px] text-center transition-all bg-white border border-[#E2EDE3] text-[#5F7265] hover:text-[#11291A] hover:border-[#22B33A]/40 flex items-center justify-center gap-1.5 text-xs font-semibold focus:outline-none cursor-pointer" aria-controls="login-panel" data-role-tab="staff" id="tab-official" role="tab" aria-selected="false" type="button">
+        <span class="truncate">Barangay Staff</span>
+      </button>
+      <button class="flex-1 py-2 px-2.5 rounded-[8px] text-center transition-all bg-white border border-[#E2EDE3] text-[#5F7265] hover:text-[#11291A] hover:border-[#22B33A]/40 flex items-center justify-center gap-1.5 text-xs font-semibold focus:outline-none cursor-pointer" aria-controls="login-panel" data-role-tab="captain" id="tab-admin" role="tab" aria-selected="false" type="button">
+        <span class="truncate">Punong Barangay</span>
+      </button>
+    </div>
+    <div class="relative flex items-center justify-center w-full my-0.5">
+      <div class="w-full h-px bg-[#E2EDE3]"></div>
+      <span class="absolute bg-white px-3 text-[#5F7265] text-[11px] font-semibold uppercase tracking-wider">Enter your credentials</span>
+    </div>
+    <form class="flex flex-col gap-4" method="post" data-login-form id="login-panel" role="tabpanel" aria-labelledby="tab-resident" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="role" id="login-role" value="resident">
+      <div class="flex flex-col gap-1.5" data-field>
+        <div class="flex items-center justify-between gap-3">
+          <label class="text-xs font-semibold text-[#11291A] flex items-center gap-0.5" for="identifier" id="identifier-label">
+            Resident ID or Email <span class="text-[#D93025]">*</span>
+          </label>
+          <span class="text-[11px] text-[#5F7265] text-right shrink-0" id="identifier-hint">e.g. SCN-2025-XXXX or juan@philsys.gov.ph</span>
+        </div>
+        <div class="relative flex items-center">
+          <input autocomplete="username" 
+                 class="civic-input w-full h-[42px] pl-3 pr-3 rounded-[8px] bg-[#FAFDF9] text-[#11291A] text-sm border-[1.5px] border-[#E2EDE3] placeholder:text-[#5F7265]/60 transition-all focus:bg-white validate-realtime{% if errors.get('identifier') %} border-[#D93025]{% endif %}" 
+                 id="identifier" 
+                 name="identifier" 
+                 placeholder="Enter Resident ID or Email" 
+                 type="text" 
+                 value="{{ identifier or '' }}"
+                 required
+                 minlength="3"
+                 maxlength="120"
+                 aria-describedby="identifier-hint"
+                 data-validation-message="Please enter a valid username or email address">
+        </div>
+        <p class="{% if not errors.get('identifier') %}hidden{% endif %} text-xs text-[#D93025] font-medium flex items-center gap-1 mt-0.5" data-field-error {% if errors.get('identifier') %}data-server-error{% endif %}>
+          {{ errors.get('identifier', 'Enter your username or email.') }}
+        </p>
+      </div>
+      <div class="flex flex-col gap-1.5" data-field>
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-semibold text-[#11291A] flex items-center gap-0.5" for="password">
+            Password <span class="text-[#D93025]">*</span>
+          </label>
+          <a class="text-xs text-[#12902B] font-semibold hover:underline" href="{{ url_for('auth.forgot_password') }}">Forgot password?</a>
+        </div>
+        <div class="relative flex items-center">
+          <input autocomplete="current-password" 
+                 class="civic-input w-full h-[42px] pl-3 pr-10 rounded-[8px] bg-[#FAFDF9] text-[#11291A] text-sm border-[1.5px] border-[#E2EDE3] placeholder:text-[#5F7265]/60 transition-all focus:bg-white{% if errors.get('password') %} border-[#D93025]{% endif %}" 
+                 id="password" 
+                 name="password" 
+                 placeholder="Enter your password" 
+                 type="password"
+                 required
+                 minlength="8"
+                 data-validation-message="Password must be at least 8 characters long">
+          <button aria-label="Toggle password visibility" class="absolute right-3 text-[#5F7265] hover:text-[#11291A] flex items-center cursor-pointer p-1 rounded transition-colors focus:outline-none bg-transparent border-0" data-toggle-password="#password" type="button">
+            {{ icon('eye', 'text-lg') }}
+          </button>
+        </div>
+        <p class="{% if not errors.get('password') %}hidden{% endif %} text-xs text-[#D93025] font-medium flex items-center gap-1 mt-0.5" data-field-error {% if errors.get('password') %}data-server-error{% endif %}>
+          {{ errors.get('password', 'Enter your password.') }}
+        </p>
+      </div>
+      <button class="btn-civic-primary w-full h-[42px] text-white font-semibold text-sm rounded-[8px] shadow-sm flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#12902B] border-0" data-login-submit type="submit">
+        <span data-login-submit-text>Sign in</span>
+      </button>
+      <div class="flex flex-col items-center justify-center text-center gap-1 pt-1 text-xs text-[#5F7265]">
+        <span>First time using Sta. Clara Norte e-Portal?</span>
+        <a class="text-[#12902B] font-semibold hover:underline inline-flex items-center gap-1" href="{{ url_for('auth.register') }}">
+          Register Resident Account
+        </a>
+      </div>
+    </form>
+  </div>
+  <div class="w-full bg-white rounded-[12px] p-4 flex items-start space-x-3 border-[1.5px] border-[#E2EDE3] shadow-xs">
+    <div class="flex-1">
+      <div class="flex items-center justify-between mb-1">
+        <strong class="text-xs font-bold text-[#11291A]">Government Data Privacy Guarantee:</strong>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-[#E7F8E9] text-[#12902B] border border-[#22B33A]/30">RA 10173</span>
+      </div>
+      <p class="text-[11px] text-[#5F7265] leading-relaxed">
+        This portal processes personal data under the Data Privacy Act of 2012 (RA 10173). Sign-in is limited to accounts issued by this barangay system. Unlawful access may be penalized under applicable Philippine law.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

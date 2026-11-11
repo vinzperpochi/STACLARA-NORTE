@@ -1,0 +1,167 @@
+{% extends "layouts/auth_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Official Citizen Portal{% endblock %}
+{% block ribbon %}
+  {% include "partials/auth/_ribbon_landing.html" %}
+{% endblock %}
+{% block hero %}
+  {% include "partials/auth/_hero_landing.html" %}
+{% endblock %}
+{% block main_class %}{% endblock %}
+{% block footer %}
+  {% include "partials/auth/_footer_landing.html" %}
+{% endblock %}
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 sm:px-6 -mt-12 sm:-mt-16 relative z-10 space-y-8 pb-16">
+  <section class="bg-white rounded-2xl border border-outline-border p-6 sm:p-8 civic-card-shadow text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">
+    <div class="space-y-3 max-w-2xl">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-medium text-xs tracking-wide border border-primary/10">
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse" aria-hidden="true"></span>
+        Official barangay service portal
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight">
+        Serbisyo ng barangay, online.
+      </h2>
+      <p class="text-sm sm:text-base text-on-surface-muted leading-relaxed">
+        Request documents, follow your queue, and keep household records current — for residents and officials of Sta. Clara Norte.
+      </p>
+    </div>
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto shrink-0">
+      <a class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-primary text-white font-semibold text-sm hover:bg-primary-dark transition shadow-sm hover:shadow" href="{{ url_for('auth.login') }}">GET STARTED</a>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-5" aria-label="Portal services">
+    <div class="bg-white rounded-xl border border-outline-border p-6 civic-card-shadow civic-card-hover transition duration-150 flex flex-col gap-3">
+      <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+        {{ icon('file-earmark-text', 'text-2xl') }}
+      </div>
+      <h3 class="font-bold text-lg text-on-surface">Digital documents</h3>
+      <p class="text-sm text-on-surface-muted leading-relaxed">
+        Apply for barangay documents and track each request until release.
+      </p>
+    </div>
+    <div class="bg-white rounded-xl border border-outline-border p-6 civic-card-shadow civic-card-hover transition duration-150 flex flex-col gap-3">
+      <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+        {{ icon('list-check', 'text-2xl') }}
+      </div>
+      <h3 class="font-bold text-lg text-on-surface">Queue &amp; services</h3>
+      <p class="text-sm text-on-surface-muted leading-relaxed">
+        Join the service queue and follow your status after you sign in.
+      </p>
+    </div>
+    <div class="bg-white rounded-xl border border-outline-border p-6 civic-card-shadow civic-card-hover transition duration-150 flex flex-col gap-3">
+      <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+        {{ icon('shield-check', 'text-2xl') }}
+      </div>
+      <h3 class="font-bold text-lg text-on-surface">Privacy</h3>
+      <p class="text-sm text-on-surface-muted leading-relaxed">
+        Your data is processed under the Data Privacy Act of 2012 (RA 10173).
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white rounded-2xl border border-outline-border p-6 sm:p-8 civic-card-shadow space-y-4" id="verify">
+    <div class="flex items-start gap-3">
+      <div class="w-10 h-10 rounded-lg bg-surface-container-low text-primary flex items-center justify-center shrink-0">
+        {{ icon('patch-check', 'text-xl') }}
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-on-surface">Verify document • Beripikahin ang dokumento</h3>
+        <p class="text-sm text-on-surface-muted mt-1">
+          Enter the document number from a printed copy or QR code. Personal data is not shown.
+        </p>
+      </div>
+    </div>
+    <div class="pt-2">
+      <form class="flex flex-col sm:flex-row gap-3 max-w-2xl" data-verify-form action="{{ url_for('main.verify') }}" method="get">
+        <label class="sr-only" for="landing-document-number">Document number</label>
+        <div class="relative flex-1">
+          {{ icon('hash', 'absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-muted text-xl pointer-events-none') }}
+          <input class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-primary text-sm font-mono placeholder:text-gray-400 bg-white" id="landing-document-number" name="doc" placeholder="e.g. BCN-20260920-AB12" required type="text" autocomplete="off">
+        </div>
+        <button class="inline-flex items-center justify-center px-6 py-2.5 rounded-xl bg-primary text-white font-semibold text-sm hover:bg-primary-dark transition shadow-sm shrink-0 cursor-pointer border-0" type="submit">
+          Verify
+        </button>
+      </form>
+      <div class="mt-3 flex items-center gap-2 text-xs text-on-surface-muted">
+        <span class="inline-flex items-center gap-1 text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+          {{ icon('info-circle', 'text-sm text-emerald-700') }}
+          Official digital seal verification is authenticated in real-time with the local registry.
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white rounded-2xl border border-outline-border p-6 sm:p-8 civic-card-shadow space-y-6">
+    <div class="flex items-center justify-between border-b border-outline-border pb-4">
+      <div>
+        <h3 class="text-xl font-bold text-on-surface">How to get a document</h3>
+        <p class="text-xs sm:text-sm text-on-surface-muted mt-0.5">Simple 3-step process to request and receive official certifications.</p>
+      </div>
+      {{ icon('question-circle', 'text-primary text-2xl') }}
+    </div>
+    <ol class="grid grid-cols-1 md:grid-cols-3 gap-6 relative list-none p-0 m-0">
+      <li class="flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-full border-2 border-yellow-500 bg-yellow-50 text-yellow-800 font-bold text-sm flex items-center justify-center shadow-sm shrink-0">1</span>
+          <h4 class="font-bold text-base text-on-surface">Sign in or register</h4>
+        </div>
+        <p class="text-sm text-on-surface-muted pl-11">
+          Use your barangay account, or create one if you are a first-time resident user.
+        </p>
+      </li>
+      <li class="flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-full border-2 border-primary bg-surface-container text-primary font-bold text-sm flex items-center justify-center shadow-sm shrink-0">2</span>
+          <h4 class="font-bold text-base text-on-surface">Submit a request</h4>
+        </div>
+        <p class="text-sm text-on-surface-muted pl-11">
+          Open Documents in your workspace and choose the certificate you need.
+        </p>
+      </li>
+      <li class="flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-full border-2 border-primary bg-surface-container text-primary font-bold text-sm flex items-center justify-center shadow-sm shrink-0">3</span>
+          <h4 class="font-bold text-base text-on-surface">Track until release</h4>
+        </div>
+        <p class="text-sm text-on-surface-muted pl-11">
+          Follow the status of your request. Released documents can be verified here.
+        </p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="bg-white rounded-2xl border border-outline-border p-6 sm:p-8 civic-card-shadow">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-outline-border">
+      <div class="flex items-start gap-3 md:pr-4 pt-2 md:pt-0">
+        {{ icon('clock', 'text-primary text-2xl shrink-0 mt-0.5') }}
+        <div>
+          <h4 class="font-semibold text-sm text-on-surface">Office Hours</h4>
+          <p class="text-sm text-on-surface-muted mt-1">Monday to Friday<br><span class="font-medium text-on-surface">8:00 AM - 5:00 PM</span></p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 md:px-6 pt-4 md:pt-0">
+        {{ icon('telephone', 'text-primary text-2xl shrink-0 mt-0.5') }}
+        <div>
+          <h4 class="font-semibold text-sm text-on-surface">Hotline &amp; Mobile</h4>
+          <p class="text-sm text-on-surface-muted mt-1">Verified office contacts are available in the signed-in hotline directory.<br>Emergency: <a href="tel:911">Call 911</a></p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 md:pl-6 pt-4 md:pt-0">
+        {{ icon('geo-alt', 'text-primary text-2xl shrink-0 mt-0.5') }}
+        <div>
+          <h4 class="font-semibold text-sm text-on-surface">Barangay Hall</h4>
+          <p class="text-sm text-on-surface-muted mt-1">J.P. Rizal St., Sta. Clara Norte<br>Pila, Laguna 4010</p>
+        </div>
+      </div>
+    </div>
+    <div class="mt-6 pt-4 border-t border-outline-border text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-on-surface-muted">
+      <p>Personal information is processed under RA 10173. Read the <a class="text-primary underline font-medium hover:text-primary-dark" href="{{ url_for('main.privacy_notice') }}">Privacy notice</a>.</p>
+      <span class="text-primary font-medium flex items-center gap-1">
+        {{ icon('patch-check', 'text-sm') }} LGU Official Government Service
+      </span>
+    </div>
+  </section>
+</div>
+{% endblock %}

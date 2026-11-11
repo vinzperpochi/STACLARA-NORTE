@@ -1,0 +1,6 @@
+{% from 'components/icons.html' import icon %}
+<aside class="dashboard-calendar civic-panel p-4" aria-label="Barangay calendar" data-calendar data-url="{{ url_for('workspace.calendar') }}">
+<div class="calendar-heading"><button type="button" class="civic-btn-outline" aria-label="Previous month" data-calendar-previous>{{ icon('chevron_left', '', size='18px') }}</button><h2 class="text-title-md" data-calendar-title>Calendar</h2><button type="button" class="civic-btn-outline" aria-label="Next month" data-calendar-next>{{ icon('chevron_right', '', size='18px') }}</button></div>
+<p data-calendar-today></p><button type="button" class="civic-btn-outline" data-calendar-reset>Today</button><p role="status" data-calendar-status>Loading calendar…</p>
+<div class="calendar-grid" data-calendar-grid></div><h3 class="text-title-md mt-4">Barangay events</h3><div data-calendar-events></div>
+</aside>

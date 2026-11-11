@@ -1,0 +1,87 @@
+{% from 'components/icons.html' import icon %}
+{% from "partials/_site_info.html" import v_hotline %}
+{%- set ep = request.endpoint or '' -%}
+{%- set resident_record = current_user.resident -%}
+{%- set household = resident_record.household if resident_record else none -%}
+{%- set member_count = household.residents|length if household else 0 -%}
+{%- set active_documents = (resident_record.requests | rejectattr('status', 'in', ['RELEASED', 'REJECTED']) | list | length) if resident_record else 0 -%}
+
+{% macro nav_link(endpoint, icon_name, label_en, label_fil, active, badge_html="") -%}
+<li>
+  <a class="resident-nav-link flex items-center justify-between gap-2 px-3 py-2 rounded-lg transition-colors no-underline {{ 'bg-primary text-white font-semibold shadow-sm' if active else 'text-on-surface-variant hover:bg-surface-container-low hover:text-primary' }}"
+     href="{{ url_for(endpoint) }}"{% if active %} aria-current="page"{% endif %}>
+    <span class="flex items-center space-x-3 min-w-0">
+      {{ icon(icon_name, '', size='20px') }}
+      <span class="resident-nav-copy text-left min-w-0">
+        <span class="resident-nav-title text-body-md leading-tight block {{ '' if active else 'font-medium' }}">{{ label_en }}</span>
+        <span class="resident-nav-subtitle text-[10px] block leading-tight {{ 'text-primary-container opacity-90' if active else 'text-on-surface-muted' }}">{{ label_fil }}</span>
+      </span>
+    </span>
+    {% if badge_html %}{{ badge_html }}{% elif active %}<span class="w-1.5 h-1.5 rounded-full bg-highlight-lime shrink-0" aria-hidden="true"></span>{% endif %}
+  </a>
+</li>
+{%- endmacro %}
+
+<div class="portal-sidebar-card bg-surface-card rounded-xl border border-outline-border civic-card-shadow p-4 md:sticky md:top-24 space-y-5">
+  <div class="resident-sidebar-heading flex items-center justify-between pb-3 border-b border-outline-border">
+    <div class="resident-sidebar-brand">
+      <span class="resident-sidebar-mark">{{ icon('shield-check', '', size='22px') }}</span>
+      <div><span class="text-[10px] uppercase font-bold tracking-wider text-primary">Resident Workspace</span>
+      <p class="text-xs text-on-surface-muted">e-Governance Center</p></div>
+    </div>
+    <button type="button" class="md:hidden p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low" data-portal-drawer-close aria-label="Isara ang menu">
+      {{ icon('x-lg', '') }}
+    </button>
+  </div>
+
+  <nav class="space-y-4" aria-label="Resident workspace">
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">1. Main</span>
+      <ul class="space-y-1">
+        {{ nav_link('resident.dashboard', 'dashboard', 'Dashboard', 'Pangunahing Silid', ep == 'resident.dashboard') }}
+        {{ nav_link('resident.queue_requests', 'hourglass_top', 'Queue Status', 'Katayuan sa Pila', ep.startswith('resident.queue')) }}
+      </ul>
+    </div>
+
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">2. Records</span>
+      <ul class="space-y-1">
+        {{ nav_link('workspace.profile', 'account_circle', 'My Profile', 'Aking Talaan', ep in ['resident.profile','resident.profile_details','workspace.profile','workspace.profile_details']) }}
+        {{ nav_link('resident.household', 'family_restroom', 'Household', 'Kasambahayan', ep == 'resident.household',
+           ('<span class="text-[11px] font-semibold resident-nav-badge text-primary px-1.5 py-0.5 rounded bg-surface-container shrink-0">' ~ member_count ~ '</span>')|safe if member_count else '') }}
+        {{ nav_link('resident.correction_requests', 'edit_note', 'Corrections', 'Pagwawasto ng Datos', ep == 'resident.correction_requests') }}
+      </ul>
+    </div>
+
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">3. Services</span>
+      <ul class="space-y-1">
+        {{ nav_link('resident.documents', 'description', 'Documents & Clearances', 'Dokumento at Sertipikasyon', ep.startswith('resident.document'),
+           ('<span class="text-[10px] resident-nav-badge bg-primary text-white px-1.5 py-0.5 rounded font-bold shrink-0">' ~ active_documents ~ '</span>')|safe if active_documents else '') }}
+      </ul>
+    </div>
+
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">4. Cases</span>
+      <ul class="space-y-1">
+        {{ nav_link('resident.blotter_cases', 'gavel', 'Complaints & Blotter', 'Reklamo, Insidente at Hotlines', ep.startswith('resident.blotter') or ep.startswith('incidents.')) }}
+      </ul>
+    </div>
+
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">5. Safety</span>
+      <ul class="space-y-1">
+        {{ nav_link('resident.emergency_alerts', 'fmd_bad', 'Emergency Alerts', 'BDRRMC Babala', ep == 'resident.emergency_alerts') }}
+      </ul>
+    </div>
+
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">6. Updates</span>
+      <ul class="space-y-1">
+        {{ nav_link('resident.notifications', 'campaign', 'Notifications', 'Mga Abiso at Balita', ep == 'resident.notifications',
+           ('<span class="text-[10px] font-bold resident-nav-badge resident-nav-unread bg-error text-white px-2 py-0.5 rounded-full shrink-0">' ~ unread_notifications ~ '</span>')|safe if unread_notifications else '') }}
+      </ul>
+    </div>
+  </nav>
+  {% include "partials/premium/_sidebar_footer.html" %}
+</div>

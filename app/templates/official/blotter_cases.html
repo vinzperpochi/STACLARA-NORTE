@@ -1,0 +1,37 @@
+{% extends "official/_official_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block active_nav %}official.blotter_list{% endblock %}
+{% block title %}Blotter Cases{% endblock %}
+{% block extra_head %}<link href="{{ url_for('static', filename='css/official-blotter.css') }}?v=emerald-20261010-final" rel="stylesheet">{% endblock %}
+{% block content %}
+<div class="official-blotter-page" data-blotter-live data-updates-url="{{ url_for('official.blotter_updates') }}" data-since-id="{{ latest_case_id }}" data-status="{{ request.args.get('status','') }}" data-category="{{ request.args.get('category','') }}">
+  <div class="blotter-page-head">
+    <div><p class="blotter-eyebrow">Lupon Tagapamayapa workspace</p><h1>Blotter cases</h1><p class="blotter-subtitle">Receive and manage resident complaints as they are filed.</p></div>
+    <div class="blotter-head-actions"><a class="civic-btn-outline" href="{{ url_for('incidents.workspace') }}">Complaints &amp; Blotter</a><span class="live-indicator" data-live-indicator><i></i><span data-live-label>Live monitoring</span></span><a class="civic-btn-outline" href="{{ url_for('official.blotter_statistics') }}">View statistics</a></div>
+  </div>
+
+  <div class="new-case-banner hidden" data-new-case-banner role="status">{{ icon('bell', '') }}<div><strong data-new-case-title>New complaint received</strong><span data-new-case-message>A new case has been filed by a resident.</span></div><button type="button" data-dismiss-new aria-label="Dismiss notification">{{ icon('x-lg', '') }}</button></div>
+
+  <div class="blotter-metrics"><div class="blotter-metric">{{ icon('folder2-open', '') }}<div><small>Total cases</small><strong data-total-cases>{{ stats.number_of_cases }}</strong></div></div><div class="blotter-metric">{{ icon('hourglass-split', '') }}<div><small>Open / active</small><strong>{{ stats.number_of_cases }}</strong></div></div><div class="blotter-metric">{{ icon('clock', '') }}<div><small>Avg. resolution</small><strong>{{ stats.average_resolution_days or '—' }}{% if stats.average_resolution_days %} days{% endif %}</strong></div></div></div>
+
+  <section class="blotter-table-card">
+    <div class="blotter-table-toolbar"><div><h2>Incoming complaints</h2><p data-last-sync>Waiting for new cases…</p></div><form class="blotter-filters" method="get"><select name="status" aria-label="Filter by status"><option value="">All statuses</option>{% for value in ['OPEN','UNDER_MEDIATION','HEARING_SCHEDULED','SETTLED','ENDORSED','CLOSED'] %}<option value="{{ value }}" {% if request.args.get('status','')|upper == value %}selected{% endif %}>{{ value.replace('_',' ').title() }}</option>{% endfor %}</select><select name="category" aria-label="Filter by category"><option value="">All categories</option>{% for value in stats.case_categories.keys()|sort %}<option value="{{ value }}" {% if request.args.get('category','') == value %}selected{% endif %}>{{ value }}</option>{% endfor %}</select><button class="civic-btn" type="submit">Filter</button>{% if request.args.get('status') or request.args.get('category') %}<a class="clear-filter" href="{{ url_for('official.blotter_list') }}">Clear</a>{% endif %}</form></div>
+    <div class="overflow-x-auto"><table class="civic-table blotter-live-table"><thead><tr><th>Case</th><th>Complainant</th><th>Category</th><th>Incident date</th><th>Status</th><th class="text-right">Action</th></tr></thead><tbody data-case-rows>{% for case in cases %}<tr data-case-id="{{ case.id }}"><td><strong class="case-number">{{ case.case_number }}</strong>{% if case.queue_position %}<span class="new-case-tag">Queue #{{ case.queue_position }}</span>{% endif %}</td><td>{{ case.complainant.full_name if case.complainant else 'Unknown complainant' }}</td><td>{{ case.category }}</td><td>{{ case.incident_date }}</td><td><span class="case-status case-status--{{ case.status|lower }}">{{ case.status.replace('_',' ').title() }}</span></td><td class="text-right"><a class="civic-btn-outline text-xs py-1" href="{{ url_for('official.blotter_detail', case_id=case.id) }}">Manage</a></td></tr>{% else %}<tr data-empty-row><td colspan="6" class="blotter-empty">No cases found.</td></tr>{% endfor %}</tbody></table></div>
+    {% include "partials/_pagination.html" %}
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+(() => {
+  const page = document.querySelector('[data-blotter-live]'); if (!page) return;
+  const rows = page.querySelector('[data-case-rows]'), banner = page.querySelector('[data-new-case-banner]'), sync = page.querySelector('[data-last-sync]'), indicator = page.querySelector('[data-live-indicator]'), label = page.querySelector('[data-live-label]');
+  let since = Number(page.dataset.sinceId || 0), timer, running = true;
+  const esc = value => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const statusClass = status => `case-status case-status--${String(status).toLowerCase()}`;
+  const addRow = item => { const empty = rows.querySelector('[data-empty-row]'); empty?.remove(); if (rows.querySelector(`[data-case-id="${item.id}"]`)) return; const tr = document.createElement('tr'); tr.dataset.caseId = item.id; tr.className = 'case-row-new'; tr.innerHTML = `<td><strong class="case-number">${esc(item.case_number)}</strong><span class="new-case-tag">New</span></td><td>${esc(item.complainant)}</td><td>${esc(item.category)}</td><td>${esc(item.incident_date)}</td><td><span class="${statusClass(item.status)}">${esc(item.status.replaceAll('_',' ').replace(/\b\w/g, c => c.toUpperCase()))}</span></td><td class="text-right"><a class="civic-btn-outline text-xs py-1" href="${esc(item.detail_url)}">Manage</a></td>`; rows.append(tr); setTimeout(() => tr.classList.remove('case-row-new'), 3500); };
+  const check = async () => { if (!running) return; try { const params = new URLSearchParams({since_id: String(since)}); if (page.dataset.status) params.set('status', page.dataset.status); if (page.dataset.category) params.set('category', page.dataset.category); const response = await fetch(`${page.dataset.updatesUrl}?${params}`, {headers:{Accept:'application/json'}, credentials:'same-origin', cache:'no-store'}); if (!response.ok) throw new Error(response.status); const data = await response.json(); (data.cases || []).forEach(addRow); if (data.latest_case_id > since) { since = data.latest_case_id; page.dataset.sinceId = since; if (data.cases?.length) { banner.classList.remove('hidden'); page.querySelector('[data-new-case-message]').textContent = `${data.cases.length} new complaint${data.cases.length > 1 ? 's have' : ' has'} been received.`; } } indicator?.classList.remove('live-error'); if (label) label.textContent = 'Live monitoring'; if (sync) sync.textContent = `Last checked ${new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}`; } catch (error) { indicator?.classList.add('live-error'); if (label) label.textContent = 'Reconnecting…'; } finally { timer = setTimeout(check, 5000); } };
+  page.querySelector('[data-dismiss-new]')?.addEventListener('click', () => banner.classList.add('hidden')); document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running && !timer) check(); }); check();
+})();
+</script>
+{% endblock %}

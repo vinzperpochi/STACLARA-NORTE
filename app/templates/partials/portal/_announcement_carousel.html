@@ -1,0 +1,37 @@
+{% from 'components/icons.html' import icon %}
+<section class="portal-ticker" aria-label="Opisyal na anunsyo">
+  <div class="portal-ticker-inner">
+    <span class="portal-ticker-label">{{ icon('megaphone', '') }} ANUNSYO</span>
+    <div class="portal-ticker-window">
+      {% if ticker_alert %}
+      <div class="portal-ticker-track">
+        <a class="portal-ticker-message" href="{{ url_for('resident.emergency_alerts') }}">
+          {{ icon('exclamation-triangle', '') }}
+          <strong>{{ ticker_alert.title }}</strong>
+          <span>{{ ticker_alert.message }}</span>
+          <span class="portal-ticker-link">Tingnan ang detalye <span aria-hidden="true">→</span></span>
+        </a>
+        <span class="portal-ticker-message" aria-hidden="true">
+          {{ icon('exclamation-triangle', '') }}
+          <strong>{{ ticker_alert.title }}</strong>
+          <span>{{ ticker_alert.message }}</span>
+        </span>
+      </div>
+      {% else %}
+      <div class="portal-ticker-track portal-ticker-track-static">
+        <a class="portal-ticker-message" href="{{ url_for('resident.notifications') }}">
+          {{ icon('megaphone', '') }}
+          <strong>Opisyal na anunsyo</strong>
+          <span>Tingnan ang mga abiso at update mula sa Barangay Sta. Clara Norte.</span>
+          <span class="portal-ticker-link">Mga abiso <span aria-hidden="true">→</span></span>
+        </a>
+        <span class="portal-ticker-message" aria-hidden="true">
+          {{ icon('megaphone', '') }}
+          <strong>Opisyal na anunsyo</strong>
+          <span>Tingnan ang mga abiso at update mula sa Barangay Sta. Clara Norte.</span>
+        </span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>

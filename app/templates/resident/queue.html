@@ -1,0 +1,73 @@
+{% extends "resident/_portal_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% from "partials/portal/_macros.html" import status_badge, dt, empty_state, soon_button %}
+{% block title %}Queue Status{% endblock %}
+{% block content %}
+{%- set active = requests|selectattr('status', 'in', ['PENDING', 'PROCESSING', 'READY', 'SCHEDULED'])|list -%}
+{%- set ticket = active[0] if active else (requests[0] if requests else none) -%}
+<section class="bg-surface-card rounded-xl border border-outline-border civic-card-shadow mb-5">
+  <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 border-b border-outline-border">
+    <div>
+      <h1 class="text-headline-sm font-headline-sm text-on-surface font-bold">Queue Status</h1>
+      <p class="text-body-sm text-on-surface-muted mt-0.5">Katayuan sa Pila · Sundan ang iyong ticket</p>
+    </div>
+    <a class="civic-btn-gradient text-white font-semibold px-4 py-2.5 rounded-lg text-body-md inline-flex items-center gap-1.5 no-underline shrink-0" href="{{ url_for('resident.queue_request_create') }}">
+      {{ icon('add', '', size='18px') }}New request
+    </a>
+  </header>
+  <div class="p-5 space-y-4">
+    {% if ticket %}
+    <div class="rounded-xl border border-outline-border bg-surface-container-low p-4">
+      <p class="text-label-md font-label-md text-on-surface-muted uppercase">Aktibong ticket</p>
+      <p class="text-headline-md font-headline-md font-extrabold font-mono text-on-surface mt-1 break-all">{{ ticket.queue_number }}</p>
+      <div class="flex flex-wrap items-center gap-2 mt-2">
+        {{ status_badge(ticket.status, dense=true) }}
+        <span class="text-body-sm text-on-surface-muted">{{ request_types.get(ticket.request_type, ticket.request_type) }}</span>
+      </div>
+      <p class="text-body-sm text-on-surface-variant mt-2">{{ ticket.description or '' }}</p>
+    </div>
+    {% else %}
+    {{ empty_state('hourglass_top', 'Wala kang aktibong pila', 'Sumali sa service queue para makakuha ng ticket.', url_for('resident.queue_request_create'), 'New request') }}
+    {% endif %}
+    <div class="flex flex-wrap items-center gap-2">
+
+
+      <a class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-outline-border text-label-md font-label-md text-primary no-underline hover:bg-surface-container-low" href="{{ url_for('resident.queue_requests') }}">
+        {{ icon('autorenew', '', size='18px') }}Refresh
+      </a>
+    </div>
+    <p class="text-[11px] text-on-surface-muted">Huling na-update: sariwa sa pag-reload ng pahina. Hindi live sync.</p>
+  </div>
+</section>
+
+<section class="bg-surface-card rounded-xl border border-outline-border civic-card-shadow overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left text-body-sm">
+      <thead class="bg-surface-container-low text-on-surface font-bold text-label-sm uppercase">
+        <tr>
+          <th class="p-3">Queue no.</th>
+          <th class="p-3">Type / description</th>
+          <th class="p-3">Appointment</th>
+          <th class="p-3">Assigned official</th>
+          <th class="p-3">Status</th>
+          <th class="p-3">Remarks</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-outline-border">
+        {% for item in requests %}
+        <tr class="hover:bg-surface-bg/80">
+          <td class="p-3"><strong class="font-mono">{{ item.queue_number }}</strong><br><span class="text-[11px] text-on-surface-muted">{{ dt(item.created_at, 'date') }}</span></td>
+          <td class="p-3">{{ request_types.get(item.request_type, item.request_type) }}<br><span class="text-[11px] text-on-surface-muted">{{ item.description }}</span></td>
+          <td class="p-3">{{ item.appointment_date or '—' }}{% if item.appointment_time %}<br>{{ item.appointment_time.strftime('%H:%M') }}{% endif %}</td>
+          <td class="p-3">{{ item.assigned_official.username if item.assigned_official else 'Not assigned' }}</td>
+          <td class="p-3">{{ status_badge(item.status, dense=true) }}</td>
+          <td class="p-3">{{ item.remarks or '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="p-6 text-on-surface-muted">No requests yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% include "partials/_pagination.html" %}{% endblock %}

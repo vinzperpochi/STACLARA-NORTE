@@ -1,0 +1,64 @@
+{% from 'components/icons.html' import icon %}
+{%- set official = current_user.official -%}
+{%- set display_name = official.full_name if official else current_user.username -%}
+{%- set parts = display_name.split() -%}
+{%- set initials = ((parts[0][:1] if parts else current_user.username[:1]) ~ (parts[-1][:1] if parts|length > 1 else ''))|upper -%}
+<nav class="bg-surface-container-lowest border-b border-outline-border sticky top-0 z-40 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3.5 min-w-0">
+      <button type="button" class="md:hidden p-2 -ml-1 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-lg" data-portal-drawer-open aria-label="Buksan ang menu" aria-controls="portal-sidebar" aria-expanded="false">
+        {{ icon('menu', '', size='24px') }}
+      </button>
+      <a class="flex items-center gap-3.5 min-w-0 no-underline" href="{{ url_for('official.dashboard') }}">
+        <span class="relative shrink-0 w-11 h-11 rounded-full p-0.5 bg-gradient-to-tr from-primary to-tertiary-fixed shadow-sm flex items-center justify-center">
+          <img alt="Official Seal of Barangay Sta. Clara Norte, Pila, Laguna" class="w-full h-full object-contain rounded-full bg-white" src="{{ url_for('static', filename='img/barangay-seal.png') }}" width="44" height="44">
+        </span>
+        <span class="flex flex-col min-w-0">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-primary">Barangay Sta. Clara Norte</span>
+          <span class="font-title-lg text-title-lg text-on-surface truncate">Officials &amp; Staff Workspace</span>
+        </span>
+      </a>
+    </div>
+
+    <form class="hidden lg:flex flex-1 max-w-lg mx-6" method="get" action="{{ url_for('official.resident_list') }}" role="search">
+      <label class="sr-only" for="desk-search">Search residents</label>
+      <div class="relative w-full">
+        {{ icon('search', 'absolute left-3 top-1/2 -translate-y-1/2 text-outline', size='18px') }}
+        <input class="civic-input w-full h-10 pl-9 pr-3" id="desk-search" name="q" placeholder="Search residents (name or email)" type="search" value="">
+      </div>
+    </form>
+
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      {% include 'partials/portal/_notifications.html' %}
+      <button type="button" class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary" title="Data Privacy Notice" data-portal-modal="privacy" aria-label="Data privacy">
+        {{ icon('privacy_tip', '', size='20px') }}
+      </button>
+      <button type="button" class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary" title="System Help Desk" data-portal-modal="help" aria-label="Help desk">
+        {{ icon('help', '', size='20px') }}
+      </button>
+      <span class="h-6 w-px bg-outline-border mx-1 hidden sm:block" aria-hidden="true"></span>
+      <div class="relative" data-portal-dropdown>
+        <button type="button" class="flex items-center gap-2.5 pl-2 py-1 pr-2 rounded-lg bg-surface-bg border border-outline-border hover:border-primary/40" data-portal-dropdown-trigger aria-expanded="false" aria-haspopup="true">
+          {% include "partials/premium/_avatar.html" %}
+          <span class="text-left hidden md:block leading-tight">
+            <span class="font-title-md text-[13px] text-on-surface font-semibold block">{{ display_name }}</span>
+            <span class="font-label-sm text-[10px] text-on-surface-muted block">{{ official.position if official else 'Barangay Official' }}</span>
+          </span>
+          {{ icon('expand_more', 'text-outline', size='16px') }}
+        </button>
+        <div class="hidden absolute right-0 mt-2 w-64 bg-surface-card rounded-xl border border-outline-border shadow-lg z-50 overflow-hidden" data-portal-dropdown-panel role="menu">
+          <div class="px-4 py-3 bg-surface-container-low border-b border-outline-border">
+            <p class="text-title-md font-title-md text-on-surface truncate">{{ display_name }}</p>
+            <p class="text-body-sm text-on-surface-muted truncate">{{ current_user.email }}</p>
+          </div>
+          <a class="flex items-center gap-2.5 px-4 py-2.5 text-body-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary no-underline" href="{{ url_for('auth.change_password') }}" role="menuitem">
+            {{ icon('password', '', size='20px') }}Palitan ang Password
+          </a>
+          <button type="button" class="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-body-md text-error hover:bg-error-container/40 border-t border-outline-border" data-portal-modal="signout" role="menuitem">
+            {{ icon('logout', '', size='20px') }}Mag-sign out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

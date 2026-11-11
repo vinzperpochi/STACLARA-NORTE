@@ -1,0 +1,130 @@
+{% extends "resident/_portal_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block title %}File a complaint{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/blotter-form.css') }}?v=emerald-20261010-final" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="blotter-page">
+  <div class="blotter-breadcrumb"><a href="{{ url_for('resident.blotter_cases') }}">Complaints &amp; Blotter</a><span aria-hidden="true">/</span><span>File a complaint</span></div>
+  <section class="blotter-form-shell">
+    <header class="blotter-form-hero">
+      <div class="blotter-hero-icon">{{ icon('gavel', '', size='1em') }}</div>
+      <div>
+        <p class="blotter-kicker">Lupon Tagapamayapa</p>
+        <h1>File a complaint</h1>
+        <p>Provide the incident details below. Your report will be recorded in the official barangay blotter for review.</p>
+      </div>
+      <div class="blotter-hero-badge">{{ icon('lock', '', size='1em') }} Official barangay review</div>
+    </header>
+
+    {% if form.errors %}
+    <div class="blotter-error-summary" role="alert">
+      <strong>Please review the highlighted fields.</strong>
+      <ul>{% for field_name, errors in form.errors.items() %}{% for error in errors %}<li>{{ error }}</li>{% endfor %}{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    <form method="post" id="blotter-form" class="blotter-form">
+      {{ form.hidden_tag() }}
+      <div class="blotter-form-intro"><span>Complaint details</span><p>Fields marked <b>*</b> are required.</p></div>
+      <div class="blotter-card-grid">
+      <section class="blotter-section-card" aria-labelledby="incident-heading">
+      <div class="blotter-section-heading"><span>01</span><div><h2 id="incident-heading">Incident details</h2><p>Tell us what happened and when it happened.</p></div></div>
+      <div class="blotter-grid">
+        <div class="blotter-field">
+          <label for="category">Complaint category <span>*</span></label>
+          <select id="category" name="category" required class="{{ 'has-error' if form.category.errors else '' }}">
+            {% for value, label in form.category.choices %}<option value="{{ value }}" {% if form.category.data == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+          </select>
+          {% for error in form.category.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+        <div class="blotter-field">
+          <label for="incident_date">Incident date <span>*</span></label>
+          <input id="incident_date" name="incident_date" type="date" max="{{ today.isoformat() if today is defined else '' }}" required value="{{ form.incident_date.data.strftime('%Y-%m-%d') if form.incident_date.data else '' }}" class="{{ 'has-error' if form.incident_date.errors else '' }}">
+          {% for error in form.incident_date.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+        <div class="blotter-field">
+          <label for="incident_datetime">Approximate time <span class="optional">Optional</span></label>
+          <input id="incident_datetime" name="incident_datetime" type="datetime-local" value="{{ form.incident_datetime.data.strftime('%Y-%m-%dT%H:%M') if form.incident_datetime.data else '' }}">
+        </div>
+        <div class="blotter-field">
+          <label for="purok_id">Purok / zone <span class="optional">Optional</span></label>
+          <select id="purok_id" name="purok_id"><option value="">Select purok or zone</option>{% for purok in puroks %}<option value="{{ purok.id }}" {% if form.purok_id.data == purok.id %}selected{% endif %}>{{ purok.name }}</option>{% endfor %}</select>
+        </div>
+      </div>
+
+      </section>
+      <section class="blotter-section-card" aria-labelledby="people-heading">
+      <div class="blotter-section-heading"><span>02</span><div><h2 id="people-heading">People involved</h2><p>Enter the respondent's information if known.</p></div></div>
+      <div class="blotter-grid">
+        <div class="blotter-field">
+          <label for="respondent_name">Respondent name <span>*</span></label>
+          <input id="respondent_name" name="respondent_name" required minlength="2" maxlength="200" placeholder="Respondent’s full name" value="{{ form.respondent_name.data or '' }}" class="{{ 'has-error' if form.respondent_name.errors else '' }}">
+          {% for error in form.respondent_name.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+        <div class="blotter-field">
+          <label for="respondent_contact">Respondent contact <span class="optional">Optional</span></label>
+          <input id="respondent_contact" name="respondent_contact" type="tel" placeholder="09XX XXX XXXX" value="{{ form.respondent_contact.data or '' }}" class="{{ 'has-error' if form.respondent_contact.errors else '' }}">
+          {% for error in form.respondent_contact.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+      </div>
+      <div class="blotter-field full-field">
+        <label for="respondent_notes">Additional notes about respondent <span class="optional">Optional</span></label>
+        <textarea id="respondent_notes" name="respondent_notes" maxlength="500" rows="3" placeholder="Any additional information that may help identify the respondent">{{ form.respondent_notes.data or '' }}</textarea>
+        <div class="character-count" data-count-for="respondent_notes">0 / 500</div>
+      </div>
+
+      </section>
+      <section class="blotter-section-card" aria-labelledby="location-heading">
+      <div class="blotter-section-heading"><span>03</span><div><h2 id="location-heading">Incident location</h2><p>Choose a point on the map or type the location manually. A location is recommended for faster review.</p></div></div>
+      {% include 'components/openstreetmap_incident.html' %}
+
+      </section>
+      <section class="blotter-section-card" aria-labelledby="narrative-heading">
+      <div class="blotter-section-heading"><span>04</span><div><h2 id="narrative-heading">What happened?</h2><p>Include facts, witnesses, and other relevant details. Do not include passwords or sensitive account information.</p></div></div>
+      <div class="blotter-field full-field">
+        <label for="narrative">Incident narrative <span>*</span></label>
+        <textarea id="narrative" name="narrative" required minlength="20" maxlength="2000" rows="10" placeholder="Describe what happened, when it happened, who was involved, and any relevant evidence or witnesses" class="{{ 'has-error' if form.narrative.errors else '' }}">{{ form.narrative.data or '' }}</textarea>
+        <div class="character-count" data-count-for="narrative">0 / 2000</div>
+        {% for error in form.narrative.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+      </div>
+
+      <div class="blotter-writing-hint"><strong>A clear report helps the review</strong><p>Describe the events in order. Include the people involved, witnesses, and any relevant evidence.</p></div>
+      </section>
+      </div>
+      <div class="blotter-submit-row">
+        <div class="blotter-submit-caption"><strong>Ready to submit?</strong><p>Check the details before sending your complaint.</p></div>
+        <a class="blotter-cancel" href="{{ url_for('resident.blotter_cases') }}">Cancel</a>
+        <button class="blotter-submit" id="blotter-submit" type="submit">{{ icon('send', '') }}<span>Submit complaint</span></button>
+      </div>
+      <p class="blotter-privacy-note">{{ icon('lock', '', size='1em') }} Your complaint is shared only with authorized barangay officials for case handling.</p>
+    </form>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const form = document.getElementById('blotter-form');
+  if (!form) return;
+  document.querySelectorAll('[data-count-for]').forEach(function (counter) {
+    const field = document.getElementById(counter.dataset.countFor);
+    if (!field) return;
+    const update = () => { counter.textContent = `${field.value.length} / ${field.maxLength}`; };
+    field.addEventListener('input', update); update();
+  });
+  form.addEventListener('submit', function (event) {
+    const locationInput = document.getElementById('manual_location');
+    const hiddenLocation = document.getElementById('incident_location');
+    if (locationInput && hiddenLocation && locationInput.value.trim()) hiddenLocation.value = locationInput.value.trim();
+    if (!form.checkValidity()) { event.preventDefault(); form.reportValidity(); return; }
+    const submit = document.getElementById('blotter-submit');
+    if (submit) { submit.disabled = true; submit.querySelector('span:last-child').textContent = 'Submitting…'; }
+  });
+})();
+</script>
+{% endblock %}

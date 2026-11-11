@@ -1,0 +1,347 @@
+[
+  {
+    "role": "admin",
+    "path": "/workspace/notifications",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/workspace/calendar",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/workspace/profile",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/workspace/profile-photo",
+    "status": 404
+  },
+  {
+    "role": "admin",
+    "path": "/admin/",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/dashboard-data",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/users",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/official-accounts",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/roles",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/permissions",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/puroks",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/document-types",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/fees",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/settings",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/audit-logs",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/analytics",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/blotter-map",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/analytics-data",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/reports",
+    "status": 200
+  },
+  {
+    "role": "admin",
+    "path": "/admin/reports/export",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/workspace/notifications",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/workspace/calendar",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/workspace/profile",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/workspace/profile-photo",
+    "status": 404
+  },
+  {
+    "role": "staff",
+    "path": "/official/",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/account-approvals",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/residents",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/households",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/residents/new",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/correction-requests",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/document-requests",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/blotter",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/blotter/updates",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/blotter/statistics",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/blotter-map",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/blotter-map/data",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/businesses",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/businesses/new",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/business-clearance-requests",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/welfare",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/welfare/new",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/queue",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/collections",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/reports",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/drrm",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/puroks",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/analytics",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/analytics-data",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/report-center",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/report-center/export",
+    "status": 200
+  },
+  {
+    "role": "staff",
+    "path": "/official/document-settings",
+    "status": 403
+  },
+  {
+    "role": "resident",
+    "path": "/workspace/notifications",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/workspace/calendar",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/workspace/profile",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/workspace/profile-photo",
+    "status": 404
+  },
+  {
+    "role": "resident",
+    "path": "/resident/",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/profile",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/household",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/profile-photo",
+    "status": 404
+  },
+  {
+    "role": "resident",
+    "path": "/resident/requests",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/correction-requests",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/documents",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/documents/new",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/notifications",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/queue",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/queue/new",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/emergency-alerts",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/blotter",
+    "status": 200
+  },
+  {
+    "role": "resident",
+    "path": "/resident/blotter/new",
+    "status": 200
+  }
+]

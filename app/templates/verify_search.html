@@ -1,0 +1,53 @@
+{% extends "layouts/auth_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Verify a Document · Barangay Sta. Clara Norte{% endblock %}
+{% block content %}
+<div class="w-full max-w-[520px] mx-auto">
+  <div class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-8 sm:p-10 shadow-xl">
+
+    <div class="flex flex-col items-center text-center mb-6">
+      <div class="w-16 h-16 rounded-full bg-[#E7F8E9] border-2 border-[#22B33A] flex items-center justify-center mb-3">
+        {{ icon('patch-check', 'text-[#12902B] text-3xl') }}
+      </div>
+      <p class="text-[11px] font-bold uppercase tracking-wider text-[#12902B]">Document verification</p>
+      <h1 class="text-2xl font-extrabold text-[#11291A] mt-1">Verify a document</h1>
+      <p class="text-sm text-[#5F7265] mt-1">
+        Enter the document number printed on the official barangay document to confirm its authenticity.
+      </p>
+    </div>
+
+    <form method="get" action="{{ url_for('main.verify') }}" class="space-y-4">
+      <div>
+        <label class="block text-sm font-semibold text-[#11291A] mb-1" for="doc">
+          Document number
+        </label>
+        <input
+          class="w-full rounded-[8px] border border-[#CBD5C0] bg-[#FAFDF9] px-4 py-2.5 text-sm text-[#11291A] placeholder-[#9BAD95] focus:outline-none focus:ring-2 focus:ring-[#12902B]/40 focus:border-[#12902B]"
+          id="doc"
+          name="doc"
+          type="text"
+          placeholder="e.g. DOC-20240915-A1B2C3D4"
+          autocomplete="off"
+          spellcheck="false"
+          required
+        >
+        <p class="text-[11px] text-[#9BAD95] mt-1">The document number is printed near the top of the issued document.</p>
+      </div>
+
+      <button
+        class="w-full h-[44px] rounded-[8px] bg-[#12902B] hover:bg-[#0A5C1E] text-white text-sm font-semibold transition-colors"
+        type="submit">
+        Verify document
+      </button>
+    </form>
+
+    <p class="text-center text-xs text-[#9BAD95] mt-6">
+      Only officially issued documents from Barangay Sta. Clara Norte can be verified here.
+    </p>
+
+  </div>
+  <div class="text-center mt-4">
+    <a class="text-sm font-semibold text-[#12902B] underline" href="{{ url_for('main.index') }}">← Back to home</a>
+  </div>
+</div>
+{% endblock %}

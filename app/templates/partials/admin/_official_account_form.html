@@ -1,0 +1,59 @@
+{% from 'components/icons.html' import icon %}
+<form method="post" action="{{ url_for('admin.official_accounts') }}" class="space-y-5" novalidate>
+  {{ form.hidden_tag() }}
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div>
+      <label class="block text-label-md font-bold text-on-surface mb-1.5" for="email">Email address <span class="oa-required-mark" aria-hidden="true">*</span></label>
+      {{ form.email(class_='civic-input w-full', required=true, placeholder='official@example.gov.ph') }}
+      <p class="text-xs text-on-surface-muted mt-1">Gagamitin sa official account records.</p>
+      {% for error in form.email.errors %}<small class="text-error block mt-1">{{ error }}</small>{% endfor %}
+    </div>
+    <div>
+      <label class="block text-label-md font-bold text-on-surface mb-1.5" for="full_name">Buong pangalan <span class="oa-required-mark" aria-hidden="true">*</span></label>
+      {{ form.full_name(class_='civic-input w-full', required=true, placeholder='Juan Dela Cruz') }}
+      {% for error in form.full_name.errors %}<small class="text-error block mt-1">{{ error }}</small>{% endfor %}
+    </div>
+    <div>
+      <label class="block text-label-md font-bold text-on-surface mb-1.5" for="position">Posisyon <span class="oa-required-mark" aria-hidden="true">*</span></label>
+      {{ form.position(class_='civic-input w-full', required=true, placeholder='Barangay Kagawad') }}
+      {% for error in form.position.errors %}<small class="text-error block mt-1">{{ error }}</small>{% endfor %}
+    </div>
+    <div>
+      <label class="block text-label-md font-bold text-on-surface mb-1.5" for="birth_date">Birthdate <span class="oa-required-mark" aria-hidden="true">*</span></label>
+      {{ form.birth_date(class_='civic-input w-full', required=true) }}
+      <p class="text-xs text-on-surface-muted mt-1">Para sa official profile.</p>
+      {% for error in form.birth_date.errors %}<small class="text-error block mt-1">{{ error }}</small>{% endfor %}
+    </div>
+    <div>
+      <label class="block text-label-md font-bold text-on-surface mb-1.5" for="term_start">Simula ng termino <span class="oa-required-mark" aria-hidden="true">*</span></label>
+      {{ form.term_start(class_='civic-input w-full', required=true) }}
+      {% for error in form.term_start.errors %}<small class="text-error block mt-1">{{ error }}</small>{% endfor %}
+    </div>
+    <div>
+      <label class="block text-label-md font-bold text-on-surface mb-1.5" for="term_end">Katapusan ng termino <span class="font-normal text-on-surface-muted">(optional)</span></label>
+      {{ form.term_end(class_='civic-input w-full') }}
+      {% for error in form.term_end.errors %}<small class="text-error block mt-1">{{ error }}</small>{% endfor %}
+    </div>
+    <div>
+      <label class="block text-label-md font-bold text-on-surface mb-1.5" for="contact_number">Contact number <span class="font-normal text-on-surface-muted">(optional)</span></label>
+      {{ form.contact_number(class_='civic-input w-full', type='tel', placeholder='09XXXXXXXXX') }}
+      {% for error in form.contact_number.errors %}<small class="text-error block mt-1">{{ error }}</small>{% endfor %}
+    </div>
+    <div class="md:col-span-2 xl:col-span-3">
+      <label class="block text-label-md font-bold text-on-surface mb-1.5" for="attendance_personnel_id">Attendance personnel record</label>
+      {{ form.attendance_personnel_id(class_='civic-input w-full', aria_describedby='official-attendance-help') }}
+      <p id="official-attendance-help" class="text-xs text-on-surface-muted mt-1">Kung may RFID o attendance history na ang opisyal, piliin ang existing record niya. Kung bago, awtomatikong gagawa ng linked personnel record; i-enroll ang RFID at schedule sa Personnel &amp; RFID.</p>
+      {% for error in form.attendance_personnel_id.errors %}<small class="text-error block mt-1">{{ error }}</small>{% endfor %}
+    </div>
+  </div>
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-outline-border bg-surface-container-low p-4">
+    <div class="flex items-start gap-2.5 text-sm text-on-surface-variant">
+      {{ icon('database', 'text-primary mt-0.5', size='1em') }}
+      <div><strong class="text-on-surface">Account credentials</strong><br>A random temporary password will be sent by email. The official must change it on first sign-in.</div>
+    </div>
+    <button class="civic-btn inline-flex items-center justify-center gap-2 shrink-0" type="submit">
+      {{ icon('person_add', 'text-base', size='1em') }}
+      Gumawa ng official account
+    </button>
+  </div>
+</form>

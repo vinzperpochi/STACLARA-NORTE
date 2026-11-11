@@ -1,0 +1,15 @@
+{% extends 'official/_official_base.html' %}
+{% from 'components/icons.html' import icon %}
+{% block active_nav %}official.resident_list{% endblock %}
+{% block title %}{{ 'Edit' if resident else 'Add' }} resident{% endblock %}
+{% block extra_head %}{{ super() }}<link rel="stylesheet" href="{{ url_for('static',filename='css/resident-form.css') }}?v=20261106-1"><script defer src="{{ url_for('static',filename='js/resident-detail.js') }}?v=20261106-2"></script><script defer src="{{ url_for('static',filename='js/resident-form.js') }}?v=20261106-1"></script>{% endblock %}
+{% block content %}
+<div class="resident-form-page">
+  <header class="rf-heading"><div><a class="rf-back" href="{{ url_for('official.resident_detail',resident_id=resident.id) if resident else url_for('official.resident_list') }}">{{ icon('chevron_left') }} {{ 'Resident profile' if resident else 'Resident registry' }}</a><h1>{{ 'Edit' if resident else 'Add' }} resident</h1><p>{{ resident.first_name ~ ' ' ~ resident.last_name ~ ' · ' if resident else '' }}Complete the resident information below. Fields marked * are required.</p></div></header>
+  <form method="post" enctype="multipart/form-data" data-unsaved-warning>
+    {{ form.hidden_tag() }}
+    {% include 'partials/_resident_form_sections.html' %}
+    <footer class="rf-footer"><p>Review the information before saving.</p><div><a class="civic-btn-outline" href="{{ url_for('official.resident_detail',resident_id=resident.id) if resident else url_for('official.resident_list') }}">Cancel</a><button class="civic-btn" type="submit">{{ icon('check') }} Save resident</button></div></footer>
+  </form>
+</div>
+{% endblock %}

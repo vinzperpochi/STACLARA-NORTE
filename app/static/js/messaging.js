@@ -1,0 +1,32 @@
+(() => {
+  const root = document.querySelector('[data-messaging-widget]');
+  if (!root) return;
+  const role = root.dataset.role;
+  const csrf = root.dataset.csrf;
+  const panel = root.querySelector('.msg-panel');
+  const messagesEl = root.querySelector('[data-msg-messages]');
+  const form = root.querySelector('[data-msg-form]');
+  const statusEl = root.querySelector('[data-msg-status]');
+  const list = root.querySelector('[data-msg-thread-list]');
+  const conversation = root.querySelector('[data-msg-conversation]');
+  const title = root.querySelector('[data-msg-thread-title]');
+  const unread = root.querySelector('[data-msg-unread]');
+  const quickActions = root.querySelector('[data-msg-quick-actions]');
+  let activeThread = null;
+  let timer = null;
+
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const time = (iso) => iso ? new Date(iso).toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}) : '';
+  const get = async (url) => { const r = await fetch(url, {headers:{Accept:'application/json'}, credentials:'same-origin'}); if (!r.ok) throw new Error('Unable to load messages'); return r.json(); };
+  const post = async (url, body, mode = '') => { const r = await fetch(url, {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded', Accept:'application/json'}, body:new URLSearchParams({body, mode, csrf_token:csrf}), credentials:'same-origin'}); const data = await r.json().catch(() => ({})); if (!r.ok) throw new Error(data.error || 'Unable to send'); return data; };
+  const renderMessages = (items) => { messagesEl.innerHTML = items.length ? items.map(m => `<div class="msg-bubble ${m.sender_name === 'You' ? 'mine' : ''} ${m.sender_type === 'BOT' ? 'bot' : ''}"><strong>${escapeHtml(m.sender_name)}</strong><br>${escapeHtml(m.body)}<small>${time(m.created_at)}</small></div>`).join('') : '<div class="msg-welcome"><strong>Kumusta! Ako ang Barangay Chatbot.</strong><p>Maaari kitang gabayan sa basic questions habang hinihintay ang official reply.</p></div>'; messagesEl.scrollTop = messagesEl.scrollHeight; };
+  const loadResident = async () => { const data = await get('/messaging/api/thread'); activeThread = data.thread.id; renderMessages(data.messages); };
+  const loadThread = async (id) => { const data = await get(`/messaging/api/inbox/${id}`); activeThread = id; title.textContent = data.thread.resident_name; conversation.classList.remove('hidden'); list.classList.add('hidden'); renderMessages(data.messages); };
+  const loadInbox = async () => { const data = await get('/messaging/api/inbox'); if (!list) return; unread.textContent = data.threads.reduce((n, t) => n + t.unread, 0); unread.classList.toggle('hidden', !Number(unread.textContent)); list.innerHTML = data.threads.length ? data.threads.map(t => `<button class="msg-thread" data-thread-id="${t.id}"><span class="msg-thread-head"><span class="msg-thread-name">${escapeHtml(t.resident_name)}</span>${t.unread ? `<span class="msg-thread-badge">${t.unread}</span>` : ''}</span><span class="msg-thread-preview">${escapeHtml(t.latest || 'No messages yet')}</span></button>`).join('') : '<p class="msg-empty">Wala pang resident messages.</p>'; list.querySelectorAll('[data-thread-id]').forEach(b => b.addEventListener('click', () => loadThread(b.dataset.threadId))); };
+  const load = async () => { try { role === 'resident' ? await loadResident() : (activeThread ? await loadThread(activeThread) : await loadInbox()); } catch (e) { if (statusEl) statusEl.textContent = e.message; } };
+  root.querySelectorAll('[data-msg-toggle]').forEach(btn => btn.addEventListener('click', () => { const opening = panel.classList.toggle('hidden') === false; btn.setAttribute('aria-expanded', opening); if (opening) { load(); clearInterval(timer); timer = setInterval(load, 15000); } else clearInterval(timer); }));
+  root.querySelector('[data-msg-back]')?.addEventListener('click', () => { activeThread = null; conversation.classList.add('hidden'); list.classList.remove('hidden'); loadInbox(); });
+  const sendMessage = async (value) => { if (!value) return; const input = form.querySelector('textarea'); form.querySelector('button').disabled = true; statusEl.textContent = ''; try { const endpoint = role === 'resident' ? '/messaging/api/thread/messages' : `/messaging/api/inbox/${activeThread}/messages`; await post(endpoint, value, role === 'resident' ? 'chatbot' : ''); input.value = ''; await load(); } catch (e) { statusEl.textContent = e.message; } finally { form.querySelector('button').disabled = false; } };
+  form?.addEventListener('submit', async (event) => { event.preventDefault(); await sendMessage(form.querySelector('textarea').value.trim()); });
+  quickActions?.querySelectorAll('[data-chatbot-question]').forEach(button => button.addEventListener('click', async () => { await sendMessage(button.dataset.chatbotQuestion); }));
+})();

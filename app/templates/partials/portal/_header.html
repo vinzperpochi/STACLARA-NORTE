@@ -1,0 +1,89 @@
+{% from 'components/icons.html' import icon %}
+<header class="portal-header bg-surface-container-lowest sticky top-0 z-40 border-b border-outline-border shadow-sm">
+  <div class="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex items-center justify-between h-16 gap-3">
+    <div class="flex items-center space-x-3.5 min-w-0">
+      <button type="button" class="md:hidden p-2 -ml-1 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-lg" data-portal-drawer-open aria-label="Buksan ang menu" aria-controls="portal-sidebar" aria-expanded="false">
+        {{ icon('menu', '', size='24px') }}
+      </button>
+      <a class="flex items-center space-x-3.5 min-w-0 no-underline" href="{{ url_for('resident.dashboard') }}">
+        <span class="relative shrink-0">
+          <span class="w-11 h-11 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 via-emerald-600 to-lime-400 shadow-sm flex items-center justify-center">
+            <img alt="Official Seal of Barangay Sta. Clara Norte, Pila, Laguna" class="w-full h-full object-contain rounded-full bg-white" src="{{ url_for('static', filename='img/barangay-seal.png') }}" width="44" height="44">
+          </span>
+          {% if current_user.resident and current_user.resident.is_verified %}
+          <span class="absolute -bottom-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-primary ring-2 ring-white" title="Verified resident record">
+            {{ icon('check', 'text-white font-bold', size='9px') }}
+          </span>
+          {% endif %}
+        </span>
+        <span class="flex flex-col min-w-0">
+          <span class="text-[10px] tracking-widest text-primary font-bold uppercase">Barangay Sta. Clara Norte</span>
+          <span class="text-title-lg font-title-lg font-extrabold text-primary-dark tracking-tight leading-tight truncate">Resident Citizen Portal</span>
+        </span>
+      </a>
+    </div>
+
+
+
+    <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+      <button type="button" class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-lg transition-colors" title="Data Privacy Information" data-portal-modal="privacy" aria-label="Data privacy information">
+        {{ icon('policy', '', size='20px') }}
+      </button>
+
+      {% include 'partials/portal/_notifications.html' %}
+
+      <span class="h-6 w-[1px] bg-outline-border mx-1 hidden sm:block" aria-hidden="true"></span>
+
+      <div class="relative" data-portal-dropdown>
+        <button type="button" class="flex items-center space-x-2.5 pl-1.5 py-1 pr-2 rounded-lg bg-surface-container-low/60 hover:bg-surface-container-low border border-outline-border transition-colors" data-portal-dropdown-trigger aria-expanded="false" aria-haspopup="true">
+          {% include "partials/premium/_avatar.html" %}
+          <span class="hidden sm:flex flex-col text-left">
+            <span class="flex items-center space-x-1">
+              <span class="text-label-md font-label-md text-on-surface font-bold">
+                {%- if current_user.resident -%}
+                  {{ current_user.resident.first_name[:1] }}. {{ current_user.resident.last_name }}
+                {%- else -%}
+                  {{ current_user.username }}
+                {%- endif -%}
+              </span>
+              {% if current_user.resident and current_user.resident.is_verified %}
+              {{ icon('verified', 'text-primary', size='14px') }}
+              {% endif %}
+            </span>
+            <span class="text-[10px] text-on-surface-muted leading-none">{{ 'Verified Resident' if current_user.resident and current_user.resident.is_verified else 'Resident' }}</span>
+          </span>
+          {{ icon('expand_more', 'text-outline', size='18px') }}
+        </button>
+
+        <div class="hidden absolute right-0 mt-2 w-64 bg-surface-card rounded-xl border border-outline-border shadow-lg z-50 overflow-hidden" data-portal-dropdown-panel role="menu">
+          <div class="px-4 py-3 bg-surface-container-low border-b border-outline-border">
+            <p class="text-title-md font-title-md text-on-surface truncate">
+              {% if current_user.resident %}{{ current_user.resident.first_name }} {{ current_user.resident.last_name }}{% else %}{{ current_user.username }}{% endif %}
+            </p>
+            <p class="text-body-sm text-on-surface-muted truncate">{{ current_user.email }}</p>
+          </div>
+          <a class="flex items-center gap-2.5 px-4 py-2.5 text-body-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary no-underline" href="{{ url_for('resident.profile') }}" role="menuitem">
+            {{ icon('contact_emergency', '', size='20px') }}Aking Talaan
+          </a>
+          <a class="flex items-center gap-2.5 px-4 py-2.5 text-body-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary no-underline" href="{{ url_for('resident.household') }}" role="menuitem">
+            {{ icon('family_restroom', '', size='20px') }}Kasambahayan
+          </a>
+          <a class="flex items-center gap-2.5 px-4 py-2.5 text-body-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary no-underline" href="{{ url_for('auth.change_password') }}" role="menuitem">
+            {{ icon('password', '', size='20px') }}Palitan ang Password
+          </a>
+          <button type="button" class="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-body-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary" data-portal-modal="privacy" role="menuitem">
+            {{ icon('shield_person', '', size='20px') }}Karapatan sa Data Privacy
+          </button>
+          {% if is_official or is_admin %}
+          <a class="flex items-center gap-2.5 px-4 py-2.5 text-body-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary no-underline border-t border-outline-border" href="{{ url_for('official.dashboard') if is_official else url_for('admin.dashboard') }}" role="menuitem">
+            {{ icon('swap_horiz', '', size='20px') }}Lumipat ng Workspace
+          </a>
+          {% endif %}
+          <button type="button" class="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-body-md text-error hover:bg-error-container/40 border-t border-outline-border" data-portal-modal="signout" role="menuitem">
+            {{ icon('logout', '', size='20px') }}Mag-sign out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

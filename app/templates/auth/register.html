@@ -1,0 +1,310 @@
+{% extends "layouts/auth_base.html" %}
+{% import "partials/_site_info.html" as site_info %}
+{% block title %}Resident Registration | Barangay Sta. Clara Norte{% endblock %}
+{% block hero %}
+  {% set wizard_status = "Step 1 of 3 — Identity" %}
+  {% include "partials/auth/_hero_wizard.html" %}
+{% endblock %}
+{% block main_class %}max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative -mt-16 z-20 pb-16 flex-1 w-full{% endblock %}
+{% block content %}
+{% macro profile_field(field, preview=False) %}
+<div data-field class="registration-field">
+  <label for="{{ field.id }}" class="block text-[13px] font-bold text-ink mb-1.5">{{ field.label.text }}{% if field.flags.required %} <span class="text-danger">*</span>{% endif %}</label>
+  {% set attrs = {'class': 'registration-input', 'aria_describedby': field.id ~ '-error', 'aria_invalid': 'true' if field.errors else 'false'} %}
+  {% if field.flags.required %}{% set attrs = dict(attrs, data_required='true') %}{% endif %}
+  {% if field.type == 'FileField' %}
+    {{ field(accept='image/jpeg,image/png,image/webp' if field.name == 'profile_photo' else 'image/jpeg,image/png', data_registration_upload='true', **attrs) }}
+    <p class="text-[12px] text-muted mt-1">{{ 'JPEG, PNG or WebP' if field.name == 'profile_photo' else 'JPEG or PNG only' }} · Up to 5 MB per image. Upload a clear scan/photo.</p>
+    <img hidden data-registration-preview="{{ field.id }}" alt="Selected {{ field.label.text }} preview" class="registration-image-preview">
+    {% if field.name == 'profile_photo' %}<button type="button" class="btn btn-outline-success btn-sm mt-2" data-registration-clear="{{ field.id }}">Remove selected photo</button>{% endif %}
+  {% else %}
+    {{ field(**attrs) }}
+  {% endif %}
+  <p id="{{ field.id }}-error" class="{% if not field.errors %}hidden{% endif %} text-[12px] text-danger mt-1 font-medium" data-field-error {% if field.errors %}data-server-error{% endif %}>{{ field.errors|join(' ') }}</p>
+</div>
+{% endmacro %}
+
+{% include "partials/_site_info.html" %}
+<div class="flex flex-col lg:flex-row gap-8 items-start" data-register-wizard>
+  <aside class="w-full lg:w-[28%] shrink-0 space-y-6">
+    <div class="rounded-2xl p-6 text-white shadow-md relative overflow-hidden" style="background: linear-gradient(165deg, #0A5C1E 0%, #107825 45%, #12902B 100%);">
+      <div class="relative z-10 space-y-4">
+        <div class="flex items-center gap-2.5 border-b border-white/20 pb-3">
+          <svg class="w-5 h-5 text-sun-yellow shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <h2 class="text-[15px] font-bold uppercase tracking-wide">Registry Guidelines</h2>
+        </div>
+        <p class="text-[13px] leading-relaxed text-white font-normal">
+          Enter your legal name and contact details. Admin o barangay official lamang ang maaaring mag-activate ng account pagkatapos suriin ang registration.
+        </p>
+        <div class="pt-2 border-t border-white/20 text-[12px] text-white flex items-center justify-between">
+          <span>Hotline Support</span>
+          <span class="font-bold text-sun-yellow">{{ hotline }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="bg-card-white border border-border-ui rounded-2xl p-5 shadow-sm space-y-3">
+      <div class="flex items-center gap-2 text-primary-dark">
+        <svg class="w-5 h-5 text-core-green shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+        </svg>
+        <h3 class="text-[13px] font-bold uppercase tracking-wider">Statutory Privacy</h3>
+      </div>
+      <p class="text-[13px] text-muted leading-relaxed">
+        Processed under the Data Privacy Act of 2012 (RA 10173). Records are used for barangay registry and civic documentation only.
+      </p>
+      <button type="button" class="text-[13px] font-semibold text-core-green hover:text-primary-dark underline bg-transparent border-0 p-0 cursor-pointer" data-open-modal="privacy">Read Privacy Notice</button>
+    </div>
+  </aside>
+
+  <section class="w-full lg:w-[72%] bg-card-white border border-border-ui rounded-2xl p-6 sm:p-10 shadow-sm">
+    <div class="mb-10 pb-8 border-b border-border-ui">
+      <h2 class="sr-only">Registration Progress</h2>
+      <ol class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4" aria-label="Registration steps">
+        <li class="flex items-center gap-3" data-stepper-item>
+          <div class="w-8 h-8 rounded-full bg-card-white border-2 border-sun-yellow ring-2 ring-sun-yellow/40 flex items-center justify-center font-bold text-[14px] text-primary-dark shadow-sm shrink-0" data-stepper-bubble>1</div>
+          <div class="min-w-0">
+            <span class="block text-[12px] font-bold uppercase tracking-wider text-primary-dark" data-stepper-kicker>Step 1</span>
+            <span class="block text-[13px] font-semibold text-ink truncate">Identity &amp; Profile</span>
+          </div>
+        </li>
+        <li class="flex items-center gap-3 text-muted" data-stepper-item>
+          <div class="w-8 h-8 rounded-full border-2 border-border-ui bg-page-bg flex items-center justify-center font-semibold text-[13px] shrink-0 text-muted" data-stepper-bubble>2</div>
+          <div class="min-w-0">
+            <span class="block text-[12px] font-bold uppercase tracking-wider" data-stepper-kicker>Step 2</span>
+            <span class="block text-[13px] font-medium truncate">Residency &amp; Domicile</span>
+          </div>
+        </li>
+        <li class="flex items-center gap-3 text-muted" data-stepper-item>
+          <div class="w-8 h-8 rounded-full border-2 border-border-ui bg-page-bg flex items-center justify-center font-semibold text-[13px] shrink-0 text-muted" data-stepper-bubble>3</div>
+          <div class="min-w-0">
+            <span class="block text-[12px] font-bold uppercase tracking-wider" data-stepper-kicker>Step 3</span>
+            <span class="block text-[13px] font-medium truncate">Email &amp; Consent</span>
+          </div>
+        </li>
+      </ol>
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-[12px] font-semibold text-primary-dark">
+          <span data-step-current>Step 1 of 3 — 33% complete</span>
+          <span data-step-next>Next: Residency &amp; Domicile</span>
+        </div>
+        <div class="w-full h-2 bg-border-ui rounded-full overflow-hidden" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">
+          <div class="h-full bg-core-green transition-all duration-300" data-step-bar style="width: 33%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" novalidate class="space-y-8">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div data-step>
+        <div class="mb-8">
+          <h2 class="text-[22px] sm:text-[24px] font-extrabold text-ink tracking-tight">Resident Identity &amp; Civil Profile</h2>
+          <p class="text-[13px] sm:text-[14px] text-muted mt-1">Enter your legal name and demographic data. Required fields are marked.</p>
+        </div>
+        <div class="registration-upload-card mb-6">{{ profile_field(form.profile_photo, True) }}<p class="text-[12px] text-muted mt-2">Optional photo for your barangay resident profile. Use a clear portrait.</p></div>
+        <div class="space-y-4">
+          <h3 class="text-[15px] font-bold text-primary-dark uppercase tracking-wider border-b border-border-ui pb-2">1. Full Legal Name</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div data-field>
+              <label for="first_name" class="block text-[13px] font-bold text-ink mb-1.5">First Name <span class="text-danger">*</span></label>
+              <input type="text" 
+                     id="first_name" 
+                     name="first_name" 
+                     data-required
+                     data-required-message="Enter your first name."
+                     class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-border-ui bg-white text-ink text-[14px] validate-name{% if errors.get('first_name') %} border-danger{% endif %}" 
+                     value="{{ (form.first_name.data or '') }}"
+                     required
+                     minlength="2"
+                     maxlength="100"
+                     pattern="[a-zA-Z\s\-\.]+"
+                     title="Name should only contain letters, spaces, hyphens, and periods"
+                     data-validation-message="First name is required and should be 2-100 characters">
+              <p class="{% if not errors.get('first_name') %}hidden{% endif %} text-[12px] text-danger mt-1 font-medium" data-field-error {% if errors.get('first_name') %}data-server-error{% endif %}>{{ (errors.get('first_name', [])|first|default('')) }}</p>
+            </div>
+            <div>
+              <label for="middle_name" class="block text-[13px] font-bold text-ink mb-1.5">Middle Name <span class="text-[12px] font-normal text-muted">(Leave blank if none)</span></label>
+              <input type="text" id="middle_name" name="middle_name" class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-border-ui bg-white text-ink text-[14px]" value="{{ (form.middle_name.data or '') }}">
+            </div>
+            <div data-field>
+              <label for="last_name" class="block text-[13px] font-bold text-ink mb-1.5">Last Name <span class="text-danger">*</span></label>
+              <input type="text" 
+                     id="last_name" 
+                     name="last_name" 
+                     data-required
+                     data-required-message="Enter your last name."
+                     class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-border-ui bg-white text-ink text-[14px] validate-name{% if errors.get('last_name') %} border-danger{% endif %}" 
+                     value="{{ (form.last_name.data or '') }}"
+                     required
+                     minlength="2"
+                     maxlength="100"
+                     pattern="[a-zA-Z\s\-\.]+"
+                     title="Name should only contain letters, spaces, hyphens, and periods"
+                     data-validation-message="Last name is required and should be 2-100 characters">
+              <p class="{% if not errors.get('last_name') %}hidden{% endif %} text-[12px] text-danger mt-1 font-medium" data-field-error {% if errors.get('last_name') %}data-server-error{% endif %}>{{ (errors.get('last_name', [])|first|default('')) }}</p>
+            </div>
+            <div>
+              <label for="suffix" class="block text-[13px] font-bold text-ink mb-1.5">Suffix <span class="text-[12px] font-normal text-muted">(e.g., Jr., III)</span></label>
+              <select id="suffix" name="suffix" class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-border-ui bg-white text-ink text-[14px]">
+                <option value="">None</option>
+                {% for item in ['Jr.','Sr.','II','III','IV','V'] %}
+                <option value="{{ item }}" {% if (form.suffix.data or '') == item %}selected{% endif %}>{{ item }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div>
+              <label for="civil_status" class="block text-[13px] font-bold text-ink mb-1.5">Civil Status</label>
+              <select id="civil_status" name="civil_status" class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-border-ui bg-white text-ink text-[14px]">
+                <option value="">Unknown</option>
+                {% for item in ['Single','Married','Widowed','Separated'] %}
+                <option {% if (form.civil_status.data or '') == item %}selected{% endif %}>{{ item }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div data-field>
+              <label for="nationality" class="block text-[13px] font-bold text-ink mb-1.5">Citizenship <span class="text-danger">*</span></label>
+              <input type="text" id="nationality" name="nationality" data-required data-required-message="Ilagay ang iyong nasyonalidad." required maxlength="80" class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-border-ui bg-white text-ink text-[14px]{% if errors.get('nationality') %} border-danger{% endif %}" value="{{ (form.nationality.data or 'Filipino') }}" placeholder="e.g., Filipino">
+              <p class="{% if not errors.get('nationality') %}hidden{% endif %} text-[12px] text-danger mt-1 font-medium" data-field-error {% if errors.get('nationality') %}data-server-error{% endif %}>{{ (errors.get('nationality', [])|first|default('')) }}</p>
+            </div>
+
+          </div>
+        </div>
+        <div class="space-y-4 mt-8">
+          <h3 class="text-[15px] font-bold text-primary-dark uppercase tracking-wider border-b border-border-ui pb-2">2. Birth Information</h3>
+          <div class="registration-fields-grid">
+            <div data-field>
+              <label for="birth_date" class="block text-[13px] font-bold text-ink mb-1.5">Date of Birth <span class="text-danger">*</span></label>
+              <input type="date" 
+                     id="birth_date" 
+                     name="birth_date" 
+                     data-required
+                     data-required-message="Ilagay ang iyong petsa ng kapanganakan."
+                     class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-border-ui bg-white text-ink text-[14px] no-future{% if errors.get('birth_date') %} border-danger{% endif %}" 
+                     value="{{ (form.birth_date.data or '') }}"
+                     max="{{ birth_date_max }}"
+                     min="1900-01-01"
+                     required
+                     data-validation-message="Please enter a valid birth date (must be at least 10 years old and after 1900)">
+              <p class="{% if not errors.get('birth_date') %}hidden{% endif %} text-[12px] text-danger mt-1 font-medium" data-field-error {% if errors.get('birth_date') %}data-server-error{% endif %}>{{ (errors.get('birth_date', [])|first|default('')) }}</p>
+            </div>
+          {{ profile_field(form.place_of_birth) }}
+          </div>
+          <fieldset class="border border-border-ui rounded-xl p-4 bg-page-bg">
+            <legend class="text-[13px] font-bold text-ink px-2">Sex</legend>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
+              {% for item in ['Male','Female','Other'] %}
+              <label class="flex items-center gap-3 p-3 bg-white border border-border-ui rounded-xl cursor-pointer hover:border-core-green transition min-h-[44px]">
+                <input type="radio" name="sex" value="{{ item }}" class="w-4 h-4 text-core-green border-border-ui" {% if (form.sex.data or '') == item %}checked{% endif %}>
+                <span class="text-[14px] font-medium text-ink">{{ item }}</span>
+              </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        </div>
+        <div class="space-y-4 mt-8">
+          <h3 class="registration-section-title">3. Socio-economic &amp; Household Profile</h3>
+          <p class="text-[12px] text-muted">Religion and socio-economic details are optional. You may leave them blank.</p>
+          <div class="registration-fields-grid">{{ profile_field(form.religion) }}{{ profile_field(form.occupation) }}{{ profile_field(form.educational_attainment) }}</div>
+        </div>
+        <div class="space-y-4 mt-8">
+          <h3 class="registration-section-title">4. National Identity &amp; Electoral Records</h3>
+          {{ profile_field(form.voter_status) }}
+          <p class="text-[12px] text-muted">The optional PhilSys image can be uploaded in Step 2. This is a barangay registration, not a PhilSys enrollment.</p>
+        </div>
+        <div class="pt-6 border-t border-border-ui flex flex-col sm:flex-row items-center justify-between gap-4">
+          <a href="{{ url_for('auth.login') }}" class="w-full sm:w-auto inline-flex items-center justify-center min-h-[44px] px-5 py-2.5 rounded-xl border border-border-ui bg-white text-muted hover:text-ink hover:border-core-green text-[13px] font-semibold no-underline">Return to Civic Sign In</a>
+          <button type="button" data-next class="w-full sm:w-auto inline-flex items-center justify-center min-h-[44px] px-8 py-3 rounded-xl bg-core-green hover:bg-primary-dark text-white text-[14px] font-bold shadow-md border-0">Save &amp; Continue to Step 2</button>
+        </div>
+      </div>
+
+      <div class="hidden" data-step>
+        <div class="mb-8">
+          <h2 class="text-[22px] sm:text-[24px] font-extrabold text-ink tracking-tight">Residency &amp; Domicile Address</h2>
+          <p class="text-[13px] sm:text-[14px] text-muted mt-1">Kumpletuhin ang tirahan at barangay profile para mas mabilis ma-verify ang iyong rekord. Ang may * lamang ang kinakailangan.</p>
+        </div>
+        <h3 class="registration-section-title">1. Barangay Domicile Location</h3>
+        <div class="registration-fields-grid">{{ profile_field(form.purok_id) }}{{ profile_field(form.residency_duration) }}{{ profile_field(form.house_no) }}{{ profile_field(form.street_landmark) }}{{ profile_field(form.contact_number) }}</div>
+        <div class="mt-4 p-4 rounded-xl bg-page-bg border border-border-ui flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[13px]">
+          <div>
+            <span class="text-muted block text-[12px]">Barangay</span>
+            <span class="font-bold text-primary-dark">{{ site_info.v_barangay_name() }}, {{ site_info.v_municipality() }}</span>
+          </div>
+          <div>
+            <span class="text-muted block text-[12px]">Postal ZIP Code</span>
+            <span class="font-mono font-bold text-ink">{{ site_info.v_zip_code() }}</span>
+          </div>
+        </div>
+        <div class="space-y-4 mt-8">
+          <h3 class="registration-section-title">2. Verification Credentials &amp; Proof of Residency</h3>
+          <p class="text-[12px] text-muted">Upload a barangay residency document, utility bill, or another document showing your address. Images are stored privately and accessible only to you and authorized staff.</p>
+          <div class="registration-fields-grid"><div class="registration-upload-card">{{ profile_field(form.proof_of_residency) }}</div><div class="registration-upload-card">{{ profile_field(form.philsys_card) }}</div></div>
+        </div>
+        <div class="space-y-4 mt-8">
+          <h3 class="registration-section-title">3. Special Status &amp; Welfare Classifications</h3>
+          <p class="text-[12px] text-muted">Optional self-declaration. Selecting a category does not approve benefits or enroll you in a government program. Leave all unchecked if none apply.</p>
+          <div class="registration-fields-grid" data-field>
+          {% for value, label in form.special_categories.choices %}<label class="registration-checkbox"><input type="checkbox" name="special_categories" value="{{ value }}" {% if value in (form.special_categories.data or []) %}checked{% endif %}> <span>{{ label }}</span></label>{% endfor %}
+          <p class="{% if not form.special_categories.errors %}hidden{% endif %} text-danger text-[12px]" data-field-error {% if form.special_categories.errors %}data-server-error{% endif %}>{{ form.special_categories.errors|join(' ') }}</p>
+          </div>
+        </div>
+        <div class="space-y-4 mt-8">
+          <h3 class="registration-section-title">4. Emergency Contact Details</h3>
+          <div class="registration-fields-grid">{{ profile_field(form.emergency_contact_name) }}{{ profile_field(form.emergency_contact_relationship) }}{{ profile_field(form.emergency_contact_number) }}</div>
+        </div>
+        <div class="pt-6 border-t border-border-ui flex flex-col sm:flex-row items-center justify-between gap-4">
+          <button type="button" data-prev class="w-full sm:w-auto inline-flex items-center justify-center min-h-[44px] px-5 py-2.5 rounded-xl border border-border-ui bg-white text-muted hover:text-ink text-[13px] font-semibold">Back to Step 1: Identity</button>
+          <button type="button" data-next class="w-full sm:w-auto inline-flex items-center justify-center min-h-[44px] px-8 py-3 rounded-xl bg-core-green hover:bg-primary-dark text-white text-[14px] font-bold shadow-md border-0">Continue to Step 3: Email &amp; Consent</button>
+        </div>
+      </div>
+
+      <div class="hidden" data-step>
+        <div class="mb-8">
+          <h2 class="text-[22px] sm:text-[24px] font-extrabold text-ink tracking-tight">Email &amp; Privacy Consent</h2>
+          <p class="text-[13px] sm:text-[14px] text-muted mt-1">Ilagay ang email na maa-access mo. Ipapadala roon ang resident ID at pansamantalang password pagkatapos aprubahan ng staff.</p>
+        </div>
+        <div class="grid grid-cols-1 gap-5">
+          <div data-field>
+            <label for="email" class="block text-[13px] font-bold text-ink mb-1.5">Email Address <span class="text-danger">*</span></label>
+            <input type="email" id="email" name="email" data-required data-required-message="Enter a valid email address." autocomplete="email" required class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-border-ui bg-white text-ink text-[14px] {% if errors.get('email') %}border-danger{% endif %}" value="{{ (form.email.data or '') }}">
+            <p class="{% if not errors.get('email') %}hidden{% endif %} text-[12px] text-danger mt-1 font-medium" data-field-error {% if errors.get('email') %}data-server-error{% endif %}>{{ (errors.get('email', [])|first|default('')) }}</p>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl border border-border-ui bg-page-bg text-[13px] leading-relaxed text-ink mt-5">
+          Pagkatapos maaprubahan, makakatanggap ka sa email na ito ng natatanging resident ID at random na pansamantalang password. Kailangan itong palitan sa unang pag-login.
+        </div>
+        <div class="p-4 rounded-xl border border-border-ui bg-page-bg space-y-2 mt-6" data-field>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="privacy-consent" name="privacy_consent" data-required data-required-message="You must accept the privacy notice to register." class="w-5 h-5 mt-0.5 text-core-green rounded border-border-ui shrink-0 {% if errors.get('privacy_consent') %}border-danger{% endif %}">
+            <span class="text-[13px] leading-relaxed text-ink">
+              I have read the <button type="button" class="font-semibold text-core-green underline bg-transparent border-0 p-0 cursor-pointer" data-open-modal="privacy">Privacy Notice</button> and consent to processing for barangay services. <span class="text-danger">*</span>
+            </span>
+          </label>
+          <p class="{% if not errors.get('privacy_consent') %}hidden{% endif %} text-[12px] text-danger mt-1 font-medium" data-field-error {% if errors.get('privacy_consent') %}data-server-error{% endif %}>{{ (errors.get('privacy_consent', [])|first|default('')) }}</p>
+        </div>
+        
+        <div class="p-4 rounded-xl border border-border-ui bg-page-bg space-y-2 mt-4" data-field>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="terms-consent" name="terms_consent" data-required data-required-message="You must accept the terms and conditions to register." class="w-5 h-5 mt-0.5 text-core-green rounded border-border-ui shrink-0 {% if errors.get('terms_consent') %}border-danger{% endif %}">
+            <span class="text-[13px] leading-relaxed text-ink">
+              I have read and agree to the <a href="{{ url_for('auth.terms_and_conditions') }}" target="_blank" class="font-semibold text-core-green underline">Terms and Conditions</a>. <span class="text-danger">*</span>
+            </span>
+          </label>
+          <p class="{% if not errors.get('terms_consent') %}hidden{% endif %} text-[12px] text-danger mt-1 font-medium" data-field-error {% if errors.get('terms_consent') %}data-server-error{% endif %}>{{ (errors.get('terms_consent', [])|first|default('')) }}</p>
+        </div>
+        
+        <div class="pt-6 border-t border-border-ui flex flex-col sm:flex-row items-center justify-between gap-4">
+          <button type="button" data-prev class="w-full sm:w-auto inline-flex items-center justify-center min-h-[44px] px-5 py-2.5 rounded-xl border border-border-ui bg-white text-muted text-[13px] font-semibold">Back to Step 2: Residency</button>
+          <button type="submit" data-register-submit class="w-full sm:w-auto inline-flex items-center justify-center min-h-[44px] px-8 py-3 rounded-xl bg-core-green hover:bg-primary-dark text-white text-[14px] font-bold shadow-md border-0">
+            <span data-register-submit-text>Complete &amp; Submit Registration</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}
+
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/registration.css') }}">{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/registration-uploads.js') }}"></script>{% endblock %}

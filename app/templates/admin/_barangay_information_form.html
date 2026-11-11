@@ -1,0 +1,13 @@
+{% from 'macros/resident_fields.html' import input_field %}
+<section class="resident-form-page" aria-labelledby="barangay-information-title">
+  <header class="rf-heading"><div><h1 id="barangay-information-title">Barangay information</h1><p>These details appear on login, help, privacy, and portal pages. Enter confirmed official information; leave unconfirmed contact details blank.</p></div></header>
+  <form method="post" data-unsaved-warning>
+    {{ barangay_form.hidden_tag() }}<input type="hidden" name="action" value="barangay_information">
+    {% for heading,fields in barangay_info_groups %}
+    <fieldset class="rf-card"><legend class="sr-only">{{ heading }}</legend><div class="rf-section-title"><h2>{{ heading }}</h2></div>
+      <div class="rf-grid">{% for key,label in fields %}{{ input_field(barangay_form[key]) }}{% endfor %}</div>
+    </fieldset>
+    {% endfor %}
+    <footer class="rf-footer"><p>Saved information will appear across the public pages.</p><div><button class="civic-btn" type="submit">Save barangay information</button></div></footer>
+  </form>
+</section>

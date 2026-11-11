@@ -1,0 +1,1 @@
+{% if profile_has_photo %}<img src="{{ url_for('workspace.profile_photo') }}" alt="{{ profile_name }}'s profile photo" class="civic-avatar" width="44" height="44">{% else %}<span class="civic-avatar civic-avatar-fallback" aria-label="{{ profile_name }}">{{ profile_initials }}</span>{% endif %}

@@ -1,0 +1,46 @@
+{% extends "admin/_admin_base.html" %}
+{% block active_nav %}admin.users{% endblock %}
+{% block title %}User management{% endblock %}
+{% block content %}
+{% from "partials/portal/_macros.html" import status_badge %}
+<div class="flex flex-wrap justify-between items-center gap-3 mb-4"><div><h1 class="text-headline-sm font-headline-sm text-on-surface">User management</h1><p class="text-body-sm text-on-surface-muted mb-0">Hindi maaaring gumawa o magtalaga ng Barangay Official role mula sa generic user form.</p></div><a class="civic-btn" href="{{ url_for('admin.official_accounts') }}">Gumawa ng Official Account</a></div>
+<div class="civic-panel mb-4"><div class="card-body">
+<h2 class="text-title-md font-title-md text-on-surface">Create account</h2>
+<form method="post" class="row g-3">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="col-md-3"><label class="form-label" for="username">Username</label><input required class="civic-input" id="username" name="username"></div>
+    <div class="col-md-3"><label class="form-label" for="email">Email</label><input required type="email" class="civic-input" id="email" name="email"></div>
+    <div class="col-md-3"><label class="form-label" for="password">Temporary password</label><input required minlength="{{ password_min_length }}" type="password" class="civic-input" id="password" name="password"><div class="text-[11px] text-on-surface-muted mt-1">At least {{ password_min_length }} characters.</div></div>
+    <div class="col-md-2"><label class="form-label" for="role_id">Role</label><select class="civic-input" id="role_id" name="role_id"><option value="">Select role</option>{% for role in roles %}<option value="{{ role.id }}">{{ role.name }}</option>{% endfor %}</select></div>
+    <div class="col-md-3"><label class="form-label" for="confirm_password">Confirm password</label><input required type="password" class="civic-input" id="confirm_password" name="confirm_password"></div>
+    <div class="col-md-2"><label class="form-check-label"><input type="checkbox" name="is_active" value="y" checked> Active</label></div>
+    <div class="col-md-6"><label class="form-label" for="attendance_personnel_id">Attendance personnel record</label>{{ form.attendance_personnel_id(class_='civic-input w-full', aria_describedby='user-attendance-help') }}<p id="user-attendance-help" class="text-xs text-on-surface-muted mt-1">Para sa admin accounts: piliin ang existing personnel para maisama ang dating attendance, o gumawa ng bagong linked record. Walang attendance setup para sa Resident-only accounts.</p></div>
+    <div class="col-md-1 d-flex align-items-end"><button class="civic-btn w-100">Create</button></div>
+</form>
+</div></div>
+<div class="overflow-x-auto bg-surface-card rounded-xl border border-outline-border"><table class="civic-table"><thead><tr><th>Username</th><th>Email</th><th>Status</th><th>Roles</th><th>Actions</th></tr></thead><tbody>
+{% for user in users %}
+<tr>
+    <td><span class="civic-record-person">{% if user.profile_photo_filename or (user.resident and user.resident.profile_photo_filename) %}<img class="civic-avatar" width="34" height="34" src="{{ url_for('workspace.user_photo',user_id=user.id) }}" alt="{{ user.username }}'s profile photo" loading="lazy">{% else %}<span class="civic-avatar civic-avatar-fallback">{{ user.username[:2]|upper }}</span>{% endif %}<strong>{{ user.username }}</strong></span></td>
+    <td>{{ user.email }}</td>
+    <td>{{ status_badge(user.status) }}</td>
+    <td>{% for role in user.roles %}<span class="badge-status badge-status--neutral">{{ role.name }}</span>{% else %}<span class="text-on-surface-muted">None</span>{% endfor %}</td>
+    <td>
+        {% if user.resident and user.status == 'pending' and not user.is_active %}
+        <a class="text-primary" href="{{ url_for('official.account_approvals') }}">Review registration</a>
+        {% else %}
+        <form class="d-inline" method="post" action="{{ url_for('admin.toggle_user', user_id=user.id) }}" data-confirm="{{ 'Deactivate' if user.is_active else 'Activate' }} {{ user.username }}?">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="civic-btn-outline text-xs py-1">{{ 'Deactivate' if user.is_active else 'Activate' }}</button>
+        </form>
+        {% endif %}
+        <form class="d-inline ms-1" method="post" action="{{ url_for('admin.assign_user_role', user_id=user.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <select name="role_id" class="civic-input form-select-sm d-inline-block w-auto">{% for role in roles %}<option value="{{ role.id }}">{{ role.name }}</option>{% endfor %}</select>
+            <button class="civic-btn-outline text-xs py-1">Assign role</button>
+        </form>
+    </td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+{% include "partials/_pagination.html" %}{% endblock %}

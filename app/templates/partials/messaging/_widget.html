@@ -1,0 +1,28 @@
+{% from 'components/icons.html' import icon %}
+{% if is_resident or is_official %}
+<div class="msg-widget" data-messaging-widget data-role="{{ 'resident' if is_resident else 'official' }}" data-csrf="{{ csrf_token() }}">
+  <button class="msg-launcher" type="button" data-msg-toggle aria-expanded="false" aria-controls="msg-panel" aria-label="{{ 'Buksan ang barangay chat' if is_resident else 'Buksan ang resident messages' }}" title="{{ 'Barangay chat' if is_resident else 'Resident messages' }}">
+    {{ icon('support_agent' if is_resident else 'forum', '') }}
+    <span class="msg-launcher-label">{{ 'Kumusta? Chat sa barangay' if is_resident else 'Resident messages' }}</span>
+    <span class="msg-unread hidden" data-msg-unread>0</span>
+  </button>
+  <section class="msg-panel hidden" id="msg-panel" aria-label="Messaging">
+    <header class="msg-header">
+      <div><strong>{{ chatbot_name if is_resident else 'Resident inbox' }}</strong><small>{{ 'Assistant ang unang sasagot; official handoff kapag kailangan' if is_resident else 'Makipag-ugnayan sa mga residente' }}</small></div>
+      <button type="button" class="msg-close" data-msg-toggle aria-label="Isara">×</button>
+    </header>
+    {% if is_official %}<div class="msg-thread-list" data-msg-thread-list><p class="msg-empty">Loading conversations…</p></div>{% endif %}
+    <div class="msg-conversation{% if is_official %} hidden{% endif %}" data-msg-conversation>
+      <div class="msg-conversation-top {% if is_resident %}hidden{% endif %}"><button type="button" data-msg-back>← Back to inbox</button><strong data-msg-thread-title></strong></div>
+      <div class="msg-messages" data-msg-messages role="log" aria-live="polite"><p class="msg-empty">Loading messages…</p></div>
+      {% if is_resident %}<div class="msg-quick-actions" data-msg-quick-actions><span>Mga madalas itanong:</span><button type="button" data-chatbot-question="Paano kumuha ng certificate o clearance?">Certificate / clearance</button><button type="button" data-chatbot-question="Paano tingnan ang status ng pila?">Status ng pila</button><button type="button" data-chatbot-question="Paano mag-file ng reklamo?">Mag-file ng reklamo</button></div>{% endif %}
+      <form class="msg-form" data-msg-form>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <textarea name="body" maxlength="2000" rows="2" placeholder="{{ 'I-type ang iyong tanong…' if is_resident else 'I-type ang reply sa resident…' }}" required></textarea>
+        <button type="submit" aria-label="Ipadala">{{ icon('send', '') }}</button>
+      </form>
+      <p class="msg-status" data-msg-status aria-live="polite"></p>
+    </div>
+  </section>
+</div>
+{% endif %}

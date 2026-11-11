@@ -1,0 +1,11 @@
+<nav class="ops-attendance-nav" aria-label="Attendance pages" style="--ops-tab-count:{{ 3 if is_admin else 2 }}">
+{% set tabs = [('attendance.dashboard','Attendance Management' if is_admin else 'My attendance','View daily records, time in/out and leave.'),('attendance.reports','Attendance Reports','Filter records and download a DTR.')] %}
+{% if is_admin %}{% set tabs = [tabs[0],('attendance.devices','Personnel & RFID','Register personnel, cards and duty schedules.'),tabs[1]] %}{% endif %}
+{% for endpoint,label,description in tabs %}
+{% set selected = active_nav == endpoint %}
+<a class="ops-page-link{{ ' is-current' if selected else '' }}" href="{{ url_for(endpoint) }}"{% if selected %} aria-current="page"{% endif %}>
+  <span class="ops-page-link-copy"><strong>{{ label }}</strong><small>{{ description }}</small>{% if selected %}<span class="ops-current-label">Current page</span>{% endif %}</span>
+  <span class="ops-page-link-arrow" aria-hidden="true">→</span>
+</a>
+{% endfor %}
+</nav>

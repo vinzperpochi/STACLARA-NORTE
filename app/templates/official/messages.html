@@ -1,0 +1,14 @@
+{% extends "official/_official_base.html" %}
+{% block title %}Resident Messages{% endblock %}
+{% block active_nav %}messaging.official_inbox{% endblock %}
+{% block content %}
+<section class="bg-surface-card rounded-xl border border-outline-border p-6 shadow-level-1">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div><h1 class="text-headline-sm font-headline-sm font-bold">Resident Messages</h1><p class="text-body-sm text-on-surface-muted mt-1">Buksan ang floating inbox sa ibabang kanan para makita at masagot ang mga resident.</p></div>
+    <span class="px-3 py-1 rounded-full bg-primary-container text-primary-dark text-xs font-bold">REAL-TIME POLLING</span>
+  </div>
+  <div class="mt-6 rounded-xl border border-outline-border bg-surface-container-low p-4 text-sm text-on-surface-variant">
+    Ang Customer Service fallback ay awtomatikong nagbibigay ng paunang gabay kapag walang official reply sa loob ng configured waiting window. Ang bawat reply ay naka-save sa conversation history.
+  </div>
+</section>
+{% endblock %}

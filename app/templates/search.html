@@ -1,0 +1,25 @@
+{% extends "admin/_admin_base.html" if is_admin else "official/_official_base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}{% from "macros/pagination.html" import render_pagination with context %}
+{% from "partials/_macros.html" import status_badge, empty_state %}
+<div class="page-head"><h1 class="h3">Search</h1><p class="text-secondary">Residents, blotter cases, and document requests.</p></div>
+<form method="get" class="card card-body mb-4"><div class="row g-2"><div class="col-md-8"><label class="form-label" for="q">Query</label><input class="form-control" id="q" name="q" value="{{ query }}" minlength="2" required></div><div class="col-md-4 d-flex align-items-end"><button class="btn btn-primary w-100">Search</button></div></div></form>
+{% if query and query|length < 2 %}<p class="text-secondary">Type at least two characters.</p>{% endif %}
+{% if query|length >= 2 %}
+<div class="card mb-3"><div class="card-body"><h2 class="h5" id="search-residents">Residents</h2>
+{% if residents %}<div class="table-responsive"><table class="table"><thead><tr><th>Name</th><th>Email</th><th></th></tr></thead><tbody>{% for item in residents %}<tr><td>{{ item.last_name }}, {{ item.first_name }}</td><td>{{ item.email or '—' }}</td><td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('official.resident_detail', resident_id=item.id) }}">View</a></td></tr>{% endfor %}</tbody></table></div>
+{% else %}{{ empty_state('people', 'No residents matched', 'Walang nahanap na residente.') }}{% endif %}
+{{ render_pagination(pagers['residents'],'residents_page','search-residents','Residents') }}
+</div></div>
+<div class="card mb-3"><div class="card-body"><h2 class="h5" id="search-cases">Blotter cases</h2>
+{% if cases %}<div class="table-responsive"><table class="table"><thead><tr><th>Case</th><th>Category</th><th>Status</th><th></th></tr></thead><tbody>{% for item in cases %}<tr><td>{{ item.case_number }}</td><td>{{ item.category }}</td><td>{{ status_badge(item.status) }}</td><td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('official.blotter_detail', case_id=item.id) }}">View</a></td></tr>{% endfor %}</tbody></table></div>
+{% else %}{{ empty_state('journal', 'No cases matched', 'Walang nahanap na kaso.') }}{% endif %}
+{{ render_pagination(pagers['cases'],'cases_page','search-cases','Blotter cases') }}
+</div></div>
+<div class="card"><div class="card-body"><h2 class="h5" id="search-requests">Document requests</h2>
+{% if requests %}<div class="table-responsive"><table class="table"><thead><tr><th>Request</th><th>Service</th><th>Status</th><th></th></tr></thead><tbody>{% for item in requests %}<tr><td>{{ item.request_number }}</td><td>{{ item.service_type }}</td><td>{{ status_badge(item.status) }}</td><td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('official.document_request_detail', request_id=item.id) }}">View</a></td></tr>{% endfor %}</tbody></table></div>
+{% else %}{{ empty_state('file-earmark', 'No requests matched', 'Walang nahanap na request.') }}{% endif %}
+{{ render_pagination(pagers['requests'],'requests_page','search-requests','Document requests') }}
+</div></div>
+{% endif %}
+{% endblock %}

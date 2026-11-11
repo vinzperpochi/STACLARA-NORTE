@@ -1,0 +1,16 @@
+{% macro toolbar(pagination, parameter='page', anchor='records', resize=true) %}
+<div class="ops-list-toolbar">
+  <p class="ops-muted" role="status">{% if pagination.total %}Showing <strong>{{ (pagination.page-1)*pagination.per_page+1 }}–{{ [pagination.page*pagination.per_page,pagination.total]|min }}</strong> of <strong>{{ pagination.total }}</strong>{% else %}0 records{% endif %}</p>
+  {% if resize %}<form method="get" action="#{{ anchor }}" class="ops-page-size">
+    {% for key,value in request.args.items() if key not in [parameter,'per_page','format','registered'] %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endfor %}
+    <label class="ops-field" for="{{ anchor }}-size">Rows per page</label>
+    <select class="form-select" id="{{ anchor }}-size" name="per_page">{% for size in [5,10,25,50] %}<option value="{{ size }}" {{ 'selected' if pagination.per_page==size }}>{{ size }}</option>{% endfor %}</select>
+    <button class="civic-btn-outline" type="submit">Apply</button>
+  </form>{% endif %}
+</div>
+{% endmacro %}
+
+{% from 'macros/pagination.html' import render_pagination with context %}
+{% macro pager(pagination, parameter='page', anchor='records', label='Records') %}
+{{ render_pagination(pagination,parameter,anchor,label) }}
+{% endmacro %}

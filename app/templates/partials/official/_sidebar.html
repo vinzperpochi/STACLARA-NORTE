@@ -1,0 +1,87 @@
+{% from 'components/icons.html' import icon %}
+{% macro nav_item(endpoint, icon_name, label_en, label_fil, badge="") -%}
+{%- if not endpoint.startswith('official.document') or can('documents.review') -%}
+{%- set on = active_nav == endpoint or (endpoint == 'incidents.workspace' and active_nav in ['official.blotter_list','official.blotter_detail','official.blotter_map','official.blotter_statistics','incidents.dashboard','incidents.detail']) -%}
+<li>
+  <a class="resident-nav-link flex items-center justify-between gap-2 px-3 py-2 rounded-lg transition-colors no-underline {{ 'bg-primary text-white font-semibold shadow-sm' if on else 'text-on-surface-variant hover:bg-surface-container-low hover:text-primary' }}"
+     href="{{ url_for(endpoint) }}"{% if on %} aria-current="page"{% endif %}>
+    <span class="flex items-center space-x-3 min-w-0">
+      {{ icon(icon_name, '', size='20px') }}
+      <span class="resident-nav-copy text-left min-w-0">
+        <span class="resident-nav-title text-body-md leading-tight block {{ '' if on else 'font-medium' }}">{{ label_en }}</span>
+        <span class="resident-nav-subtitle text-[10px] block leading-tight {{ 'text-primary-container opacity-90' if on else 'text-on-surface-muted' }}">{{ label_fil }}</span>
+      </span>
+    </span>
+    {% if badge %}{{ badge }}{% elif on %}<span class="w-1.5 h-1.5 rounded-full bg-highlight-lime shrink-0" aria-hidden="true"></span>{% endif %}
+  </a>
+</li>
+{%- endif -%}
+{%- endmacro %}
+
+<div class="portal-sidebar-card bg-surface-card rounded-xl border border-outline-border civic-card-shadow p-4 md:sticky md:top-24 space-y-5">
+  <div class="resident-sidebar-heading flex items-center justify-between pb-3 border-b border-outline-border">
+    <div class="resident-sidebar-brand">
+      <span class="resident-sidebar-mark">{{ icon('shield-check', '', size='22px') }}</span>
+      <div><span class="text-[10px] uppercase font-bold tracking-wider" style="color: #22b33a;">Official &amp; Staff</span>
+      <p class="text-xs text-on-surface-muted">e-Governance Center</p></div>
+    </div>
+    <button type="button" class="md:hidden p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low" data-portal-drawer-close aria-label="Isara ang menu">
+      {{ icon('x-lg', '') }}
+    </button>
+  </div>
+
+  <nav class="space-y-4" aria-label="Official workspace">
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">1. Main</span>
+      <ul class="space-y-1">
+        {{ nav_item('official.dashboard', 'dashboard', 'Overview', 'Buod ng Operasyon') }}
+        {{ nav_item('official.account_approvals', 'person_check', 'Account Approvals', 'Pag-apruba ng Account') }}
+        {{ nav_item('messaging.official_inbox', 'forum', 'Resident Messages', 'Mensahe ng Resident') }}
+        {{ nav_item('official.queue_management', 'confirmation_number', 'Queue Management', 'Pamamahala ng Pila', ('<span class="resident-nav-badge text-[10px] font-bold bg-warning-pill text-on-surface px-1.5 py-0.5 rounded border border-[#ffd328] shrink-0">' ~ metrics.queue_waiting ~ '</span>')|safe if metrics is defined and metrics.queue_waiting else '') }}
+      </ul>
+    </div>
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">2. Records</span>
+      <ul class="space-y-1">
+        {{ nav_item('official.resident_list', 'badge', 'Residents Registry', 'Talaan ng Mamamayan') }}
+        {{ nav_item('official.purok_list', 'house', 'Puroks', 'Mga Purok') }}
+        {{ nav_item('official.household_list', 'people', 'Households', 'Sambahayan at Purok') }}
+        {{ nav_item('official.correction_requests', 'edit_note', 'Corrections Inbox', 'Pagwawasto ng Datos') }}
+        {{ nav_item('official.welfare_registry', 'volunteer_activism', 'Welfare / 4Ps', 'Tulong Panlipunan') }}
+      </ul>
+    </div>
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">3. Services</span>
+      <ul class="space-y-1">
+        {{ nav_item('official.document_requests', 'description', 'Document Requests', 'Kahilingan sa Dokumento', ('<span class="resident-nav-badge text-[10px] bg-primary text-white px-1.5 py-0.5 rounded font-bold shrink-0">' ~ metrics.pending_documents ~ '</span>')|safe if metrics is defined and metrics.pending_documents else '') }}
+        {{ nav_item('official.document_walk_in', 'person_add', 'Walk-in Documents', 'Serbisyo sa Barangay Hall') }}
+        {{ nav_item('official.business_list', 'storefront', 'Business Clearances', 'Negosyo at Permiso') }}
+        {{ nav_item('official.collections', 'payments', 'Collections & Cashier', 'Koleksyon at Kahera') }}
+      </ul>
+    </div>
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">4. Cases</span>
+      <ul class="space-y-1">
+      {{ nav_item('incidents.workspace', 'gavel', 'Complaints & Blotter', 'Reklamo, Insidente at Hotlines') }}
+      </ul>
+    </div>
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">5. Safety</span>
+      <ul class="space-y-1">
+        {{ nav_item('official.drrm_dashboard', 'warning', 'DRRM & Alerts', 'Kalamidad at Babala') }}
+      </ul>
+    </div>
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">6. Insights</span>
+      <ul class="space-y-1">
+        {{ nav_item('official.analytics', 'insights', 'Analytics', 'Estadistika ng Pamayanan') }}
+        {{ nav_item('official.report_center', 'summarize', 'Reports Center', 'Sentro ng Ulat') }}
+        {{ nav_item('official.reports', 'journal-text', 'Activity Logs', 'Talaan ng Kilos') }}
+      </ul>
+    </div>
+    <div><span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">7. Attendance</span><ul class="space-y-1">
+      {{ nav_item('attendance.dashboard','schedule','My Attendance','Oras ng Pagpasok') }}
+    </ul></div>
+  </nav>
+  {% include "partials/premium/_sidebar_footer.html" %}
+</div>

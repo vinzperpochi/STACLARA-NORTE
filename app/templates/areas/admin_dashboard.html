@@ -1,0 +1,277 @@
+{% extends "admin/_admin_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% from "partials/portal/_macros.html" import empty_state %}
+{% block title %}Super Admin Console &amp; Analytics{% endblock %}
+{% block active_nav %}admin.dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout"><div class="dashboard-content">
+
+{%- set age_vals = charts.age['values'] -%}
+{%- set age_labels = charts.age['labels'] -%}
+{%- set gender_vals = charts.gender['values'] -%}
+{%- set gender_labels = charts.gender['labels'] -%}
+{%- set purok_vals = charts.purok['values'] -%}
+{%- set purok_labels = charts.purok['labels'] -%}
+{%- set doc_vals = charts.documents['values'] -%}
+{%- set doc_labels = charts.documents['labels'] -%}
+{%- set blotter_vals = charts.blotter['values'] -%}
+{%- set blotter_labels = charts.blotter['labels'] -%}
+{%- set demand_vals = charts.service_demand['values'] -%}
+{%- set demand_labels = charts.service_demand['labels'] -%}
+{%- set age_total = age_vals|sum if age_vals else 0 -%}
+{%- set gender_total = gender_vals|sum if gender_vals else 0 -%}
+{%- set purok_max = (purok_vals|max) if purok_vals else 1 -%}
+{%- set doc_total = doc_vals|sum if doc_vals else 0 -%}
+{%- set blotter_total = blotter_vals|sum if blotter_vals else 0 -%}
+
+<section class="civic-hero"><div class="civic-dashboard-person">{% include "partials/premium/_avatar.html" %}<div><p class="civic-overline">ADMINISTRATION CONTROL CENTER</p><h1>Mabuhay, {{ profile_name }}</h1></div></div>
+  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+    <div>
+      <h2 class="text-headline-sm font-headline-sm text-on-surface">Sitwasyong Pampamayanan (Barangay Operations Matrix)</h2>
+      <p class="text-body-sm text-on-surface-muted mt-1">Counts come from the current database. Period filters pending requests, issued documents, and open blotter cases.</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-3">
+      <form method="get" class="inline-flex rounded-lg border border-outline-border p-0.5 bg-surface-container-lowest" role="group">
+        <button class="px-3 py-1.5 text-label-md rounded-md {{ 'bg-primary text-white font-bold shadow-sm' if period == 'all' else 'text-on-surface-variant hover:text-primary' }}" name="period" value="all" type="submit">All Time</button>
+        <button class="px-3 py-1.5 text-label-md rounded-md {{ 'bg-primary text-white font-bold shadow-sm' if period == 'month' else 'text-on-surface-variant hover:text-primary' }}" name="period" value="month" type="submit">This Month</button>
+        <button class="px-3 py-1.5 text-label-md rounded-md {{ 'bg-primary text-white font-bold shadow-sm' if period == 'today' else 'text-on-surface-variant hover:text-primary' }}" name="period" value="today" type="submit">Today</button>
+      </form>
+      <form method="post" action="{{ url_for('admin.backup') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="inline-flex items-center gap-2 px-3.5 py-2 text-label-md font-bold rounded-lg text-white civic-btn-gradient" type="submit">
+          {{ icon('download', 'text-base', size='1em') }}
+          Download SQLite Backup
+        </button>
+      </form>
+      <a href="{{ url_for('admin.blotter_map') }}" class="inline-flex items-center gap-2 px-3.5 py-2 text-label-md font-bold rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors">
+        {{ icon('fmd_bad', 'text-base', size='1em') }}
+        Incident Map
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="space-y-4">
+  <div class="flex items-center justify-between">
+    <h3 class="text-title-md font-title-md text-on-surface flex items-center gap-2">
+      {{ icon('analytics', 'text-primary', size='1em') }}
+      Mga Pangunahing Sukatan
+    </h3>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3.5">
+    {% for label, value, icon_name, hint, warn in [
+      ('Total Residents', metrics.total_residents, 'groups', 'registered citizens', false),
+      ('Households', metrics.total_households, 'home', 'registered family units', false),
+      ('Active Officials', metrics.active_officials, 'shield_person', 'status = active', false),
+      ('Pending Requests', metrics.pending_requests, 'pending_actions', 'status = pending', true),
+      ('Issued Docs', metrics.issued_documents, 'task', 'issued documents', false),
+      ('Open Blotters', metrics.open_blotter_cases, 'gavel', 'open / mediation / hearing', false),
+    ] %}
+    <div class="rounded-xl border p-4 shadow-sm {{ 'bg-[#FFFDF5] border-[#FFD328]' if warn else 'bg-surface-card border-outline-border' }}">
+      <div class="flex items-center justify-between">
+        <span class="text-[11px] uppercase font-bold {{ 'text-[#725C00]' if warn else 'text-on-surface-muted' }}">{{ label }}</span>
+        <span class="p-1.5 rounded-lg {{ 'bg-warning-pill text-[#725C00]' if warn else 'bg-primary-container text-primary' }}">
+          {{ icon(icon_name, 'text-base') }}
+        </span>
+      </div>
+      <div class="mt-2">
+        <span class="text-headline-md font-headline-md font-extrabold {{ 'text-[#725C00]' if warn else 'text-on-surface' }}">{{ value }}</span>
+        <p class="text-body-sm text-on-surface-muted mt-0.5">{{ hint }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="bg-surface-card rounded-xl border border-outline-border p-3.5 shadow-sm">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <div class="flex items-center gap-2">
+        {{ icon('diversity_1', 'text-primary text-base', size='1em') }}
+        <span class="text-body-sm font-bold text-on-surface">Sectoral &amp; Special Assistance Registries</span>
+      </div>
+      <button class="inline-flex items-center gap-1.5 text-label-md font-semibold text-primary px-3 py-1 rounded bg-primary-container border border-outline-border" type="button" data-portal-toggle="#sectoral-drawer">
+        Toggle sectoral indicators
+        {{ icon('unfold_more', 'text-sm', size='1em') }}
+      </button>
+    </div>
+    <div class="mt-3 pt-3 border-t border-outline-border grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3" id="sectoral-drawer">
+      {% for label, value, icon_name, hint in [
+        ('Registered Seniors', metrics.registered_seniors, 'elderly', 'Age 60+ from birth date'),
+        ('Registered PWD', metrics.registered_pwd, 'accessible', 'Health registry with disability details'),
+        ('4Ps Beneficiaries', metrics.registered_4ps, 'volunteer_activism', 'Social welfare category contains 4P'),
+        ('Solo Parents', metrics.solo_parents, 'family_restroom', 'Social welfare category contains solo'),
+        ('DRRM Incidents', metrics.drrm_incidents, 'flood', 'Not closed or resolved'),
+      ] %}
+      <div class="bg-surface-bg p-3 rounded-lg border border-outline-border">
+        <div class="flex items-center justify-between text-on-surface-muted mb-1">
+          <span class="text-[11px] uppercase font-bold">{{ label }}</span>
+          {{ icon(icon_name, 'text-base text-primary') }}
+        </div>
+        <p class="text-title-lg font-title-lg font-bold text-on-surface">{{ value }}</p>
+        <p class="text-[11px] text-on-surface-muted">{{ hint }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="space-y-4">
+  <h3 class="text-title-md font-title-md text-on-surface flex items-center gap-2">
+    {{ icon('query_stats', 'text-primary', size='1em') }}
+    Talaan at Pagsusuri
+  </h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+
+    <div class="bg-surface-card rounded-xl border border-outline-border p-5 shadow-sm flex flex-col justify-between">
+      <div>
+        <h4 class="text-body-lg font-bold text-on-surface mb-1">Demographic Age Cohorts</h4>
+        <p class="text-body-sm text-on-surface-muted mb-4">Buckets from stored birth dates: 0–17, 18–29, 30–44, 45–59, 60+.</p>
+        {% if age_labels %}
+        <div class="space-y-3 mb-5">
+          {% for label in age_labels %}
+          {%- set val = age_vals[loop.index0] -%}
+          {%- set pct = ((val / age_total * 100) if age_total else 0)|round(1) -%}
+          <div>
+            <div class="flex justify-between text-body-sm font-medium mb-1"><span>{{ label }}</span><span class="font-bold">{{ val }} ({{ pct }}%)</span></div>
+            <div class="w-full h-3 bg-outline-border rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-primary to-highlight-lime rounded-full" style="width: {{ pct }}%"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ empty_state('bar_chart', 'Walang age data', 'Magdagdag ng birth date sa resident records.') }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-surface-card rounded-xl border border-outline-border p-5 shadow-sm flex flex-col justify-between">
+      <div>
+        <h4 class="text-body-lg font-bold text-on-surface mb-1">Kasarian (Gender Distribution)</h4>
+        <p class="text-body-sm text-on-surface-muted mb-4">From the resident <code>sex</code> field as stored.</p>
+        {% if gender_labels %}
+        <ul class="space-y-2">
+          {% for label in gender_labels %}
+          {%- set val = gender_vals[loop.index0] -%}
+          {%- set pct = ((val / gender_total * 100) if gender_total else 0)|round(1) -%}
+          <li>
+            <div class="flex justify-between text-body-sm mb-1"><span>{{ label }}</span><span class="font-bold">{{ val }} ({{ pct }}%)</span></div>
+            <div class="w-full h-3 bg-outline-border rounded-full overflow-hidden">
+              <div class="h-full bg-primary rounded-full" style="width: {{ pct }}%"></div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        {{ empty_state('pie_chart', 'Walang gender data', 'Walang resident sex values.') }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-surface-card rounded-xl border border-outline-border p-5 shadow-sm flex flex-col justify-between">
+      <div>
+        <h4 class="text-body-lg font-bold text-on-surface mb-1">Purok Population Breakdown</h4>
+        <p class="text-body-sm text-on-surface-muted mb-4">Residents grouped by registered purok.</p>
+        {% if purok_labels %}
+        <div class="grid gap-1.5 items-end h-36 pt-4 px-1 border-b border-outline-border" style="grid-template-columns: repeat({{ purok_labels|length }}, minmax(0, 1fr));">
+          {% for label in purok_labels %}
+          {%- set val = purok_vals[loop.index0] -%}
+          {%- set h = ((val / purok_max * 100) if purok_max else 0)|round -%}
+          <div class="flex flex-col items-center gap-1 h-full justify-end min-w-0">
+            <span class="text-[10px] font-bold text-on-surface">{{ val }}</span>
+            <div class="w-full bg-primary rounded-t" style="height: {{ h }}%;"></div>
+            <span class="text-[9px] font-semibold text-outline truncate w-full text-center" title="{{ label }}">{{ label }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ empty_state('share_location', 'Walang purok data', 'Magdagdag ng purok records.') }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-surface-card rounded-xl border border-outline-border p-5 shadow-sm flex flex-col justify-between">
+      <div>
+        <h4 class="text-body-lg font-bold text-on-surface mb-1">Document / Service Request Volume</h4>
+        <p class="text-body-sm text-on-surface-muted mb-4">Grouped by <code>service_type</code> on requests.</p>
+        {% if doc_labels %}
+        <div class="space-y-3">
+          {% for label in doc_labels %}
+          {%- set val = doc_vals[loop.index0] -%}
+          {%- set pct = ((val / doc_total * 100) if doc_total else 0)|round(1) -%}
+          <div>
+            <div class="flex justify-between text-body-sm font-medium mb-1"><span>{{ label or 'Unspecified' }}</span><span class="font-bold">{{ val }} ({{ pct }}%)</span></div>
+            <div class="w-full h-2.5 bg-outline-border rounded-full overflow-hidden">
+              <div class="h-full bg-primary rounded-full" style="width: {{ pct }}%"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ empty_state('assignment_turned_in', 'Walang request data', 'Wala pang document o service request.') }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-surface-card rounded-xl border border-outline-border p-5 shadow-sm flex flex-col justify-between">
+      <div>
+        <h4 class="text-body-lg font-bold text-on-surface mb-1">Blotter &amp; Dispute Statuses</h4>
+        <p class="text-body-sm text-on-surface-muted mb-4">Case counts by stored status. Hindi ito settlement-rate estimate.</p>
+        {% if blotter_labels %}
+        <div class="space-y-2">
+          {% for label in blotter_labels %}
+          {%- set val = blotter_vals[loop.index0] -%}
+          {%- set pct = ((val / blotter_total * 100) if blotter_total else 0)|round(1) -%}
+          <div class="flex items-center justify-between text-body-sm">
+            <span>{{ label }}</span>
+            <span class="font-bold">{{ val }} ({{ pct }}%)</span>
+          </div>
+          <div class="w-full h-2.5 bg-outline-border rounded-full overflow-hidden">
+            <div class="h-full bg-primary rounded-full" style="width: {{ pct }}%"></div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ empty_state('balance', 'Walang blotter data', 'Wala pang blotter case.') }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-surface-card rounded-xl border border-outline-border p-5 shadow-sm flex flex-col justify-between">
+      <div>
+        <h4 class="text-body-lg font-bold text-on-surface mb-1">Service Demand</h4>
+        <p class="text-body-sm text-on-surface-muted mb-4">Same grouping as document/service requests. Walang hourly peak data sa backend.</p>
+        {% if demand_labels %}
+        <div class="space-y-3">
+          {% for label in demand_labels %}
+          {%- set val = demand_vals[loop.index0] -%}
+          <div class="flex items-center justify-between text-body-sm border-b border-outline-border pb-2">
+            <span>{{ label or 'Unspecified' }}</span>
+            <span class="font-bold">{{ val }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ empty_state('schedule', 'Walang service demand data', 'Wala pang naitalang request.') }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-surface-card rounded-xl border border-outline-border shadow-sm overflow-hidden">
+  <div class="p-4 sm:p-5 border-b border-outline-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div>
+      <h3 class="text-title-md font-title-md text-on-surface">Recent System Audit Trail</h3>
+      <p class="text-body-sm text-on-surface-muted mt-0.5">Latest recorded administrative actions.</p>
+    </div>
+    <a class="inline-flex items-center gap-1.5 text-label-md font-bold text-primary no-underline" href="{{ url_for('admin.audit_logs') }}">
+      View Full Audit Logs
+      {{ icon('arrow_forward', 'text-base', size='1em') }}
+    </a>
+  </div>
+  <div class="overflow-x-auto"><table class="civic-table"><thead><tr><th>Action</th><th>Record</th><th>Time</th></tr></thead><tbody>{% for log in recent_audit %}<tr><td>{{ log.action }}</td><td>{{ log.entity_type }}{% if log.entity_id %} #{{ log.entity_id }}{% endif %}</td><td>{{ log.created_at.strftime('%Y-%m-%d %H:%M') }} UTC</td></tr>{% else %}<tr><td colspan="3">No administrative activity recorded yet.</td></tr>{% endfor %}</tbody></table></div>
+</section>
+
+</div>{% include 'partials/portal/_calendar.html' %}</div>
+{% endblock %}

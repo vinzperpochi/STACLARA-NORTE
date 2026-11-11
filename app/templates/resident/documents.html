@@ -1,0 +1,59 @@
+{% extends "resident/_portal_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% from "partials/portal/_macros.html" import status_badge, dt, empty_state %}
+{% block title %}Documents &amp; Clearances{% endblock %}
+{% block content %}
+<section class="bg-surface-card rounded-xl border border-outline-border civic-card-shadow">
+  <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 border-b border-outline-border">
+    <div>
+      <h1 class="text-headline-sm font-headline-sm text-on-surface font-bold">Documents &amp; Clearances</h1>
+      <p class="text-body-sm text-on-surface-muted mt-0.5">Dokumento at Sertipikasyon · Mag-file at sundan ang iyong request</p>
+    </div>
+    <a class="civic-btn-gradient text-white font-semibold px-4 py-2.5 rounded-lg text-body-md inline-flex items-center gap-1.5 no-underline shrink-0" href="{{ url_for('resident.document_request_create') }}">
+      {{ icon('post_add', '', size='18px') }}Mag-file ng Aplikasyon
+    </a>
+  </header>
+  <div class="p-5 space-y-5">
+    <div>
+      <h2 class="text-title-md font-title-md text-on-surface font-bold mb-3">Supported documents</h2>
+      <div class="civic-service-grid">
+        {% for item in document_types %}
+        <article class="civic-service-card">
+          <span class="civic-service-icon">{{ icon('description', '', size='24px') }}</span>
+          <h3>{{ item.name }}</h3>
+          <p>Autofilled from your resident record. Review the requirements before submitting.</p>
+          <p>Current fee: ₱{{ '%.2f'|format(document_fees[item.id]) }} · Subject to official confirmation</p>
+          <a class="btn btn-outline-success" href="{{ url_for('resident.document_request_create',document_type_id=item.id) }}">Request this document</a>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-body-sm border border-outline-border rounded-lg overflow-hidden">
+        <thead class="bg-surface-container-low text-on-surface font-bold text-label-sm uppercase">
+          <tr>
+            <th class="p-3" scope="col">Request no.</th>
+            <th class="p-3" scope="col">Document</th>
+            <th class="p-3" scope="col">Submitted</th>
+            <th class="p-3" scope="col">Status</th>
+            <th class="p-3 text-right" scope="col">Aksyon</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-border bg-white">
+          {% for item in requests %}
+          <tr class="hover:bg-surface-bg/80">
+            <td class="p-3 font-mono font-semibold text-primary break-all">{{ item.request_number }}</td>
+            <td class="p-3">{{ item.document_type.name if item.document_type else item.service_type }}</td>
+            <td class="p-3 text-on-surface-muted whitespace-nowrap">{{ dt(item.created_at) }}</td>
+            <td class="p-3">{{ status_badge(item.status, dense=true) }}</td>
+            <td class="p-3 text-right"><a class="text-primary hover:underline font-bold text-xs no-underline" href="{{ url_for('resident.document_request_detail', request_id=item.id) }}">Subaybayan</a></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5">{{ empty_state('description', 'Wala pang request', 'Mag-file ng dokumento para magsimula.', url_for('resident.document_request_create'), 'Mag-file ng Aplikasyon') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% include "partials/_pagination.html" %}{% endblock %}

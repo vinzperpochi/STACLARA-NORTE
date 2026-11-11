@@ -1,0 +1,64 @@
+{% from 'components/icons.html' import icon %}
+{%- set official = current_user.official -%}
+{%- set display_name = official.full_name if official else current_user.username -%}
+{%- set parts = display_name.split() -%}
+{%- set initials = ((parts[0][:1] if parts else current_user.username[:1]) ~ (parts[-1][:1] if parts|length > 1 else ''))|upper -%}
+<div class="bg-surface-container-lowest border-b border-outline-border sticky top-0 z-40 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3 min-w-0">
+      <button type="button" class="md:hidden p-2 -ml-1 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-lg" data-portal-drawer-open aria-label="Buksan ang menu" aria-controls="portal-sidebar" aria-expanded="false">
+        {{ icon('menu', '', size='24px') }}
+      </button>
+      <a class="flex items-center gap-3 min-w-0 no-underline" href="{{ url_for('admin.dashboard') }}">
+        <img class="w-11 h-11 rounded-full border-2 border-[#12902B] p-0.5 object-contain shrink-0 shadow-sm bg-white" alt="Official Seal of Barangay Sta. Clara Norte, Pila, Laguna" src="{{ url_for('static', filename='img/barangay-seal.png') }}" width="44" height="44">
+        <span class="min-w-0">
+          <span class="block text-[10px] uppercase tracking-widest text-primary-dark font-bold">Barangay Sta. Clara Norte</span>
+          <span class="text-title-lg font-title-lg text-on-surface leading-tight font-extrabold block truncate">Super Admin Console &amp; Analytics</span>
+        </span>
+      </a>
+    </div>
+
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      {% include 'partials/portal/_notifications.html' %}
+      <button type="button" class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary" title="Privacy Protection Notice" data-portal-modal="privacy" aria-label="Data privacy">
+        {{ icon('privacy_tip', '', size='20px') }}
+      </button>
+      <button type="button" class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary" title="System Help Desk" data-portal-modal="help" aria-label="Help desk">
+        {{ icon('help', '', size='20px') }}
+      </button>
+      <span class="h-6 w-px bg-outline-border mx-1 hidden sm:block" aria-hidden="true"></span>
+      <div class="relative" data-portal-dropdown>
+        <button type="button" class="flex items-center gap-2.5 pl-2 py-1 pr-2 rounded-lg bg-surface-bg border border-outline-border hover:border-primary/40" data-portal-dropdown-trigger aria-expanded="false" aria-haspopup="true">
+          {% include "partials/premium/_avatar.html" %}
+          <span class="text-left hidden md:block leading-tight">
+            <span class="font-title-md text-[13px] text-on-surface font-semibold block">{{ display_name }}</span>
+            <span class="font-label-sm text-[10px] text-on-surface-muted block">System Administrator</span>
+          </span>
+          {{ icon('expand_more', 'text-outline', size='16px') }}
+        </button>
+        <div class="hidden absolute right-0 mt-2 w-64 bg-surface-card rounded-xl border border-outline-border shadow-lg z-50 overflow-hidden" data-portal-dropdown-panel role="menu">
+          <div class="px-4 py-3 bg-surface-container-low border-b border-outline-border">
+            <p class="text-title-md font-title-md text-on-surface truncate">{{ display_name }}</p>
+            <p class="text-body-sm text-on-surface-muted truncate">{{ current_user.email }}</p>
+          </div>
+          <a class="flex items-center gap-2.5 px-4 py-2.5 text-body-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary no-underline" href="{{ url_for('auth.change_password') }}" role="menuitem">
+            {{ icon('password', '', size='20px') }}Palitan ang Password
+          </a>
+          {% if is_official and not is_admin %}
+          <a class="flex items-center gap-2.5 px-4 py-2.5 text-body-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary no-underline" href="{{ url_for('official.dashboard') }}" role="menuitem">
+            {{ icon('swap_horiz', '', size='20px') }}Officials Workspace
+          </a>
+          {% endif %}
+          {% if is_resident %}
+          <a class="flex items-center gap-2.5 px-4 py-2.5 text-body-md text-on-surface-variant hover:bg-surface-container-low hover:text-primary no-underline" href="{{ url_for('resident.dashboard') }}" role="menuitem">
+            {{ icon('swap_horiz', '', size='20px') }}Resident Portal
+          </a>
+          {% endif %}
+          <button type="button" class="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-body-md text-error hover:bg-error-container/40 border-t border-outline-border" data-portal-modal="signout" role="menuitem">
+            {{ icon('logout', '', size='20px') }}Mag-sign out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

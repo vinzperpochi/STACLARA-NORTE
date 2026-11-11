@@ -1,0 +1,88 @@
+{% extends "resident/_portal_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Mga Abiso at Anunsyo{% endblock %}
+
+{% block content %}
+<div class="stitch-breadcrumb" aria-label="Breadcrumb"><a href="{{ url_for('resident.dashboard') }}">Barangay Registry</a><span aria-hidden="true">›</span><a href="{{ url_for('resident.profile') }}">Civil Profile</a><span aria-hidden="true">›</span><span class="stitch-breadcrumb-current" aria-current="page">Mga Abiso at Anunsyo</span></div>
+
+<section class="flex flex-col sm:flex-row sm:items-end justify-between gap-4" aria-labelledby="notifications-title">
+  <div>
+    <div class="flex flex-wrap items-center gap-2.5">
+      <h1 class="stitch-page-title" id="notifications-title">Mga Abiso at Anunsyo</h1>
+      <span class="stitch-status-active">{{ unread_count }} hindi pa nababasa</span>
+    </div>
+    <p class="stitch-page-subtitle">Mga update at mensaheng ipinadala sa iyong resident account.</p>
+  </div>
+  <form method="post" action="{{ url_for('resident.notifications_read_all') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="stitch-btn-outline text-xs" {% if not unread_count %}disabled aria-disabled="true"{% endif %}>{{ icon('done_all', 'text-base', size='1em') }}Markahang nabasa lahat</button>
+  </form>
+</section>
+
+{% if ticker_alert %}
+<section class="stitch-advisory" aria-labelledby="notification-alert-title">
+  {{ icon('exclamation-triangle', 'stitch-advisory-icon text-2xl') }}
+  <div class="min-w-0 flex-1"><div class="flex flex-wrap items-center gap-2"><span class="stitch-status-chip">AKTIBONG ALERT</span><span class="text-[11px] text-on-surface-muted">{{ ticker_alert.alert_level|replace('_',' ')|title }} · {{ ticker_alert.issued_at.strftime('%b %d, %Y') }}</span></div><h2 id="notification-alert-title" class="mt-1">{{ ticker_alert.title }}</h2><p class="mt-1">{{ ticker_alert.message }}</p></div>
+  <a class="stitch-btn-outline shrink-0 text-xs" href="{{ url_for('resident.emergency_alerts') }}">Tingnan ang detalye {{ icon('arrow_forward', 'text-base', size='1em') }}</a>
+</section>
+{% endif %}
+
+<section class="stitch-card p-4 sm:p-5 space-y-4" aria-label="Mga filter ng abiso">
+<form method="get" class="flex flex-wrap items-end gap-3">
+  <input type="hidden" name="category" value="{{ category }}">
+  <label class="flex-1 min-w-0">Maghanap ng abiso<input class="civic-input w-full" type="search" name="q" value="{{ q }}" placeholder="Maghanap ng anunsyo o mensahe…"></label>
+  <label class="inline-flex items-center gap-2"><input type="checkbox" name="unread" value="1" {{ 'checked' if unread }}>Hindi pa nababasa lang</label>
+  <button class="stitch-btn-outline" type="submit">Apply filters</button>
+</form>
+<div class="flex flex-wrap gap-2" aria-label="Salain ayon sa kategorya">
+{% for key,label in [('all','Lahat'),('emergency','Emergency'),('service','Serbisyo'),('health','Kalusugan'),('event','Kaganapan'),('announcement','Pahayag')] %}
+<a href="{{ category_links[key] }}" class="stitch-filter-chip"{% if category==key %} aria-current="page" style="background:var(--civic-emerald);color:white"{% endif %}>{{ label }} <span class="stitch-filter-count">{{ category_counts.get(key,0) }}</span></a>
+{% endfor %}
+</div></section>
+
+<div class="flex flex-wrap items-center justify-between gap-2 px-1">
+  <p class="stitch-eyebrow">Pinakabagong abiso</p>
+  <p class="text-[11px] text-on-surface-muted" role="status" aria-live="polite">{{ notifications|length }} abiso</p>
+</div>
+
+<div class="space-y-3" role="list">
+  {% for item in notifications %}
+    {% set notice_text = (item.title ~ ' ' ~ item.message)|lower %}
+    {% if 'emergency' in notice_text or 'alert' in notice_text or 'emergency' in item.title|lower or 'babala' in notice_text %}{% set category = 'emergency' %}{% set category_label = 'Emergency' %}{% set category_icon = 'fmd_bad' %}
+    {% elif 'health' in notice_text or 'medical' in notice_text or 'kalusugan' in notice_text or 'philhealth' in notice_text %}{% set category = 'health' %}{% set category_label = 'Kalusugan' %}{% set category_icon = 'health_and_safety' %}
+    {% elif 'event' in notice_text or 'assembly' in notice_text or 'kaganapan' in notice_text or 'meeting' in notice_text %}{% set category = 'event' %}{% set category_label = 'Kaganapan' %}{% set category_icon = 'event' %}
+    {% elif 'document' in notice_text or 'request' in notice_text or 'clearance' in notice_text or 'serbisyo' in notice_text %}{% set category = 'service' %}{% set category_label = 'Serbisyo' %}{% set category_icon = 'assignment' %}
+    {% else %}{% set category = 'announcement' %}{% set category_label = 'Pahayag' %}{% set category_icon = 'megaphone' %}{% endif %}
+  <article class="stitch-card stitch-notice-card" data-stitch-notice data-read="{{ '1' if item.is_read else '0' }}" data-category="{{ category }}" data-search="{{ notice_text }}">
+    <div class="flex items-start gap-3">
+      <span class="stitch-icon-tile shrink-0">{{ icon(category_icon, '') }}</span>
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="stitch-record-chip stitch-record-chip-{{ category }}">{{ category_label }}</span>
+          <time class="text-[11px] text-on-surface-muted" datetime="{{ item.created_at.isoformat() }}">{{ item.created_at.strftime('%b %d, %Y · %I:%M %p') }}</time>
+          {% if not item.is_read %}<span class="inline-flex items-center gap-1 text-[10px] font-bold text-primary-dark"><span class="stitch-notice-dot" aria-hidden="true"></span>Bago</span>{% endif %}
+        </div>
+        <h2 class="mt-2 text-sm font-extrabold text-on-surface">{{ item.title }}</h2>
+        <p class="mt-1 text-xs leading-relaxed text-on-surface-variant whitespace-pre-line">{{ item.message }}</p>
+        {% if not item.is_read %}
+        <form class="mt-3" method="post" action="{{ url_for('resident.notification_read', notification_id=item.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="text-xs font-bold text-primary-dark hover:underline" type="submit">Markahang nabasa</button>
+        </form>
+        {% else %}<p class="mt-3 text-[10px] font-semibold text-on-surface-muted">Nabasa na</p>{% endif %}
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+
+<div class="stitch-card stitch-empty-state p-12 sm:p-16 text-center" data-stitch-empty {% if notifications %}hidden{% endif %}>
+  <div class="stitch-empty-icon-container">
+    <span class="stitch-empty-icon-wrap">{{ icon('notifications_off', 'text-primary', size='48px') }}</span>
+  </div>
+  <h2 class="mt-6 text-lg font-extrabold text-on-surface">Walang nakitang abiso</h2>
+  <p class="mt-2 text-sm text-on-surface-muted max-w-md mx-auto">Subukan ang ibang salita o kategorya. Lalabas dito ang mga abisong ipinadala sa iyong account.</p>
+  <a class="stitch-btn-primary mt-6" href="{{ url_for('resident.notifications') }}">Ibalik ang lahat ng filter</a>
+</div>
+{% include "partials/_pagination.html" %}
+{% endblock %}

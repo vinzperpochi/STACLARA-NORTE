@@ -1,0 +1,43 @@
+{% from 'macros/resident_fields.html' import input_field %}
+{% from 'components/icons.html' import icon %}
+<input type="hidden" name="profile_details_present" value="1">
+{% if form.first_name is defined %}
+<section class="rf-card" id="personal-details" aria-labelledby="personal-details-heading">
+  <div class="rf-section-title">{{ icon('person_badge') }}<div><h2 id="personal-details-heading">Personal information</h2><p>Basic information recorded in the resident registry.</p></div></div>
+  <div class="rf-grid rf-grid-three">{% for field in [form.first_name,form.middle_name,form.last_name,form.suffix,form.birth_date,form.sex,form.civil_status,form.nationality,form.occupation,form.contact_number,form.email,form.voter_status] %}{{ input_field(field) }}{% endfor %}</div>
+</section>
+{% endif %}
+<section class="rf-card" id="registration-details" aria-labelledby="registration-details-heading">
+  <div class="rf-section-title">{{ icon('assignment') }}<div><h2 id="registration-details-heading">Registration details</h2><p>Complete the available details. Optional information may be left blank.</p></div></div>
+  <div class="rf-grid">{% if form.first_name is not defined %}{{ input_field(form.nationality) }}{% endif %}{% for field in [form.place_of_birth,form.religion,form.educational_attainment,form.household_relationship] %}{{ input_field(field) }}{% endfor %}</div>
+</section>
+<section class="rf-card" id="residency-details" aria-labelledby="residency-details-heading">
+  <div class="rf-section-title">{{ icon('home_pin') }}<div><h2 id="residency-details-heading">Address &amp; household</h2><p>Residence information and household details.</p></div></div>
+  <div class="rf-grid">
+    {% if form.address_line is defined %}{{ input_field(form.address_line) }}{{ input_field(form.purok_id) }}{{ input_field(form.household_id) }}{{ input_field(form.household_member_no) }}{% endif %}
+    {% for field in [form.house_no,form.street_landmark,form.residency_duration] %}{{ input_field(field) }}{% endfor %}
+  </div>
+</section>
+<section class="rf-card" id="emergency-details" aria-labelledby="emergency-details-heading">
+  <div class="rf-section-title">{{ icon('contact_emergency') }}<div><h2 id="emergency-details-heading">Emergency contact</h2><p>If provided, enter both the contact name and a valid phone number.</p></div></div>
+  <div class="rf-grid rf-grid-three">{% for field in [form.emergency_contact_name,form.emergency_contact_relationship,form.emergency_contact_number] %}{{ input_field(field) }}{% endfor %}</div>
+</section>
+<section class="rf-card" id="category-details" aria-labelledby="category-details-heading">
+  <div class="rf-section-title">{{ icon('group') }}<div><h2 id="category-details-heading">Self-declared categories</h2><p>Select all that apply. These declarations do not establish approval or eligibility for benefits.</p></div></div>
+  <fieldset class="rf-check-grid"><legend class="sr-only">{{ form.special_categories.label.text }}</legend>{% for value,label in form.special_categories.choices %}<label class="rf-check"><input type="checkbox" name="special_categories" value="{{ value }}"{% if value in (form.special_categories.data or []) %} checked{% endif %}><span>{{ label }}</span></label>{% endfor %}</fieldset>
+  <div class="rf-error" role="alert">{% for error in form.special_categories.errors %}<p>{{ error }}</p>{% endfor %}</div>
+</section>
+<section class="rf-card" id="resident-images" aria-labelledby="resident-images-heading">
+  <div class="rf-section-title">{{ icon('policy') }}<div><h2 id="resident-images-heading">Photo &amp; verification images</h2><p>Maximum 5 MB per image. Leave an upload empty to keep the existing file.</p></div></div>
+  <div class="rf-photo-row" data-photo-block>
+    <div class="rf-avatar" data-resident-avatar><span aria-hidden="true">{{ ((resident.first_name or '')[:1] ~ (resident.last_name or '')[:1])|upper if resident else icon('account_circle', size='40px') }}</span>{% if resident and resident.profile_photo_filename %}<img data-resident-photo src="{{ url_for('official.resident_photo',resident_id=resident.id) if is_admin or is_official else url_for('resident.profile_photo') }}" alt="Current resident profile photo">{% endif %}</div>
+    <div class="rf-photo-input"><label for="{{ form.profile_photo.id }}">Profile photo</label><p data-resident-photo-note{% if resident and resident.profile_photo_filename %} hidden{% endif %}>No profile photo available</p><p>JPEG, PNG or WebP · up to 5 MB</p>{{ form.profile_photo(accept='image/jpeg,image/png,image/webp', class='rf-file', data_profile_image='true') }}<div class="rf-error" role="alert">{% for error in form.profile_photo.errors %}<p>{{ error }}</p>{% endfor %}</div></div>
+  </div>
+  <div class="rf-grid rf-upload-grid">
+    {% for field,column,kind,label in [(form.proof_of_residency,'proof_of_residency_filename','proof','Proof of residency'),(form.philsys_card,'philsys_card_filename','philsys','PhilSys image (optional)')] %}
+    <div class="rf-upload"><label for="{{ field.id }}">{{ icon('description') }} {{ label }}</label><p>JPEG or PNG · up to 5 MB</p>
+      {% if resident and resident|attr(column) %}<a class="rf-existing" href="{{ url_for('official.registration_file',resident_id=resident.id,kind=kind) if is_admin or is_official else url_for('resident.registration_file',kind=kind) }}" target="_blank" rel="noopener">View current image {{ icon('arrow_forward') }}</a>{% else %}<span class="rf-no-upload">No image uploaded</span>{% endif %}
+      {{ field(accept='image/jpeg,image/png', class='rf-file', aria_describedby=field.id ~ '-error') }}<div class="rf-error" id="{{ field.id }}-error" role="alert">{% for error in field.errors %}<p>{{ error }}</p>{% endfor %}</div>
+    </div>{% endfor %}
+  </div>
+</section>

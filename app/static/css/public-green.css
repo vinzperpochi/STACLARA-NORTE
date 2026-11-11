@@ -1,0 +1,9 @@
+/* Public portal uses the barangay green palette, including Bootstrap utility accents. */
+body.auth-shell{--bs-primary:#0A5C1E;--bs-primary-rgb:8,116,53;--bs-link-color:#0A5C1E;--bs-link-hover-color:#0A5C1E}
+.auth-shell .bg-primary{background-color:#0A5C1E!important}
+.auth-shell .text-primary{color:#0A5C1E!important}
+.auth-shell .border-primary{border-color:#0A5C1E!important}
+.auth-shell a.bg-primary:hover,.auth-shell button.bg-primary:hover{background-color:#0A5C1E!important}
+.auth-shell a.bg-primary:focus-visible,.auth-shell button.bg-primary:focus-visible{outline:3px solid #0A5C1E40;outline-offset:3px}
+.auth-shell [data-login-form] #identifier,.auth-shell [data-login-form] #password{padding-left:14px!important}
+html[data-civic-theme="dark"] .auth-shell .text-primary{color:#E7F8E9!important}

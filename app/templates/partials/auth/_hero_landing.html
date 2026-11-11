@@ -1,0 +1,20 @@
+{% from 'components/icons.html' import icon %}
+<header class="relative w-full overflow-hidden text-white pt-10 pb-24 md:pt-14 md:pb-32 header-gradient">
+  <div class="pointer-events-none absolute inset-0 opacity-15 diagonal-streaks"></div>
+  <div class="pointer-events-none absolute -top-16 -right-16 w-80 h-80 rounded-full blur-2xl" style="background: radial-gradient(circle, rgba(255, 211, 40, 0.22) 0%, rgba(255, 211, 40, 0) 70%);"></div>
+  <div class="pointer-events-none absolute -left-10 -bottom-10 w-44 h-44 rounded-full border-[6px] border-white/10 flex items-center justify-center opacity-40">
+    <div class="w-32 h-32 rounded-full border-[2px] border-dashed border-white/20 flex items-center justify-center">
+      {{ icon('shield-check', 'text-white/20 text-5xl') }}
+    </div>
+  </div>
+  <div class="relative max-w-4xl mx-auto px-4 flex flex-col items-center text-center gap-3 z-10">
+    <div class="relative mb-2 flex items-center justify-center">
+      <div class="absolute -inset-2 rounded-full bg-yellow-400/30 blur-md"></div>
+      <div class="relative h-24 w-24 overflow-hidden rounded-full border-2 border-yellow-400 bg-white shadow-2xl ring-2 ring-black/10 flex items-center justify-center p-0.5">
+        <img class="h-full w-full object-cover rounded-full" src="{{ url_for('static', filename='img/barangay-seal.png') }}" width="96" height="96" alt="Official seal of Barangay Sta. Clara Norte, Pila, Laguna">
+      </div>
+    </div>
+    <p class="text-[11px] sm:text-xs font-bold tracking-wider text-white/90 uppercase drop-shadow-sm">Republic of the Philippines • Municipality of Pila, Laguna</p>
+    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight uppercase drop-shadow">Pamahalaang Barangay Sta. Clara Norte</h1>
+  </div>
+</header>

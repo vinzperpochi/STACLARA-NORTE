@@ -1,0 +1,129 @@
+{% extends "resident/_portal_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout"><div class="dashboard-content">
+
+<section class="stitch-hero p-5 sm:p-7 lg:p-8" aria-labelledby="resident-greeting">
+  <div class="civic-dashboard-person">{% include "partials/premium/_avatar.html" %}<div class="civic-dashboard-completion"><span>Profile {{ profile_completeness }}% complete</span><div class="progress" role="progressbar" aria-label="Profile completeness" aria-valuenow="{{ profile_completeness }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:{{ profile_completeness }}%"></div></div><a href="{{ url_for('workspace.profile') }}" class="text-white">My profile</a></div></div>
+  <div class="stitch-hero-content flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+    <div class="min-w-0">
+      <div class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-black/15 px-3 py-1.5 text-[10px] font-extrabold tracking-wider text-white mb-4">
+        {{ icon('verified' if resident.is_verified else 'account_circle', 'text-[15px]') }}
+        {% if resident.is_verified %}BERIPIKADONG REKORD NG RESIDENTE{% else %}RESIDENT CITIZEN PORTAL{% endif %}
+      </div>
+      <h1 id="resident-greeting">Mabuhay, {{ resident.first_name }}{% if resident.middle_name %} {{ resident.middle_name[:1] }}.{% endif %}!</h1>
+      <p class="mt-3 max-w-2xl text-sm leading-relaxed">Maligayang pagbabalik sa opisyal na portal ng Barangay Sta. Clara Norte. Tingnan at pamahalaan dito ang iyong mga kahilingan at talaan.</p>
+      <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+        <span class="stitch-hero-detail">{{ icon('home_pin', '', size='1em') }}{{ resident.address_line or (resident.household.address_line if resident.household else 'Wala pang address sa talaan') }}{% if resident.purok %} · {{ resident.purok.name }}{% endif %}</span>
+        <span class="stitch-hero-detail">{{ icon('badge', '', size='1em') }}Resident Record · SCN-{{ '%06d'|format(resident.id) }}</span>
+        {% if resident.philsys_id %}<span class="stitch-hero-detail">{{ icon('verified_user', '', size='1em') }}PhilSys ID · {{ resident.philsys_id[:4] }}••••{{ resident.philsys_id[-4:] }}</span>{% endif %}
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2 lg:max-w-[230px] lg:flex-col lg:shrink-0">
+      <a class="stitch-hero-action" href="{{ url_for('resident.document_request_create') }}">{{ icon('post_add', '', size='1em') }}Bagong kahilingan</a>
+      <button type="button" class="stitch-hero-action stitch-hero-action-secondary" data-portal-modal="help">{{ icon('support_agent', '', size='1em') }}Tulong / Hotline</button>
+    </div>
+  </div>
+</section>
+
+{% if ticker_alert %}
+<section class="stitch-advisory" aria-labelledby="current-advisory-title">
+  {{ icon('exclamation-triangle', 'stitch-advisory-icon text-2xl') }}
+  <div class="min-w-0 flex-1">
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+      <h2 id="current-advisory-title">{{ ticker_alert.title }}</h2>
+      <span class="stitch-record-chip">{{ ticker_alert.alert_level|replace('_',' ')|title }}</span>
+      <span class="text-[10px] text-on-surface-muted">Inilabas {{ ticker_alert.issued_at.strftime('%b %d, %Y') }}</span>
+    </div>
+    <p class="mt-1">{{ ticker_alert.message }}</p>
+  </div>
+  <a class="stitch-btn-outline shrink-0 text-xs" href="{{ url_for('resident.emergency_alerts') }}">Mga alerto {{ icon('arrow_forward', 'text-base', size='1em') }}</a>
+</section>
+{% endif %}
+
+<section aria-label="Buod ng mga aktibidad" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <article class="stitch-card stitch-stat-card">
+    <div class="flex items-center justify-between gap-3">
+      <div><p class="stitch-eyebrow">Pinakabagong kahilingan</p>
+        {% if latest_request %}<h2 class="mt-2 text-[15px] font-extrabold text-on-surface">{{ latest_request.document_type.name if latest_request.document_type else latest_request.service_type }}</h2>
+        <p class="mt-1 text-[11px] font-mono text-on-surface-muted">{{ latest_request.request_number }}</p>
+        {% else %}<h2 class="mt-2 text-[15px] font-extrabold text-on-surface">Wala pang kahilingan</h2><p class="mt-1 text-[11px] text-on-surface-muted">Magsimula sa online services.</p>{% endif %}
+      </div>
+      <span class="stitch-stat-icon">{{ icon('description', '', size='1em') }}</span>
+    </div>
+    {% if latest_request %}<div class="mt-4 flex flex-wrap items-center justify-between gap-2"><span class="stitch-status-chip">{{ latest_request.status|replace('_',' ')|title }}</span><a class="text-xs font-bold text-primary-dark hover:underline" href="{{ url_for('resident.document_request_detail', request_id=latest_request.id) }}">Subaybayan →</a></div>
+    {% else %}<a class="mt-4 inline-flex text-xs font-bold text-primary-dark hover:underline" href="{{ url_for('resident.document_request_create') }}">Mag-file ng kahilingan →</a>{% endif %}
+  </article>
+
+  <article class="stitch-card stitch-stat-card">
+    <div class="flex items-center justify-between gap-3">
+      <div><p class="stitch-eyebrow">Queue status</p>
+        {% if latest_queue %}<h2 class="mt-2 text-[19px] font-extrabold font-mono text-on-surface">{{ latest_queue.queue_number }}</h2><p class="mt-1 text-[11px] text-on-surface-muted">{{ latest_queue.status|replace('_',' ')|title }}</p>
+        {% else %}<h2 class="mt-2 text-[15px] font-extrabold text-on-surface">Wala pang queue ticket</h2><p class="mt-1 text-[11px] text-on-surface-muted">Tingnan ang serbisyo sa pila.</p>{% endif %}
+      </div>
+      <span class="stitch-stat-icon" style="background:#fdf4d8;color:#806200">{{ icon('confirmation_number', '', size='1em') }}</span>
+    </div>
+    {% if latest_queue and latest_queue.appointment_date %}<p class="mt-3 text-[11px] text-on-surface-muted">Appointment: {{ latest_queue.appointment_date.strftime('%b %d, %Y') }}{% if latest_queue.appointment_time %} · {{ latest_queue.appointment_time.strftime('%I:%M %p') }}{% endif %}</p>{% endif %}
+    <a class="mt-4 inline-flex text-xs font-bold text-primary-dark hover:underline" href="{{ url_for('resident.queue_requests') }}">Buksan ang queue monitor →</a>
+  </article>
+
+  <article class="stitch-card stitch-stat-card">
+    <div class="flex items-center justify-between gap-3">
+      <div><p class="stitch-eyebrow">Mga hindi pa nababasang abiso</p><div class="mt-1 flex items-baseline gap-2"><span class="text-3xl font-extrabold text-primary">{{ unread_count }}</span><span class="text-[11px] text-on-surface-muted">bagong abiso</span></div></div>
+      <span class="stitch-stat-icon" style="background:#fff0ef;color:#d93025">{{ icon('mark_email_unread', '', size='1em') }}</span>
+    </div>
+    <a class="mt-4 inline-flex text-xs font-bold text-primary-dark hover:underline" href="{{ url_for('resident.notifications') }}">Tingnan ang mga abiso →</a>
+  </article>
+</section>
+
+<section aria-labelledby="quick-services-title">
+  <div class="mb-4 flex flex-wrap items-end justify-between gap-2">
+    <div><p class="stitch-eyebrow">Citizen workspace</p><h2 id="quick-services-title" class="mt-1 text-xl font-extrabold text-on-surface">Mabilisang Serbisyo Publiko</h2></div>
+    <span class="text-xs text-on-surface-muted">Piliin ang serbisyong kailangan mo</span>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <a href="{{ url_for('resident.documents') }}" class="stitch-card stitch-service-card"><span class="stitch-stat-icon">{{ icon('edit_document', '', size='1em') }}</span><h3 class="mt-4">Documents &amp; Clearances</h3><p>Mag-request ng mga dokumento at sertipikasyon online, at subaybayan ang kasalukuyang status.</p><span class="stitch-service-link">Mag-file ng kahilingan {{ icon('arrow_forward', '', size='1em') }}</span></a>
+    <a href="{{ url_for('resident.queue_requests') }}" class="stitch-card stitch-service-card"><span class="stitch-stat-icon" style="background:#fff7dc;color:#806200">{{ icon('confirmation_number', '', size='1em') }}</span><h3 class="mt-4">Queue Status</h3><p>Tingnan ang iyong mga digital queue request at kaugnay na iskedyul.</p><span class="stitch-service-link">Buksan ang queue monitor {{ icon('arrow_forward', '', size='1em') }}</span></a>
+    <a href="{{ url_for('resident.household') }}" class="stitch-card stitch-service-card"><span class="stitch-stat-icon">{{ icon('family_restroom', '', size='1em') }}</span><h3 class="mt-4">Household</h3><p>Tingnan ang impormasyong naka-link sa iyong sambahayan sa resident registry.</p><span class="stitch-service-link">Tingnan ang talaan {{ icon('arrow_forward', '', size='1em') }}</span></a>
+    <a href="{{ url_for('resident.notifications') }}" class="stitch-card stitch-service-card"><span class="stitch-stat-icon" style="background:#fff0ef;color:#d93025">{{ icon('bell', '') }}</span><h3 class="mt-4">Notifications Hub</h3><p>Basahin ang mga abiso at update na ipinadala sa iyong account.</p><span class="stitch-service-link">Basahin ang mga abiso {{ icon('arrow_forward', '', size='1em') }}</span></a>
+    <a href="{{ url_for('resident.blotter_cases') }}" class="stitch-card stitch-service-card"><span class="stitch-stat-icon">{{ icon('gavel', '', size='1em') }}</span><h3 class="mt-4">Incident &amp; Blotter</h3><p>Gumawa o tingnan ang mga kasong naka-link sa iyong account.</p><span class="stitch-service-link">Buksan ang mga kaso {{ icon('arrow_forward', '', size='1em') }}</span></a>
+    <a href="{{ url_for('resident.profile') }}" class="stitch-card stitch-service-card"><span class="stitch-stat-icon">{{ icon('contact_emergency', '', size='1em') }}</span><h3 class="mt-4">Civil Profile &amp; Resident ID</h3><p>Tingnan ang impormasyong hawak ng lokal na resident registry at humiling ng pagwawasto.</p><span class="stitch-service-link">Tingnan ang profile {{ icon('arrow_forward', '', size='1em') }}</span></a>
+  </div>
+</section>
+
+{% if latest_request %}
+<section class="stitch-card p-5 sm:p-6" aria-labelledby="request-tracking-title">
+  <div class="flex flex-wrap items-start justify-between gap-3 border-b border-[#edf2ed] pb-4">
+    <div><p class="stitch-eyebrow">Aktibong dokumento &amp; tracking</p><h2 id="request-tracking-title" class="mt-1 text-lg font-extrabold text-on-surface">{{ latest_request.document_type.name if latest_request.document_type else latest_request.service_type }}</h2><p class="mt-1 text-xs text-on-surface-muted">Reference: <span class="font-mono">{{ latest_request.request_number }}</span></p></div>
+    <span class="stitch-status-chip">{{ latest_request.status|replace('_',' ')|title }}</span>
+  </div>
+  <div class="mt-4 flex flex-wrap items-center justify-between gap-3"><p class="text-xs text-on-surface-muted">Huling update: {{ latest_request.updated_at.strftime('%b %d, %Y · %I:%M %p') if latest_request.updated_at else latest_request.created_at.strftime('%b %d, %Y · %I:%M %p') }}</p><a class="stitch-btn-secondary text-xs" href="{{ url_for('resident.document_request_detail', request_id=latest_request.id) }}">Buksan ang detalye {{ icon('arrow_forward', 'text-base', size='1em') }}</a></div>
+</section>
+{% endif %}
+
+<section class="stitch-card p-5 sm:p-6" aria-labelledby="recent-requests-title">
+  <div class="mb-4 flex flex-wrap items-end justify-between gap-2"><div><p class="stitch-eyebrow">Mga kamakailang transaksyon</p><h2 id="recent-requests-title" class="mt-1 text-lg font-extrabold text-on-surface">Mga Kahilingan</h2></div><a class="text-xs font-bold text-primary-dark hover:underline" href="{{ url_for('resident.requests') }}">Tingnan lahat →</a></div>
+  <div class="stitch-table-wrap">
+    <table class="stitch-table">
+      <thead><tr><th>Reference ID</th><th>Uri ng serbisyo</th><th>Petsa</th><th>Katayuan</th><th>Aksyon</th></tr></thead>
+      <tbody>
+        {% for req in recent_requests %}
+        <tr>
+          <td class="font-mono font-bold text-primary-dark">{{ req.request_number }}</td>
+          <td>{{ req.document_type.name if req.document_type else req.service_type }}</td>
+          <td>{% if req.created_at.date() == now.date() %}Ngayon · {{ req.created_at.strftime('%I:%M %p') }}{% else %}{{ req.created_at.strftime('%b %d, %Y') }}{% endif %}</td>
+          <td><span class="stitch-status-chip">{{ req.status|replace('_',' ')|title }}</span></td>
+          <td><a class="font-bold text-primary-dark hover:underline" href="{{ url_for('resident.document_request_detail', request_id=req.id) }}">Subaybayan</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="py-8 text-center text-on-surface-muted">Wala pang transaksyon. Maaari kang magsimula sa Documents &amp; Clearances.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div>{% include 'partials/portal/_calendar.html' %}</div>
+{% endblock %}

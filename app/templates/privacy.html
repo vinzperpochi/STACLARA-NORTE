@@ -1,0 +1,30 @@
+{% extends "layouts/auth_base.html" %}
+{% block title %}Privacy Notice | Barangay Sta. Clara Norte{% endblock %}
+{% block content %}
+{% include "partials/_site_info.html" %}
+<div class="w-full max-w-3xl mx-auto">
+  <div class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-6 sm:p-10 shadow-xl space-y-5">
+    <p class="text-[11px] font-bold uppercase tracking-wider text-[#12902B]">Privacy notice · Version 2026-09-18</p>
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-[#11291A] tracking-tight">Barangay Records Privacy Notice</h1>
+    <p class="text-sm text-[#5F7265] leading-relaxed">This system processes personal information for legitimate barangay administration, public service delivery, document issuance, health and social-welfare assistance, disaster response, and statutory recordkeeping. Processing is designed to follow the principles of transparency, legitimate purpose, proportionality, and accountability under the Philippine Data Privacy Act of 2012 and its implementing rules.</p>
+    <h2 class="text-[15px] font-bold text-primary-dark uppercase tracking-wider border-b border-border-ui pb-2">Information we collect</h2>
+    <p class="text-sm text-[#5F7265] leading-relaxed">We collect only information reasonably needed for the selected service, such as identity and contact details, household or service information, request history, and records required for health, welfare, emergency, or legal operations.</p>
+    <h2 class="text-[15px] font-bold text-primary-dark uppercase tracking-wider border-b border-border-ui pb-2">How information is protected</h2>
+    <p class="text-sm text-[#5F7265] leading-relaxed">Access is role-based and authenticated. Passwords are hashed, forms use CSRF protection, sessions expire, uploads are restricted and renamed, database queries are parameterized, sensitive pages are not cached, and sensitive actions are recorded in an append-only audit trail.</p>
+    <h2 class="text-[15px] font-bold text-primary-dark uppercase tracking-wider border-b border-border-ui pb-2">Public verification</h2>
+    <p class="text-sm text-[#5F7265] leading-relaxed">Document verification exposes only the minimum facts needed to confirm authenticity. It does not disclose the resident's name, address, contact information, health information, or other sensitive personal information.</p>
+    <h2 class="text-[15px] font-bold text-primary-dark uppercase tracking-wider border-b border-border-ui pb-2">Your rights</h2>
+    <p class="text-sm text-[#5F7265] leading-relaxed">Subject to applicable legal limitations, data subjects may request information about processing, access or correction of their information, and raise concerns about unauthorized or excessive processing through the barangay office or its designated privacy contact.</p>
+    <h2 class="text-[15px] font-bold text-primary-dark uppercase tracking-wider border-b border-border-ui pb-2">Retention and sharing</h2>
+    <p class="text-sm text-[#5F7265] leading-relaxed">Records are retained only as long as necessary for the stated purpose, legal obligations, and operational accountability. Information is shared only with authorized personnel or parties with a lawful and documented purpose.</p>
+    <div class="p-4 rounded-xl bg-[#E7F8E9] border border-[#22B33A]/30 text-sm text-[#11291A] space-y-1">
+      <p class="font-bold text-[#12902B]">Data Protection Officer</p>
+      <p>Name: {{ dpo_name }}</p>
+      <p>Email: {{ dpo_email }}</p>
+      <p>Phone: {{ dpo_phone }}</p>
+      {% if is_admin %}<p><a class="font-semibold underline" href="{{ url_for('admin.settings',_anchor='barangay-information-title') }}">Update barangay / DPO information</a></p>{% endif %}
+    </div>
+    <p class="text-xs text-[#5F7265]">For privacy questions or requests, contact the barangay office through its official service channel. Do not send passwords or sensitive documents through an unsecured message.</p>
+  </div>
+</div>
+{% endblock %}

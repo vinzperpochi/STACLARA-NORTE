@@ -1,0 +1,3 @@
+<link rel="stylesheet" href="{{ url_for('static',filename='css/client-validation.css') }}?v=20261107-1">
+<script defer src="{{ url_for('static',filename='js/client-validation.js') }}?v=20261107-1"></script>
+{% if form is defined and form._fields is defined %}<script type="application/json" data-client-validation-schema>{{ client_validation_schema(form)|tojson }}</script>{% endif %}

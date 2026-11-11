@@ -1,0 +1,16 @@
+{% extends "layouts/auth_base.html" %}
+{% block title %}Registration Status | Pamahalaang Barangay Sta. Clara Norte{% endblock %}
+{% block content %}
+<div class="w-full max-w-md mx-auto">
+  <div class="bg-card-white border border-border-ui rounded-2xl p-6 sm:p-8 shadow-xl text-center space-y-5">
+    <div class="w-16 h-16 rounded-full bg-mint-tint border-2 border-core-green flex items-center justify-center mx-auto text-core-green">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+    </div>
+    <div>
+      <h2 class="text-[20px] font-extrabold text-ink">Registration Submitted</h2>
+      <p class="text-[13px] text-muted mt-1">Ang iyong registration ay naisumite na. Hintayin ang pag-apruba ng barangay staff. Ipapadala sa email mo ang Resident ID at pansamantalang password kapag naaprubahan.</p>
+    </div>
+    <a class="inline-flex items-center justify-center w-full min-h-[44px] px-6 py-3 rounded-xl bg-core-green hover:bg-primary-dark text-white font-bold text-[14px] shadow-md no-underline" href="{{ url_for('auth.login') }}">Pumunta sa pag-login</a>
+  </div>
+</div>
+{% endblock %}

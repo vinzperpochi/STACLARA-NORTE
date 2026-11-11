@@ -1,0 +1,39 @@
+{% extends 'attendance/_base.html' %}
+{% from 'attendance/_lists.html' import toolbar,pager with context %}
+{% block title %}Attendance reports & DTR{% endblock %}
+{% block content %}
+<div class="ops-page ops-attendance">
+  <header class="ops-hero"><div><p class="civic-eyebrow">DAILY TIME RECORD</p><h1>Attendance reports</h1><p>Review attendance and download daily time records for your selected dates.</p></div></header>
+  {% include 'attendance/_nav.html' %}
+  <section class="civic-panel ops-panel">
+    <h2>Build an attendance report</h2>
+    <p class="ops-muted">Choose the dates and personnel, then view the results or download a file. Downloads use the same filters.</p>
+    <form method="get" class="ops-form">
+      <input type="hidden" name="per_page" value="{{ pagination.per_page }}">
+      {% if request.args.get('q') %}<input type="hidden" name="q" value="{{ request.args['q'] }}">{% endif %}
+      <label>Start date<input required class="form-control" type="date" name="start_date" value="{{ start }}"></label>
+      <label>End date<input required class="form-control" type="date" name="end_date" value="{{ end }}"></label>
+      <label>Personnel<select class="form-select" name="personnel_id" data-searchable-select><option value="">{{ 'All personnel' if manage else 'My personnel record' }}</option>{% for person in personnel_options %}<option value="{{ person.id }}" {{ 'selected' if request.args.get('personnel_id','')==person.id|string else '' }}>{{ person.full_name }} · {{ person.employee_id }}</option>{% endfor %}</select></label>
+      <label>Department<input class="form-control" name="department" value="{{ request.args.get('department','') }}" placeholder="All departments" list="attendanceDepartments"><datalist id="attendanceDepartments">{% for department in personnel_options|map(attribute='department')|reject('none')|unique|sort %}<option value="{{ department }}">{% endfor %}</datalist></label>
+      <div class="ops-full ops-actions ops-report-actions">
+        <button class="civic-btn" type="submit">View report</button>
+        <button class="civic-btn-outline" type="submit" name="format" value="csv">Download CSV</button>
+        <button class="civic-btn-outline" type="submit" name="format" value="xlsx">Download Excel</button>
+        <button class="civic-btn-outline" type="submit" name="format" value="pdf">Download PDF / DTR</button>
+        <a class="civic-btn-outline" href="{{ url_for('attendance.reports') }}">Reset filters</a>
+      </div>
+    </form>
+  </section>
+  <section class="civic-panel ops-panel ops-list-section" id="report-records">
+    <div class="ops-section-heading"><h2>Attendance records</h2><span class="ops-status">{{ pagination.total }} {{ 'record' if pagination.total==1 else 'records' }} · {{ start }} to {{ end }}</span></div>
+    {{ toolbar(pagination,anchor='report-records') }}
+    <p class="ops-muted">Downloads include all records matching your filters across every page.</p>
+    <p class="ops-muted">Scroll horizontally to see all columns on smaller screens.</p>
+    <div class="ops-table-wrap" tabindex="0" role="region" aria-label="Attendance report records"><table class="civic-table ops-table"><thead><tr><th>Employee</th><th>Date</th><th>Status</th><th>Hours</th><th>Late min</th><th>Undertime min</th><th>Approved overtime min</th></tr></thead><tbody>
+    {% for row in rows %}<tr><td>{{ row.person.full_name }}<small class="d-block ops-muted">{{ row.person.position }}{% if row.person.department %} · {{ row.person.department }}{% endif %}</small></td><td>{{ row.date }}</td><td>{{ row.status }}</td><td>{{ '%.2f'|format(row.worked_minutes/60) }}</td><td>{{ row.late_minutes }}</td><td>{{ row.undertime_minutes }}</td><td>{{ row.overtime_minutes }}</td></tr>
+    {% else %}<tr><td colspan="7" class="ops-empty">No records for these filters. Change the dates or reset the filters above.</td></tr>{% endfor %}
+    </tbody></table></div>
+    {{ pager(pagination,anchor='report-records',label='Report records') }}
+  </section>
+</div>
+{% endblock %}

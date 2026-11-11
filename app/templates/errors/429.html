@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Too Many Requests{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #f3faf4 0%, #e7f8e9 100%);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card border-0 shadow-lg" style="border-radius: 1.5rem; overflow: hidden;">
+                    <!-- Header with gradient -->
+                    <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none;">
+                        <div class="mb-3">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/>
+                                <path d="M12 8v4M12 16h.01" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h1 class="display-4 fw-bold mb-0">429</h1>
+                        <h2 class="h5 fw-semibold mb-0">Too Many Requests</h2>
+                    </div>
+                    
+                    <!-- Body -->
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-4">
+                            <p class="text-muted mb-3">
+                                You've made too many requests in a short period. Please slow down and try again.
+                            </p>
+                            
+                            {% if retry_after %}
+                            <div class="alert alert-warning d-inline-flex align-items-center gap-2 px-4 py-3" style="border-radius: 1rem;">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                                <strong>Please wait {{ retry_after }}</strong>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Rate Limit Info -->
+                        <div class="bg-light rounded-3 p-3 mb-4">
+                            <h6 class="fw-semibold mb-2">Why did this happen?</h6>
+                            <ul class="text-start text-muted small mb-0 ps-4">
+                                <li>Too many login attempts</li>
+                                <li>Rapid form submissions</li>
+                                <li>Excessive search queries</li>
+                                <li>Automated access detected</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg" style="border-radius: 0.75rem;">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" class="me-2">
+                                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                                </svg>
+                                Return to Home
+                            </a>
+                            <button onclick="history.back()" class="btn btn-outline-secondary" style="border-radius: 0.75rem;">
+                                Go Back
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="card-footer bg-light text-center py-3" style="border: none;">
+                        <small class="text-muted">
+                            Rate limits help protect our system and ensure fair access for everyone.
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- Countdown Timer -->
+                {% if retry_after %}
+                <div class="text-center mt-4">
+                    <div class="d-inline-flex align-items-center gap-2 bg-white px-4 py-2 rounded-pill shadow-sm">
+                        <div class="spinner-border spinner-border-sm text-warning" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span class="text-muted small">Auto-retry in <strong id="countdown"></strong></span>
+                    </div>
+                </div>
+                
+                <script>
+                    // Auto-refresh after retry period
+                    const retryAfter = "{{ retry_after }}";
+                    const seconds = parseInt(retryAfter.match(/\d+/)?.[0] || 60);
+                    let remaining = seconds;
+                    
+                    const countdownEl = document.getElementById('countdown');
+                    if (countdownEl) {
+                        const interval = setInterval(() => {
+                            remaining--;
+                            countdownEl.textContent = `${remaining}s`;
+                            
+                            if (remaining <= 0) {
+                                clearInterval(interval);
+                                location.reload();
+                            }
+                        }, 1000);
+                        
+                        countdownEl.textContent = `${remaining}s`;
+                    }
+                </script>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

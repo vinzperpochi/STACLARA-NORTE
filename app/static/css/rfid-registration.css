@@ -1,0 +1,206 @@
+/* Scan popup only. External CSS keeps animation and media rules outside Jinja. */
+#rfidScanDialog {
+  --rfid-accent: var(--civic-emerald, #0a5c1e);
+  --rfid-soft: var(--civic-mint, #e7f8e9);
+  --rfid-amber: #926013;
+  box-sizing: border-box;
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid var(--civic-border);
+  border-radius: 24px;
+  background: var(--civic-card);
+  color: var(--civic-ink);
+  box-shadow: 0 32px 100px #062b1640, 0 4px 20px #062b1614;
+  animation: rfid-dialog-enter .22s ease-out;
+}
+#rfidScanDialog::before {
+  content: "";
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, var(--civic-emerald) 0%, var(--civic-primary) 78%, var(--civic-gold) 100%);
+}
+#rfidScanDialog::backdrop { background: #041d1278; backdrop-filter: blur(5px); }
+#rfidScanDialog [hidden] { display: none !important; }
+#rfidScanDialog .rfid-scan-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 24px 28px 0;
+}
+#rfidScanDialog .rfid-scan-eyebrow {
+  margin: 0;
+  color: var(--rfid-accent);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+#rfidScanDialog .rfid-reader-badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 7px;
+  min-height: 28px;
+  padding: 5px 10px;
+  border: 1px solid #e9dcbf;
+  border-radius: 20px;
+  background: var(--civic-warning);
+  color: var(--rfid-amber);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+#rfidScanDialog .rfid-reader-badge > span:first-child {
+  width: 7px; height: 7px; border-radius: 50%; background: currentColor;
+}
+#rfidScanDialog[data-reader="connecting"] .rfid-reader-badge > span:first-child { animation: rfid-led 1.6s ease-in-out infinite; }
+#rfidScanDialog:is([data-reader="ready"], [data-stage="captured"]) .rfid-reader-badge {
+  background: var(--rfid-soft); color: var(--rfid-accent); border-color: var(--civic-border);
+}
+#rfidScanDialog .rfid-scan-steps {
+  display: flex;
+  list-style: none;
+  gap: 12px;
+  margin: 22px 28px 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--civic-border);
+  border-bottom: 1px solid var(--civic-border);
+}
+#rfidScanDialog .rfid-scan-steps li {
+  display: flex; align-items: center; gap: 8px; flex: 1;
+  color: var(--civic-muted); font-size: 11px; font-weight: 600; white-space: nowrap;
+}
+#rfidScanDialog .rfid-scan-steps li:not(:last-child)::after {
+  content: ""; height: 1px; flex: 1; margin-left: 4px; background: var(--civic-border);
+}
+#rfidScanDialog .rfid-step-number {
+  display: grid; place-items: center; flex: 0 0 24px; width: 24px; height: 24px;
+  border: 1px solid var(--civic-border); border-radius: 50%; font-size: 10px;
+  background: var(--civic-page);
+}
+#rfidScanDialog .rfid-scan-steps li[aria-current="step"] { color: var(--rfid-accent); font-weight: 750; }
+#rfidScanDialog .rfid-scan-steps li[aria-current="step"] .rfid-step-number {
+  border-color: var(--rfid-accent); background: var(--rfid-accent); color: #fff; box-shadow: 0 0 0 3px var(--rfid-soft);
+}
+#rfidScanDialog:is([data-reader="ready"], [data-stage="captured"]) #rfidStepConnect .rfid-step-number,
+#rfidScanDialog[data-stage="captured"] #rfidStepScan .rfid-step-number {
+  background: var(--rfid-soft); border-color: var(--civic-border); color: var(--rfid-accent);
+}
+#rfidScanDialog .rfid-scan-visual {
+  position: relative; display: grid; place-items: center; height: 164px; margin: 16px 28px 6px;
+  border-radius: 18px;
+  background: radial-gradient(ellipse at center, var(--rfid-soft), transparent 70%);
+}
+#rfidScanDialog .rfid-scan-art { display: block; width: 260px; height: 164px; overflow: visible; }
+#rfidScanDialog .rfid-orbit { stroke: var(--rfid-accent); stroke-width: 1; }
+#rfidScanDialog .rfid-orbit-outer { opacity: .09; stroke-dasharray: 3 6; }
+#rfidScanDialog .rfid-orbit-inner { opacity: .1; }
+#rfidScanDialog .rfid-card-face { fill: var(--civic-emerald); }
+#rfidScanDialog .rfid-card-shadow { fill: #083e14; opacity: .12; }
+#rfidScanDialog .rfid-card-art { transform: rotate(-8deg); transform-origin: 130px 72px; }
+#rfidScanDialog[data-stage="waiting"] .rfid-card-art { animation: rfid-card-hover 3.2s ease-in-out infinite; }
+#rfidScanDialog[data-reader="ready"] .rfid-orbit-inner { animation: rfid-signal 2s ease-out infinite; transform-origin: 130px 78px; }
+#rfidScanDialog .rfid-reader-base { fill: var(--civic-border); }
+#rfidScanDialog .rfid-reader-light { fill: var(--civic-primary); }
+#rfidScanDialog .rfid-scan-symbol {
+  position: absolute; left: calc(50% + 38px); top: 80px;
+  display: none; place-items: center; width: 44px; height: 44px; margin: 0;
+  border: 4px solid var(--civic-card); border-radius: 50%;
+  font-size: 22px; font-weight: 750; line-height: 1; box-shadow: 0 4px 12px #062b1620;
+}
+#rfidScanDialog[data-stage="captured"] .rfid-scan-symbol { display: grid; background: var(--civic-emerald); color: white; }
+#rfidScanDialog[data-stage="error"] .rfid-scan-symbol { display: grid; background: var(--civic-warning); color: var(--rfid-amber); }
+#rfidScanDialog[data-stage="error"] .rfid-card-art { opacity: .5; }
+#rfidScanDialog h2 {
+  margin: 0 28px 8px; color: var(--civic-ink); text-align: center;
+  font-size: 25px; font-weight: 750; line-height: 1.3; letter-spacing: -.035em;
+}
+#rfidScanDialog h2:focus { outline: none; }
+#rfidScanDialog .rfid-scan-subtitle { margin: 0 28px; color: var(--civic-muted); text-align: center; font-size: 13px; line-height: 1.6; }
+#rfidScanDialog[data-stage="captured"] .rfid-scan-subtitle,
+#rfidScanDialog[data-stage="error"] .rfid-scan-subtitle { display: none; }
+#rfidScanDialog .rfid-scan-status-box {
+  display: flex; align-items: flex-start; gap: 12px;
+  margin: 22px 28px 16px; padding: 16px;
+  border: 1px solid var(--civic-border); border-radius: 14px; background: var(--civic-page);
+}
+#rfidScanDialog #rfidScanStatus { margin: 0; min-width: 0; overflow-wrap: anywhere; font-size: 13px; font-weight: 600; line-height: 1.7; color: var(--civic-ink); }
+#rfidScanDialog .rfid-status-icon {
+  display: grid; place-items: center; position: relative; flex: 0 0 24px; width: 24px; height: 24px;
+  color: var(--rfid-accent);
+}
+#rfidScanDialog[data-stage="waiting"] .rfid-status-icon::before {
+  content: ""; position: absolute; inset: 3px; border: 2px solid var(--civic-border);
+  border-top-color: var(--rfid-accent); border-radius: 50%; animation: rfid-spinner .9s linear infinite;
+}
+#rfidScanDialog .rfid-status-check { display: none; width: 22px; height: 22px; }
+#rfidScanDialog .rfid-status-alert { display: none; font-size: 16px; font-weight: 800; }
+#rfidScanDialog[data-stage="captured"] .rfid-status-check { display: block; }
+#rfidScanDialog[data-stage="error"] .rfid-status-alert { display: block; }
+#rfidScanDialog[data-stage="captured"] .rfid-scan-status-box { background: var(--rfid-soft); border-color: #a6d5b2; }
+#rfidScanDialog[data-stage="error"] .rfid-scan-status-box { background: var(--civic-warning); border-color: #d9bd83; }
+#rfidScanDialog[data-stage="error"] .rfid-status-icon { color: var(--rfid-amber); }
+#rfidScanDialog .rfid-scan-note {
+  display: flex; align-items: flex-start; gap: 9px; margin: 0 30px 24px; color: var(--civic-muted);
+}
+#rfidScanDialog .rfid-scan-note > svg { flex: 0 0 17px; width: 17px; height: 17px; margin-top: 2px; }
+#rfidScanDialog #rfidScanHint { margin: 0; font-size: 12px; line-height: 1.7; color: var(--civic-muted); }
+#rfidScanDialog .rfid-scan-actions {
+  display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 10px;
+  margin: 0; padding: 18px 28px; border-top: 1px solid var(--civic-border); background: var(--civic-page);
+}
+#rfidScanDialog .rfid-scan-keyboard { display: inline-flex; align-items: center; gap: 5px; margin-right: auto; font-size: 11px; color: var(--civic-muted); }
+#rfidScanDialog .rfid-scan-keyboard kbd { padding: 2px 5px; border: 1px solid var(--civic-border); border-radius: 4px; background: var(--civic-card); color: inherit; font-size: 10px; font-family: inherit; box-shadow: 0 1px 0 var(--civic-border); }
+#rfidScanDialog:not([data-stage="waiting"]) .rfid-scan-keyboard { display: none; }
+#rfidScanDialog .rfid-scan-actions button { min-height: 44px; padding: 10px 17px; border-radius: 10px; font-size: 13px; }
+#rfidScanDialog #rfidScanCancel { margin-right: auto; border: 1px solid var(--civic-border) !important; background: var(--civic-card); color: var(--civic-muted); box-shadow: none; }
+#rfidScanDialog[data-stage="waiting"] #rfidScanCancel { margin-right: 0; }
+#rfidScanDialog #rfidScanCancel:hover { background: var(--rfid-soft); color: var(--rfid-accent); border-color: var(--rfid-accent) !important; }
+#rfidScanDialog #rfidScanAgain { border: 1px solid var(--civic-border) !important; background: var(--civic-card); color: var(--rfid-accent); box-shadow: none; }
+#rfidScanDialog #rfidScanDone { background: var(--civic-emerald); border: 1px solid var(--civic-emerald); color: white; box-shadow: 0 3px 8px #0a5c1e24; }
+#rfidScanDialog #rfidScanDone:hover { background: var(--civic-forest); }
+#rfidScanDialog button:focus-visible { outline: 2px solid var(--civic-focus) !important; outline-offset: 3px; }
+html[data-civic-theme="dark"] #rfidScanDialog { --rfid-accent: #9ce6af; --rfid-amber: #f4ce84; }
+html[data-civic-theme="dark"] #rfidScanDialog .rfid-reader-badge { border-color: #74613e; }
+html[data-civic-theme="dark"] #rfidScanDialog .rfid-step-number { color: var(--civic-muted); }
+html[data-civic-theme="dark"] #rfidScanDialog .rfid-scan-steps li[aria-current="step"] .rfid-step-number { color: var(--civic-forest); }
+html[data-civic-theme="dark"] #rfidScanDialog[data-stage="captured"] .rfid-scan-status-box { border-color: #4d7557; }
+html[data-civic-theme="dark"] #rfidScanDialog[data-stage="error"] .rfid-scan-status-box { border-color: #74613e; }
+@keyframes rfid-dialog-enter { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes rfid-card-hover { 0%, 100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-5px) rotate(-5deg); } }
+@keyframes rfid-spinner { to { transform: rotate(360deg); } }
+@keyframes rfid-led { 50% { opacity: .35; } }
+@keyframes rfid-signal { from { transform: scale(.9); opacity: .25; } to { transform: scale(1.25); opacity: 0; } }
+@media (max-width: 480px) {
+  #rfidScanDialog { width: calc(100vw - 24px); max-height: calc(100dvh - 24px); border-radius: 20px; }
+  #rfidScanDialog .rfid-scan-header { padding: 20px 20px 0; gap: 8px; }
+  #rfidScanDialog .rfid-scan-eyebrow { font-size: 9px; letter-spacing: .08em; }
+  #rfidScanDialog .rfid-reader-badge { font-size: 10px; padding: 5px 8px; }
+  #rfidScanDialog .rfid-scan-steps { margin: 18px 20px 0; gap: 9px; }
+  #rfidScanDialog .rfid-scan-steps li { gap: 6px; font-size: 10px; }
+  #rfidScanDialog .rfid-scan-steps li:not(:last-child)::after { margin-left: 0; }
+  #rfidScanDialog .rfid-step-number { width: 22px; height: 22px; flex-basis: 22px; }
+  #rfidScanDialog .rfid-scan-visual { margin-top: 12px; height: 144px; }
+  #rfidScanDialog .rfid-scan-art { width: 230px; height: 144px; }
+  #rfidScanDialog .rfid-scan-symbol { top: 69px; left: calc(50% + 32px); }
+  #rfidScanDialog h2 { margin-inline: 20px; font-size: 22px; }
+  #rfidScanDialog .rfid-scan-subtitle { margin-inline: 20px; font-size: 12px; }
+  #rfidScanDialog .rfid-scan-status-box { margin: 18px 20px 14px; padding: 13px; gap: 9px; }
+  #rfidScanDialog .rfid-scan-note { margin: 0 22px 20px; }
+  #rfidScanDialog .rfid-scan-actions { padding: 16px 20px; gap: 8px; }
+  #rfidScanDialog .rfid-scan-actions button { padding-inline: 13px; font-size: 12px; }
+}
+@media (max-height: 680px) and (min-width: 481px) {
+  #rfidScanDialog .rfid-scan-visual { height: 124px; margin-top: 8px; }
+  #rfidScanDialog .rfid-scan-art { height: 124px; width: 197px; }
+  #rfidScanDialog .rfid-scan-symbol { top: 57px; left: calc(50% + 26px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #rfidScanDialog, #rfidScanDialog *, #rfidScanDialog *::before { animation: none !important; transition: none !important; }
+}

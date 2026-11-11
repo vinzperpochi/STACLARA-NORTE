@@ -1,0 +1,346 @@
+{% from 'components/icons.html' import icon %}
+{% macro render_field(field, class="form-control", show_label=true, placeholder=None, help_text=None) %}
+  {% set field_class = class %}
+  {% if field.errors %}
+    {% set field_class = field_class + " is-invalid" %}
+  {% endif %}
+  
+  <div class="mb-3">
+    {% if show_label and field.label %}
+      {{ field.label(class="form-label" + (" required" if field.flags.required else "")) }}
+    {% endif %}
+    
+    {% set field_attrs = {} %}
+    {% if placeholder %}
+      {% set _ = field_attrs.update({'placeholder': placeholder}) %}
+    {% endif %}
+    {% set _ = field_attrs.update({'class': field_class}) %}
+    
+    {# Add validation attributes based on field type and validators #}
+    {% if field.flags.required %}
+      {% set _ = field_attrs.update({'required': True}) %}
+    {% endif %}
+    
+    {# Length validators #}
+    {% for validator in field.validators %}
+      {% if validator.__class__.__name__ == 'Length' %}
+        {% if validator.min %}
+          {% set _ = field_attrs.update({'minlength': validator.min}) %}
+        {% endif %}
+        {% if validator.max %}
+          {% set _ = field_attrs.update({'maxlength': validator.max}) %}
+        {% endif %}
+      {% elif validator.__class__.__name__ == 'NumberRange' %}
+        {% if validator.min is not none %}
+          {% set _ = field_attrs.update({'min': validator.min}) %}
+        {% endif %}
+        {% if validator.max is not none %}
+          {% set _ = field_attrs.update({'max': validator.max}) %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    
+    {# Field type specific attributes #}
+    {% if field.type == 'EmailField' %}
+      {% set _ = field_attrs.update({'type': 'email'}) %}
+    {% elif field.type == 'PasswordField' %}
+      {% set _ = field_attrs.update({'type': 'password'}) %}
+    {% elif field.type == 'TelField' %}
+      {% set _ = field_attrs.update({'type': 'tel'}) %}
+    {% elif field.type == 'DateField' %}
+      {% set _ = field_attrs.update({'type': 'date'}) %}
+    {% elif field.type == 'DateTimeLocalField' %}
+      {% set _ = field_attrs.update({'type': 'datetime-local'}) %}
+    {% elif field.type == 'TimeField' %}
+      {% set _ = field_attrs.update({'type': 'time'}) %}
+    {% elif field.type == 'IntegerField' or field.type == 'FloatField' %}
+      {% set _ = field_attrs.update({'type': 'number'}) %}
+      {% if field.type == 'FloatField' %}
+        {% set _ = field_attrs.update({'step': 'any'}) %}
+      {% endif %}
+    {% endif %}
+    
+    {# Add validation classes #}
+    {% if field.type == 'EmailField' %}
+      {% set _ = field_attrs.update({'class': field_attrs.class + ' validate-realtime'}) %}
+    {% elif field.type == 'PasswordField' %}
+      {% set _ = field_attrs.update({'class': field_attrs.class + ' validate-realtime'}) %}
+    {% endif %}
+    
+    {{ field(**field_attrs) }}
+    
+    {% if help_text %}
+      <div class="form-text">{{ help_text }}</div>
+    {% endif %}
+    
+    {# Display field errors #}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_select_field(field, choices=None, class="form-select", show_label=true, help_text=None) %}
+  {% set field_class = class %}
+  {% if field.errors %}
+    {% set field_class = field_class + " is-invalid" %}
+  {% endif %}
+  
+  <div class="mb-3">
+    {% if show_label and field.label %}
+      {{ field.label(class="form-label" + (" required" if field.flags.required else "")) }}
+    {% endif %}
+    
+    {% set field_attrs = {} %}
+    {% set _ = field_attrs.update({'class': field_class}) %}
+    
+    {% if field.flags.required %}
+      {% set _ = field_attrs.update({'required': True}) %}
+    {% endif %}
+    
+    {% if choices %}
+      {% for value, label in choices %}
+        {{ field.process_formdata([value]) if field.data == value }}
+      {% endfor %}
+    {% endif %}
+    
+    {{ field(**field_attrs) }}
+    
+    {% if help_text %}
+      <div class="form-text">{{ help_text }}</div>
+    {% endif %}
+    
+    {# Display field errors #}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_checkbox_field(field, class="form-check-input", label_class="form-check-label", help_text=None) %}
+  <div class="mb-3">
+    <div class="form-check">
+      {% set field_class = class %}
+      {% if field.errors %}
+        {% set field_class = field_class + " is-invalid" %}
+      {% endif %}
+      
+      {% set field_attrs = {} %}
+      {% set _ = field_attrs.update({'class': field_class}) %}
+      
+      {% if field.flags.required %}
+        {% set _ = field_attrs.update({'required': True}) %}
+      {% endif %}
+      
+      {{ field(**field_attrs) }}
+      {{ field.label(class=label_class) }}
+      
+      {% if help_text %}
+        <div class="form-text">{{ help_text }}</div>
+      {% endif %}
+      
+      {# Display field errors #}
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro render_file_field(field, class="form-control", accepted_types=None, max_size=None, show_label=true, help_text=None) %}
+  {% set field_class = class %}
+  {% if field.errors %}
+    {% set field_class = field_class + " is-invalid" %}
+  {% endif %}
+  
+  <div class="mb-3">
+    {% if show_label and field.label %}
+      {{ field.label(class="form-label" + (" required" if field.flags.required else "")) }}
+    {% endif %}
+    
+    {% set field_attrs = {} %}
+    {% set _ = field_attrs.update({'class': field_class, 'type': 'file'}) %}
+    
+    {% if field.flags.required %}
+      {% set _ = field_attrs.update({'required': True}) %}
+    {% endif %}
+    
+    {% if accepted_types %}
+      {% set _ = field_attrs.update({'accept': accepted_types}) %}
+    {% endif %}
+    
+    {{ field(**field_attrs) }}
+    
+    {% if help_text %}
+      <div class="form-text">{{ help_text }}</div>
+    {% endif %}
+    
+    {% if max_size %}
+      <div class="form-text">Maximum file size: {{ max_size }}</div>
+    {% endif %}
+    
+    {# Display field errors #}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_textarea_field(field, class="form-control", rows=3, show_label=true, show_counter=false, help_text=None) %}
+  {% set field_class = class %}
+  {% if field.errors %}
+    {% set field_class = field_class + " is-invalid" %}
+  {% endif %}
+  
+  <div class="mb-3">
+    {% if show_label and field.label %}
+      {{ field.label(class="form-label" + (" required" if field.flags.required else "")) }}
+    {% endif %}
+    
+    {% set field_attrs = {} %}
+    {% set _ = field_attrs.update({'class': field_class, 'rows': rows}) %}
+    
+    {% if field.flags.required %}
+      {% set _ = field_attrs.update({'required': True}) %}
+    {% endif %}
+    
+    {# Length validators #}
+    {% for validator in field.validators %}
+      {% if validator.__class__.__name__ == 'Length' %}
+        {% if validator.min %}
+          {% set _ = field_attrs.update({'minlength': validator.min}) %}
+        {% endif %}
+        {% if validator.max %}
+          {% set _ = field_attrs.update({'maxlength': validator.max}) %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    
+    {% if show_counter %}
+      {% for validator in field.validators %}
+        {% if validator.__class__.__name__ == 'Length' and validator.max %}
+          {% set _ = field_attrs.update({'data-character-counter': validator.max}) %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    
+    {{ field(**field_attrs) }}
+    
+    {% if show_counter %}
+      {% for validator in field.validators %}
+        {% if validator.__class__.__name__ == 'Length' and validator.max %}
+          <div class="character-count">
+            <span class="current">{{ field.data|length if field.data else 0 }}</span>/<span class="max">{{ validator.max }}</span> characters
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    
+    {% if help_text %}
+      <div class="form-text">{{ help_text }}</div>
+    {% endif %}
+    
+    {# Display field errors #}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_form_errors(form) %}
+  {% if form.errors %}
+    <div class="validation-summary">
+      <h5>{{ icon('exclamation-triangle', '') }} Please correct the following errors:</h5>
+      <ul>
+        {% for field_name, errors in form.errors.items() %}
+          {% if field_name != 'csrf_token' %}
+            {% for error in errors %}
+              <li>{{ form[field_name].label.text if form[field_name].label else field_name.title() }}: {{ error }}</li>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endmacro %}
+
+{% macro render_password_field_with_strength(field, class="form-control", show_label=true, show_strength=true, help_text=None) %}
+  {% set field_class = class + " strong-password validate-realtime" %}
+  {% if field.errors %}
+    {% set field_class = field_class + " is-invalid" %}
+  {% endif %}
+  
+  <div class="mb-3">
+    {% if show_label and field.label %}
+      {{ field.label(class="form-label" + (" required" if field.flags.required else "")) }}
+    {% endif %}
+    
+    {% set field_attrs = {} %}
+    {% set _ = field_attrs.update({'class': field_class, 'type': 'password'}) %}
+    
+    {% if field.flags.required %}
+      {% set _ = field_attrs.update({'required': True}) %}
+    {% endif %}
+    
+    {# Length validators #}
+    {% for validator in field.validators %}
+      {% if validator.__class__.__name__ == 'Length' %}
+        {% if validator.min %}
+          {% set _ = field_attrs.update({'minlength': validator.min}) %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    
+    <div class="position-relative">
+      {{ field(**field_attrs) }}
+      <button type="button" class="btn btn-outline-secondary position-absolute end-0 top-0 h-100 px-3" onclick="togglePasswordVisibility('{{ field.id }}')" tabindex="-1">
+        {{ icon('eye', '') }}
+      </button>
+    </div>
+    
+    {% if show_strength %}
+      <div class="password-strength mt-2">
+        <div class="password-strength-bar"></div>
+      </div>
+      <small class="form-text text-muted">
+        Password should be at least 8 characters with uppercase, lowercase, and numbers
+      </small>
+    {% endif %}
+    
+    {% if help_text %}
+      <div class="form-text">{{ help_text }}</div>
+    {% endif %}
+    
+    {# Display field errors #}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <script>
+    function togglePasswordVisibility(fieldId) {
+      const field = document.getElementById(fieldId);
+      const icon = document.getElementById(fieldId + '_toggle_icon');
+      
+      if (field.type === 'password') {
+        field.type = 'text';
+        icon.className.baseVal = 'icon-svg';
+      } else {
+        field.type = 'password';
+        icon.className.baseVal = 'icon-svg';
+      }
+    }
+  </script>
+{% endmacro %}

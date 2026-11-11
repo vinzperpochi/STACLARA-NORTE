@@ -1,0 +1,44 @@
+{% extends "official/_official_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block active_nav %}official.document_requests{% endblock %}
+{% block title %}Document Requests{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{{ url_for('static',filename='css/document-requests.css') }}?v=1">{% endblock %}
+{% block content %}
+<div class="document-queue">
+  <header class="dq-heading">
+    <div><p class="civic-eyebrow">DOCUMENT SERVICES</p><h1>Document requests</h1><p class="dq-muted">Review applications, approve documents, and track printing and release.</p></div>
+    <a class="civic-btn" href="{{ url_for('official.document_walk_in') }}">{{ icon('person_add') }} Walk-in document</a>
+    {% if is_admin %}<a class="civic-btn-outline" href="{{ url_for('official.document_settings') }}">{{ icon('settings', '', size='18px') }} Document settings</a>{% endif %}
+  </header>
+  <section class="dq-stats" aria-label="Request status summary">
+    {% for status,label,symbol in [('PENDING','Pending','clock'),('APPROVED','Approved','check-circle'),('READY_FOR_PRINTING','Ready for printing','description'),('RELEASED','Released','box-arrow-right'),('REJECTED','Rejected','x-circle')] %}
+    <a class="dq-stat dq-status-{{ status|lower }}" href="{{ url_for('official.document_requests',status=status) }}" aria-label="{{ label }}: {{ counts.get(status,0) }} requests">
+      <span class="dq-stat-top"><span>{{ label }}</span>{{ icon(symbol, '', size='20px') }}</span><strong>{{ counts.get(status,0) }}</strong><span class="dq-stat-foot">View requests <span aria-hidden="true">→</span></span>
+    </a>{% endfor %}
+  </section>
+  <section class="civic-panel dq-filters">
+    <div class="dq-section-heading"><div><h2>Find a request</h2><p class="dq-muted">Search by resident or request number, or narrow down the list.</p></div><a href="{{ url_for('official.document_requests') }}" class="dq-reset">Reset filters</a></div>
+    <form method="get" class="dq-filter-grid">
+      <div class="dq-search"><label for="dq-search">Resident / request search</label><input id="dq-search" class="civic-input" name="q" placeholder="Resident name or request number" value="{{ filters.get('q','') }}"></div>
+      <div><label for="dq-document">Document</label><select id="dq-document" class="civic-input" name="document_type_id"><option value="">All documents</option>{% for t in document_types %}<option value="{{ t.id }}" {{ 'selected' if filters.get('document_type_id')==t.id|string }}>{{ t.name }}</option>{% endfor %}</select></div>
+      <div><label for="dq-status">Status</label><select id="dq-status" class="civic-input" name="status"><option value="">All statuses</option>{% for status in ['PENDING','UNDER_REVIEW','PROCESSING','NEEDS_CORRECTION','APPROVED','REJECTED','READY_FOR_PRINTING','PRINTED','READY_FOR_RELEASE','RELEASED'] %}<option value="{{ status }}" {{ 'selected' if filters.get('status')==status }}>{{ status|replace('_',' ')|title }}</option>{% endfor %}</select></div>
+      <div><label for="dq-start">Start date</label><input id="dq-start" class="civic-input" type="date" name="start_date" value="{{ filters.get('start_date','') }}"></div>
+      <div><label for="dq-end">End date</label><input id="dq-end" class="civic-input" type="date" name="end_date" value="{{ filters.get('end_date','') }}"></div>
+      <button class="civic-btn dq-filter-button" type="submit">{{ icon('search', '', size='18px') }} Filter requests</button>
+    </form>
+  </section>
+  <section class="civic-panel dq-results">
+    <div class="dq-results-heading"><h2>Request list</h2><span class="dq-result-count">{{ pagination.total if pagination else requests|length }} results</span></div>
+    {% if requests %}<div class="dq-table-wrap"><table class="civic-table dq-table"><thead><tr><th scope="col">Request / resident</th><th scope="col">Document</th><th scope="col">Submitted</th><th scope="col">Status</th><th scope="col"><span class="visually-hidden">Action</span></th></tr></thead><tbody>
+    {% for item in requests %}<tr>
+      <td data-label="Request / resident"><a class="dq-request-number" href="{{ url_for('official.document_request_detail',request_id=item.id) }}">{{ item.request_number }}</a><span class="dq-resident">{{ item.resident.first_name }} {{ item.resident.last_name }}</span></td>
+      <td data-label="Document">{{ item.document_type.name }}</td>
+      <td data-label="Submitted"><time datetime="{{ item.created_at.isoformat() }}">{{ item.created_at.strftime('%b %d, %Y') }}</time></td>
+      <td data-label="Status"><span class="dq-badge dq-status-{{ item.status|lower }}">{{ item.status|replace('_',' ')|title }}</span></td>
+      <td class="dq-action"><a class="civic-btn-outline" href="{{ url_for('official.document_request_detail',request_id=item.id) }}" aria-label="Review request {{ item.request_number }}">Review <span aria-hidden="true">→</span></a></td>
+    </tr>{% endfor %}</tbody></table></div>
+    {% else %}<div class="dq-empty">{{ icon('description', '', size='32px') }}<h3>No matching requests</h3><p class="dq-muted">Try another search or reset the filters to see all document requests.</p><a class="civic-btn-outline" href="{{ url_for('official.document_requests') }}">Reset filters</a></div>{% endif %}
+  </section>
+  {% include "partials/_pagination.html" %}
+</div>
+{% endblock %}

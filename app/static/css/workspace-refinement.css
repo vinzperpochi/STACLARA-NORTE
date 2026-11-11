@@ -1,0 +1,205 @@
+/* Shared portal presentation. Application routes and printable certificates are unchanged. */
+@media screen {
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) {
+    --workspace-gap: 24px;
+    --civic-radius: 16px;
+    --civic-shadow: 0 2px 8px rgb(8 62 20 / 4%);
+    background: var(--civic-page);
+    background-image: none;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  body[class*="workspace-"] > div.max-w-7xl {
+    max-width: 1600px;
+    padding: 24px 28px 40px;
+    gap: var(--workspace-gap);
+    align-items: flex-start;
+  }
+  body[class*="workspace-"] #portal-main { min-width: 0; }
+  body[class*="workspace-"] #portal-main > * + * { margin-top: var(--workspace-gap); }
+  body[class*="workspace-"] #portal-main .dashboard-content { gap: var(--workspace-gap); }
+  body[class*="workspace-"] #portal-main .dashboard-content > section + section { margin-top: 0; }
+  body[class*="workspace-"] #portal-main .dashboard-layout {
+    grid-template-columns: minmax(0, 1fr) 270px;
+    gap: var(--workspace-gap);
+  }
+  body[class*="workspace-"] .dashboard-calendar { min-width: 0; max-width: none; }
+  body[class*="workspace-"] .civic-toolbar {
+    padding: 0 0 16px;
+    border-bottom: 1px solid var(--civic-border);
+    align-items: center;
+  }
+  body[class*="workspace-"] .civic-breadcrumb { gap: 9px; font-size: 12px; line-height: 1.5; }
+  body[class*="workspace-"] .civic-toolbar-controls button { min-height: 40px; padding: 9px 12px; }
+  body[class*="workspace-"] > :is(nav, header.portal-header, div.sticky) > div {
+    max-width: 1600px;
+    height: auto;
+    min-height: 76px;
+    padding-block: 12px;
+  }
+  body[class*="workspace-"] :is(nav, header.portal-header) [data-portal-dropdown-trigger] > .text-left { max-width: 190px; }
+  body[class*="workspace-"] :is(nav, header.portal-header) [data-portal-dropdown-trigger] > .text-left > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  body[class*="workspace-"] :is(nav, header.portal-header) form[role="search"] { min-width: 0; margin-inline: 16px; }
+  body[class*="workspace-"] :is(nav, header.portal-header) input[type="search"] { padding-left: 38px !important; }
+
+  /* Keep navigation scrollable while its identity and help stay accessible. */
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar { width: 256px; overflow: visible; }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar > .portal-sidebar-card {
+    height: calc(100dvh - 158px);
+    max-height: calc(100dvh - 158px);
+    border-radius: 16px !important;
+    padding: 16px 10px !important;
+  }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar .resident-sidebar-heading { padding-bottom: 14px !important; }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar nav a.resident-nav-link { min-height: 52px; padding: 10px 12px; }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar .resident-nav-subtitle { font-size: 11px; line-height: 1.5; }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar .civic-sidebar-copy small { font-size: 11px; }
+
+  /* Clear heading levels without oversized dashboard greetings. */
+  body[class*="workspace-"] #portal-main h1 { font-size: clamp(24px, 2.2vw, 32px); line-height: 1.25; letter-spacing: -.035em; }
+  body[class*="workspace-"] #portal-main h2 { line-height: 1.4; letter-spacing: -.02em; }
+  body[class*="workspace-"] #portal-main :is(.civic-panel, .ops-panel, .card-body) > h2 { font-size: 18px; margin-bottom: 14px; }
+  body[class*="workspace-"] #portal-main :is(.civic-panel, .stitch-card, .card-body) { padding: 24px; }
+  body[class*="workspace-"] #portal-main .civic-panel > .card-body { padding: 0; }
+  body[class*="workspace-"] #portal-main :is(.civic-panel, .stitch-card):hover { border-color: var(--civic-border); }
+  body[class*="workspace-"] #portal-main :is(.civic-hero, .stitch-hero, .ops-hero) {
+    padding: 28px !important;
+    border-radius: 18px !important;
+    box-shadow: none;
+  }
+  body[class*="workspace-"] #portal-main :is(.civic-hero, .stitch-hero, .ops-hero) :is(h1, h2) { color: #fff !important; }
+  body[class*="workspace-"] #portal-main :is(.civic-hero, .stitch-hero) :is(p, .text-on-surface-muted, .text-on-surface-variant) { color: #deeee2 !important; }
+  body[class*="workspace-"] #portal-main :is(.civic-hero, .stitch-hero) .civic-overline { color: var(--civic-gold) !important; }
+  body.workspace-admin #portal-main .civic-hero form[role="group"] button[name="period"] { color: var(--civic-ink) !important; }
+  body.workspace-admin #portal-main .civic-hero form[role="group"] button[name="period"].bg-primary { color: #fff !important; }
+  body.workspace-official #portal-main .civic-hero > .absolute[aria-hidden="true"] { opacity: .15; }
+  body.workspace-official #portal-main .civic-hero h2 { font-size: clamp(24px, 2.2vw, 32px); }
+  body[class*="workspace-"] #portal-main .dashboard-content > section > a.bg-surface-card { padding: 24px !important; }
+  body[class*="workspace-"] .civic-dashboard-person { gap: 14px; margin-bottom: 20px; }
+  body[class*="workspace-"] .civic-dashboard-person > .civic-avatar { width: 52px; height: 52px; }
+  body[class*="workspace-"] .civic-dashboard-completion { flex-wrap: wrap; row-gap: 6px; font-size: 12px; }
+  body[class*="workspace-"] #portal-main .civic-service-card { padding: 22px; }
+  body[class*="workspace-"] #portal-main .civic-service-card h3 { font-size: 16px; line-height: 1.4; }
+  body[class*="workspace-"] #portal-main .civic-service-card p { font-size: 13px; line-height: 1.65; }
+
+  /* Labels, fields and actions use a consistent reading and touch scale. */
+  body[class*="workspace-"] #portal-main :is(.form-label, .ops-form label, .ops-field) { font-size: 13px; line-height: 1.5; font-weight: 600; }
+  body[class*="workspace-"] #portal-main :is(.civic-input, .form-control, .form-select):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]) {
+    min-height: 44px;
+    font-size: 14px !important;
+    line-height: 1.5;
+    border-radius: 10px !important;
+    background-color: var(--civic-card) !important;
+  }
+  body[class*="workspace-"] #portal-main :is(input, textarea)::placeholder { color: var(--civic-muted); opacity: 1; }
+  body[class*="workspace-"] #portal-main :is(.civic-btn, .civic-btn-outline, .civic-btn-gradient, .stitch-btn-primary, .stitch-btn-outline) {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 44px; padding: 10px 16px; font-size: 13px; line-height: 1.5;
+    font-weight: 600; text-decoration: none; white-space: normal; text-align: center;
+  }
+  body[class*="workspace-"] #portal-main :is(.ops-muted, .civic-note, .civic-table-hint) { font-size: 13px; line-height: 1.65; }
+  body[class*="workspace-"] #portal-main :is(.ops-stats, .civic-service-grid) { gap: 16px; }
+  body[class*="workspace-"] #portal-main .ops-stat { padding: 20px; border-radius: 14px; }
+  body[class*="workspace-"] #portal-main .ops-stat span { font-size: 12px; }
+  body[class*="workspace-"] #portal-main .ops-stat strong { font-size: 28px; line-height: 1.3; margin-top: 8px; font-variant-numeric: tabular-nums; }
+
+  /* Tables scroll within their own region instead of pushing the whole page. */
+  body[class*="workspace-"] #portal-main :is(.civic-table-scroll, .table-responsive, .ops-table-wrap, .overflow-x-auto) {
+    max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-inline: contain;
+  }
+  body[class*="workspace-"] #portal-main table { font-size: 13px; }
+  body[class*="workspace-"] #portal-main table th { padding: 13px 16px !important; font-size: 11px !important; line-height: 1.5; letter-spacing: .05em; }
+  body[class*="workspace-"] #portal-main table td { padding: 15px 16px !important; font-size: 13px; line-height: 1.6; }
+  body[class*="workspace-"] #portal-main table td :is(form, .ops-record-actions) { gap: 8px; }
+  body[class*="workspace-"] #portal-main .pagination-wrap {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 100%; gap: 12px; margin: 20px 0 4px; padding: 16px 0; text-align: center;
+  }
+  body[class*="workspace-"] #portal-main .pagination-summary {
+    width: 100%; color: var(--civic-muted); font-size: 13px; line-height: 1.6;
+  }
+  body[class*="workspace-"] #portal-main .pagination-summary strong { color: var(--civic-ink); font-weight: 650; }
+  body[class*="workspace-"] #portal-main .pagination-controls {
+    display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+    width: 100%; gap: 6px; overflow: visible;
+  }
+  body[class*="workspace-"] #portal-main .pagination-controls .page-link {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px; margin: 0; padding: 8px 12px;
+    border: 1px solid var(--civic-border); border-radius: 10px;
+    background: var(--civic-card); color: var(--civic-ink); font-size: 14px;
+    line-height: 1.4; font-weight: 600; text-decoration: none;
+  }
+  body[class*="workspace-"] #portal-main .pagination-controls a.page-link:hover { background: var(--civic-mint); border-color: var(--civic-primary); }
+  body[class*="workspace-"] #portal-main .pagination-controls a.page-link:focus-visible {
+    outline: 2px solid var(--civic-primary); outline-offset: 3px;
+  }
+  body[class*="workspace-"] #portal-main .pagination-controls .page-link.active {
+    background: var(--civic-emerald); border-color: var(--civic-emerald); color: #fff !important;
+  }
+  body[class*="workspace-"] #portal-main .pagination-controls a.page-link.active:hover { background: var(--civic-emerald); color: #fff !important; }
+  body[class*="workspace-"] #portal-main .pagination-controls .page-link.disabled {
+    background: var(--civic-page); color: var(--civic-muted); opacity: .5; cursor: default;
+  }
+  body[class*="workspace-"] #portal-main .pagination-controls .page-ellipsis {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 24px; min-height: 44px; color: var(--civic-muted);
+  }
+  body[class*="workspace-"] #portal-main :is(.badge-status, .ops-status, .stitch-status-chip) { font-size: 11px; line-height: 1.5; padding: 5px 10px; }
+  body[class*="workspace-"] .calendar-grid { gap: 5px; }
+  body[class*="workspace-"] .calendar-day { padding: 8px 3px; }
+  body[class*="workspace-"] .calendar-weekday { font-size: 11px; color: var(--civic-muted); }
+  body[class*="workspace-"] :is(.calendar-heading, .notification-panel-heading) { gap: 12px; }
+  body[class*="workspace-"] .notification-panel { background: var(--civic-card); color: var(--civic-ink); border-color: var(--civic-border); }
+  body[class*="workspace-"] .notification-item { border-color: var(--civic-border); }
+  body[class*="workspace-"] .notification-item time { color: var(--civic-muted); }
+  body[class*="workspace-"] .notification-unread { background: var(--civic-mint); }
+
+  /* Keep surface text legible in dark mode, including status and calendar text. */
+  html[data-civic-theme="dark"] body[class*="workspace-"] #portal-main :is(.ops-status:not(.ops-early-out), .ops-current-label, .civic-breadcrumb a) { color: #b8e4c3; }
+  html[data-civic-theme="dark"] body[class*="workspace-"] :is(.calendar-event, .notification-item) { border-color: var(--civic-border); }
+  html[data-civic-theme="dark"] body[class*="workspace-"] .calendar-day { color: var(--civic-ink); }
+  html[data-civic-theme="dark"] body[class*="workspace-"] .calendar-today { background: var(--civic-emerald); color: #fff; }
+  html[data-civic-theme="dark"] body[class*="workspace-"] .notification-trigger { color: var(--civic-ink); }
+  html[data-civic-theme="dark"] body[class*="workspace-"] #portal-main .bg-primary-container { background: var(--civic-mint) !important; color: #b8e4c3 !important; }
+  html[data-civic-theme="dark"] body[class*="workspace-"] #portal-main .text-tertiary { color: #f4ce84; }
+  html[data-civic-theme="dark"] body[class*="workspace-"] #portal-main .bg-warning-pill { background: var(--civic-warning) !important; color: #f4ce84 !important; }
+  html[data-civic-theme="dark"] body[class*="workspace-"] #portal-main .bg-tertiary-fixed { background: var(--civic-gold) !important; color: var(--civic-forest) !important; }
+  html[data-civic-theme="dark"] body[class*="workspace-"] #portal-main .text-error { color: #ffaaa4 !important; }
+}
+
+@media screen and (max-width: 1399px) {
+  body[class*="workspace-"] #portal-main .dashboard-layout { grid-template-columns: minmax(0, 1fr); }
+  body[class*="workspace-"] .dashboard-calendar { position: static; width: 100%; max-width: none; }
+}
+@media screen and (min-width: 768px) and (max-width: 1099px) {
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar { width: 224px; }
+  body[class*="workspace-"] > div.max-w-7xl { padding-inline: 20px; gap: 20px; }
+  body[class*="workspace-"] #portal-main :is(.civic-hero, .stitch-hero) > .flex { flex-wrap: wrap; }
+}
+@media screen and (max-width: 767px) {
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) { --workspace-gap: 20px; }
+  body[class*="workspace-"] > div.max-w-7xl { padding: 18px 16px 28px; }
+  body[class*="workspace-"] > :is(nav, header.portal-header, div.sticky) > div { min-height: 68px; gap: 8px; padding-inline: 12px; }
+  body[class*="workspace-"] .civic-toolbar { gap: 12px; flex-wrap: wrap; padding-bottom: 14px; }
+  body[class*="workspace-"] .civic-toolbar-controls { margin-left: auto; }
+  body[class*="workspace-"] .civic-breadcrumb > span:last-child { max-width: 220px; white-space: normal; }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar { width: min(310px, calc(100vw - 24px)); overflow-y: auto; }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar > .portal-sidebar-card { height: calc(100dvh - 16px); max-height: calc(100dvh - 16px); top: 0; }
+  body[class*="workspace-"] #portal-main :is(.civic-panel, .stitch-card, .card-body) { padding: 20px; }
+  body[class*="workspace-"] #portal-main :is(.civic-hero, .stitch-hero, .ops-hero) { padding: 22px !important; }
+  body[class*="workspace-"] #portal-main :is(.civic-input, .form-control, .form-select):not([type="checkbox"]):not([type="radio"]) { font-size: 16px !important; }
+  body[class*="workspace-"] #portal-main .civic-service-grid { grid-template-columns: minmax(0, 1fr); }
+  body[class*="workspace-"] .civic-dashboard-person { align-items: flex-start; }
+  body[class*="workspace-"] .civic-dashboard-completion { gap: 8px; }
+  body[class*="workspace-"] #portal-main table td { padding: 13px 14px !important; }
+}
+@media screen and (max-width: 480px) {
+  body[class*="workspace-"] #portal-main .ops-stats { gap: 10px; }
+  body[class*="workspace-"] #portal-main .ops-stat { padding: 16px; }
+  body[class*="workspace-"] #portal-main :is(.ops-filter, .civic-security-actions) > :is(button, a) { width: 100%; }
+  body[class*="workspace-"] #portal-main .civic-breadcrumb { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[class*="workspace-"] *, body[class*="workspace-"] *::before, body[class*="workspace-"] *::after { scroll-behavior: auto !important; transition: none !important; }
+}

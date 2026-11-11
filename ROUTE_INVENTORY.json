@@ -1,0 +1,1387 @@
+[
+  {
+    "path": "/static/<path:filename>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "static"
+  },
+  {
+    "path": "/attendance/",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "attendance.dashboard"
+  },
+  {
+    "path": "/attendance/personnel",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "attendance.personnel"
+  },
+  {
+    "path": "/attendance/personnel/<int:personnel_id>",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "attendance.personnel_detail"
+  },
+  {
+    "path": "/attendance/devices",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "attendance.devices"
+  },
+  {
+    "path": "/attendance/api/scan",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "attendance.device_scan"
+  },
+  {
+    "path": "/attendance/api/heartbeat",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "attendance.heartbeat"
+  },
+  {
+    "path": "/attendance/leave",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "attendance.leave"
+  },
+  {
+    "path": "/attendance/leave/<int:leave_id>",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "attendance.approve_leave"
+  },
+  {
+    "path": "/attendance/sessions/<int:session_id>/adjust",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "attendance.adjust"
+  },
+  {
+    "path": "/attendance/reports",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "attendance.reports"
+  },
+  {
+    "path": "/attendance/personnel/<int:personnel_id>/photo",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "attendance.photo"
+  },
+  {
+    "path": "/incidents/submit",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "incidents.submit"
+  },
+  {
+    "path": "/incidents/classify",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "incidents.classification"
+  },
+  {
+    "path": "/incidents/",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "incidents.dashboard"
+  },
+  {
+    "path": "/incidents/<int:complaint_id>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "incidents.detail"
+  },
+  {
+    "path": "/incidents/<int:complaint_id>/status",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "incidents.update_status"
+  },
+  {
+    "path": "/incidents/<int:complaint_id>/follow-up",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "incidents.follow_up"
+  },
+  {
+    "path": "/incidents/<int:complaint_id>/response-status",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "incidents.response_status"
+  },
+  {
+    "path": "/incidents/<int:complaint_id>/assign",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "incidents.assign"
+  },
+  {
+    "path": "/incidents/<int:complaint_id>/referral",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "incidents.referral"
+  },
+  {
+    "path": "/incidents/referrals/<int:referral_id>/handoff",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "incidents.handoff"
+  },
+  {
+    "path": "/incidents/referrals/<int:referral_id>/response",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "incidents.agency_response"
+  },
+  {
+    "path": "/incidents/referrals/<int:referral_id>/print",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "incidents.referral_print"
+  },
+  {
+    "path": "/incidents/evidence/<int:evidence_id>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "incidents.evidence"
+  },
+  {
+    "path": "/incidents/directory",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "incidents.directory"
+  },
+  {
+    "path": "/incidents/rules",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "incidents.rules"
+  },
+  {
+    "path": "/incidents/reports",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "incidents.reports"
+  },
+  {
+    "path": "/workspace/notifications",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "workspace.notifications"
+  },
+  {
+    "path": "/workspace/notifications/read",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "workspace.notification_read"
+  },
+  {
+    "path": "/workspace/calendar",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "workspace.calendar"
+  },
+  {
+    "path": "/workspace/profile",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "workspace.profile"
+  },
+  {
+    "path": "/workspace/profile/details",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "workspace.profile_details"
+  },
+  {
+    "path": "/workspace/profile-photo",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "workspace.profile_photo"
+  },
+  {
+    "path": "/workspace/residents/<int:resident_id>/photo",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "workspace.resident_photo"
+  },
+  {
+    "path": "/workspace/users/<int:user_id>/photo",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "workspace.user_photo"
+  },
+  {
+    "path": "/",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "main.index"
+  },
+  {
+    "path": "/health",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "main.health_check"
+  },
+  {
+    "path": "/privacy",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "main.privacy_notice"
+  },
+  {
+    "path": "/search",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "main.search"
+  },
+  {
+    "path": "/help",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "main.help_page"
+  },
+  {
+    "path": "/verify",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "main.verify"
+  },
+  {
+    "path": "/verify/<document_number>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "main.verify_document"
+  },
+  {
+    "path": "/auth/register",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "auth.register"
+  },
+  {
+    "path": "/auth/verify-email/<token>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "auth.verify_email"
+  },
+  {
+    "path": "/auth/resend-verification",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "auth.resend_verification"
+  },
+  {
+    "path": "/auth/activate/<token>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "auth.activate"
+  },
+  {
+    "path": "/auth/login",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "auth.login"
+  },
+  {
+    "path": "/auth/session",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "auth.session_status"
+  },
+  {
+    "path": "/auth/logout",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "auth.logout"
+  },
+  {
+    "path": "/auth/change-password",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "auth.change_password"
+  },
+  {
+    "path": "/auth/enter-activation-code",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "auth.enter_activation_code"
+  },
+  {
+    "path": "/auth/forgot-password",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "auth.forgot_password"
+  },
+  {
+    "path": "/auth/reset-password/<token>",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "auth.reset_password"
+  },
+  {
+    "path": "/auth/terms-and-conditions",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "auth.terms_and_conditions"
+  },
+  {
+    "path": "/admin/",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "admin.dashboard"
+  },
+  {
+    "path": "/admin/dashboard-data",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "admin.dashboard_data"
+  },
+  {
+    "path": "/admin/users",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "admin.users"
+  },
+  {
+    "path": "/admin/official-accounts",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "admin.official_accounts"
+  },
+  {
+    "path": "/admin/official-accounts/<int:user_id>/delete",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "admin.delete_official_account"
+  },
+  {
+    "path": "/admin/users/<int:user_id>/toggle",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "admin.toggle_user"
+  },
+  {
+    "path": "/admin/users/<int:user_id>/roles",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "admin.assign_user_role"
+  },
+  {
+    "path": "/admin/roles",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "admin.roles"
+  },
+  {
+    "path": "/admin/permissions",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "admin.permissions"
+  },
+  {
+    "path": "/admin/roles/<int:role_id>/permissions",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "admin.assign_permission"
+  },
+  {
+    "path": "/admin/puroks",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "admin.puroks"
+  },
+  {
+    "path": "/admin/puroks/<int:purok_id>/edit",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "admin.purok_edit"
+  },
+  {
+    "path": "/admin/puroks/<int:purok_id>/archive",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "admin.purok_archive"
+  },
+  {
+    "path": "/admin/document-types",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "admin.document_types"
+  },
+  {
+    "path": "/admin/fees",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "admin.fees"
+  },
+  {
+    "path": "/admin/settings",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "admin.settings"
+  },
+  {
+    "path": "/admin/audit-logs",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "admin.audit_logs"
+  },
+  {
+    "path": "/admin/backup",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "admin.backup"
+  },
+  {
+    "path": "/admin/analytics",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "admin.analytics"
+  },
+  {
+    "path": "/admin/blotter-map",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "admin.blotter_map"
+  },
+  {
+    "path": "/admin/analytics-data",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "admin.analytics_data"
+  },
+  {
+    "path": "/admin/reports",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "admin.reports"
+  },
+  {
+    "path": "/admin/reports/export",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "admin.report_download"
+  },
+  {
+    "path": "/admin/reports/export/<kind>/<export_format>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "admin.report_export"
+  },
+  {
+    "path": "/official/",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.dashboard"
+  },
+  {
+    "path": "/official/account-approvals",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.account_approvals"
+  },
+  {
+    "path": "/official/account-approvals/<int:user_id>/approve",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.approve_resident_account"
+  },
+  {
+    "path": "/official/residents",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.resident_list"
+  },
+  {
+    "path": "/official/households",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.household_list"
+  },
+  {
+    "path": "/official/residents/new",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "official.resident_create"
+  },
+  {
+    "path": "/official/residents/<int:resident_id>/edit",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "official.resident_edit"
+  },
+  {
+    "path": "/official/residents/<int:resident_id>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.resident_detail"
+  },
+  {
+    "path": "/official/residents/<int:resident_id>/household-members",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.household_members"
+  },
+  {
+    "path": "/official/residents/<int:resident_id>/photo",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.resident_photo"
+  },
+  {
+    "path": "/official/correction-requests",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.correction_requests"
+  },
+  {
+    "path": "/official/correction-requests/<int:correction_id>/approve",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.correction_approve"
+  },
+  {
+    "path": "/official/correction-requests/<int:correction_id>/reject",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.correction_reject"
+  },
+  {
+    "path": "/official/document-requests",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.document_requests"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.document_request_detail"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/status",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_request_status"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/additional-requirement",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_additional_requirement"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/generate",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_generate"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/release",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_release"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/requirements/<int:requirement_id>/download",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.document_requirement_download"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/requirements/<int:requirement_id>/view",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.document_requirement_view"
+  },
+  {
+    "path": "/official/blotter",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.blotter_list"
+  },
+  {
+    "path": "/official/blotter/updates",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.blotter_updates"
+  },
+  {
+    "path": "/official/blotter/statistics",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.blotter_statistics"
+  },
+  {
+    "path": "/official/blotter-map",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.blotter_map"
+  },
+  {
+    "path": "/official/blotter-map/data",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.blotter_map_data"
+  },
+  {
+    "path": "/official/blotter/<int:case_id>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.blotter_detail"
+  },
+  {
+    "path": "/official/blotter/<int:case_id>/status",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.blotter_status"
+  },
+  {
+    "path": "/official/blotter/<int:case_id>/party",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.blotter_party"
+  },
+  {
+    "path": "/official/blotter/<int:case_id>/hearing",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.blotter_hearing"
+  },
+  {
+    "path": "/official/blotter/<int:case_id>/mediation",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.blotter_mediation"
+  },
+  {
+    "path": "/official/blotter/<int:case_id>/settlement",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.blotter_settlement"
+  },
+  {
+    "path": "/official/blotter/<int:case_id>/endorsement",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.blotter_endorsement"
+  },
+  {
+    "path": "/official/blotter/<int:case_id>/access",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.blotter_access"
+  },
+  {
+    "path": "/official/businesses",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.business_list"
+  },
+  {
+    "path": "/official/businesses/new",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "official.business_create"
+  },
+  {
+    "path": "/official/businesses/<int:business_id>/edit",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "official.business_edit"
+  },
+  {
+    "path": "/official/business-clearance-requests",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.business_clearance_requests"
+  },
+  {
+    "path": "/official/businesses/<int:business_id>/request-clearance",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.business_request_clearance"
+  },
+  {
+    "path": "/official/business-clearance-requests/<int:request_id>/status",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.business_clearance_status"
+  },
+  {
+    "path": "/official/welfare",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.welfare_registry"
+  },
+  {
+    "path": "/official/welfare/new",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "official.welfare_create"
+  },
+  {
+    "path": "/official/welfare/<int:beneficiary_id>/edit",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "official.welfare_edit"
+  },
+  {
+    "path": "/official/welfare/<int:beneficiary_id>/assistance",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.welfare_assistance"
+  },
+  {
+    "path": "/official/queue",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.queue_management"
+  },
+  {
+    "path": "/official/queue/<int:queue_id>/update",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.queue_update"
+  },
+  {
+    "path": "/official/collections",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.collections"
+  },
+  {
+    "path": "/official/reports",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.reports"
+  },
+  {
+    "path": "/official/collections/new",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.collection_create"
+  },
+  {
+    "path": "/official/drrm",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.drrm_dashboard"
+  },
+  {
+    "path": "/official/drrm/hazards",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_hazard_create"
+  },
+  {
+    "path": "/official/drrm/centers",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_center_create"
+  },
+  {
+    "path": "/official/drrm/contacts",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_contact_create"
+  },
+  {
+    "path": "/official/drrm/equipment",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_equipment_create"
+  },
+  {
+    "path": "/official/drrm/supplies",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_supply_create"
+  },
+  {
+    "path": "/official/drrm/incidents",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_incident_create"
+  },
+  {
+    "path": "/official/drrm/incidents/<int:incident_id>/relief",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_relief_create"
+  },
+  {
+    "path": "/official/drrm/incidents/<int:incident_id>/damage",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_damage_create"
+  },
+  {
+    "path": "/official/drrm/alerts",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_alert_create"
+  },
+  {
+    "path": "/official/drrm/alerts/<int:alert_id>/edit",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.drrm_alert_edit"
+  },
+  {
+    "path": "/official/drrm/alerts/<int:alert_id>/update",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_alert_update"
+  },
+  {
+    "path": "/official/drrm/alerts/<int:alert_id>/delete",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_alert_delete"
+  },
+  {
+    "path": "/official/drrm/alerts/<int:alert_id>/archive",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.drrm_alert_archive"
+  },
+  {
+    "path": "/official/puroks",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.purok_list"
+  },
+  {
+    "path": "/official/residents/<int:resident_id>/registration-files/<kind>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.registration_file"
+  },
+  {
+    "path": "/official/analytics",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.analytics"
+  },
+  {
+    "path": "/official/analytics-data",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.analytics_data"
+  },
+  {
+    "path": "/official/report-center",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.report_center"
+  },
+  {
+    "path": "/official/report-center/export/<kind>/<export_format>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.report_export"
+  },
+  {
+    "path": "/official/report-center/export",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.report_download"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/approve",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_approve"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/print",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_print"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/prepare",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_prepare"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/verify",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_verify"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/preview",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.document_preview"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/certificate",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.document_certificate"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/pdf",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.document_pdf"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/application",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "official.document_application"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/printed",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_printed"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/receipt",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_receipt"
+  },
+  {
+    "path": "/official/document-requests/<int:request_id>/revoke",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "official.document_revoke"
+  },
+  {
+    "path": "/official/document-settings",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "official.document_settings"
+  },
+  {
+    "path": "/resident/",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.dashboard"
+  },
+  {
+    "path": "/resident/profile",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.profile"
+  },
+  {
+    "path": "/resident/household",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.household"
+  },
+  {
+    "path": "/resident/profile-photo",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.profile_photo"
+  },
+  {
+    "path": "/resident/requests",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.requests"
+  },
+  {
+    "path": "/resident/correction-requests",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "resident.correction_requests"
+  },
+  {
+    "path": "/resident/documents",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.documents"
+  },
+  {
+    "path": "/resident/documents/new",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "resident.document_request_create"
+  },
+  {
+    "path": "/resident/documents/<int:request_id>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.document_request_detail"
+  },
+  {
+    "path": "/resident/documents/<int:request_id>/requirements/<int:requirement_id>/upload",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "resident.document_requirement_upload"
+  },
+  {
+    "path": "/resident/documents/<int:request_id>/download",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.document_download"
+  },
+  {
+    "path": "/resident/notifications",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.notifications"
+  },
+  {
+    "path": "/resident/notifications/<int:notification_id>/read",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "resident.notification_read"
+  },
+  {
+    "path": "/resident/notifications/read-all",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "resident.notifications_read_all"
+  },
+  {
+    "path": "/resident/queue",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.queue_requests"
+  },
+  {
+    "path": "/resident/queue/new",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "resident.queue_request_create"
+  },
+  {
+    "path": "/resident/emergency-alerts",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.emergency_alerts"
+  },
+  {
+    "path": "/resident/blotter",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.blotter_cases"
+  },
+  {
+    "path": "/resident/blotter/new",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "resident.blotter_create"
+  },
+  {
+    "path": "/resident/blotter/<int:case_id>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.blotter_detail"
+  },
+  {
+    "path": "/resident/documents/<int:request_id>/requirements/<int:requirement_id>/view",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.document_requirement_view"
+  },
+  {
+    "path": "/resident/documents/<int:request_id>/requirements/<int:requirement_id>/remove",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "resident.document_requirement_remove"
+  },
+  {
+    "path": "/resident/registration-files/<kind>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "resident.registration_file"
+  },
+  {
+    "path": "/resident/documents/<int:request_id>/correction",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "endpoint": "resident.document_correction"
+  },
+  {
+    "path": "/messaging/api/thread",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "messaging.resident_thread"
+  },
+  {
+    "path": "/messaging/api/thread/messages",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "messaging.resident_send"
+  },
+  {
+    "path": "/messaging/official",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "messaging.official_inbox"
+  },
+  {
+    "path": "/messaging/api/inbox",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "messaging.official_inbox_api"
+  },
+  {
+    "path": "/messaging/api/inbox/<int:thread_id>",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "messaging.official_thread"
+  },
+  {
+    "path": "/messaging/api/inbox/<int:thread_id>/messages",
+    "methods": [
+      "POST"
+    ],
+    "endpoint": "messaging.official_send"
+  },
+  {
+    "path": "/api/geocode/search",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "geocoding.search"
+  },
+  {
+    "path": "/api/geocode/reverse",
+    "methods": [
+      "GET"
+    ],
+    "endpoint": "geocoding.reverse"
+  }
+]

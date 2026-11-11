@@ -1,0 +1,60 @@
+{% extends "layouts/auth_base.html" %}
+{% from "partials/_site_info.html" import v_hotline, v_hall_address, v_office_hours, v_help_note, v_charter_note, v_fees_note, v_foi_note %}
+{% block title %}Help &amp; Contact · Barangay Sta. Clara Norte{% endblock %}
+{% block content %}
+<div class="w-full max-w-[680px] mx-auto space-y-5">
+
+  <div class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-8 sm:p-10 shadow-xl">
+    <p class="text-[11px] font-bold uppercase tracking-wider text-[#12902B]">Help &amp; Contact</p>
+    <h1 class="text-2xl font-extrabold text-[#11291A] mt-1 mb-1">We're here to help</h1>
+    <p class="text-sm text-[#5F7265]">Reach us at the barangay hall or through any of the channels below.</p>
+
+    <dl class="mt-6 divide-y divide-[#E2EDE3] text-sm">
+      <div class="flex gap-3 py-3">
+        <dt class="w-36 shrink-0 font-semibold text-[#11291A]">Hotline</dt>
+        <dd class="text-[#5F7265]">{{ v_hotline() }}</dd>
+      </div>
+      <div class="flex gap-3 py-3">
+        <dt class="w-36 shrink-0 font-semibold text-[#11291A]">Barangay Hall</dt>
+        <dd class="text-[#5F7265]">{{ v_hall_address() }}</dd>
+      </div>
+      <div class="flex gap-3 py-3">
+        <dt class="w-36 shrink-0 font-semibold text-[#11291A]">Office hours</dt>
+        <dd class="text-[#5F7265]">{{ v_office_hours() }}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <section class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-8 shadow-xl" aria-labelledby="barangay-profile-heading">
+    <h2 id="barangay-profile-heading" class="text-lg font-extrabold text-[#11291A] mb-3">Barangay information</h2>
+    <dl class="text-sm space-y-2"><div><dt class="font-semibold">Barangay</dt><dd>{{ barangay_info.barangay_name }}</dd></div><div><dt class="font-semibold">Municipality / Province</dt><dd>{{ barangay_info.municipality }}, {{ barangay_info.province }}</dd></div><div><dt class="font-semibold">Country / Postal code</dt><dd>{{ barangay_info.country }} · {{ barangay_info.zip_code }}</dd></div><div><dt class="font-semibold">PSGC code</dt><dd>{{ barangay_info.psgc_code }}</dd></div>{% if barangay_info.contact_email %}<div><dt class="font-semibold">Barangay office email</dt><dd>{{ barangay_info.contact_email }}</dd></div>{% endif %}</dl>
+    <p class="text-xs mt-4"><a class="underline" href="https://psa.gov.ph/classification/psgc/barangays/0403422000" target="_blank" rel="noopener">Barangay identity reference: Philippine Statistics Authority</a></p>
+  </section>
+  <section class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-8 shadow-xl" aria-labelledby="municipal-contact-heading">
+    <h2 id="municipal-contact-heading" class="text-lg font-extrabold text-[#11291A] mb-3">Municipality of Pila — general inquiries</h2>
+    <p class="text-sm">Municipal general contact: <a href="tel:+63495546451" class="underline">(049) 554-6451</a></p>
+    <p class="text-xs mt-2">This is the municipal contact, separate from the barangay office and its DPO.</p>
+    <a class="text-xs underline" href="https://elgu-pila-laguna-news.e.gov.ph/CONTACTUS" target="_blank" rel="noopener">Official Pila LGU contact directory</a>
+  </section>
+  <div class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-8 shadow-xl">
+    <h2 class="text-lg font-extrabold text-[#11291A] mb-3">Walk-in assistance</h2>
+    <p class="text-sm text-[#5F7265]">{{ v_help_note() }}</p>
+  </div>
+
+  <div class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-8 shadow-xl">
+    <h2 class="text-lg font-extrabold text-[#11291A] mb-3">Citizens Charter</h2>
+    <p class="text-sm text-[#5F7265]">{{ v_charter_note() }}</p>
+    <p class="text-sm text-[#5F7265] mt-2"><strong>Service fees:</strong> {{ v_fees_note() }}</p>
+  </div>
+
+  <div class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-8 shadow-xl">
+    <h2 class="text-lg font-extrabold text-[#11291A] mb-3">Freedom of Information (FOI)</h2>
+    <p class="text-sm text-[#5F7265]">{{ v_foi_note() }}</p>
+  </div>
+
+  <div class="text-center mt-2">
+    <a class="text-sm font-semibold text-[#12902B] underline" href="{{ url_for('main.index') }}">← Back to home</a>
+  </div>
+
+</div>
+{% endblock %}

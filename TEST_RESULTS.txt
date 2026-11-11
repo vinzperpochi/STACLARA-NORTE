@@ -1,0 +1,141 @@
+Final source release: 103 passed, 0 failed in 76.52s.
+Command: python -m pytest -q -p no:cacheprovider -p no:tmpdir
+After final form layout changes: 17 extended registration tests passed in 13.68s.
+Windows / Python 3.14 / synthetic SQLite fixtures.
+All 60 static portal GET routes: no server errors; rendered POST forms have CSRF tokens with CSRF enabled.
+Fresh full migration, duplicate preflight, canonical backfill, populated rollback/re-upgrade: PASS.
+Supabase PostgreSQL: upgraded to b8d31f04c720; startup schema PASS; existing resident/user/household row counts preserved.
+Live registration/SMTP/AI/maps/load testing not performed.
+
+Staff insights regression: 7 passed. Staff Analytics, polling, Reports Center and PDF/CSV exports remain in official routes; account identity and roles preserved; resident/anonymous access denied; admin pages retain admin layout.
+
+Requirement picture viewing: 2 JPEG/PNG preview tests passed (3.17s); 48 existing integrity tests passed. Inline image responses, private access, audit, wrong-request protection and missing-file behavior verified. No production uploads were altered.
+
+Report Center: normal GET form submission supports toolbar and per-report PDF/CSV buttons without JavaScript. All 11 report types verified with populated fixtures in admin and staff workspaces; inclusive date boundaries, empty ranges, invalid filters, formula-safe CSV, wrapped PDF cells and authorization passed.
+
+Shared Change Password design: 16 targeted design/validation and registration lifecycle checks passed in 11.35s. Resident/staff/admin layouts, admin+resident role priority, wrong old password, mismatched confirmation, short password and successful synthetic password changes verified. Desktop screenshot inspected; no live credentials changed.
+
+Original-template document workflow — 2026-10-09
+Full regression suite: 125 passed, 106.86 seconds.
+Final focused document suite after field-height refinement: 18 passed, 27.47 seconds.
+All seven certificate and application outputs visually reviewed: one A4 page each. Long-name certificate and application also reviewed; complete text and footer remained visible.
+Disposable migration QA: fresh upgrade, duplicate preflight, linked-record preservation, populated downgrade/re-upgrade PASS.
+Live Supabase upgrade to c9e42a15d831: 54 existing table row counts unchanged; runtime schema PASS.
+
+Final complete regression run: 125 passed in 108.39 seconds.
+Final document/system integrity run including resident document-list fix and Manila date handling: 66 passed in 65.72 seconds.
+Updated live server smoke check: login 200, protected document routes 302, nonexistent verification 404; no 500 responses.
+
+Approval action regression: 18 passed in 30.49 seconds. Pending requests show Begin review; approval is disabled until verified; completed requests hide invalid actions.
+
+Email module conflict fix: 13 import/registration/SMTP tests passed in 8.14 seconds. Verified email.utils and Flask imports with the user Python 3.14 interpreter and app directory on sys.path. Renamed app/email.py to app/email_service.py.
+
+Direct workspace launcher fix: 2 import/startup tests passed in 2.08 seconds. Direct execution of app/workspace.py delegates to root run.py with the project root on sys.path; normal blueprint imports remain unchanged.
+
+Civic Emerald frontend/profile upgrade, October 9, 2026:
+Full regression suite: 139 passed in 129.18 seconds. One harmless Windows pytest cache-write warning.
+Final targeted profile, registration, password and staff insight checks: 40 passed in 36.42 seconds (cache provider disabled).
+All 134 templates compile; 69 authenticated static GET checks passed. JavaScript syntax checks passed.
+Browser responsive matrix: 100 page/viewport combinations with no document overflow at 320, 375, 768, 1024 and 1440px.
+Manual browser checks: persisted resident photo, live preview/crop/save, contact editing, profile tabs, light/dark theme, desktop compact navigation, mobile drawer and photo modal.
+Supabase migration head preserved: c9e42a15d831. No new schema migration required. See FRONTEND_UPGRADE_REPORT.md for coverage and remaining untested areas.
+
+Document request UI simplification, October 9, 2026:
+Removed the duplicate document selector, initial ID/residency/cedula inputs and purpose textarea. Single document selection, automatic resident record and real pending intake remain.
+27 intake and original document workflow tests passed in 36.68 seconds. Existing certificate approval still requires completed information and verified evidence.
+Five responsive width checks (320, 375, 768, 1024, 1440px) passed without document overflow. Browser fee selection and a real synthetic request submission passed. JavaScript syntax passed.
+Prior full frontend regression suite: 139 passed; this subsequent change was verified with the 27 focused intake/certificate tests above.
+
+Barangay Clearance upload checklist update (October 9, 2026):
+Removed the Community Tax Certificate (cedula) and 2 pcs. 1x1 recent ID photo upload cards from new and existing clearance requests, resident and staff screens, verification and approval checks. Historical requirement rows and stored files are preserved. Other document checklists and valid ID checks remain active. No database migration is needed.
+30 focused checklist, intake and original-document workflow tests passed in 39.27 seconds. Browser clearance submission confirmed only the active valid-ID card; no horizontal overflow at 1440px.
+
+Document review, approval and in-person payment update (October 9, 2026):
+Request evidence displays an inline private image and a full-size View link. If a request has no separate ID upload, it uses that resident's registration PhilSys ID; a request-specific upload takes priority. Registration proof can also satisfy the matching residency checklist. File existence, safe filenames, ownership, staff roles and private/no-store responses are enforced.
+Staff may confirm ID, identity and document eligibility and approve a pending or reviewed request in one form, without collecting payment or completing certificate-specific fields first. Approval saves review and audit history and does not issue the certificate. At the barangay, staff complete and confirm the real certificate information, record any actual cash payment and official receipt, then generate/print/release the certificate. No online payment is involved. Existing final certificate completeness, eligibility, signatory, fee, numbering and payment checks remain. Recheck approval is available if records/evidence/fee change before issuance. No database migration is required.
+34 focused review, checklist, intake and original certificate tests passed in 45.37 seconds. The final fee/reverification refinements passed the four review tests again in 5.62 seconds. Browser approval succeeded before payment; registration ID loaded; responsive checks at 320, 375, 768, 1024 and 1440px showed no overflow. Preview screenshot uses synthetic test data only.
+
+Private image 404 fix (October 9, 2026):
+Relative STORAGE_ROOT and LOG_FILE paths now resolve against the project directory, independent of the process working folder. Existing request and registration images are read from the configured private storage root first, then the two supported historical project/parent instance layouts. Filenames, extensions, contained paths, ownership, staff authorization and no-store responses remain enforced. Existing files and database records are not moved or deleted. The latest live request ID file was found in the parent instance layout and is now resolved from the project instance configuration as well. An older request references a file absent from both supported directories; missing files still return 404 rather than displaying unrelated images.
+The full-size image route was verified in the browser with a synthetic 800x480 PNG: fully decoded, no 404. The updated live server runs on port 5001. The separate older port-5000 process could not be stopped because Windows returned Access denied; it must be restarted by its owner to load the new code.
+
+Final image storage and document regression checks: 38 passed in 47.91 seconds.
+
+Direct printing update (October 9, 2026):
+Removed the approved-request Prepare certificate input form. The Print document POST action creates the original printable certificate from saved resident/request data and opens its print preview automatically. Missing supplemental values remain blank instead of requiring another form or inventing data. Printing still requires an approved, unchanged review, available verified evidence, active signatory and confirmed fee/actual in-person receipt where applicable. Repeated print actions reuse the issued certificate/control number. The normal detailed-generation API retains its existing completeness checks. Physical printing is confirmed separately for release history.
+Fixed certificate preview embedding: only the authenticated original certificate endpoint allows same-origin framing, while other pages retain frame-ancestors none and all other security headers remain. Browser test confirmed the original clearance visibly renders in the frame after Print document. 24 review/original-certificate tests passed in 35.53 seconds. All browser examples used synthetic data; no real request was issued during verification.
+
+Pending-fee printing fix (October 9, 2026):
+Direct Print document no longer requires fee configuration or payment first. Approved and verified requests may be printed while the fee or cash payment is pending. The paper uses actual recorded payment/receipt data only; missing amount, receipt number and receipt date remain blank. Unknown fees are not treated as a confirmed free service. Staff may record in-person cash receipts after printing. Actual fee confirmation and payment settlement occur before final release. Existing strict generation endpoints retain their prior checks.
+26 document-review and original-certificate tests passed in 38.00 seconds. Browser check reproduced an approved request with no FeeConfiguration and no payment, clicked Print document, and successfully displayed the original certificate without a fee error; payment fields were blank. No real certificates were generated during testing.
+Document purpose update (2026-10-09):
+- Purpose of document added to resident initial request form (up to 500 characters).
+- Submitted purpose is saved and included in direct print across all seven document types.
+- Intake, review and original document suite: 43 passed.
+- Final intake suite after ampersand handling: 17 passed.
+- Browser verified initial Business Clearance purpose submission and form layout.
+
+Indigency checklist update (2026-10-09): Removed supporting document (medical abstract/request letter) and 1 pc. 1x1 recent ID photo from new and legacy request checklists. Existing stored evidence is retained; retired uploads do not block approval or printing. Intake and checklist regression tests: 21 passed in 25.47 seconds.
+
+Document Requests UI update (2026-10-09): Added clickable status summaries, compact labeled filters with reset, readable request/resident rows and status badges, mobile request cards and an empty-state message. Approved summary counts now match the current approved-status filter. Browser verified search and status navigation; widths 320, 375, 768, 1024 and 1440 do not overflow after tablet accessible-header positioning fix. Document-review tests: 8 passed in 11.79 seconds. Preview screenshots contain synthetic data.
+
+Officials notification/account menu update (2026-10-09): Removed My profile & account from the shared role account menus. Active officials and administrators receive transactional notifications for new resident registrations, profile corrections, document submissions, requirement uploads and document corrections. Each account owns its own read/unread state; inactive accounts excluded and multiple reviewer roles deduplicated. Initial notification/intake suite: 20 passed in 25.13 seconds. Final four notification tests including real registration submission: 4 passed in 5.43 seconds. Browser verified removed menu entry and official bell showing a submitted request notification using synthetic data only.
+
+
+Attendance and smart incident operations (2026-10-09):
+Final full regression suite: 200 passed in 190.13 seconds. Includes 24 focused attendance, incident, bridge and additive migration tests.
+150 Jinja templates compiled; 16 authenticated operation pages and retention-review CLI passed. Browser desktop 1440px/mobile 390px checks passed for attendance, private incident review and resident report form without page horizontal overflow. Real-time fire routing visibly shows tel:911. UI fixtures were isolated synthetic data.
+Live Supabase upgraded c9e42a15d831 to d7a91e8b420c: 22 additive tables; all existing 57 table row counts preserved; private logical table snapshot integrity verified. Agency/category rules seeded without invented local hotline numbers. No synthetic live personnel or incident records.
+Live login/document protections and new operation route protections passed; device APIs reject missing credentials with 401. Supabase and existing private uploads/env preserved.
+Hardware limitation: no RFID reader is connected; no Arduino toolchain/physical scan, LED or buzzer acceptance test is claimed. Development-only keyboard bridge requires an isolated local test device; production test mode remains disabled. See ARDUINO_INCIDENT_SETUP.md.
+Legacy uploaded-ID tests were updated to use an approved SCN-CLR template and to verify the current inline image/full-size link instead of removed markup.
+
+Pila hotline import (October 9, 2026): 1 focused test passed. Seven official LGU-published contacts saved to live Supabase; source/date recorded. Directory visibility and BFP/PNP routing verified; repeat import makes no duplicate entries. No actual calls placed.
+
+Unified resident complaint workspace (2026-10-09): 15 complaint/workspace/blotter-map tests passed in 14.80 seconds. One sidebar entry; combined authorized blotter and owned incident records with search/type filtering/pagination. Submission, formal blotter, tracking and hotline actions remain available. Live Supabase combined query passed with no data changes. Browser checks: desktop 1440px and mobile 390px, no horizontal page overflow; hotline navigation returns to unified workspace. Screenshot uses synthetic data.
+
+Profile card UI (2026-10-09): Rounded section cards, tab container, individual information cards and sidebar identity card added. Existing profile/forms behavior preserved. Profile suite: 12 passed in 12.54 seconds. Browser verified personal/contact tabs, desktop 1440px and mobile 390px with single-column cards and no page horizontal overflow. Preview uses synthetic account data.
+
+2026-10-09 complaint form UI refinement
+- Four responsive section cards; readable white hero title; enlarged map and review footer.
+- Browser QA: desktop 1440px, mobile 390px and 320px; no horizontal overflow; dark-mode field contrast checked.
+- Native required-field validation prevents premature submit-button locking. Counter updates and manual location synchronization verified with synthetic fixture data.
+- Existing blotter regression tests: 3 passed, 46 deselected (3.68s).
+- No database migration or production complaint submitted.
+2026-10-09 Complaints & Blotter workspace UI refinement
+- Three service action cards, improved hero contrast, structured record metadata/status, unified filter container, filtered record count and contextual empty state.
+- Browser QA: 1440px desktop, 390px and 320px mobile without horizontal overflow; dark-mode card and input contrast verified; search no-results and Clear filters worked.
+- Existing unified workspace regression: 1 passed (2.41s), covering owned/shared records, privacy, record type filtering, and service links.
+- Presentation-only update; no database migration or production records changed.
+2026-10-09 resident sidebar refinement
+- Scoped resident navigation styling: readable bilingual labels, consistent icons, compact count badges, visible active-item subtitle and contained profile/help footer.
+- Navigation scrolls independently; active page kept within its visible area. Compact desktop mode, group collapse, mobile drawer open/close and help modal verified in isolated browser fixtures.
+- Desktop 1440x1000 and mobile 390x844 verified; mobile footer stays within viewport, no horizontal overflow. Dark-mode active subtitle contrast verified.
+- Existing unified workspace and premium profile regression: 13 passed in 13.53s.
+- No database migration or production record edits.
+2026-10-09 public green palette and login icon removal
+- Green Bootstrap primary buttons/text/borders scoped to auth/public shell. Get Started and Verify computed background rgb(8,116,53), white button text.
+- Removed decorative icons from login role tabs, credential inputs, sign-in button, register link and privacy card. Input padding corrected; functional password visibility button retained.
+- Browser QA verified role selection, password text/password toggle and mobile 390px layout without horizontal overflow. Desktop screenshots captured with synthetic QA app and empty login fields.
+- Presentation-only update; no database migration.
+2026-10-09 resident complaint detail UI
+- Green case header with readable case title/reference and bilingual current status. Incident details and submitted narrative use separate responsive cards. Status history uses timeline entries with original notes/timestamps.
+- Browser QA with synthetic case: desktop 1440px, mobile 390px without horizontal overflow; dark-mode narrative/status contrast verified.
+- Existing blotter regression: 2 passed, 46 deselected in 4.72s, including unrelated-resident access denial.
+- No database migration or production case data changed.
+2026-10-09 shared official/staff/admin sidebar
+- Reused resident sidebar styling and shared profile/help footer across all three workspace layouts; role-specific navigation endpoints retained.
+- Shared navigation scrolling, visible active-item subtitles, compact count badges, collapsible groups, compact mode and anchored profile/help cards.
+- Browser QA: synthetic staff Analytics remained in workspace-official with /official/analytics active. Synthetic admin Users remained in workspace-admin with /admin/users active. Both compact sidebars measured 78px; mobile drawers at 390px had no horizontal overflow and footer bottom 816px within 844px viewport. Admin dark-mode active subtitle contrast checked.
+- Existing premium profile/unified workspace regression: 13 passed in 14.00s. Final admin spacing correction verified in browser (container gap 0px).
+- No database migration or account/permission changes.
+
+2026-10-09 Official Accounts UI: 7 account tests passed; desktop 1440px and mobile 390px layouts verified; mobile record cards and dark mode verified; no horizontal page overflow. Account creation, permissions, generated credentials and deletion handlers preserved.
+
+2026-10-10 Civic Emerald palette: shared theme across five layouts, 28 custom stylesheets normalized, 35 regression tests passed. Landing/resident/admin browser previews, resident mobile no overflow, and dark surface contrast checked using synthetic data.
+
+2026-10-10 Combined management case workspace: 15 incident and unified-workspace tests passed; combined blotter/incident records, filtering, original detail links, resident denial and sensitive complaint access verified.
+
+2026-10-10 Walk-in documents / CRUD / access: 206 regression cases passed in the final broad run; its one route-render failure from a concurrently refreshed template was resolved and the all-static-route check passed on fresh application initialization. Four targeted walk-in/ID view/purpose edit, permission revocation, CRUD/archive, built-in protection tests passed. Overnight attendance fixtures now use completed shifts; 11 attendance and walk-in checks passed. Desktop/mobile, native selects, role checklist and ArrowDown/Escape account menu checked with synthetic records. No schema migration required.
+
+2026-10-10 Complaints & Blotter UI: 2 management workspace tests passed; browser search/type filters and sample case cards verified; mobile 390x844 no overflow (375px content/scroll width); light/dark themes reviewed. Preview uses synthetic data only.

@@ -1,0 +1,51 @@
+:root {
+  --ui-green: #0A5C1E;
+  --ui-green-dark: #083E14;
+  --ui-lime: #B8E4C3;
+  --ui-ink: #083E14;
+  --ui-muted: #61756a;
+  --ui-border: #dce9df;
+  --ui-surface: #ffffff;
+  --ui-shadow: 0 10px 30px rgba(8, 74, 37, .08);
+  --ui-shadow-hover: 0 16px 36px rgba(8, 74, 37, .13);
+}
+
+html { scroll-behavior: smooth; }
+body { color: var(--ui-ink); }
+button, a, input, select, textarea { transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease, color .18s ease, transform .18s ease; }
+button:active, .civic-btn:active, .civic-btn-gradient:active, .btn:active { transform: scale(.98); }
+
+/* Portal shell */
+#portal-main { padding-bottom: 1.5rem; }
+#portal-sidebar { align-self: flex-start; position: sticky; top: 1.25rem; }
+#portal-sidebar > * { border-radius: 1rem; }
+.bg-surface-card { box-shadow: 0 2px 12px rgba(10, 92, 30, .045); }
+.civic-card-shadow { box-shadow: var(--ui-shadow); }
+.civic-card-shadow:hover, .civic-hover-shadow:hover { box-shadow: var(--ui-shadow-hover); transform: translateY(-2px); }
+
+/* Improve content rhythm and prevent long labels from breaking layouts */
+#portal-main h1, #portal-main h2, #portal-main h3 { letter-spacing: -.02em; }
+#portal-main table { width: 100%; }
+#portal-main th { white-space: nowrap; }
+#portal-main td { vertical-align: middle; }
+#portal-main input, #portal-main select, #portal-main textarea { border-radius: .65rem; }
+#portal-main input:focus, #portal-main select:focus, #portal-main textarea:focus { box-shadow: 0 0 0 3px rgba(10, 107, 50, .14); }
+
+/* Compact mobile spacing without changing the markup */
+@media (max-width: 767.98px) {
+  body { overflow-x: hidden; }
+  #portal-sidebar { position: fixed; top: 0; bottom: 0; left: 0; z-index: 40; width: min(18rem, 88vw); padding: .9rem; overflow-y: auto; background: #f7fbf8; box-shadow: 14px 0 40px rgba(0, 0, 0, .14); }
+  #portal-main { width: 100%; }
+  #portal-main h1 { font-size: 1.45rem; line-height: 1.2; }
+  #portal-main h2 { font-size: 1.15rem; line-height: 1.25; }
+  #portal-main table { min-width: 620px; }
+  #portal-main .overflow-x-auto { border-radius: .8rem; -webkit-overflow-scrolling: touch; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+/* Local SVG icon system */
+.icon-svg { display:inline-block; vertical-align:-0.125em; flex:0 0 auto; }

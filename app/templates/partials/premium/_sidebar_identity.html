@@ -1,0 +1,4 @@
+<a class="civic-sidebar-identity" href="{{ url_for('workspace.profile') }}">
+{% include 'partials/premium/_avatar.html' %}
+<span class="civic-sidebar-copy"><strong>{{ profile_name }}</strong><small>{{ 'Administrator' if is_admin else ('Official / Staff' if is_official else 'Resident') }}</small></span>
+</a>

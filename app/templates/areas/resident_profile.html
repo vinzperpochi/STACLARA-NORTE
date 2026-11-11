@@ -1,0 +1,89 @@
+{% extends "resident/_portal_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block title %}Civil Profile &amp; Digital ID{% endblock %}
+{% block extra_head %}{{ super() }}<link rel="stylesheet" href="{{ url_for('static', filename='css/resident-detail.css') }}?v=20261106-1">{% endblock %}
+
+{% block content %}
+<div class="stitch-breadcrumb" aria-label="Breadcrumb"><a href="{{ url_for('resident.dashboard') }}">Barangay Registry</a><span aria-hidden="true">›</span><span class="stitch-breadcrumb-current" aria-current="page">Civil Profile &amp; Digital ID</span></div>
+
+<section class="flex flex-col sm:flex-row sm:items-end justify-between gap-4" aria-labelledby="profile-title">
+  <div><div class="flex flex-wrap items-center gap-2.5"><h1 id="profile-title" class="stitch-page-title">Civil Profile &amp; Digital ID</h1>{% if resident.is_verified %}<span class="stitch-status-active">Beripikadong tala</span>{% else %}<span class="stitch-status-chip">Hindi pa beripikado</span>{% endif %}</div><p class="stitch-page-subtitle">Impormasyong nakatala sa Barangay Sta. Clara Norte resident registry.</p></div>
+  <div class="flex flex-wrap gap-2" data-stitch-profile-actions>
+    <a class="stitch-btn-primary text-xs" href="{{ url_for('resident.correction_requests') }}">{{ icon('edit_note', 'text-base', size='1em') }}Humiling ng pagwawasto</a>
+    <button type="button" class="stitch-btn-outline text-xs" data-stitch-fullscreen>{{ icon('unfold_more', 'text-base', size='1em') }}I-view fullscreen</button>
+    <button type="button" class="stitch-btn-secondary text-xs" data-portal-print>{{ icon('download', 'text-base', size='1em') }}I-print / I-save</button>
+  </div>
+</section>
+
+<section class="stitch-id-card p-5 sm:p-6 lg:p-7" data-stitch-print-card aria-label="Resident registry ID card">
+  <div class="relative z-10 flex flex-wrap items-center justify-between gap-4 border-b border-white/20 pb-4">
+    <div class="flex items-center gap-3">
+      <span class="stitch-id-seal"><img src="{{ url_for('static', filename='img/barangay-seal.png') }}" alt="Selyo ng Barangay Sta. Clara Norte" width="34" height="34"></span>
+      <div><p class="text-[9px] font-bold uppercase tracking-[.14em] text-emerald-100">Republika ng Pilipinas · Lalawigan ng Laguna</p><h2 class="mt-1 text-xs sm:text-sm font-extrabold tracking-wide text-white">Pamahalaang Barangay Sta. Clara Norte</h2></div>
+    </div>
+    <div class="text-right"><span class="stitch-id-label">Lokal na resident record</span><span class="stitch-id-value font-mono">SCN-{{ '%06d'|format(resident.id) }}</span></div>
+  </div>
+
+  <div class="relative z-10 mt-5 flex items-start gap-4 sm:gap-5">
+    <div class="stitch-id-photo" aria-label="Resident profile photo">
+      {% if resident.profile_photo_filename %}<img src="{{ url_for('resident.profile_photo') }}" alt="Larawan ni {{ resident.first_name }} {{ resident.last_name }}" width="76" height="92">
+      {% else %}<span class="stitch-id-photo-initials">{{ (resident.first_name[:1] ~ resident.last_name[:1])|upper }}</span>{% endif %}
+    </div>
+    <div class="min-w-0 flex-1">
+      <span class="stitch-id-label">Buong pangalan / Full name</span>
+      <h3 class="mt-1 text-lg sm:text-2xl font-black leading-tight tracking-tight text-white">{{ resident.first_name }}{% if resident.middle_name %} {{ resident.middle_name }}{% endif %} {{ resident.last_name }}{% if resident.suffix %} {{ resident.suffix }}{% endif %}</h3>
+      <div class="mt-2 flex flex-wrap items-center gap-2">
+        {% if resident.is_verified %}<span class="inline-flex items-center gap-1 rounded-md border border-emerald-200/40 bg-emerald-50/15 px-2 py-1 text-[10px] font-extrabold text-emerald-50">{{ icon('verified_user', 'text-sm', size='1em') }}Beripikado</span>{% else %}<span class="inline-flex items-center gap-1 rounded-md border border-amber-200/50 bg-amber-50/15 px-2 py-1 text-[10px] font-extrabold text-amber-100">{{ icon('clock', 'text-sm') }}Beripikasyon: hindi pa kumpleto</span>{% endif %}
+        <span class="text-[10px] text-emerald-100">{{ resident.status|replace('_',' ')|title }} na rekord</span>
+      </div>
+      <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div class="rounded-lg border border-white/15 bg-black/15 p-3"><span class="stitch-id-label">Barangay record no.</span><span class="stitch-id-value mt-1 block font-mono">SCN-{{ '%06d'|format(resident.id) }}</span></div>
+        <div class="rounded-lg border border-white/15 bg-black/15 p-3"><span class="stitch-id-label">PhilSys reference</span><span class="stitch-id-value mt-1 block font-mono">{% if resident.philsys_id %}{{ resident.philsys_id[:4] }}••••{{ resident.philsys_id[-4:] }}{% else %}Hindi naka-link sa talaan{% endif %}</span></div>
+      </div>
+    </div>
+  </div>
+
+  <dl class="relative z-10 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+    <div class="stitch-id-detail"><dt>Tirahan / Address</dt><dd>{{ resident.address_line or (resident.household.address_line if resident.household else 'Wala pang address sa talaan') }}{% if resident.purok %} · {{ resident.purok.name }}{% endif %}</dd></div>
+    <div class="stitch-id-detail"><dt>Kapanganakan / Katayuang sibil</dt><dd>{% if resident.birth_date %}{{ resident.birth_date.strftime('%d %B %Y') }}{% else %}Hindi nakatala{% endif %} · {{ resident.civil_status or 'Hindi nakatala' }}</dd></div>
+  </dl>
+
+  <div class="relative z-10 mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-white/30 bg-white px-4 py-3 text-[#11291a] shadow-sm">
+    <div class="flex items-start gap-3">{{ icon('verified_user' if resident.is_verified else 'privacy_tip', 'mt-0.5 text-primary') }}<div><p class="text-xs font-extrabold">Resident registry record</p><p class="mt-0.5 text-[10px] text-on-surface-muted">{% if resident.is_verified %}Kinukumpirma ng portal ang status ng rekord na ito.{% else %}Ang beripikasyon ay ginagawa ng awtorisadong kawani; hindi ito government-issued QR credential.{% endif %}</p></div></div>
+    <span class="{{ 'stitch-status-active' if resident.status|lower == 'active' else 'stitch-status-chip' }} shrink-0">{{ 'AKTIBO' if resident.status|lower == 'active' else resident.status|replace('_',' ')|upper }}</span>
+  </div>
+</section>
+
+<section aria-labelledby="related-records-title" class="space-y-3">
+  <div class="flex flex-wrap items-end justify-between gap-2"><div><p class="stitch-eyebrow">Resident registry</p><h2 id="related-records-title" class="mt-1 text-base font-extrabold text-on-surface">Mga Kaugnay na Rekord</h2></div><span class="text-[11px] text-on-surface-muted">Mula sa impormasyong naka-store sa portal</span></div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <article class="stitch-card p-4 flex flex-col">
+      <div class="flex items-center justify-between gap-2"><span class="stitch-icon-tile">{{ icon('how_to_vote', '', size='1em') }}</span>{% if resident.voter_status|lower in ['active','registered'] %}<span class="stitch-status-active">{{ {'active':'Aktibo','registered':'Rehistrado'}.get(resident.voter_status|lower) }}</span>{% else %}<span class="stitch-status-chip">{{ 'Hindi nakasaad' if resident.voter_status|lower == 'unknown' else resident.voter_status|replace('_',' ')|title }}</span>{% endif %}</div>
+      <h3 class="mt-3 text-sm font-extrabold text-on-surface">Rekord ng botante</h3><p class="mt-1 text-xs leading-relaxed text-on-surface-muted">Katayuang nakasaad sa resident record.</p>
+      <dl class="mt-3 border-t border-[#edf2ed] pt-3 text-xs"><div class="flex justify-between gap-2"><dt class="text-on-surface-muted">Katayuan</dt><dd class="font-semibold text-on-surface">{{ 'Hindi nakasaad' if resident.voter_status|lower == 'unknown' else resident.voter_status|replace('_',' ')|title }}</dd></div></dl>
+    </article>
+    <article class="stitch-card p-4 flex flex-col">
+      <div class="flex items-center justify-between gap-2"><span class="stitch-icon-tile">{{ icon('family_restroom', '', size='1em') }}</span>{% if resident.household %}<span class="stitch-status-active">Naka-link</span>{% else %}<span class="stitch-status-chip">Walang naka-link</span>{% endif %}</div>
+      <h3 class="mt-3 text-sm font-extrabold text-on-surface">Household record</h3><p class="mt-1 text-xs leading-relaxed text-on-surface-muted">{% if resident.household %}Sambahayan {{ resident.household.household_number }} · {{ resident.household.residents|length }} miyembro{% else %}Walang sambahayang naka-link sa record na ito.{% endif %}</p>
+      <a class="mt-auto pt-4 text-xs font-bold text-primary-dark hover:underline" href="{{ url_for('resident.household') }}">Tingnan ang household →</a>
+    </article>
+    <article class="stitch-card p-4 flex flex-col">
+      <div class="flex items-center justify-between gap-2"><span class="stitch-icon-tile">{{ icon('description', '', size='1em') }}</span><span class="stitch-record-chip">{{ resident.requests|length }} kahilingan</span></div>
+      <h3 class="mt-3 text-sm font-extrabold text-on-surface">Mga serbisyo</h3><p class="mt-1 text-xs leading-relaxed text-on-surface-muted">May {{ resident.requests|length }} kahilingan at {{ resident.issued_documents|length }} inilabas na dokumentong naka-link sa resident record na ito.</p>
+      <a class="mt-auto pt-4 text-xs font-bold text-primary-dark hover:underline" href="{{ url_for('resident.requests') }}">Tingnan ang mga kahilingan →</a>
+    </article>
+  </div>
+</section>
+
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+  <article class="stitch-card p-5">
+    <div class="flex items-start gap-3"><span class="stitch-icon-tile shrink-0">{{ icon('manage_accounts', '', size='1em') }}</span><div><p class="stitch-eyebrow">Aksyon at seguridad ng profile</p><h2 class="mt-1 text-sm font-extrabold text-on-surface">Pamahalaan ang iyong talaan</h2><p class="mt-1 text-xs leading-relaxed text-on-surface-muted">Hindi awtomatikong nababago ang opisyal na resident record. Magsumite ng correction request para masuri ito ng kawani.</p></div></div>
+    <div class="mt-4 flex flex-col gap-2"><a class="stitch-btn-secondary" href="{{ url_for('workspace.profile') }}">Upload / replace profile image</a><a class="stitch-btn-secondary w-full justify-between text-xs" href="{{ url_for('resident.correction_requests') }}">Humiling ng pagwawasto {{ icon('arrow_forward', 'text-base', size='1em') }}</a><a class="stitch-btn-outline w-full justify-between text-xs" href="{{ url_for('auth.change_password') }}">Palitan ang password {{ icon('arrow_forward', 'text-base', size='1em') }}</a></div>
+  </article>
+  <article class="stitch-info-card">
+    <div class="flex items-start gap-3">{{ icon('privacy_tip', 'text-primary', size='1em') }}<div><p class="stitch-eyebrow">Data Privacy Act · RA 10173</p><h2 class="mt-1 text-sm font-extrabold text-on-surface">Protektado ang iyong personal na impormasyon</h2><p class="mt-2">Ang mga detalyeng ipinapakita rito ay para sa account holder at sa mga awtorisadong kawani. Iwasang magbahagi ng screenshot o sensitibong identifier sa pampublikong lugar.</p><a class="mt-3 inline-flex text-xs font-bold text-primary-dark underline" href="{{ url_for('main.privacy_notice') }}">Basahin ang Privacy Notice</a></div></div>
+  </article>
+</section>
+<div class="flex flex-wrap items-center justify-between gap-3"><h2 class="text-title-lg font-bold">Registration information</h2><a class="stitch-btn-primary" href="{{ url_for('resident.profile_details') }}">{{ icon('edit_note') }} Kumpletuhin / i-update ang detalye</a></div>
+{% include 'partials/_registration_details.html' %}
+{% endblock %}

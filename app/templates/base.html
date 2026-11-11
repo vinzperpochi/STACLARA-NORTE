@@ -1,0 +1,191 @@
+{% from 'components/icons.html' import icon %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Barangay Sta. Clara Norte e-governance portal">
+    <title>{% block title %}Barangay Sta. Clara Norte{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static',filename='vendor/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/app.css') }}?v=emerald-20261010-final" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/ui-enhancements.css') }}?v=emerald-20261010-final" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/form-validation.css') }}?v=emerald-20261010-final" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/ui-pagination.css') }}?v=20261111-search-right" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/ui-system.css') }}?v=emerald-20261010-final" rel="stylesheet">
+<link href="{{ url_for('static',filename='css/civic-premium.css') }}?v=emerald-20261010-final" rel="stylesheet">
+<script>try{document.documentElement.dataset.civicTheme=localStorage.getItem("scn-theme")||"light";}catch(e){}</script>
+<link href="{{ url_for('static',filename='css/civic-palette.css') }}?v=20261102" rel="stylesheet">
+{% include 'partials/_client_validation_assets.html' %}
+{% include 'partials/_favicon.html' %}
+</head>
+<body class="legacy-shell">
+<a class="skip-link btn btn-light" href="#main-content">Skip to content</a>
+{% from "partials/_macros.html" import nav_item %}
+{% if current_user.is_authenticated %}
+<div class="app-shell">
+    <aside class="app-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="appSidebar" aria-label="Primary navigation">
+        <div class="sidebar-brand">
+            <a href="{{ url_for('main.index') }}" class="brand-lockup">
+                <span class="seal-mark" style="width:38px;height:38px;margin:0;font-size:.75rem;">SCN</span>
+                <span><strong>Sta. Clara Norte</strong><small>E-Governance Portal</small></span>
+            </a>
+            <button type="button" class="btn-close btn-close-white d-lg-none" data-bs-dismiss="offcanvas" aria-label="Close navigation"></button>
+        </div>
+        <div class="sidebar-scroll">
+            {% if is_admin %}
+            <p class="nav-label">Main</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('admin.dashboard', 'grid-1x2', 'Overview', 'Pangkalahatan') }}
+            </nav>
+            <p class="nav-label">Records</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('admin.users', 'people', 'Users', None, 'admin.users') }}
+                {{ nav_item('admin.roles', 'person-badge', 'Roles') }}
+                {{ nav_item('admin.permissions', 'key', 'Permissions') }}
+                {{ nav_item('admin.puroks', 'geo', 'Puroks') }}
+            </nav>
+            <p class="nav-label">Services</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('admin.document_types', 'file-earmark-text', 'Document types') }}
+                {{ nav_item('admin.fees', 'cash-stack', 'Fees') }}
+            </nav>
+            <p class="nav-label">Insights</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('admin.analytics', 'graph-up', 'Analytics') }}
+                {{ nav_item('admin.reports', 'file-earmark-bar-graph', 'Reports') }}
+            </nav>
+            <p class="nav-label">System</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('admin.settings', 'sliders2', 'Settings') }}
+                {{ nav_item('admin.audit_logs', 'shield-check', 'Audit logs') }}
+            </nav>
+            {% endif %}
+
+            {% if is_resident %}
+            <p class="nav-label">Main</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('resident.dashboard', 'grid-1x2', 'Dashboard', 'Aking workspace') }}
+                {{ nav_item('resident.queue_requests', 'list-check', 'Queue status', 'Status ng pila', 'resident.queue') }}
+            </nav>
+            <p class="nav-label">Records</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('resident.profile', 'person-circle', 'My profile', 'Aking profile') }}
+                {{ nav_item('resident.household', 'house', 'Household', 'Sambahayan') }}
+                {{ nav_item('resident.correction_requests', 'pencil-square', 'Corrections', 'Mga koreksyon') }}
+            </nav>
+            <p class="nav-label">Services</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('resident.documents', 'file-earmark-text', 'Documents', 'Mga dokumento', 'resident.document') }}
+            </nav>
+            <p class="nav-label">Cases</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('resident.blotter_cases', 'chat-left-text', 'Complaints', 'Mga reklamo', 'resident.blotter') }}
+            </nav>
+            <p class="nav-label">Safety</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('resident.emergency_alerts', 'exclamation-triangle', 'Emergency alerts', 'Mga alerto') }}
+            </nav>
+            <p class="nav-label">Updates</p>
+            <nav class="nav flex-column app-nav">
+                {{ nav_item('resident.notifications', 'bell', 'Notifications', 'Mga abiso') }}
+            </nav>
+            {% endif %}
+        </div>
+    </aside>
+    <div class="app-main">
+        <header class="topbar">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-icon d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appSidebar" aria-label="Open navigation">{{ icon('list', '') }}</button>
+                <div>
+                    <span class="eyebrow">BARANGAY STA. CLARA NORTE</span>
+                    <div class="topbar-context">{% block page_title %}{% block breadcrumb %}{{ self.title() }}{% endblock %}{% endblock %}</div>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                {% if is_admin or is_official %}
+                <form class="search-box" method="get" action="{{ url_for('main.search') }}">
+                    <input class="form-control form-control-sm" name="q" value="{{ request.args.get('q','') }}" placeholder="Search residents, cases, requests" aria-label="Search">
+                </form>
+                {% endif %}
+                {% if is_resident %}
+                <a class="btn-icon" href="{{ url_for('resident.notifications') }}" aria-label="Notifications">
+                    {{ icon('bell', '') }}
+                    {% if unread_notifications %}<span class="notif-dot">{{ unread_notifications }}</span>{% endif %}
+                </a>
+                {% endif %}
+                <a class="btn-icon" href="{{ url_for('main.privacy_notice') }}" aria-label="Privacy notice">{{ icon('info-circle', '') }}</a>
+                <div class="dropdown">
+                    <button class="user-menu" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% include 'partials/premium/_avatar.html' %}
+                        <span class="user-copy d-none d-sm-flex flex-column text-start">
+                            <strong>{{ current_user.username }}</strong>
+                            <small class="text-secondary">{% if is_admin %}Administrator{% endif %}{% if is_official %}{% if is_admin %} · {% endif %}Official{% endif %}{% if is_resident %}{% if is_admin or is_official %} · {% endif %}Resident{% endif %}</small>
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li><a class="dropdown-item" href="{{ url_for('auth.change_password') }}">{{ icon('key', 'me-2') }}Change password</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="post" action="{{ url_for('auth.logout') }}" data-confirm="Sign out on this shared computer? / Mag-sign out?">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button class="dropdown-item text-danger" type="submit">{{ icon('box-arrow-right', 'me-2') }}Sign out · Mag-sign out</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <main id="main-content" class="content-area">
+            {% set civic_page_title = self.title() %}{% include 'partials/premium/_toolbar.html' %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}<div class="toast-stack" aria-live="polite">{% for category, message in messages %}<div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>{% endfor %}</div>{% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </main>
+        <footer class="app-footer"><span>© 2026 Barangay Sta. Clara Norte, Pila, Laguna</span><a href="{{ url_for('main.privacy_notice') }}">Privacy notice · Paunawa sa privacy</a></footer>
+    </div>
+</div>
+{% else %}
+<div class="civic-ribbon">Republic of the Philippines · Province of Laguna · Municipality of Pila</div>
+<header class="public-header">
+    <a href="{{ url_for('main.index') }}" class="brand-lockup">
+        <span class="seal-mark" style="width:40px;height:40px;margin:0;font-size:.7rem;">SCN</span>
+        <span><strong>Sta. Clara Norte</strong><small>E-Governance Portal</small></span>
+    </a>
+    <nav class="d-flex align-items-center gap-3 flex-wrap">
+        <a href="{{ url_for('main.privacy_notice') }}">Privacy</a>
+        <a href="{{ url_for('main.help_page') }}">Help</a>
+        <a href="{{ url_for('auth.register') }}">Register · Magrehistro</a>
+        <a class="btn btn-primary btn-sm" href="{{ url_for('auth.login') }}">Sign in · Mag-sign in</a>
+    </nav>
+</header>
+<main id="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}<div class="toast-stack" aria-live="polite">{% for category, message in messages %}<div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>{% endfor %}</div>{% endif %}
+            {% endwith %}
+            {% block public_hero %}{% endblock %}{{ self.content() }}
+        </main>
+<footer class="public-footer"><span>Barangay Sta. Clara Norte · Pila, Laguna</span><a href="{{ url_for('main.privacy_notice') }}">Privacy notice</a></footer>
+{% endif %}
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+        <div class="modal-header"><h2 class="h5 modal-title">Please confirm</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        <div class="modal-body" id="confirmModalText"></div>
+        <div class="modal-footer"><button class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary" id="confirmModalOk" type="button">Continue</button></div>
+    </div></div>
+</div>
+<script src="{{ url_for('static',filename='vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
+<script src="{{ url_for('static', filename='js/civic-ui.js') }}"></script>
+<script defer src="{{ url_for('static', filename='js/form-validation.js') }}"></script>
+<script defer src="{{ url_for('static', filename='js/form-enhancements.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table-sort.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tutorial.js') }}"></script>
+{% block scripts %}{% endblock %}
+<script src="{{ url_for('static',filename='js/civic-premium.js') }}?v=20261102"></script>
+</body>
+</html>

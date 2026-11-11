@@ -1,0 +1,5 @@
+{% from 'components/icons.html' import icon %}
+<div class="civic-toolbar">
+  <nav aria-label="Breadcrumb" class="civic-breadcrumb"><a href="{{ url_for('admin.dashboard') if is_admin else (url_for('official.dashboard') if is_official else url_for('resident.dashboard')) }}">{{ 'Administration' if is_admin else ('Operations' if is_official else 'My barangay') }}</a><span aria-hidden="true">/</span><span aria-current="page">{{ civic_page_title|striptags }}</span></nav>
+  <div class="civic-toolbar-controls"><button type="button" data-civic-compact aria-controls="portal-sidebar" aria-expanded="true" title="Compact navigation">{{ icon('menu', '', size='18px') }}<span class="civic-control-label">Navigation</span></button><button type="button" data-civic-theme aria-pressed="false" title="Switch color theme">{{ icon('contrast', '', size='18px') }}<span data-theme-label>Dark mode</span></button></div>
+</div>

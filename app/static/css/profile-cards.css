@@ -1,0 +1,14 @@
+/* Profile sections remain real Bootstrap tabs and keep their existing forms. */
+.civic-profile .civic-profile-tabs{padding:8px;gap:6px;border:1px solid var(--civic-border);border-radius:16px;background:var(--civic-card);box-shadow:0 4px 18px #083E1405;scrollbar-width:thin}
+.civic-profile .civic-profile-tabs .nav-link{border:0;border-radius:10px;padding:12px 16px;min-height:44px}
+.civic-profile .civic-profile-tabs .nav-link.active{background:var(--civic-mint);color:var(--civic-emerald);box-shadow:inset 0 0 0 1px var(--civic-border)}
+.civic-profile .civic-profile-content{margin-top:16px;border:1px solid var(--civic-border)!important;border-radius:20px!important;background:var(--civic-card);overflow:hidden;box-shadow:0 10px 32px -20px #083E1440}
+.civic-profile .civic-profile-content>.tab-pane{padding:28px}
+.civic-profile .civic-section-heading{padding-bottom:20px;border-bottom:1px solid var(--civic-border);margin-bottom:22px}
+.civic-profile-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:22px 0 0}
+.civic-profile-field{padding:17px 20px;border:1px solid var(--civic-border);border-radius:12px;background:var(--civic-page);min-width:0}
+.civic-profile .civic-profile-field dt{font-size:11px;font-weight:500;margin-bottom:8px;letter-spacing:.01em}
+.civic-profile .civic-profile-field dd{font-size:14px;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
+.civic-profile .civic-note{border-radius:12px;padding:16px 18px;line-height:1.7}
+.civic-profile .civic-completeness{border-radius:16px!important;border:1px solid var(--civic-border);box-shadow:0 4px 18px #083E1405}
+@media(max-width:767px){.civic-profile .civic-profile-content>.tab-pane{padding:20px}.civic-profile-detail-grid{grid-template-columns:minmax(0,1fr);gap:10px}.civic-profile-field{padding:15px 16px}.civic-profile .civic-section-heading{align-items:flex-start;gap:14px}.civic-profile .civic-profile-tabs .nav-link{padding:11px 13px}}

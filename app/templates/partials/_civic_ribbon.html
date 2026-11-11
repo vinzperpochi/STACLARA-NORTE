@@ -1,0 +1,14 @@
+{% from 'components/icons.html' import icon %}
+<div class="civic-topbar{{ ' portal-meta' if ribbon_portal|default(false) else '' }}">
+  <div class="ctb-inner">
+    <div class="ctb-identity">
+      <span class="ctb-republic"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"></path></svg> REPUBLIC OF THE PHILIPPINES</span>
+      <span class="ctb-municipality">Municipality of Pila, Laguna <span aria-hidden="true">•</span> <em>National Historical Landmark</em></span>
+    </div>
+    <div class="ctb-links">
+      <button type="button" class="ctb-privacy" {{ 'data-portal-modal' if ribbon_portal|default(false) else 'data-open-modal' }}="privacy">{{ icon('shield-check') }} RA 10173 Compliant</button>
+      <span class="ctb-divider" aria-hidden="true">/</span>
+      {% if ribbon_portal|default(false) %}<span class="ctb-gateway">{{ icon('lock') }} ISO/IEC 27001 Gateway</span>{% else %}<button class="ctb-gateway" type="button" data-open-modal="iso27001">{{ icon('lock') }} ISO/IEC 27001 Gateway</button>{% endif %}
+    </div>
+  </div>
+</div>

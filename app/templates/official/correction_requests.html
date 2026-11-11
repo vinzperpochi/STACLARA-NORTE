@@ -1,0 +1,155 @@
+{% extends "official/_official_base.html" %}
+{% block active_nav %}official.correction_requests{% endblock %}
+{% block title %}Correction Requests{% endblock %}
+{% block content %}
+
+<div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+  <h1 class="text-headline-sm font-headline-sm text-on-surface">Resident correction requests</h1>
+  <div class="flex gap-2 text-label-sm">
+    <span class="badge bg-warning-subtle text-warning-emphasis">Pending</span>
+    <span class="badge bg-success-subtle text-success-emphasis">Approved</span>
+    <span class="badge bg-danger-subtle text-danger-emphasis">Rejected</span>
+  </div>
+</div>
+
+<div class="overflow-x-auto bg-surface-card rounded-xl border border-outline-border">
+  <table class="civic-table">
+    <thead>
+      <tr>
+        <th>Resident</th>
+        <th>Field</th>
+        <th>Current value</th>
+        <th>Proposed value</th>
+        <th>Reason</th>
+        <th>Submitted</th>
+        <th>Status</th>
+        <th class="text-end">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in requests %}
+      <tr>
+        <td class="font-medium">{{ item.resident.last_name }}, {{ item.resident.first_name }}</td>
+        <td><code class="text-xs">{{ item.field_name }}</code></td>
+        <td class="text-on-surface-muted text-sm">{{ item.current_value or '—' }}</td>
+        <td class="font-medium text-sm">{{ item.proposed_value }}</td>
+        <td class="text-sm max-w-[16rem] truncate" title="{{ item.reason }}">{{ item.reason }}</td>
+        <td class="text-sm text-on-surface-muted whitespace-nowrap">{{ item.created_at.strftime('%b %d, %Y') }}</td>
+        <td>
+          {% if item.status == 'pending' %}
+            <span class="badge bg-warning-subtle text-warning-emphasis">Pending</span>
+          {% elif item.status == 'approved' %}
+            <span class="badge bg-success-subtle text-success-emphasis">Approved</span>
+            {% if item.reviewed_at %}
+            <div class="text-[11px] text-on-surface-muted mt-0.5">{{ item.reviewed_at.strftime('%b %d, %Y') }}</div>
+            {% endif %}
+          {% elif item.status == 'rejected' %}
+            <span class="badge bg-danger-subtle text-danger-emphasis">Rejected</span>
+            {% if item.review_notes %}
+            <div class="text-[11px] text-on-surface-muted mt-0.5" title="{{ item.review_notes }}">{{ item.review_notes | truncate(40) }}</div>
+            {% endif %}
+          {% else %}
+            <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ item.status | title }}</span>
+          {% endif %}
+        </td>
+        <td class="text-end">
+          {% if item.status == 'pending' %}
+          <div class="d-flex gap-2 justify-end">
+
+            {# Approve button — triggers a small confirm modal #}
+            <button type="button"
+                    class="civic-btn text-xs py-1 px-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#approveModal{{ item.id }}">
+              Approve
+            </button>
+
+            {# Reject button — triggers a reject modal #}
+            <button type="button"
+                    class="civic-btn-danger text-xs py-1 px-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#rejectModal{{ item.id }}">
+              Reject
+            </button>
+
+          </div>
+
+          {# Approve confirmation modal #}
+          <div class="modal fade" id="approveModal{{ item.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Approve correction?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-sm">
+                  <p>Apply <strong>{{ item.proposed_value }}</strong> to <code>{{ item.field_name }}</code>
+                     for <strong>{{ item.resident.first_name }} {{ item.resident.last_name }}</strong>?</p>
+                  <p class="text-on-surface-muted mt-2">This will update the resident record immediately.</p>
+                  <form id="approveForm{{ item.id }}" method="post"
+                        action="{{ url_for('official.correction_approve', correction_id=item.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="mt-3">
+                      <label class="form-label text-xs font-medium" for="approveNotes{{ item.id }}">Optional review notes</label>
+                      <textarea class="civic-input text-sm" id="approveNotes{{ item.id }}" name="review_notes"
+                                rows="2" placeholder="Notes for the resident (optional)"></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                  <button class="civic-btn btn-sm" type="submit" form="approveForm{{ item.id }}">Confirm approve</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {# Reject modal #}
+          <div class="modal fade" id="rejectModal{{ item.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Reject correction</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-sm">
+                  <p>Reject the correction to <code>{{ item.field_name }}</code>
+                     for <strong>{{ item.resident.first_name }} {{ item.resident.last_name }}</strong>?</p>
+                  <form id="rejectForm{{ item.id }}" method="post"
+                        action="{{ url_for('official.correction_reject', correction_id=item.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="mt-3">
+                      <label class="form-label text-xs font-medium" for="rejectNotes{{ item.id }}">
+                        Rejection reason <span class="text-danger">*</span>
+                      </label>
+                      <textarea class="civic-input text-sm" id="rejectNotes{{ item.id }}" name="review_notes"
+                                rows="2" placeholder="Required — explain why the correction is not approved"
+                                required></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                  <button class="civic-btn-danger btn-sm" type="submit" form="rejectForm{{ item.id }}">Confirm reject</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% else %}
+          <span class="text-on-surface-muted text-xs">
+            {% if item.reviewed_by %}by {{ item.reviewed_by.username }}{% endif %}
+          </span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="8" class="text-on-surface-muted text-center py-6">No correction requests on file.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% include "partials/_pagination.html" %}{% endblock %}

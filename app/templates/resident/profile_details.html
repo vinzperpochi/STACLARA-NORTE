@@ -1,0 +1,17 @@
+{% extends 'resident/_portal_base.html' %}
+{% from 'components/icons.html' import icon %}
+{% from 'macros/resident_fields.html' import input_field %}
+{% block title %}Kumpletuhin ang registration details{% endblock %}
+{% block extra_head %}{{ super() }}<link rel="stylesheet" href="{{ url_for('static',filename='css/resident-form.css') }}?v=20261106-1"><script defer src="{{ url_for('static',filename='js/resident-detail.js') }}?v=20261106-2"></script><script defer src="{{ url_for('static',filename='js/resident-form.js') }}?v=20261106-1"></script>{% endblock %}
+{% block content %}
+<div class="resident-form-page">
+  <header class="rf-heading"><div><a class="rf-back" href="{{ url_for('resident.profile') }}">{{ icon('chevron_left') }} Bumalik sa profile</a><h1>Kumpletuhin ang iyong profile</h1><p>Registration details, emergency contact, at mga larawan para sa iyong resident record.</p></div></header>
+  <div class="rf-notice">{{ icon('policy') }}<div><strong>Mga detalye para sa pagsusuri ng kawani</strong><p>Ang mga pagbabago sa talaan ay ilalapat kapag naaprubahan. Ang mga larawang ia-upload ay mase-save nang pribado at makikita ng awtorisadong kawani.</p>{% if pending_count %}<p>Naka-fill na rito ang mga detalye mong naghihintay ng review.</p><a href="{{ url_for('resident.correction_requests') }}">Tingnan ang {{ pending_count }} pending request →</a>{% endif %}</div></div>
+  <form method="post" enctype="multipart/form-data" data-unsaved-warning>
+    {{ form.hidden_tag() }}
+    {% include 'partials/_resident_form_sections.html' %}
+    <section class="rf-card">{{ input_field(form.reason) }}</section>
+    <footer class="rf-footer"><p>Suriin ang impormasyon bago isumite.</p><div><a class="civic-btn-outline" href="{{ url_for('resident.profile') }}">Kanselahin</a><button class="civic-btn" type="submit">{{ icon('send') }} Isumite ang mga detalye</button></div></footer>
+  </form>
+</div>
+{% endblock %}

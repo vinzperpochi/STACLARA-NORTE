@@ -1,0 +1,70 @@
+{% extends "layouts/auth_base.html" %}
+{% block title %}Enter Activation Code{% endblock %}
+{% block content %}
+<div class="w-full max-w-[620px] mx-auto flex flex-col gap-4">
+  <div class="bg-white rounded-[12px] border-[1.5px] border-[#E2EDE3] p-6 sm:p-8 flex flex-col gap-5 shadow-xl" style="box-shadow: 0 10px 25px -5px rgba(10, 92, 30, 0.1), 0 8px 10px -6px rgba(10, 92, 30, 0.06);">
+    
+    <div class="flex flex-col gap-2">
+      <h1 class="text-[28px] font-bold text-[#0A5C1E] leading-tight">Enter Activation Code</h1>
+      <p class="text-[15px] text-[#4A5C4E] leading-relaxed">
+        I-enter ang 6-digit activation code na naipadala sa inyong email
+      </p>
+    </div>
+
+    <form method="post" class="flex flex-col gap-4">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      
+      <div class="flex flex-col gap-2">
+        <label for="activation_code" class="text-[14px] font-semibold text-[#0A5C1E]">
+          Activation Code
+        </label>
+        <input 
+          type="text" 
+          id="activation_code" 
+          name="activation_code" 
+          class="w-full px-4 py-3 text-center tracking-[0.5em] text-3xl font-bold border-[1.5px] border-[#B8D5C1] rounded-lg focus:outline-none focus:border-[#0A5C1E] focus:ring-2 focus:ring-[#0A5C1E]/20 transition-all bg-white"
+          maxlength="6"
+          pattern="[0-9]{6}"
+          placeholder="000000"
+          required
+          autofocus
+          autocomplete="off"
+        >
+        <p class="text-[13px] text-[#4A5C4E]">
+          6-digit code na naipadala sa: <strong class="text-[#0A5C1E]">{{ user.email }}</strong>
+        </p>
+      </div>
+
+      <button type="submit" class="w-full bg-[#0A5C1E] hover:bg-[#083D15] text-white font-semibold py-3.5 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
+        Activate Account
+      </button>
+    </form>
+
+    <div class="pt-4 border-t border-[#E2EDE3]">
+      <p class="text-[13px] text-[#4A5C4E] text-center">
+        Hindi mo nahanap ang email? Check your spam folder o 
+        <a href="{{ url_for('auth.login') }}" class="text-[#0A5C1E] hover:text-[#083D15] font-medium underline">bumalik sa login</a>
+      </p>
+    </div>
+
+    <div class="bg-[#F0F7F2] border border-[#B8D5C1] rounded-lg p-4 flex gap-3">
+      <svg class="w-5 h-5 text-[#0A5C1E] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <div class="flex-1">
+        <p class="text-[13px] text-[#0A5C1E] font-semibold mb-2">Paano mag-activate:</p>
+        <ol class="text-[13px] text-[#4A5C4E] space-y-1 ml-4 list-decimal">
+          <li>Buksan ang email mula sa Barangay</li>
+          <li>Hanapin ang 6-digit Activation Code</li>
+          <li>I-enter ang code sa itaas</li>
+          <li>Click "Activate Account"</li>
+        </ol>
+        <p class="text-[13px] text-[#4A5C4E] mt-2">
+          Pagkatapos ma-activate, kakailanganin mong palitan ang password.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

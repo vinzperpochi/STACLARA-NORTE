@@ -1,0 +1,56 @@
+.case-management{max-width:1240px;--cw-muted:#5c7162;--cw-soft:#f5faf6}
+.case-management .cw-hero{padding:32px 36px;position:relative;border-radius:22px;border:1px solid #ffffff14;background:radial-gradient(ellipse at 85% 0%,#12902b55,transparent 55%),linear-gradient(115deg,#083e14,#0a5c1e)}
+.case-management .cw-hero .cw-eyebrow{color:#ffd328;letter-spacing:.15em;font-size:11px}
+.case-management .cw-hero h1{font-size:clamp(28px,3vw,36px);margin-bottom:10px}
+.case-management .cw-hero p{font-size:14px;max-width:640px}
+.case-management .cw-emergency{padding:16px 18px;border-radius:14px;background:#ffffff09;border:1px solid #ffffff24}
+.case-management .cw-actions{gap:16px;margin:20px 0 18px}
+.case-management .cw-action{position:relative;flex-direction:column;padding:24px;min-height:192px;border-radius:18px;box-shadow:0 5px 18px -14px #083e1440}
+.case-management .cw-action:nth-child(2){background:#e7f8e9;border-color:#c5e5ce}
+.case-management .cw-action:nth-child(3){background:#fdf4d8;border-color:#efdfab}
+.case-management .cw-action-primary{background:#fff;border-color:#c5dcca}
+.case-management .cw-action-icon{width:44px;height:44px;background:#e7f8e9;border:0}
+.case-management .cw-action:nth-child(2) .cw-action-icon{background:#fff}
+.case-management .cw-action:nth-child(3) .cw-action-icon{background:#fff9e9}
+.case-management .cw-action strong{font-size:16px;line-height:1.4;display:block}
+.case-management .cw-action p{font-size:13px;line-height:1.6;margin:8px 0 18px}
+.case-management .cw-action-link{font-size:12px;justify-content:space-between;width:100%}
+.case-management .cw-action:hover{border-color:#12902b;box-shadow:0 8px 22px -15px #083e1460}
+.cm-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 0 20px}
+.cm-tools-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--cw-muted);margin-right:8px}
+.cm-tools a{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:10px 14px;border:1px solid var(--cw-border);border-radius:10px;background:var(--cw-card);font-size:12px;font-weight:650;color:var(--cw-ink);text-decoration:none}
+.cm-tools a:hover{background:var(--cw-soft);border-color:#12902b}
+.cm-tools a .icon-svg:last-child{width:12px;color:var(--cw-muted)}
+.case-management .cw-records-heading{padding:26px 28px}
+.case-management .cw-records-heading h2{font-size:22px}
+.case-management .cw-record-count{display:flex;align-items:center;gap:8px;border-radius:12px;padding:11px 14px;font-size:11px}
+.case-management .cw-record-count strong{font-size:20px;line-height:1;color:var(--cw-ink)}
+.case-management .cw-filter{grid-template-columns:minmax(0,1.8fr) minmax(180px,1fr) auto auto;gap:12px;padding:18px;border-radius:12px}
+.case-management .cw-filter .cw-button,.case-management .cw-filter .cw-reset{grid-column:auto;grid-row:auto}
+.case-management .cw-record-list{padding:20px 28px;display:grid;gap:12px}
+.case-management .cw-record{padding:20px;border:1px solid var(--cw-border);border-radius:14px;background:var(--cw-card);gap:16px;transition:border-color .15s,background .15s}
+.case-management .cw-record:last-child{border-bottom:1px solid var(--cw-border)}
+.case-management .cw-record:hover{background:var(--cw-soft);border-color:#b5d7bf}
+.case-management .cw-record-icon{width:46px;height:46px;border:0}
+.case-management .cw-record-meta{font-size:11px;gap:6px 12px}
+.case-management .cw-record-meta>span:first-child{color:var(--cw-ink);font-weight:650}
+.case-management .cw-reference{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px}
+.case-management .cw-record h3{font-size:17px;margin:5px 0 7px}
+.case-management .cw-record-info p{font-size:12px}
+.case-management .cw-record-controls{flex-direction:row;gap:16px}
+.case-management .cw-status{padding:7px 11px}
+.case-management .cw-view{font-size:12px;background:var(--cw-soft)}
+.case-management .cw-record-urgent{border-left:3px solid #b33a2f}
+.case-management .cw-records-footer>p{max-width:350px;line-height:1.6}
+html[data-civic-theme="dark"] .case-management{--cw-ink:#e7f8e9;--cw-muted:#b2c5b7;--cw-card:#172b1c;--cw-soft:#122317;--cw-border:#33513b}
+html[data-civic-theme="dark"] .case-management .cw-action:nth-child(2){background:#1e3825;border-color:#33513b}
+html[data-civic-theme="dark"] .case-management .cw-action:nth-child(3){background:#34301b;border-color:#555032}
+html[data-civic-theme="dark"] .case-management .cw-action-primary{background:var(--cw-card);border-color:var(--cw-border)}
+html[data-civic-theme="dark"] .case-management .cw-action-icon,html[data-civic-theme="dark"] .case-management .cw-record-icon{background:#294432;color:#c5e5ce}
+html[data-civic-theme="dark"] .case-management .cw-action:nth-child(2) .cw-action-icon,html[data-civic-theme="dark"] .case-management .cw-action:nth-child(3) .cw-action-icon{background:#294432;color:#c5e5ce}
+html[data-civic-theme="dark"] .case-management .cw-status{background:#294432;color:#c5e5ce}
+html[data-civic-theme="dark"] .case-management .cw-status-pending{background:#44381d;color:#f4d486}
+html[data-civic-theme="dark"] .case-management .cw-status-closed{background:#303e34;color:#c0cdc3}
+@media(max-width:1100px){.case-management .cw-action{padding:20px}.case-management .cw-filter{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}.case-management .cw-filter .cw-reset{grid-column:3;grid-row:1}.case-management .cw-filter .cw-button{grid-column:1/3}.case-management .cw-record-controls{flex-direction:column;gap:10px;align-items:flex-end}}
+@media(max-width:900px){.case-management .cw-actions{grid-template-columns:repeat(3,minmax(0,1fr))}.case-management .cw-action{padding:18px;gap:12px}.case-management .cw-action strong{font-size:14px}.case-management .cw-hero{padding:28px}.cm-tools-label{flex-basis:100%}}
+@media(max-width:700px){.case-management .cw-actions{grid-template-columns:1fr}.case-management .cw-action{flex-direction:row;min-height:0;padding:20px}.case-management .cw-action strong{font-size:16px}.case-management .cw-action p{margin-bottom:12px}.case-management .cw-hero{padding:24px;flex-direction:column;align-items:flex-start;gap:20px}.case-management .cw-emergency{flex-direction:row;padding:12px;align-items:center;gap:12px}.case-management .cw-records-heading{padding:22px 20px}.case-management .cw-filter{margin:0 16px;padding:16px;grid-template-columns:1fr auto}.case-management .cw-filter .cw-field{grid-column:1/-1}.case-management .cw-filter .cw-button,.case-management .cw-filter .cw-reset{grid-column:auto;grid-row:auto}.case-management .cw-record-list{padding:16px}.case-management .cw-record{padding:16px;flex-wrap:wrap;align-items:flex-start;gap:12px}.case-management .cw-record-icon{width:36px;height:36px}.case-management .cw-record-info{flex-basis:calc(100% - 48px)}.case-management .cw-record-controls{width:100%;flex-direction:row;justify-content:space-between;align-items:center}.cm-tools{gap:8px;padding-bottom:18px}.cm-tools a{flex:1 1 150px;justify-content:space-between}.case-management .cw-records-footer>p{max-width:none}}

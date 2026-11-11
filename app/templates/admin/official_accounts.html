@@ -1,0 +1,77 @@
+{% extends "admin/_admin_base.html" %}
+{% from 'components/icons.html' import icon %}
+{% block active_nav %}admin.official_accounts{% endblock %}
+{% block title %}Official Accounts{% endblock %}
+{% block extra_head %}<link href="{{ url_for('static',filename='css/official-accounts.css') }}?v=emerald-20261010-final" rel="stylesheet">{% endblock %}
+{% block content %}
+<div class="oa-page">
+<div class="oa-hero">
+  <div>
+    <span class="oa-eyebrow">ACCOUNT ADMINISTRATION</span><h1 class="text-headline-sm font-headline-sm text-on-surface">Official Accounts</h1>
+    <p class="text-body-sm text-on-surface-muted mb-0">Super Admin lamang ang maaaring gumawa ng Barangay Official login at profile.</p>
+  </div>
+  <a class="civic-btn-outline" href="{{ url_for('admin.dashboard') }}">Balik sa dashboard</a>
+</div>
+
+<div class="oa-summary">
+  <div class="rounded-xl border border-outline-border bg-surface-card p-4 shadow-sm">
+    <div class="flex items-center justify-between"><span class="text-xs font-bold uppercase tracking-wide text-on-surface-muted">Accounts</span>{{ icon('manage_accounts', 'text-primary', size='1em') }}</div>
+    <div class="text-headline-sm font-headline-sm text-on-surface mt-2">{{ total_officials }}</div>
+    <p class="text-xs text-on-surface-muted mt-1">Official records visible to Super Admin</p>
+  </div>
+  <div class="rounded-xl border border-outline-border bg-surface-card p-4 shadow-sm">
+    <div class="flex items-center justify-between"><span class="text-xs font-bold uppercase tracking-wide text-on-surface-muted">Identity format</span>{{ icon('badge', 'text-primary', size='1em') }}</div>
+    <div class="text-title-md font-title-md text-on-surface mt-2">SCN-OFF-000001</div>
+    <p class="text-xs text-on-surface-muted mt-1">Automatic unique username</p>
+  </div>
+  <div class="rounded-xl border border-outline-border bg-surface-container-low p-4 shadow-sm">
+    <div class="flex items-center justify-between"><span class="text-xs font-bold uppercase tracking-wide text-on-surface-muted">Account setup</span>{{ icon('database', 'text-primary', size='1em') }}</div>
+    <div class="text-title-md font-title-md text-primary mt-2">Email credentials</div>
+    <p class="text-xs text-on-surface-muted mt-1">Temporary password sent by email</p>
+  </div>
+</div>
+
+<section class="oa-create" aria-labelledby="oa-create-title">
+  <div class="card-body">
+    <span class="oa-eyebrow">NEW OFFICIAL</span><h2 id="oa-create-title" class="text-title-md font-title-md text-on-surface">Gumawa ng account para sa opisyal</h2>
+    <p class="text-body-sm text-on-surface-muted mb-4">Awtomatikong gagawa ng natatanging ID na <strong>SCN-OFF-000001</strong> format. Ang pansamantalang password ay random at ipinapadala sa email at kailangang palitan sa unang pag-login.</p>
+    <p class="oa-required">Fields marked <b>*</b> are required.</p>
+    {% include "partials/admin/_official_account_form.html" %}
+  </div>
+</section>
+
+<section class="oa-directory" aria-labelledby="oa-directory-title">
+  <div class="oa-directory-heading">
+    <div>
+      <span class="oa-eyebrow">OFFICIAL DIRECTORY</span><h2 id="oa-directory-title" class="text-title-md font-title-md text-on-surface mb-1">Mga official account</h2>
+      <p class="text-xs text-on-surface-muted mb-0">Login ID ang username. Ang random temporary password ay ipinapadala sa email; hindi ipinapakita ang password kapag napalitan na ito.</p>
+    </div>
+    {% if total_officials %}<span class="text-xs text-on-surface-muted">Page {{ page }} of {{ total_pages }}</span>{% endif %}
+  </div>
+  <div class="overflow-x-auto bg-surface-card rounded-xl border border-outline-border">
+    <table class="civic-table oa-table">
+      <thead><tr><th>Login ID</th><th>Opisyal</th><th>Posisyon</th><th>Termino</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+      {% for user in officials %}
+        <tr>
+          <td><strong class="oa-login-id">{{ user.username }}</strong><div class="oa-credential-status">{% if user.must_change_password %}<span class="text-xs font-semibold text-primary-dark">Temporary password: sent by email</span>{% else %}<span class="text-xs text-on-surface-muted">Password already changed</span>{% endif %}</div></td>
+          <td><span class="civic-record-person">{% if user.profile_photo_filename %}<img class="civic-avatar" width="34" height="34" src="{{ url_for('workspace.user_photo',user_id=user.id) }}" alt="Official profile photo" loading="lazy">{% else %}<span class="civic-avatar civic-avatar-fallback">{{ user.username[:2]|upper }}</span>{% endif %}{% if user.official %}{{ user.official.full_name }}{% else %}<span class="text-on-surface-muted">Official profile not linked</span>{% endif %}</span><span class="oa-email">{{ user.email }}</span></td>
+          <td>{{ user.official.position if user.official else '—' }}</td>
+          <td>{% if user.official %}{{ user.official.term_start }}{% if user.official.term_end %} – {{ user.official.term_end }}{% endif %}{% else %}—{% endif %}</td>
+          <td><span class="badge-status badge-status--{{ 'success' if user.is_active and user.status == 'active' else 'neutral' }}">{{ 'Active' if user.is_active and user.status == 'active' else user.status|title }}</span></td>
+          <td>
+            <form method="post" action="{{ url_for('admin.delete_official_account', user_id=user.id) }}" onsubmit="return confirm('Burahin ang official account na {{ user.username }}? Hindi na ito maibabalik.');"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="civic-btn-outline text-xs py-1 text-red-700 border-red-200 hover:bg-red-50">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="text-on-surface-muted">Wala pang official account.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% include "partials/_pagination.html" %}
+</section>
+</div>
+{% endblock %}

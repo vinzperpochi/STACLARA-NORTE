@@ -1,0 +1,25 @@
+{% extends "layouts/auth_base.html" %}
+{% block title %}Registration pending | Pamahalaang Barangay Sta. Clara Norte{% endblock %}
+{% block content %}
+<div class="w-full max-w-md mx-auto">
+  <div class="bg-card-white border border-border-ui rounded-2xl p-6 sm:p-8 shadow-xl text-center space-y-5">
+    <div class="w-16 h-16 rounded-full bg-mint-tint border-2 border-core-green flex items-center justify-center mx-auto text-core-green">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+    <div>
+      <h2 class="text-[20px] font-extrabold text-ink">Naisumite ang iyong registration</h2>
+      <p class="text-[13px] text-muted mt-1">Pending pa ang account mo. Hihintayin ang pag-apruba ng admin o barangay official.</p>
+    </div>
+    <div class="p-4 bg-page-bg rounded-xl border border-border-ui text-[13px] text-muted text-left space-y-2">
+      <p><strong class="text-primary-dark">Susunod na hakbang:</strong> Kapag naaprubahan ng official, awtomatikong mag-aactivate ang account mo at ipapadala sa <strong class="text-primary-dark">{{ email }}</strong> ang natatanging resident ID at pansamantalang password.</p>
+      <p>Ang password ay birthdate na naka-format na <strong class="font-mono text-primary-dark">YYYYMMDD</strong> at kailangan itong palitan agad sa unang pag-login.</p>
+      <p><strong class="text-primary-dark">Paano mag-login:</strong> Gamitin ang Resident ID (e.g. SCN-RES-000001) at temporary password na makukuha mo sa email.</p>
+    </div>
+    <div class="flex flex-col gap-2">
+      <a class="inline-flex items-center justify-center w-full min-h-[44px] px-6 py-3 rounded-xl bg-core-green hover:bg-primary-dark text-white font-bold text-[14px] shadow-md no-underline" href="{{ url_for('auth.login') }}">Bumalik sa pag-login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

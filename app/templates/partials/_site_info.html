@@ -1,0 +1,20 @@
+
+
+
+{% macro v_barangay_name() -%}{{ site_info_value('barangay_name') }}{%- endmacro %}
+{% macro v_municipality() -%}{{ site_info_value('municipality') }}, {{ site_info_value('province') }}{%- endmacro %}
+{% macro v_province() -%}{{ site_info_value('province') }}{%- endmacro %}
+{% macro v_country() -%}{{ site_info_value('country') }}{%- endmacro %}
+
+
+{% macro v_office_hours() -%}{{ site_info_value('office_hours') }}{%- endmacro %}
+{% macro v_hotline() -%}{{ site_info_value('contact_phone') }}{%- endmacro %}
+{% macro v_hall_address() -%}{{ site_info_value('hall_address') }}{%- endmacro %}
+{% macro v_zip_code() -%}{{ site_info_value('zip_code') }}{%- endmacro %}
+{% macro v_dpo_name() -%}{{ site_info_value('dpo_name') }}{%- endmacro %}
+{% macro v_dpo_email() -%}{{ site_info_value('dpo_email') }}{%- endmacro %}
+{% macro v_dpo_phone() -%}{{ site_info_value('dpo_phone') }}{%- endmacro %}
+{% macro v_fees_note() -%}{{ site_info_value('fees_note') }}{%- endmacro %}
+{% macro v_help_note() -%}{{ site_info_value('help_note') }}{%- endmacro %}
+{% macro v_charter_note() -%}{{ site_info_value('charter_note') }}{%- endmacro %}
+{% macro v_foi_note() -%}{{ site_info_value('foi_note') }}{%- endmacro %}

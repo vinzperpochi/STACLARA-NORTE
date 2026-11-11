@@ -1,0 +1,7 @@
+{% macro input_field(field) %}
+<div class="rf-field">
+  <label for="{{ field.id }}">{{ field.label.text }}{% if field.flags.required %}<span class="rf-required" aria-hidden="true"> *</span>{% endif %}</label>
+  {{ field(class='civic-input', aria_invalid='true' if field.errors else 'false', aria_describedby=field.id ~ '-error') }}
+  <div id="{{ field.id }}-error" class="rf-error"{% if field.errors %} role="alert"{% endif %}>{% for error in field.errors %}<p>{{ error }}</p>{% endfor %}</div>
+</div>
+{% endmacro %}

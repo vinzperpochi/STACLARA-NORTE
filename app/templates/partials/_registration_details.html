@@ -1,0 +1,32 @@
+{% from 'components/icons.html' import icon %}
+<div class="registration-details">
+  <div class="rd-registration-grid">
+    {% for heading, symbol, fields in [
+      ('Registration details', 'assignment', [('place_of_birth','Place of birth'),('religion','Religion'),('educational_attainment','Educational attainment'),('household_relationship','Relationship to household head'),('house_no','House no. / lot / block'),('street_landmark','Street / sitio / landmark'),('residency_duration','Duration of residency')]),
+      ('Emergency contact', 'contact_emergency', [('emergency_contact_name','Contact name'),('emergency_contact_relationship','Relationship'),('emergency_contact_number','Contact number')])
+    ] %}
+    <section class="rd-card" aria-label="{{ heading }}">
+      <div class="rd-section-heading">{{ icon(symbol) }}<h2>{{ heading }}</h2></div>
+      <dl class="rd-fields{% if loop.last %} rd-fields-single{% endif %}">
+        {% for field, label in fields %}{% set value = resident|attr(field) %}
+        <div><dt>{{ label }}</dt><dd{% if not value %} class="rd-empty"{% endif %}>{{ (registration_labels.get(value, value) if registration_labels is defined else value) or 'Not provided' }}</dd></div>
+        {% endfor %}
+      </dl>
+    </section>
+    {% endfor %}
+  </div>
+  <section class="rd-card" aria-labelledby="rd-categories-title">
+    <div class="rd-section-heading">{{ icon('group') }}<h2 id="rd-categories-title">Self-declared categories</h2></div>
+    <div class="rd-categories">{% for code in resident.special_categories or [] %}<span class="rd-category">{{ registration_labels.get(code, code) if registration_labels is defined else code|replace('_',' ')|title }}</span>{% else %}<p class="rd-empty">None declared</p>{% endfor %}</div>
+    <p class="rd-help">These declarations do not establish approval or eligibility for benefits.</p>
+  </section>
+  <section class="rd-card" aria-labelledby="rd-verification-title">
+    <div class="rd-section-heading">{{ icon('policy') }}<h2 id="rd-verification-title">Private verification images</h2></div>
+    <div class="rd-documents">
+      {% for kind, field, label in [('proof','proof_of_residency_filename','Proof of residency'),('philsys','philsys_card_filename','PhilSys image')] %}
+      <div class="rd-document"><div>{{ icon('description') }}<div><h3>{{ label }}</h3><p>{{ 'Uploaded' if resident|attr(field) else 'Not provided' }}</p></div></div>
+      {% if resident|attr(field) %}<a class="civic-btn-outline" href="{{ url_for('official.registration_file', resident_id=resident.id, kind=kind) if is_official or is_admin else url_for('resident.registration_file', kind=kind) }}" target="_blank" rel="noopener">View uploaded image {{ icon('arrow_forward') }}</a>{% else %}<span class="rd-file-empty">No upload</span>{% endif %}</div>
+      {% endfor %}
+    </div>
+  </section>
+</div>

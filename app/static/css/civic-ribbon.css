@@ -1,0 +1,23 @@
+/* Compact civic ribbon matching the login reference. */
+body .civic-topbar { width:100%; flex-shrink:0; background:#084416 !important; border-bottom:1px solid #0a5c1e; color:#fff; font-family:Inter,system-ui,sans-serif; font-size:11px; line-height:1.5; letter-spacing:normal; }
+.civic-topbar .ctb-inner { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:4px 20px; max-width:1560px; padding:4px 16px; margin-inline:auto; box-sizing:border-box; font-size:inherit; }
+.civic-topbar .ctb-identity { display:flex; align-items:center; gap:12px; min-width:0; }
+.civic-topbar .ctb-republic { display:inline-flex; align-items:center; gap:6px; padding:2px 8px; flex-shrink:0; border:1px solid #ffd3284d; border-radius:5px; background:#063311; color:#ffd328; font-size:10px; font-weight:700; letter-spacing:.025em; white-space:nowrap; }
+.civic-topbar .ctb-republic svg { color:#ffd328 !important; width:12px; height:12px; }
+.civic-topbar .ctb-municipality { color:#d1fae5; font-size:11px; font-weight:400; white-space:nowrap; }
+.civic-topbar .ctb-municipality em { color:#a7f3d0; }
+.civic-topbar .ctb-inner .ctb-links { display:flex; align-items:center; gap:16px; }
+.civic-topbar :is(.ctb-privacy,.ctb-gateway) { display:inline-flex; align-items:center; gap:5px; min-height:22px; margin:0; padding:0; border:0; background:transparent; box-shadow:none; font:inherit; font-weight:500; text-decoration:none; white-space:nowrap; }
+body .civic-topbar .ctb-privacy,body .civic-topbar .ctb-privacy svg { color:#7bea4f !important; }
+body .civic-topbar .ctb-gateway { color:#d1fae5 !important; }
+body .civic-topbar .ctb-gateway svg { color:#ffd328 !important; }
+.civic-topbar .ctb-links svg { width:13px; height:13px; }
+.civic-topbar .ctb-divider { color:#15803d; }
+.civic-topbar button { cursor:pointer; }
+.civic-topbar button:hover { text-decoration:underline; }
+.civic-topbar button:focus-visible { outline:2px solid #ffd328; outline-offset:3px; border-radius:3px; }
+@media (max-width:1000px) { .civic-topbar .ctb-municipality { display:none; } }
+@media (max-width:600px) {
+  .civic-topbar .ctb-inner { justify-content:center; padding:4px 12px; gap:4px 12px; }
+  .civic-topbar .ctb-inner .ctb-links { justify-content:center; flex-wrap:wrap; gap:4px 12px; }
+}

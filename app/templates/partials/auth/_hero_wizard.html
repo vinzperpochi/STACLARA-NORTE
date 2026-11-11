@@ -1,0 +1,36 @@
+<section class="relative text-white overflow-hidden pt-10 pb-28 md:pt-14 md:pb-36" style="background: linear-gradient(135deg, #0A5C1E 0%, #107825 35%, #12902B 70%, #1E9E37 100%);">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 80% 20%, rgba(255,211,40,0.15) 0%, transparent 45%);" aria-hidden="true"></div>
+  <div class="absolute inset-0 pointer-events-none" style="background-image: repeating-linear-gradient(60deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 16px);" aria-hidden="true"></div>
+  <div class="absolute right-0 bottom-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <svg class="w-[220px] h-[220px] text-white opacity-10 translate-x-8 translate-y-8" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 1L2 6v2h20V6L12 1zm-8 8v10h2V9H4zm5 0v10h2V9H9zm5 0v10h2V9h-2zm5 0v10h2V9h-2zM1 21v2h22v-2H1z"></path>
+    </svg>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex flex-col md:flex-row items-center gap-5 text-center md:text-left">
+        <div class="relative w-16 h-16 shrink-0 rounded-full bg-utility-bar overflow-hidden shadow-md flex items-center justify-center">
+          <img src="{{ url_for('static', filename='img/barangay-seal.png') }}" width="64" height="64" alt="Official seal of Barangay Sta. Clara Norte" class="w-16 h-16 object-contain">
+        </div>
+        <div>
+          <div class="inline-flex items-center px-3 py-0.5 rounded-full text-[12px] font-bold tracking-wider text-sun-yellow uppercase mb-1.5" style="background-color: rgba(0, 0, 0, 0.25);">
+            PAMAHALAANG BARANGAY • PILA, LAGUNA
+          </div>
+          <h1 class="text-[24px] md:text-[30px] font-extrabold tracking-tight text-white leading-tight">
+            Barangay Sta. Clara Norte
+          </h1>
+          <p class="text-[13px] text-white font-medium mt-0.5">
+            <span lang="fil">Opisyal na Talaan ng Mamamayan</span> • Official Digital Civil Registry
+          </p>
+        </div>
+      </div>
+      <div class="w-full md:w-auto flex justify-center">
+        <div class="w-full md:w-auto inline-flex items-center justify-center gap-2.5 px-4 py-2 rounded-full border border-white/25 text-[12px] font-medium text-white shadow-sm" style="background-color: rgba(0, 0, 0, 0.30);">
+          <span class="w-2 h-2 rounded-full bg-glow-lime animate-pulse shrink-0" aria-hidden="true"></span>
+          <span data-wizard-pill>{{ wizard_status|default('Resident registration') }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-0 left-0 right-0 h-[220px] pointer-events-none" style="background: linear-gradient(to bottom, transparent, #FAFDF9);" aria-hidden="true"></div>
+</section>

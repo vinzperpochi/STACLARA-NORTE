@@ -1,0 +1,9 @@
+.env
+.env.*
+!.env.example
+instance
+.test-storage
+__pycache__
+*.pyc
+.git
+.pytest_cache

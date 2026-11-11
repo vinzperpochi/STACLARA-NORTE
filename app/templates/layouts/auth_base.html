@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+<head>
+  <link href="{{ url_for('static',filename='vendor/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>{% block title %}Pamahalaang Barangay Sta. Clara Norte{% endblock %}</title>
+  <link href="{{ url_for('static', filename='css/auth.css') }}?v=emerald-20261010-final" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/ui-system.css') }}?v=emerald-20261010-final" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
+<link href="{{ url_for('static',filename='css/civic-premium.css') }}?v=emerald-20261010-final" rel="stylesheet">
+<link href="{{ url_for('static',filename='css/public-green.css') }}?v=emerald-20261010-final" rel="stylesheet">
+<script>try{document.documentElement.dataset.civicTheme=localStorage.getItem("scn-theme")||"light";}catch(e){}</script>
+<link href="{{ url_for('static',filename='css/civic-palette.css') }}?v=20261102" rel="stylesheet">
+<link href="{{ url_for('static',filename='css/civic-ribbon.css') }}?v=20261107-2" rel="stylesheet">
+{% include 'partials/_client_validation_assets.html' %}
+{% include 'partials/_favicon.html' %}
+</head>
+<body class="auth-shell min-h-screen flex flex-col justify-between text-[#11291A] antialiased selection:bg-[#22B33A] selection:text-white bg-[#FAFDF9] font-sans">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-primary-dark focus:font-semibold focus:rounded-md focus:shadow-lg">
+    Skip to main content
+  </a>
+  {% block ribbon %}
+    {% include "partials/auth/_ribbon.html" %}
+  {% endblock %}
+  {% block hero %}
+    {% include "partials/auth/_hero_compact.html" %}
+  {% endblock %}
+  <main id="main-content" class="w-full flex-1 {% block main_class %}flex flex-col items-center justify-center px-4 -mt-10 sm:-mt-14 pb-12 relative z-10{% endblock %}">
+    {% block content %}{% endblock %}
+  </main>
+  {% block footer %}
+    {% include "partials/auth/_footer.html" %}
+  {% endblock %}
+  {% include "partials/auth/_privacy_modal.html" %}
+  {% include "partials/auth/_toast.html" %}
+  <script src="{{ url_for('static', filename='js/auth-ui.js') }}?v=20261102"></script>
+  {% block scripts %}{% endblock %}
+<script src="{{ url_for('static',filename='vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/civic-premium.js') }}?v=20261102"></script>
+<div class="civic-auth-toolbar"><button type="button" data-civic-theme aria-pressed="false"><span data-theme-label>Dark mode</span></button></div>
+</body>
+</html>

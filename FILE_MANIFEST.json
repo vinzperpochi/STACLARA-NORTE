@@ -1,0 +1,2862 @@
+[
+  {
+    "path": ".dockerignore",
+    "sha256": "3d84204e689dcecd03dd4f03a74bc156f413a8a99e1ff4cfa712640fd49980ea"
+  },
+  {
+    "path": ".env.example",
+    "sha256": "fd562635a4a9a7c1d805e12f16fcbbac92f2f9cf032d476521323c62504878b3"
+  },
+  {
+    "path": ".gitignore",
+    "sha256": "76125816f6bd2acb6205c7ccf329c5ad903146b972410178260c30a85546583a"
+  },
+  {
+    "path": "ARDUINO_INCIDENT_SETUP.md",
+    "sha256": "6cd495b6c1bbdc316592faf14435c4c14016b11eca83b57f78bcf36443f7eee6"
+  },
+  {
+    "path": "AUDIT_BEFORE.md",
+    "sha256": "3178239a0fed30377a36eff8f85c379cb4e5ee0605a5af7496f691767dc1a8c5"
+  },
+  {
+    "path": "config.py",
+    "sha256": "511facdf9f79989e2f7f976844bb558a4c9017d76a989b386f168475de041b54"
+  },
+  {
+    "path": "create_admin_account.py",
+    "sha256": "553b774975a56dfd2b5ecbdc0b0ebf591d55b289fb84864aa4737f230e2e99c4"
+  },
+  {
+    "path": "create_official_account.py",
+    "sha256": "652c42a2995257366aa90c4d1d6ac4e7c5c8450fd64a35ab09cdf805db964350"
+  },
+  {
+    "path": "Dockerfile",
+    "sha256": "f72c6bdb3f6fc7a60bb943803107235277534dd0a49cb18bb4d11befe430a94c"
+  },
+  {
+    "path": "DOCUMENT_WORKFLOW_SETUP.md",
+    "sha256": "a3ca8b689d91c3d02faba90eccf3322bd4d1a6e0bd7be307f01171050f19d685"
+  },
+  {
+    "path": "FRONTEND_INVENTORY.json",
+    "sha256": "3e1dc62fe5b05a6546e3c0717a8fec6638056a68ecd7fec458e533be34f5d609"
+  },
+  {
+    "path": "FRONTEND_INVENTORY_BASELINE.json",
+    "sha256": "0cd139f008c5783f00306bd606e9dd9488a46aed764da2ca0cdd339613cb4ec5"
+  },
+  {
+    "path": "FRONTEND_RESPONSIVE_CHECKS.json",
+    "sha256": "d2d4622cde528986d01c06e548dd961ceaaa00c85f7092cdd5d9cc64c17d97d0"
+  },
+  {
+    "path": "FRONTEND_ROUTE_CHECKS.json",
+    "sha256": "01794052be9396c34432cc6e6a27c0c8929441cb5d7d7a4aa856a3e15e7a62d0"
+  },
+  {
+    "path": "FRONTEND_UPGRADE_REPORT.md",
+    "sha256": "74321dc7092220ed344a87efd2a7338e290b1b548ad0648c0f525e84b0a8534d"
+  },
+  {
+    "path": "gunicorn.conf.py",
+    "sha256": "94d65bfc3ff3dbd0c8423966b65e8b4ae6938aee0b70d68eed5d502ab40ed8c8"
+  },
+  {
+    "path": "pytest.ini",
+    "sha256": "c809c969ec7e11b9ff37784e9c6fcc0b7c5148d168e18b05aed797e03fbd6ead"
+  },
+  {
+    "path": "README_REVISED.md",
+    "sha256": "77ec84ebe7cc4465cc8f4036ef63c256192ce5a981ac890dfea441daac244d03"
+  },
+  {
+    "path": "requirements-dev.txt",
+    "sha256": "62cc9560e23208ea92bf1665c48e381b29b03dd69e89a88e8a1978dd3953767d"
+  },
+  {
+    "path": "requirements.txt",
+    "sha256": "5af62d5183cf1dc2776f9bd88d3242e19d5b7665b559c369c4dd09588e1625c4"
+  },
+  {
+    "path": "ROUTE_INVENTORY.json",
+    "sha256": "5d3b1792a4cd684dd67c62a1a46800df77cfb5df8d8dd7d72efbd977181cb256"
+  },
+  {
+    "path": "run.py",
+    "sha256": "d8999bc57d1e3aa296b3ccbcf7f9fcea6be9191738387713fe6ffd99021281e6"
+  },
+  {
+    "path": "seed_default_accounts.py",
+    "sha256": "e23bbe34f0e16b430900083962b49dea5ce668959c433e54383577c746891fbe"
+  },
+  {
+    "path": "SYSTEM_AUDIT_REPORT.md",
+    "sha256": "2222dfed7956ca75627b6049036997f4a571f76456006001a23bf3d08ee7c9fa"
+  },
+  {
+    "path": "tailwind.config.js",
+    "sha256": "054afc56dca58faff10d3115edac0b68a449dd1f00487f7df4bfb9f3f14d4288"
+  },
+  {
+    "path": "tailwind.portal.config.js",
+    "sha256": "41f90f1452187172f079a380284165c80cf8a7321370c29cfd298795a45f7197"
+  },
+  {
+    "path": "TEST_RESULTS.txt",
+    "sha256": "ed142db43d3a2e2836fe9845d19ad9274a4d55c57cc840b5f08f6512a03150bf"
+  },
+  {
+    "path": "wsgi.py",
+    "sha256": "57e804db520dc23c192bb6e5765520880a22e94d6ca8d920d0c25774a4750865"
+  },
+  {
+    "path": "app/audit.py",
+    "sha256": "467c66d5ba6d4f3897af745dc8674a509d48c54dfe4f72f78f35cb03ecf09fcf"
+  },
+  {
+    "path": "app/email_service.py",
+    "sha256": "82620b97e12508bfc5d522f2bd9662fcdf043d84f130a63016daad310280f9a5"
+  },
+  {
+    "path": "app/extensions.py",
+    "sha256": "622c4f66acbf855da6abe6e87751402a33d7e8a9777549369063a616aad0bab7"
+  },
+  {
+    "path": "app/form_values.py",
+    "sha256": "9e31a05b6e86e7cf3b0b11fbe152eb580cacac6815a257db5349ce83063abe91"
+  },
+  {
+    "path": "app/geocoding.py",
+    "sha256": "531528198c4a1b7c8b2af7fdb566fac2b637159a04fa8c11627c8eed9a0520f2"
+  },
+  {
+    "path": "app/image_uploads.py",
+    "sha256": "97afeb324ba43bde9119de03d0a4c0b845c64d50256b7739e07ab84d0e66be89"
+  },
+  {
+    "path": "app/messaging.py",
+    "sha256": "beec5e3233ceea069c5a32d2c6d446079dfe86781f770150dbdb4bd9c2ad8284"
+  },
+  {
+    "path": "app/model_validation.py",
+    "sha256": "cafb3db38dfead6df1f2dbba79b558917d0ea868ce85bd37e54ca7cc869d5841"
+  },
+  {
+    "path": "app/normalization.py",
+    "sha256": "6f496963ea90708fc9ee70d916d89180c60a5e9c76f6beaa44b8b65ed581ef68"
+  },
+  {
+    "path": "app/notifications.py",
+    "sha256": "5236aabc0fa789ae0195c23b664152dd9fbd7d4dbaabf90f6d8da514fd89e1b3"
+  },
+  {
+    "path": "app/operations_common.py",
+    "sha256": "4ade248b83d72ccf5cdade1c4b66216b5360cf018d6da9968944525681fbff45"
+  },
+  {
+    "path": "app/operations_retention.py",
+    "sha256": "fe0765ef017d4e0c2e489c2f27b798c09863f5720eb811a76a65501b9efd1282"
+  },
+  {
+    "path": "app/pagination.py",
+    "sha256": "26221d1faf89be6ff35d3d6a76f10048168640489c33b855304fdee43c3a73f9"
+  },
+  {
+    "path": "app/permissions.py",
+    "sha256": "60f4abf93d712443b7faaa4b92cee077b5b1df2f2094ff1405dc8ae105b29e19"
+  },
+  {
+    "path": "app/private_storage.py",
+    "sha256": "53185ba39cf802821951206062f2c69631cdeee706ee2721d599f59ac13fd3a7"
+  },
+  {
+    "path": "app/profile_management.py",
+    "sha256": "9dda8d8d0ebd674b2f34bf27ee2fb77113976fb9d3485a6eb7608fd4d5dafa85"
+  },
+  {
+    "path": "app/querying.py",
+    "sha256": "16e430e75626649700badca0936776a217826bfe8d61d7f26c741d563d6486f8"
+  },
+  {
+    "path": "app/registration.py",
+    "sha256": "eded70fb854fac27a6b900c78fb5bc38750ddd98e13be970c6cf7fae417cf48e"
+  },
+  {
+    "path": "app/validation.py",
+    "sha256": "fe945492cfc16907c1f989dc9b58bc503cda97af9a8c33430d32f16eea202ebf"
+  },
+  {
+    "path": "app/workspace.py",
+    "sha256": "d45f6d42d24123cd970058598f2d9e164a964af1ed95c8cb0f3363c3b4cf7f68"
+  },
+  {
+    "path": "app/__init__.py",
+    "sha256": "a67a9576bcd136eb7d0bb4a3fb5ba1e2fe751bbde26e630b4617fb1b81b85c92"
+  },
+  {
+    "path": "hardware/serial_bridge.py",
+    "sha256": "8db145b8c212e2cc1cd124c27129929244c34087807b8ef87802fe29cba58009"
+  },
+  {
+    "path": "migrations/alembic.ini",
+    "sha256": "4a36049892b3cfa2bc41fb995ad2c900959c08a39d45b7d486c565a60bfca1c9"
+  },
+  {
+    "path": "migrations/env.py",
+    "sha256": "1afe92d4eaea5fd689ba15a51c1992a7761ae317e0e1a8c2fa1ea7c4127fc367"
+  },
+  {
+    "path": "migrations/README",
+    "sha256": "24bd0dae33abb1c3dc2a0466421d51de196fd7fae8843a2dd13be999d336ec99"
+  },
+  {
+    "path": "migrations/script.py.mako",
+    "sha256": "f3fc6003e826fce85e8673bb0a22228d68279b4d1996ccc41ed207ac0605265d"
+  },
+  {
+    "path": "reference_documents/Brgy_StaClaraNorte_Forms_and_Certificates.html",
+    "sha256": "0e86de4649534f795be72739942b3ac9b226edd747f28075401932b4b4973d19"
+  },
+  {
+    "path": "reference_documents/Brgy_StaClaraNorte_Forms_and_Certificates.pdf",
+    "sha256": "260f0eb3994b188a0977680ffb02b3db4ed77feeb5c9cbf118daee5ce928695f"
+  },
+  {
+    "path": "tests/test_admin_official_accounts.py",
+    "sha256": "1a6dae3c3e182b8496068c2d193f7dce14721272e7f02aea3869b088d54095df"
+  },
+  {
+    "path": "tests/test_attendance_operations.py",
+    "sha256": "c83539cc23b7f7e0f2723cec4b689483236ba78631f907ebc78cb43d8ecc1fb3"
+  },
+  {
+    "path": "tests/test_change_password_design.py",
+    "sha256": "3ecee79fcd389e9fbb8556cf3bc93f8d75bf40958e2a1034bd1cff22940846e4"
+  },
+  {
+    "path": "tests/test_clearance_requirements.py",
+    "sha256": "f1aeb9d66dbf13c9c59b1bf86e62902acf639543b43fde0c42f84a22f053e17c"
+  },
+  {
+    "path": "tests/test_create_admin_account.py",
+    "sha256": "4c4422bbfef6ab4d5f24b72a832adc797cabc33a8b8ce95a088b966326eb367f"
+  },
+  {
+    "path": "tests/test_create_official_account.py",
+    "sha256": "71412af29180d008fd9df697be902e2eda4c35889f26da3c73168428683a2ac7"
+  },
+  {
+    "path": "tests/test_default_accounts.py",
+    "sha256": "d72ca814451f94e905dd69e37f6d8c6ad226b6e04d627abbb7d75448e9429eb2"
+  },
+  {
+    "path": "tests/test_document_intake_ui.py",
+    "sha256": "74ae86bbcdfe9b0717df5be23bf42f20ba3d96bff0e956184ab7c6080f41d55f"
+  },
+  {
+    "path": "tests/test_document_review.py",
+    "sha256": "752e07c0f003f5af45a580e0b11932a5d54e3401e5896244f1b638a2135b1b1b"
+  },
+  {
+    "path": "tests/test_extended_registration.py",
+    "sha256": "7de291ca9f6cee5766b4c200eb7e1d90b9c412968093c26c669bc09d75c68187"
+  },
+  {
+    "path": "tests/test_hardware_bridge.py",
+    "sha256": "992c6500a355bd1ce38f8e852630a9cfc420e141c30e6749702063e8f04ad098"
+  },
+  {
+    "path": "tests/test_incident_operations.py",
+    "sha256": "fda00e9c0ed7572f01963b89e33bb2f86ef12d3ea749946abed56e6a12bcea86"
+  },
+  {
+    "path": "tests/test_management_complaint_workspace.py",
+    "sha256": "812d4e804ddc502a87a7fe9649121d8932dbd49b011c384d18dd4e6c8fcafc04"
+  },
+  {
+    "path": "tests/test_module_imports.py",
+    "sha256": "19dbc4e2eb816fd41d2511528d9ff97455d534540712fcc6312db10e4bf9c6a1"
+  },
+  {
+    "path": "tests/test_official_blotter_map.py",
+    "sha256": "9aaaa236d20e61a4609b834134054eede0970a939260abd967fd08ca4fa280b4"
+  },
+  {
+    "path": "tests/test_official_notifications.py",
+    "sha256": "4acfba1f7176dbac0ad2b6c61d86903698eae6de7aade37a4c951a8d1cabba8f"
+  },
+  {
+    "path": "tests/test_operations_migration.py",
+    "sha256": "4748278a41a4c85bc3030f7d3cb221e0d2e9d6fc02a1a8d9969ecaae45419354"
+  },
+  {
+    "path": "tests/test_original_documents.py",
+    "sha256": "fccad56da20f48142dd42b54065307bfd28ba05cd5e59dc5df68022d2e211f76"
+  },
+  {
+    "path": "tests/test_pila_contacts.py",
+    "sha256": "260ddaaa5ee440b1a63b880c1e100edce6c9e5d9cd5b1bafc6ec96566b026dd7"
+  },
+  {
+    "path": "tests/test_premium_profiles.py",
+    "sha256": "8afdb91f98ebf16249527cd234ae8fccd77500a609778c7df9758ccf5df2bd69"
+  },
+  {
+    "path": "tests/test_private_storage.py",
+    "sha256": "cc02eab0261a76c1acb40901aad1fc8ba43c128a8b3c61d0aafe943aef7c20cd"
+  },
+  {
+    "path": "tests/test_registration_activation.py",
+    "sha256": "d274ad624cf67487d47084a4de7dc31af48422072cbe884b7d687dfdf8b947e0"
+  },
+  {
+    "path": "tests/test_report_center_exports.py",
+    "sha256": "7b15ff0cd74388d00438a68a4d766262d8b905bbe53bd5e01c0f941d8c74f568"
+  },
+  {
+    "path": "tests/test_staff_insights.py",
+    "sha256": "39acbed0d4db8efd2f918ad9a1729597197b0436c296cac7b7991155f6993ad5"
+  },
+  {
+    "path": "tests/test_staff_requirement_view.py",
+    "sha256": "c06a702453587a53db4d9cbcc2785b00fdf6132e683a35ee4cde0bba2a18a4bb"
+  },
+  {
+    "path": "tests/test_system_integrity.py",
+    "sha256": "ca6890c6f21a9b20d02eadec109dc3997be3a5c598eac6a59664c1adfa6ab6cc"
+  },
+  {
+    "path": "tests/test_unified_complaint_workspace.py",
+    "sha256": "5b49baf12e7e3f0781bdea594a0eb1987c495525be407fc04a738de1206c367d"
+  },
+  {
+    "path": "tests/test_walkin_access_crud.py",
+    "sha256": "00b2f9ce51e654e71eedf889a25bc57fc72233b1e0c414c469dcf2b94aa7dcb7"
+  },
+  {
+    "path": "tools/import_pila_hotlines.py",
+    "sha256": "79e189454176c04812451a015934babd8f60f6cf4d507f7a108a6230b7876780"
+  },
+  {
+    "path": "tools/verify_migrations.py",
+    "sha256": "d897c42bfeb1d2e95bc29b3e903de53a6b66bbc0ccbc62ca6f626951030d1de5"
+  },
+  {
+    "path": "vendor/python/pypdf/constants.py",
+    "sha256": "579bd3b09defab4b63ac63f7effb4713ade10722c8c7799b8566aa80917c3624"
+  },
+  {
+    "path": "vendor/python/pypdf/errors.py",
+    "sha256": "070d56f61c4eb03830ab053a628436974f89894c93aba979423542afe5b81850"
+  },
+  {
+    "path": "vendor/python/pypdf/filters.py",
+    "sha256": "d3d29da4491884cd6226bbf6f70dbd876e81d4751e366c41f187193cff971adf"
+  },
+  {
+    "path": "vendor/python/pypdf/pagerange.py",
+    "sha256": "0209c3144e2959cf34d1800cfec3dc1afcb6f747f70f93588abaf6e478753b46"
+  },
+  {
+    "path": "vendor/python/pypdf/papersizes.py",
+    "sha256": "e93cf9b1f34dff724e51aa58f3753e95a928867a57600d2148440d98e54b14bf"
+  },
+  {
+    "path": "vendor/python/pypdf/py.typed",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "vendor/python/pypdf/types.py",
+    "sha256": "b09ef01f393b111fc227b90ffacf2ef5ac459e40979c5a6bf27cdc8f50314dab"
+  },
+  {
+    "path": "vendor/python/pypdf/xmp.py",
+    "sha256": "a59dce58f1dc1ee63e5621844feb45bd12611c6f18014caf673739b059884b3b"
+  },
+  {
+    "path": "vendor/python/pypdf/_cmap.py",
+    "sha256": "d298554fd352442d4384e13395f1f5e768a5f3916baa1deaa599eb017fe1cc60"
+  },
+  {
+    "path": "vendor/python/pypdf/_configuration.py",
+    "sha256": "dd2b41d34cedc9113c33be3555c662b6692f038d0d8ae29a2ea0ad9fb49823a9"
+  },
+  {
+    "path": "vendor/python/pypdf/_doc_common.py",
+    "sha256": "3492ff21a5d90f646a4dabcec90efef1c50e5976de908586fd6cb27ff91e9489"
+  },
+  {
+    "path": "vendor/python/pypdf/_encryption.py",
+    "sha256": "c39c927e0c1d9faace5c06f244603027421c50787db847535f780090eb01e0a7"
+  },
+  {
+    "path": "vendor/python/pypdf/_page.py",
+    "sha256": "ba2a4aca6da2b6657568f58a5bf0cd492babbfec3d5925954f6f9a95e406b868"
+  },
+  {
+    "path": "vendor/python/pypdf/_page_labels.py",
+    "sha256": "55ae47e2e1fcec75ea33d3f97478c1fae1684883414cd8ee04a0a066dec40e06"
+  },
+  {
+    "path": "vendor/python/pypdf/_protocols.py",
+    "sha256": "4e4ea32b83d1f71cc4ec44e7a9a7f6ef5494299913b3a2254672d118f9588ff7"
+  },
+  {
+    "path": "vendor/python/pypdf/_reader.py",
+    "sha256": "ce3be921e0635f868b1595c2bf3cf1ba705f2ee5dd9f73df83c4411553436c25"
+  },
+  {
+    "path": "vendor/python/pypdf/_utils.py",
+    "sha256": "1f1e47f3b8ee728f3a05143eef5e370684cd54ddf751fe631ccf1d3eabc14309"
+  },
+  {
+    "path": "vendor/python/pypdf/_version.py",
+    "sha256": "2b742082e7977b2cb6c7790ceb492b885b8b61a14c7cf758ecf861c724a5b7c2"
+  },
+  {
+    "path": "vendor/python/pypdf/_writer.py",
+    "sha256": "b21a576fac2285eec36ab335fac6e58df18adaf142f6b1742a49371459579a70"
+  },
+  {
+    "path": "vendor/python/pypdf/__init__.py",
+    "sha256": "d7786f1b3cb2e52e28b1085f0ea150fa7f029baad252b29af7415c790871f7df"
+  },
+  {
+    "path": "vendor/python/pypdf-6.20.0.dist-info/METADATA",
+    "sha256": "3e19bd73d4535a9cb085b32de5e3a990e0753a4c2c5f1fcdfcf856116158f809"
+  },
+  {
+    "path": "vendor/python/pypdf-6.20.0.dist-info/RECORD",
+    "sha256": "885dae70ec045f661377b9bc71efc71445813e022bb94b85ad8f54e15aa92fbc"
+  },
+  {
+    "path": "vendor/python/pypdf-6.20.0.dist-info/WHEEL",
+    "sha256": "96a37c8d7b7f425a05386731f644adbd66ebca17c45e8236176cfe614466df9d"
+  },
+  {
+    "path": "vendor/python/pyserial-3.5.dist-info/DESCRIPTION.rst",
+    "sha256": "ad75c8505780b1f5ead984bb0c6933b469977b3f86ee00306f07412fcb7d28c1"
+  },
+  {
+    "path": "vendor/python/pyserial-3.5.dist-info/entry_points.txt",
+    "sha256": "f80437a159889fbaed5b90e1d0eba9f741ead2a90894c8fbf6a1a674321793d5"
+  },
+  {
+    "path": "vendor/python/pyserial-3.5.dist-info/METADATA",
+    "sha256": "42a8ab7e94ef0b7baa7e94cdac65d6b9254c608476f630120c990007bf472943"
+  },
+  {
+    "path": "vendor/python/pyserial-3.5.dist-info/metadata.json",
+    "sha256": "b39ac55f140a2fd4173b750c5d1998a0c5c6450b7696897aeeb7ffeb84b5bf5d"
+  },
+  {
+    "path": "vendor/python/pyserial-3.5.dist-info/RECORD",
+    "sha256": "f744391b264f33b5a95fc5f2c3b3ab5539acae7dd0f6c3c99912920467cdc7b5"
+  },
+  {
+    "path": "vendor/python/pyserial-3.5.dist-info/top_level.txt",
+    "sha256": "1528df5875b0f958cf884a8e86db5b88ff85f0e1e7fa58a2c6ad7028bd9f58e0"
+  },
+  {
+    "path": "vendor/python/pyserial-3.5.dist-info/WHEEL",
+    "sha256": "91db0dfb93890192221cdfa23b846197cd8ac92d1b0d67f8b81c0c6e435a7ebf"
+  },
+  {
+    "path": "vendor/python/serial/rfc2217.py",
+    "sha256": "9dc1bfe53b38d8cfd39bfed737743b884db8cbe946730bb68c2dcc15212fe817"
+  },
+  {
+    "path": "vendor/python/serial/rs485.py",
+    "sha256": "f6deb2b8672d7b7ea093c1b553a3606e82951ad25416ab5ba403978fbbd8c4cd"
+  },
+  {
+    "path": "vendor/python/serial/serialcli.py",
+    "sha256": "bb94271bdd14c6db6ab061bd9d88248f4194c9bd3020ec739548312788027338"
+  },
+  {
+    "path": "vendor/python/serial/serialjava.py",
+    "sha256": "01c1cba760ffb008a1bbb2ffc02720f26b64edeb5feb30320782ffb6eb61568f"
+  },
+  {
+    "path": "vendor/python/serial/serialposix.py",
+    "sha256": "5d56f98513391e1766a1847a04e2e1202ced4172a152803ba1c823a149a9b6f9"
+  },
+  {
+    "path": "vendor/python/serial/serialutil.py",
+    "sha256": "3c84f8c7c319f161a85d6f8db5bedc4f65255714589bdcbeee6f2daf65a17c0a"
+  },
+  {
+    "path": "vendor/python/serial/serialwin32.py",
+    "sha256": "17681ea9a650120c71db1aae9b8881301a40d38c47b34bb0da050e3f5bfbbe00"
+  },
+  {
+    "path": "vendor/python/serial/win32.py",
+    "sha256": "964eaba1df661e4ab381c8666aa077ca08939260164cd434d0827df39663bd32"
+  },
+  {
+    "path": "vendor/python/serial/__init__.py",
+    "sha256": "5dec897fdef45a0eaf63eacda1e01d62e1e75490302584ae0238f75376592344"
+  },
+  {
+    "path": "vendor/python/serial/__main__.py",
+    "sha256": "a12a559270d2d98aa7d89757943b39164d04f1c71d88b209697bcf5948b3423d"
+  },
+  {
+    "path": "vendor/python/serial/threaded/__init__.py",
+    "sha256": "8a45e52987a3465cf30b37bd930c51fee00129ad587ee4f2a9c3e3c375515752"
+  },
+  {
+    "path": "vendor/python/serial/tools/hexlify_codec.py",
+    "sha256": "1512523bca5f8cce8047dfd206a2f7e1ee742d592f9737c529d98249c1a7e34f"
+  },
+  {
+    "path": "vendor/python/serial/tools/list_ports.py",
+    "sha256": "7830e8c888684b77fd0f7095a6d86a95052a891da5f97d154c618e063b8ce1ec"
+  },
+  {
+    "path": "vendor/python/serial/tools/list_ports_common.py",
+    "sha256": "c791c88211b8348cfe5dfe625fa1a4ef165f75e69db36b6a0ac7f226187721fb"
+  },
+  {
+    "path": "vendor/python/serial/tools/list_ports_linux.py",
+    "sha256": "5275355583f534923b27c667ee063e03699b8b596e81b159495ced7d7f0fd695"
+  },
+  {
+    "path": "vendor/python/serial/tools/list_ports_osx.py",
+    "sha256": "7a879f3068ae26a0be382bbd6805aaa895fbe701a5073a2a67a91d98c03cd8b3"
+  },
+  {
+    "path": "vendor/python/serial/tools/list_ports_posix.py",
+    "sha256": "118a83e6445b9347f66b9b1c6914b8b605860729e4a551fbee36bf1ba4b75211"
+  },
+  {
+    "path": "vendor/python/serial/tools/list_ports_windows.py",
+    "sha256": "53813370e02253ae8b5a83dd317236a0e3382c2779bcac0edc381e4d3e8cdea7"
+  },
+  {
+    "path": "vendor/python/serial/tools/miniterm.py",
+    "sha256": "7d7be4114f4513253b1cf48d13c6dd5f638282219880279ed3aeb2179f27a2db"
+  },
+  {
+    "path": "vendor/python/serial/tools/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "vendor/python/serial/urlhandler/protocol_alt.py",
+    "sha256": "fa46280a0cbd1b231637ac02f0e7b0f052f4e0b8cbe0db71dc71d5a924ca19c4"
+  },
+  {
+    "path": "vendor/python/serial/urlhandler/protocol_cp2110.py",
+    "sha256": "8942ce4f855dc36d0fff0da37d259db74ae8518d4abbcc495471d873a7772266"
+  },
+  {
+    "path": "vendor/python/serial/urlhandler/protocol_hwgrep.py",
+    "sha256": "19d29d43db44c4a447273b223dc43d13199a2daebe03bd6ae768b88d0c66a019"
+  },
+  {
+    "path": "vendor/python/serial/urlhandler/protocol_loop.py",
+    "sha256": "e5b6abaeefe17f03646b28e3073e30dec9c1267d06ec2f9f1bbf9098769e4d6a"
+  },
+  {
+    "path": "vendor/python/serial/urlhandler/protocol_rfc2217.py",
+    "sha256": "20f3bcaf7a4537ac840e5d59bf68e05277c86b4b50d2263466c0fcff184051e4"
+  },
+  {
+    "path": "vendor/python/serial/urlhandler/protocol_socket.py",
+    "sha256": "428b5a1c23ddeadf74dd6ffd7dad8bbffe6e125ab49e88abd828b5d1af7ced73"
+  },
+  {
+    "path": "vendor/python/serial/urlhandler/protocol_spy.py",
+    "sha256": "15d51a538dfe6e5d4a5d3cbf4b81e1cf2195e61a54b28a66f08a93ad7d955fee"
+  },
+  {
+    "path": "vendor/python/serial/urlhandler/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "vendor/python/pypdf-6.20.0.dist-info/licenses/LICENSE",
+    "sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524"
+  },
+  {
+    "path": "vendor/python/pypdf/actions/_actions.py",
+    "sha256": "9ad300bde70c006ba9484e0d78296103c0dcdafa75038248f3bde6a988cd6c4b"
+  },
+  {
+    "path": "vendor/python/pypdf/actions/__init__.py",
+    "sha256": "d8bdd81ef60846bab097640490991e4b63bd6b521eb0356ed696e24854299518"
+  },
+  {
+    "path": "vendor/python/pypdf/annotations/_base.py",
+    "sha256": "608453cd3764aa3f035164939b2d1fae47d3af88e87b91d41b344e5287f8a08a"
+  },
+  {
+    "path": "vendor/python/pypdf/annotations/_markup_annotations.py",
+    "sha256": "c210635217f7c5195cae67829cd82a1679ad2767fb07c2289f82b8e88f74a079"
+  },
+  {
+    "path": "vendor/python/pypdf/annotations/_non_markup_annotations.py",
+    "sha256": "fd2cd3ce864ce01dff1bf57a33ff266c9e7b630d2d024f601db347ea5211ab70"
+  },
+  {
+    "path": "vendor/python/pypdf/annotations/__init__.py",
+    "sha256": "7f693ffa3027dfd082076ecac50fdef771a29e7ce40076d49e749e1899758f21"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_appearance_stream.py",
+    "sha256": "11a5f1648d4392656072549ef920ec8e748ca656e6065c2c75f438b70173aeb8"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_base.py",
+    "sha256": "e0e8fb5466f5a028f412e7489fcca22c5373472c18e960f25ac7440dc112a632"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_color.py",
+    "sha256": "a6274f36e5d52882309a6554c200b62dc6c444acc1c8d244e3580a367815c5c1"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_data_structures.py",
+    "sha256": "6625601890c06bf5e4707b979a2156a6b7a12408fcf6df0e828e787ade50dc98"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_files.py",
+    "sha256": "d28b3ece6aa1cec4ed623e83ab52e2cd70fd592118e5855508415352223d9ebd"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_fit.py",
+    "sha256": "607a2571a31e1c67d84fdb0d1a3dbfd04b52a09619d9a261b4aa9525c03887f9"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_font.py",
+    "sha256": "7de419e6dc1f4ba5752bba2833d433e7e54ab4c9205f7b1ae342710d9fc6c65c"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_image_inline.py",
+    "sha256": "a708cc06e98c88b0972a6367e6513282b0fd35599c8429c26ff0573a0058f7cc"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_image_xobject.py",
+    "sha256": "3dc359eff22e101aa7cc60ceff0bf921da3042c4efdce450a7e95c0b9982bd3f"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_link.py",
+    "sha256": "90835ae593a2a461f163f616fdf231178cf44d134a970c388d161a1822d34116"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_outline.py",
+    "sha256": "3c4b924f86fe2a6010203009d05872c4dec036626376c59a4ddc4aa3b862ab78"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_rectangle.py",
+    "sha256": "ec7ac97ce31ab906ad0368245a17074a4cc1ec5e245a671afba90d03a1d5a3a3"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_utils.py",
+    "sha256": "0dcef7c1b7cfeb17d2f962d63fa77b98d116c9b0cee7779de94dbb243f5f1df9"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/_viewerpref.py",
+    "sha256": "20912ec8cd304ebd6a36004e0bede202e3c1e4f9630ee771f7de14a2c3eb05dc"
+  },
+  {
+    "path": "vendor/python/pypdf/generic/__init__.py",
+    "sha256": "56ba9d61fb5010278f0d4dab5d532012a45a60547ccce57f7ef260a35f71feec"
+  },
+  {
+    "path": "vendor/python/pypdf/_codecs/adobe_glyphs.py",
+    "sha256": "69ac4e46ea50409ee46cb0c76e35a280b67aa60f06f7fe5ea832a2349c72923e"
+  },
+  {
+    "path": "vendor/python/pypdf/_codecs/core_font_metrics.py",
+    "sha256": "dbb26cac9a39511246215ed90ce09427259f066e8b0567aaeefdce5b3a05f21f"
+  },
+  {
+    "path": "vendor/python/pypdf/_codecs/pdfdoc.py",
+    "sha256": "c5f4af30562cbf1b9a490d14bbdbd90ca681d16bbce61d6e0a20758bdac07145"
+  },
+  {
+    "path": "vendor/python/pypdf/_codecs/std.py",
+    "sha256": "0f240cb84a40184a52f6ecb58d67f87278fe92a4a13ce0228f9b08ed0d580fc1"
+  },
+  {
+    "path": "vendor/python/pypdf/_codecs/symbol.py",
+    "sha256": "08fe958d172c72b9bcca6007f74c6977155a7a5c22e8c49bd536f5c0d0e1d359"
+  },
+  {
+    "path": "vendor/python/pypdf/_codecs/zapfding.py",
+    "sha256": "e39a9c635d716c1c2da21ebfb7467fef33631bbfaa238d752d14155d828faf65"
+  },
+  {
+    "path": "vendor/python/pypdf/_codecs/_codecs.py",
+    "sha256": "f377c8779e1713e6916f798d8bfa75a2526d67375487df07b3159708e193b512"
+  },
+  {
+    "path": "vendor/python/pypdf/_codecs/__init__.py",
+    "sha256": "bd56ce01215af54c771e42b4228dd415aba640fe0970d2f1f63341353351d980"
+  },
+  {
+    "path": "vendor/python/pypdf/_crypt_providers/_base.py",
+    "sha256": "34505711d85bae0f64d353d57cd37f93b94401897606481720e8b9a1f53ff91f"
+  },
+  {
+    "path": "vendor/python/pypdf/_crypt_providers/_cryptography.py",
+    "sha256": "d5f8b148d0aa4c63b14f4af96750b8f31cdc9583bdacf2ac0366de3c5678e9f8"
+  },
+  {
+    "path": "vendor/python/pypdf/_crypt_providers/_fallback.py",
+    "sha256": "81772ba3f2bbab82180cbe57195471a059978d75cc6ba4e57830f0c56c828f81"
+  },
+  {
+    "path": "vendor/python/pypdf/_crypt_providers/_pycryptodome.py",
+    "sha256": "c57e05b5af101c7133b44fbf60793ebc9b66054d71295c01f7dff2b10e939ce2"
+  },
+  {
+    "path": "vendor/python/pypdf/_crypt_providers/__init__.py",
+    "sha256": "c5441b160310bca31a38e4f7454756ddb4bc7d94a147c3c13b3eab7ac7f05855"
+  },
+  {
+    "path": "vendor/python/pypdf/_text_extraction/_text_extractor.py",
+    "sha256": "376ae42d43e318bda3603734a3493cb2ae8084d0bdad9a8f4a92c76c3021eede"
+  },
+  {
+    "path": "vendor/python/pypdf/_text_extraction/__init__.py",
+    "sha256": "08ee4beeccbae52c021c87c61eed6f9bbfeaef5a9ea1f994170921a2de15e4fb"
+  },
+  {
+    "path": "vendor/python/pypdf/_text_extraction/_layout_mode/_fixed_width_page.py",
+    "sha256": "db33aff54105f76128847d4447098d85618a2d5bdd5d596ad1470bec0a999154"
+  },
+  {
+    "path": "vendor/python/pypdf/_text_extraction/_layout_mode/_text_state_manager.py",
+    "sha256": "b1600d432c5add07cb442b02a0b6daf228b737457c0ea92184f35274c02d68f4"
+  },
+  {
+    "path": "vendor/python/pypdf/_text_extraction/_layout_mode/_text_state_params.py",
+    "sha256": "a0c4b8cb2f4763835c4ebded2f1272235182e1c759e46cc3ad43f425ac5f5261"
+  },
+  {
+    "path": "vendor/python/pypdf/_text_extraction/_layout_mode/__init__.py",
+    "sha256": "56adb80f37575f9af91995d319579011c9212ed332099acdf207db4a506efecc"
+  },
+  {
+    "path": "tools/pdf-runtime/LICENSE",
+    "sha256": "4746f7a77019f83d6d3f0efb5bb0a4d4e23f3ea8d8ef48981d413be0cdc5099e"
+  },
+  {
+    "path": "tools/pdf-runtime/LICENSE.WeasyPrint",
+    "sha256": "bfd14eccfa6100575460e685556b183399d4bd335904e3c9521b0116d21c54da"
+  },
+  {
+    "path": "tools/pdf-runtime/README.rst",
+    "sha256": "81d863bc7b936f6869cfdb79ce7e44abcb71bbcff694676bca4a9cc01e7b450a"
+  },
+  {
+    "path": "tools/pdf-runtime/UPSTREAM.txt",
+    "sha256": "d91682bc971f5e0b79976b8ad5855e283825206bf73cfb7a85fb0f05de9713c1"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/weasyprint.exe",
+    "sha256": "2d35d8dafe94c28de4ecc4a9bea35119afea962177004062f38bf52ccea8f870"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-console-l1-1-0.dll",
+    "sha256": "88ace577a9c51061cb7d1a36babbbefa48212fadc838ffde98fdfff60de18386"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-datetime-l1-1-0.dll",
+    "sha256": "1bd81dfd19204b44662510d9054852fb77c9f25c1088d647881c9b976cc16818"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-debug-l1-1-0.dll",
+    "sha256": "591358eb4d1531e9563ee0813e4301c552ce364c912ce684d16576eabf195dc3"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-errorhandling-l1-1-0.dll",
+    "sha256": "d56ce7b1cd76108ad6c137326ec694a14c99d48c3d7b0ace8c3ff4d9bcee3ce8"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-fibers-l1-1-0.dll",
+    "sha256": "91d249d7bc0e38ef6bcb17158b1fdc6dd8888dc086615c9b8b750b87e52a5fb3"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-fibers-l1-1-1.dll",
+    "sha256": "fc9d86cec621383eab636ebc87ddd3f5c19a3cb2a33d97be112c051d0b275429"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-file-l1-1-0.dll",
+    "sha256": "1ca895aba4e7435563a6b43e85eba67a0f8c74aa6a6a94d0fc48fa35535e2585"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-file-l1-2-0.dll",
+    "sha256": "4cadbc0c39da7c6722206fdcebd670abe5b8d261e7b041dd94f9397a89d1990d"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-file-l2-1-0.dll",
+    "sha256": "93c624b366ba16c643fc8933070a26f03b073ad0cf7f80173266d67536c61989"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-handle-l1-1-0.dll",
+    "sha256": "39095f59c41d76ec81bb2723d646fde4c148e7cc3402f4980d2ade95cb9c84f9"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-heap-l1-1-0.dll",
+    "sha256": "8f105771b236dbcb859de271f0a6822ce1cb79c36988dd42c9e3f6f55c5f7eb9"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-interlocked-l1-1-0.dll",
+    "sha256": "53b25e753ca785bf8b695d89dde5818a318890211dc992a89146f16658f0b606"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-kernel32-legacy-l1-1-1.dll",
+    "sha256": "a9b13a1cd1b8c19b0c6b4afcd5bb0dd29c0e2288231ac9e6db8510094ce68ba6"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-libraryloader-l1-1-0.dll",
+    "sha256": "7f39ba298b41e4963047341288cab36b6a241835ee11ba4ad70f44dacd40906c"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-localization-l1-2-0.dll",
+    "sha256": "6ee44dd0d8510dc024c9f7c79b1b9fa88c987b26b6beb6653ddd11751c34e5dc"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-memory-l1-1-0.dll",
+    "sha256": "0512a35316ec9180437f86696a84c5c06a7e4e82e050055a656e5bf9fca206f9"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-namedpipe-l1-1-0.dll",
+    "sha256": "c05f1fffe3b5a2738ea54ce9485cca026fb9635f982626fba1e1dcc531897273"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-processenvironment-l1-1-0.dll",
+    "sha256": "c4eca98c3c67b6395d5b005b00ac1eb0318b86b23aa71035a44c2b1602befba9"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-processthreads-l1-1-0.dll",
+    "sha256": "5ccb89e93d67bc3288d4e84649c5346e66e15e3d7cd65d989daf3f4cb584be9a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-processthreads-l1-1-1.dll",
+    "sha256": "4ad565a8ba3ef0ea8ab87221ad11f83ee0bc844ce236607958406663b407333e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-profile-l1-1-0.dll",
+    "sha256": "7809160932f44e59b021699f5bc68799eb7293ee1fa926d6fcca3c3445302e61"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-rtlsupport-l1-1-0.dll",
+    "sha256": "9dc1e91e71c7c054854bd1487cb4e6946d82c9f463430f1c4e8d1471005172b1"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-string-l1-1-0.dll",
+    "sha256": "60fc31d2a0c634412f529dba76af3b9bf991352877c6dae528186d3935704cfd"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-synch-l1-1-0.dll",
+    "sha256": "3a72b4f29f39a265d32ad12f0ce15dbf60129c840e10d84d427829ede45e78ad"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-synch-l1-2-0.dll",
+    "sha256": "efc1e4460984a73cf47a3def033af1c8f3b1dbc1a56cd27781d3aacf3e3330cb"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-sysinfo-l1-1-0.dll",
+    "sha256": "b203d862ddef1dd62bf623fc866c7f7a9c317c1c2ae30d1f52cb41f955b5698e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-sysinfo-l1-2-0.dll",
+    "sha256": "2703635d835396afd0f138d7c73751afe7e33a24f4225d08c1690b0a371932c0"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-timezone-l1-1-0.dll",
+    "sha256": "33f4fddc181066fce06b2227bded813f95e94ed1f3d785e982c6b6b56c510c57"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-core-util-l1-1-0.dll",
+    "sha256": "6eda016742a6171205a387a14b3c0b331841567740376f56768f8c151724207d"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-conio-l1-1-0.dll",
+    "sha256": "b762061b688aae679afe788904d2c9970f74a7dac98f3b42463d08f25e483d3f"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-convert-l1-1-0.dll",
+    "sha256": "ebb2ae5535a64f65daeab8235585114fc9dd2cf1a49f5852d446250b998b6ae4"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-environment-l1-1-0.dll",
+    "sha256": "17d63275d00bdd8670422b95bd264c532998e0a1b041079e54fce4b6b7a55819"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-filesystem-l1-1-0.dll",
+    "sha256": "9a9e2a65a281644e368d0f272b95ba5f6b445d1c35910d06056c5ebeb77402db"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-heap-l1-1-0.dll",
+    "sha256": "bab9ac3ec83e380ae51e4295ef3bf2c738627812d3a49d1e713661abbc8dc57a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-locale-l1-1-0.dll",
+    "sha256": "bd14c67ea28e21d6257ad780a37122c9b5773f69e693f5db6bffaee4d839526e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-math-l1-1-0.dll",
+    "sha256": "606d66d82db562ea7979179d06486a0f94d079941d26b80a1e2c49d29959df6f"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-multibyte-l1-1-0.dll",
+    "sha256": "95f49efbe8107786733fa7c474025cf3fee0ac632f240367b296c736d06572aa"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-private-l1-1-0.dll",
+    "sha256": "1bc82bed6143d2bf1b6b08a7809f4a5e29317d6fddd338a7da3c0223522e4bbf"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-process-l1-1-0.dll",
+    "sha256": "f6156b1020380ec4f0e48577ebedaaef5fb1ab1f337d8b4e72e6a33a7567a9cc"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-runtime-l1-1-0.dll",
+    "sha256": "c5902934d026d7e15fbe9917d474f3322846a41a25e66f4b2b1f758801879f4b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-stdio-l1-1-0.dll",
+    "sha256": "a9c5a153d8c0286f9b41a2b1c65854ad9e6471b8755b7de87bae4470e60bcab6"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-string-l1-1-0.dll",
+    "sha256": "25b8f83a7767211b11132775a0e27a45aa4ec8ab4e6572599f9c172ae3606b40"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-time-l1-1-0.dll",
+    "sha256": "7c7f6393f06de11750adb09cc5698ae55cd9fb27b2e51e207286feb1b5b2b156"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/api-ms-win-crt-utility-l1-1-0.dll",
+    "sha256": "d8ba5f17b9ffcbf3aeaf3fa1da226832d2fa90f81acce0cd669464e76ce434ac"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/base_library.zip",
+    "sha256": "7bdce96f1f7f9ce605195d562bac632a639a3c5ff3c185059ca919d7b7e76e72"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libbrotlicommon.dll",
+    "sha256": "c62c08223e450dfc2fff33c752cc228505ffd9d755201958ba800d5d30481a2c"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libbrotlidec.dll",
+    "sha256": "e270b6e576594ee8ee6e33ccc54e34a54304616dd6225652e11e49d6f17ef896"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libbz2-1.dll",
+    "sha256": "1790bf6473c9d48db14c1f0ee8124142327556d281299ea2a72ee361118ee01a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libcrypto-3.dll",
+    "sha256": "53c529145339fb042a3dcd3a09c2d7753204f8b4fc79d99e0d31e69a33985958"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libdatrie-1.dll",
+    "sha256": "40aee3ae9a62a77454dfe8419fe21b54c54d969e0471c9e817b65d4502a9949f"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libexpat-1.dll",
+    "sha256": "fc7b969c07c4a5b7e0426bdee4ac247a8840eac34a217fbe3303a5b21f25280a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libffi-8.dll",
+    "sha256": "f96cf79b75f33a10023d001673b564538023395c94b3c58e1db53114976a7c25"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libfontconfig-1.dll",
+    "sha256": "be30a200fa4000d0a7a1d3911391969627440148f01d0028a319bcb9fa112202"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libfreetype-6.dll",
+    "sha256": "a3271784f8366b3c6412e0c35474884fa12899c392bacb08bc8eac00f4be7e64"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libfribidi-0.dll",
+    "sha256": "73a712fd51fa0085e8660084743a821ae7388de138069cd6cd8c171d4487da84"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libgcc_s_seh-1.dll",
+    "sha256": "80940372431cc76224dfda06e2d33f01e49af3b4e7c499c535be856ebcadd273"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libgio-2.0-0.dll",
+    "sha256": "da8abbcbe4ea8ce650c6cb5953f775699a6cd2126d3291faa35b83cc0659cc12"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libglib-2.0-0.dll",
+    "sha256": "052e1d5e9cb072c7d2fb9db3ea6c29c1889b05110b1228e4fb846884eed387dd"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libgmodule-2.0-0.dll",
+    "sha256": "702e4c3a331d116cf96ac4fb4f04dec64aea7f8236220a639e123ec033b7d4b7"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libgobject-2.0-0.dll",
+    "sha256": "469d2e3b60f5307d00809f1efc0ab494f7c230e58a93cd2cbf75fb64aa2aa786"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libgraphite2.dll",
+    "sha256": "93953e4744bcfce9a7bc439b956544bc213095cb1349c3602a58370f32b25c18"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libharfbuzz-0.dll",
+    "sha256": "c46184dba5b5420206b8caa4176e284092b9e2580088a61455ba1ff9d3238a92"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libharfbuzz-subset-0.dll",
+    "sha256": "9c231fc74a75351a2245369cc2da42075306cded6b92b657a5abc95494fc5c9b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libiconv-2.dll",
+    "sha256": "94ec68fb8d342b6c91b6b48a8d95092819cdcd006a7166e0b68062f946afd08a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libintl-8.dll",
+    "sha256": "0e5a178731e6be6d115442a6ade3df7f03265cd1fc4338f8b6f86a8001cbf582"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libpango-1.0-0.dll",
+    "sha256": "fd92503a3fcab12fcf555cf8a47610f23b203cf888b48b5628629987d68215b8"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libpangoft2-1.0-0.dll",
+    "sha256": "27620f9c842109690616393b3616c29d5dfda8f8a0a980c0a5e869d4f75be925"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libpcre2-8-0.dll",
+    "sha256": "52ccc7e4ec5ad0aecf307c0328826340f5d504aa59f7c4143b9a1b9fff16ccda"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libpng16-16.dll",
+    "sha256": "5c1dd5410af563f4a3c4aee10d1f749aa71e0d7fb3b4fac240eb9e96cadebd26"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libssl-3.dll",
+    "sha256": "b17a87979862d19241edc4318f967e24c3ec356ed6c2368f561179fab2311001"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libstdc++-6.dll",
+    "sha256": "69200d6d96b903dac4c873031813485a0455828be8101479efc56008862420cc"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libthai-0.dll",
+    "sha256": "d8d8b87e9089a811e088f6a01da57c19ed54d2b6613bb85697f1958473f63666"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/libwinpthread-1.dll",
+    "sha256": "e9627114952f819a97cdf72950e18d4d4f3a0a2739ad20bf32dd351e3c89a07e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyexpat.pyd",
+    "sha256": "e34347c4e11b2ecc57df2ce1627ba7f98fd076e9df59951e9034f5aa8e95a2fc"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/python3.dll",
+    "sha256": "6c45910e7c82617ca6360820de861699cc99f9efee434df290aa4c6e38f39886"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/python314.dll",
+    "sha256": "0f9857ffdfe010fe6b99328d58c2e3c7472ce75f336bf9c2ad9bd5bca3bce700"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/select.pyd",
+    "sha256": "722328e7fad8048057fc966474ba73966d2ceebaa32e7344cce09640ab4dc9bd"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/ucrtbase.dll",
+    "sha256": "2e5fb14b7bf8540278f3614a12f0226e56a7cc9e64b81cbd976c6fcf2f71cbfb"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/unicodedata.pyd",
+    "sha256": "280b09bd97b598d18c0ed9542dc18ed35fa57a16e84f8e65fd9c6e96516c28d6"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/VCRUNTIME140.dll",
+    "sha256": "d1f4225df2cd877dbf130d5668a021dce3f94118455ff5ec952061c30afc9ce7"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/VCRUNTIME140_1.dll",
+    "sha256": "a7146c08f89fe5b04541ab507cdb59ff7b44534d4ba3c668a426c6450a03434e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/zlib1.dll",
+    "sha256": "11cd91171765cd65f1c3362e3df67e5f5a618a6b88c8cdec899b802eaf1c7b0d"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_asyncio.pyd",
+    "sha256": "f9594a2a4f45570dbfdf1f3471194ae7b27dc117c54b9af6bc22df9c93830f8b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_brotli.cp314-win_amd64.pyd",
+    "sha256": "44f02bcf2b15519a487cf653e16b5f9c65f26d0be559592878988ad47148fc5e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_bz2.pyd",
+    "sha256": "b938073c85cf6b9fe80556d7899ed1901e5e60b7adea2832442376239fb36b36"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_cffi_backend.cp314-win_amd64.pyd",
+    "sha256": "9e99b2184c60f21a88cafc374386ded3559e8694ed7cf111f2869e066d303334"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_ctypes.pyd",
+    "sha256": "408cc4e7a22ffa418ca52f5e13fe9268a3c50a2bc9de02b0530b555ef591bc5a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_decimal.pyd",
+    "sha256": "bc3a61685825ae37a4cd2b2b87fa27af12e01575c4f920788ea806e6781a2c79"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_elementtree.pyd",
+    "sha256": "d8a17f9c831e313b440e19e0d26e6c0e7ed830ff1f657887cbc26664d6ef4973"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_hashlib.pyd",
+    "sha256": "5933ef5eda7c0bca0b3874a6e2c5f13b91b8f2cfc29bc46160df3212a1dbee79"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_lzma.pyd",
+    "sha256": "d2abf8db7fb0cf6285663b177991691a41b37e215c3d71fd087a98d8ec1bee63"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_multiprocessing.pyd",
+    "sha256": "cea83c9bf3131d079c20066b626f67ab33021b476777be2d7be26d1fa5e4eb66"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_overlapped.pyd",
+    "sha256": "1d7028683e6ec50c159139238f90a6c8431ece139a4764900ca11c941ba05d46"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_queue.pyd",
+    "sha256": "2fd8668f52b34d0e71ae48784bd2e7d35e5d99df6f641edb0fc279235a187c8e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_socket.pyd",
+    "sha256": "02265dd0d0287f3ffd287ea5d8e3c918a5a056e8ef2c4529857f5e84ec9e2519"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_ssl.pyd",
+    "sha256": "4cfb154c7cc525d57020c0e64f2dd876a78b46cd38419446392478de6b7b13b8"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_uuid.pyd",
+    "sha256": "fbfd7fe8583b346ba20b174b2510c0830237f5092bdf9fc26da9d6b25b018385"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_wmi.pyd",
+    "sha256": "b6fd41f079da0c0054829855360e88b8b762f5c42bb474c2fa02eae367839ad2"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/_zstd.pyd",
+    "sha256": "33c6eca99470c3eb9d776b617c550ad41b002a668336f062a9ab7be677a7409a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/PIL/_avif.cp314-win_amd64.pyd",
+    "sha256": "d8bd3032b72992a8166144a4063bae4a55c0f178d237454f17102301731e912a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/PIL/_imaging.cp314-win_amd64.pyd",
+    "sha256": "d823c0e3b54035d08703bb427c553c956c2607b79395f2952e17a5447c5f1105"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/PIL/_imagingcms.cp314-win_amd64.pyd",
+    "sha256": "dff90929dbeb9d51eebf09f4454d0beb65775f7644145a63d66fa8ca9f5a96fd"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/PIL/_imagingmath.cp314-win_amd64.pyd",
+    "sha256": "a7b3d6e462d338744694bc332f9f6f9c5717d532b7a74ad2762b3289521d0d9e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/PIL/_imagingtk.cp314-win_amd64.pyd",
+    "sha256": "79208042672ff0b9e3669d5078ad35413470861e783feeaf1430458c41036593"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/PIL/_webp.cp314-win_amd64.pyd",
+    "sha256": "f4d851381d1bd937753ba78e951c96a85f3a6c5ac402beec23fc13fdb6d45198"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/zopfli/zopfli.pyd",
+    "sha256": "1f26ea1db2160e928f3cf0a2f07beb3a694ba82a0249005e3cdc24fbf03f7f18"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/zopfli.libs/msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll",
+    "sha256": "a4c2229bdc2a2a630acdc095b4d86008e5c3e3bc7773174354f3da4f5beb9cde"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/weasyprint/css/html5_ph.css",
+    "sha256": "e06bc94d27efeb8226e8caca76d27da0872b9214456502d27f84d312b43743a7"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/weasyprint/css/html5_ua.css",
+    "sha256": "4b7a481b7082a25341a5676a8d972b7d18d4e374addb0f7c7b51a42e51eb92e3"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/weasyprint/css/html5_ua_form.css",
+    "sha256": "be20de61c0d0745642f2b17daf62cf8376ae1707768758c9003f0f04ea7c510f"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/weasyprint/pdf/sRGB2014.icc",
+    "sha256": "384b832de3412066743b52a75ee906b6fb9fb8d9e09e936fc2c43223815c6e0a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/setuptools/_vendor/jaraco/text/Lorem ipsum.txt",
+    "sha256": "37fedcffbf73c4eb9f058f47677cb33203a436ff9390e4d38a8e01c9dad28e0b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_af_ZA.dic",
+    "sha256": "541a45d73d92c69445613ec558c2c1a6829550d1a1ad8aa9dc6dfb752db87da1"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_as_IN.dic",
+    "sha256": "321ffb692c12792dddb4294ab5857821fc1ab8f2d0a8c0fcdced00200602ead6"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_be_BY.dic",
+    "sha256": "e4339b5a53d2f0fb4179c1060173788d5b6ed3f07bbbccb8b74f5cea614a809e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_bg_BG.dic",
+    "sha256": "7dad4f2ccfce1909b27f53082cf57c7914809a8ba31ccbcee3dc817dcd7c7994"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_ca.dic",
+    "sha256": "4a4816e93a92df35819c5f4775106577aa279739a12c687291d747a3ce767b8b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_cs_CZ.dic",
+    "sha256": "a378d024438b446ac0524237dc6d728dc520550db5fe0fb1fdbb47c2ee0ca525"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_da_DK.dic",
+    "sha256": "7cd275073e43922adf9ec973506e7b04e3a77b513190982ce6c5dcee176f6abe"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_de_AT.dic",
+    "sha256": "3e0b4687479d25099e37ebd946998c08fcccc12a0acf9380d8b19319a50b9f3a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_de_CH.dic",
+    "sha256": "825159436515ab150d3da0ddf5eedb814c0ec6c7eec98fbd53e3ba5b2a4a1443"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_de_DE.dic",
+    "sha256": "2e2f5ffea6bc53f67ffe8c076921c7b1b34a2ec2b9ec57a4608374bb65a1a1e1"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_el_GR.dic",
+    "sha256": "f2284153c3f9a809b959dcaeb349e00d90b4c4cf37c3d3a338b371c32f10e89d"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_en_GB.dic",
+    "sha256": "9fdc97f7faabcda30c15a9d53bc7fbf21daec795fb3c9a9588f7bdb30c563f41"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_en_US.dic",
+    "sha256": "486fb6840b1049d5d252ef784be11cd4dc2be0bf296568b74b41e4f4e17cba7d"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_eo.dic",
+    "sha256": "f2feb4cabe54b696affec72960b1670cfd9e4eae007854944bd02c0d348f59d7"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_es.dic",
+    "sha256": "a95be7365a482b930ade0ff54d413cd24357ade97cefd434b704286eda828d71"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_et_EE.dic",
+    "sha256": "2ee13914fcd9e9b110e9e3d56e1d6acc28bf792c15b1b69efc2e71ac96c23c74"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_eu.dic",
+    "sha256": "5f499f513435a8432961750fae7b31bc5d3989b686a744c331bb75471a14b71b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_fr.dic",
+    "sha256": "476ca60b958400c8b3fbe55764b4900df87acf60394ef62362705d9c701db191"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_gl.dic",
+    "sha256": "357355b82eb82ed081433503327ac4ba5b4f3606b6a3e50d69091d57eef4d5b8"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_hr_HR.dic",
+    "sha256": "77613ff6e907d2e9ffd93d45bfb16873aa9182e2215df276dbf850d1b0e28f65"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_hu_HU.dic",
+    "sha256": "d253b8c6188cd0f1b2340c31c8202bf1978611385cf69b211b56991321ccbee0"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_id_ID.dic",
+    "sha256": "ac53214620527f8a145ce4d70f0a3a5d336a145643b52547375aedacef558dc0"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_is.dic",
+    "sha256": "690ed04b72b60d05f66971ad9fd799656419228bfa8df00190adf02e27c0b1ef"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_it_IT.dic",
+    "sha256": "8c25b6fb62c2fb97586c6f7c6fb48f29f49e90a5c33c09ac9112dba6942b50cd"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_kn_IN.dic",
+    "sha256": "a15acb05a834979904330afda768accfa7fee10da386cc534d7944144eb1997f"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_lt.dic",
+    "sha256": "05bbdb2c1193cac2aaecec696900a7927dc150def37729a8b52a5702a3101e2b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_lv_LV.dic",
+    "sha256": "775d9a539fd8e98fabbfefd87af5887bb24eb4700b47ed5f8e360b0bab75b078"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_mn_MN.dic",
+    "sha256": "c49d5ead63948d84c75d43245d837a9d7c8dc36c2a97dc5e8a7ade031c7a00e9"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_mr_IN.dic",
+    "sha256": "740707cd6d149d1339e921e126a25dcea889712f4889fbc72434d753324409ed"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_nb_NO.dic",
+    "sha256": "c6c9b07d9f2c60bb47857fd629d9a453026312c894665d22c72e8e1699420f6c"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_nl_NL.dic",
+    "sha256": "0a97b76b259ed4165d094dedf9b6fb98c57734a437df0b5b263ee13e262d5f8f"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_nn_NO.dic",
+    "sha256": "c6c9b07d9f2c60bb47857fd629d9a453026312c894665d22c72e8e1699420f6c"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_or_IN.dic",
+    "sha256": "264b3a880fc7dc9f477abac80708172144ec3bb28baa8266539fe7ffff7a8a30"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_pa_IN.dic",
+    "sha256": "87b2e3d7dc8cc4e4f0bb1d6f4265e8d8eefa478fbc890a60839868af4f5c2c06"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_pl_PL.dic",
+    "sha256": "9fe3917ec1fb09b7ffa560e85fb810e098d45a9a45ad6d5c08311544dd92a100"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_pt_BR.dic",
+    "sha256": "a8eb1a64e4af4649c739211b397fa37b01f9d5774cf558fe3895fc3f26fd33a4"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_pt_PT.dic",
+    "sha256": "6f18ee89de6db21d9b06120a5527ec41d8132514fc112ccfe7d289ba91649840"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_ro_RO.dic",
+    "sha256": "24adbfe7cc2267ea5ce4afd34f7d69da5a9163ef3dd57b158bbb196b9d651e94"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_ru_RU.dic",
+    "sha256": "e9a6ae92765fc7e63d879f2ccf3f50f2b95bc8ed7618a6f31c34ce7d39844c83"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_sa_IN.dic",
+    "sha256": "e7f21be6f039cef24a3643ca7bc6d196bee1ee2661e53514f2c7e1392655d733"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_sk_SK.dic",
+    "sha256": "7359863ec5d5dbbf35c7d4f38faca1af7b43bc4aa643871e63f2dc0dfac4f922"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_sl_SI.dic",
+    "sha256": "3d9026755aa0936e9331595a08bb65c295ccac84acefe58cb6c9fe2ff11ceef8"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_sq_AL.dic",
+    "sha256": "99fbce3b0e60cc500e45643dd40903dfa71cfc1605a5b139cfb22129bd665dbe"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_sr.dic",
+    "sha256": "ce785026592f525c38e67152699224d47a4cdf555a1a4eb65d50458c5548f69f"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_sr_Latn.dic",
+    "sha256": "b423f910400472979a2b0fe1c95965c940e927f7588dace0e42c17f7b0663376"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_sv.dic",
+    "sha256": "44c5a59f1ef8a17b9433e4510a1abcac753d34ac875dc27ea95427f1e581f17b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_te_IN.dic",
+    "sha256": "2ad470071dfd9bb3ad5101d528e1fb0090d96c841c4f2bb07b325476b3c853fe"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_th_TH.dic",
+    "sha256": "fbd19d561c19a13d1901a0b9653e24b4c0c2c81177064266e2acb23bac68145b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_uk_UA.dic",
+    "sha256": "ae80645b757d6b57e5cdf34ab6cf7441a2414c60bff2352c7e815c1c12baad3d"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/hyph_zu_ZA.dic",
+    "sha256": "e75802e08127877d38891c140e8989af559665bae82f94d33c340cba2aa9de20"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_be_BY.txt",
+    "sha256": "ba3c76d7e9926426ecf93250db3f393c11bc372ec3a64fc49b9639291e809bf3"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_bg_BG.txt",
+    "sha256": "26ca94269f58ad71be0985dbab8ed58e735bd9fffee4a17c6ae24575e1d16abf"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_ca.txt",
+    "sha256": "2069d317451414a3f34d54a26c85b07cd3268b0a014c4f8a4b64398caae7f514"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_cs_CZ.txt",
+    "sha256": "adc50a58231a94ab7f225d9913da331f9dc2049128c9742cf60d0c32a8b04028"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_da_DK.txt",
+    "sha256": "6055fdab59b2d781b27a0286f8fd3b09fa3f4d706c023d6481c5044492e405ea"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_de.txt",
+    "sha256": "be7b3c67a66ea7185a69a3ce3b1e712cd6bb904dce8ac0eecdefd2f1a948baf3"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_el_GR.txt",
+    "sha256": "0b3e117f4ab079e7cbcdd7f4645f9a4f193ae123e6c781928597b27d22706aa7"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_en_GB.txt",
+    "sha256": "6f3d1dddcf62d2d452801bd86289ad5826a30d15a502c0825f5c73715372db50"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_en_US.txt",
+    "sha256": "9bcae072bff45cc0333d6b3c508c92d85b9065fc861c743c1506b303eba3f4a1"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_es.txt",
+    "sha256": "1f1088dce1140d981660faf3f5acc825e74aa1f943a8bec88cb046e4c528a1fb"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_et_EE.txt",
+    "sha256": "da273b8ec03e35774a426e9df047ad85253ec9e61a5c056f019d57c1395ef1cb"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_eu.txt",
+    "sha256": "b0dcf82345f4a6a74e290cd7e7b43b73f8612e14ed5cec53ee736edaeb1d16b5"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_fr.txt",
+    "sha256": "6951d9806c65c7f757d303061ca49cd7a1ddeddc552147f5c29de6540821f2cf"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_gl.txt",
+    "sha256": "2830f43a0a7e503765d59cc553a32bf1d342fee4e5dd7f0f19136b07e63e371b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_hr_HR.txt",
+    "sha256": "2ba15b47f64eba01489d2962a8c04c6e457a33bba418d6384bda30dfe9e23b65"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_hu_HU.txt",
+    "sha256": "d18ff3a0b4e8d2b537982085bc19de03ed77cb29bdfabc67f728bb547e10853a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_is.txt",
+    "sha256": "64edf9fc3871e109a0b0d3a12d1ace5f7830b76d6de220e3d68679254e7969c7"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_it_IT.txt",
+    "sha256": "e6f356c3c49bc6016b6a635c20b468468eef6d011953a7051bbdfd56e17f0d3b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_lt_LT.txt",
+    "sha256": "6cd16fef901c886068d0c755c884bfcb9bc6ea9410f52152d8d01111db402938"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_lv_LV.txt",
+    "sha256": "5e2cfa2c9a2b0ea1500c8cafca40256cbfec7de5dc46c5e4ca45950f76fd8659"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_NO.txt",
+    "sha256": "cf122e25bfa6f1694023a8afeb6e034197d46e78fb41df27cc45f9f23edcfdad"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_pl_PL.txt",
+    "sha256": "99df1756a8d42e035e6ad6e79d2176a31ff71607a09300c9ace259895cc87403"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_pt_BR.txt",
+    "sha256": "07400608865ce4c964cc443a9f354c733ca7f3f7d31f4463222b927cb7c54b87"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_pt_PT.txt",
+    "sha256": "62f19b9d8b42f2b0ff165ab434f40cfb4210a464f0662c31f6f99d77d0306e06"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_ro_RO.txt",
+    "sha256": "4808da6b026988000dd0943e86b77f312901e2759f11b1621e6512bddcbbe986"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_sk_SK.txt",
+    "sha256": "17b8f471cf1ec7b177d4a74bcd09e63cb4f122412b43d80489df6551985bdf27"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_sl_SI.txt",
+    "sha256": "76e518bc5426ac5e3954f5168e7737a549ad7a3b6d3f81d6fd4473a1679940da"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_sq_AL.txt",
+    "sha256": "e4175731cfc7881f595d6d1753e061c36752ff191ac7030757ea00edd0a59359"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_sr.txt",
+    "sha256": "c552643a0490b8a68e4c5fb25cf3fb4b6605c2f5e8c9cfdf8dbc1a3c2845bd62"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_sv.txt",
+    "sha256": "eee15b8d93b2413256ae1cb8af7d1489935571e0eaf15d9b27bab1203d3aafc2"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_te_IN.txt",
+    "sha256": "fca0ff51f3bf572f9f6a408cd820e43e34c4d7d298e38169b32fbf5baac59c24"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_th_TH.txt",
+    "sha256": "32164b4ee0e25b3a46a7370a1b7370ab712bbe4d8abe1443965eec7f7edc30f4"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/README_hyph_uk_UA.txt",
+    "sha256": "b5866714694f0e9a7c9d044984b4b39ec6289ade07fa7d2a083a31f5072f3529"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/pyphen/dictionaries/update.sh",
+    "sha256": "37afc8fb1e5ba92bef682e206ccb6e49e4147cdb38f88879e6422608a237fdb5"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/fontTools/misc/bezierTools.cp314-win_amd64.pyd",
+    "sha256": "b3903063752f9562f9ee589ad77aa91a93df833d5d06b597146cb3ed88560f4b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/fontTools/varLib/iup.cp314-win_amd64.pyd",
+    "sha256": "b167473b8fd2b76ab7c12ed36eab5716e9b8f9e0cee7c94d6ef8f8baa3dc897c"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/fonts.conf",
+    "sha256": "f141c1b89b172d22f213531646c21e288f0ebf3ec46484698896e1b33c626756"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/10-hinting-slight.conf",
+    "sha256": "d138eca2bac3f78d45ff7cfb649ad792caa4a6e61f73cea7cf0ea54b091f1ef4"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/10-scale-bitmap-fonts.conf",
+    "sha256": "df8e99abb6f82384c61978906a45a95794940545da95790d87f01d9391e0894b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/10-sub-pixel-none.conf",
+    "sha256": "0f00b5cf0ce07062ec65b9b340aa888f6c5fbc215aafebd26781be2d5a13ff6a"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/10-yes-antialias.conf",
+    "sha256": "e6d82a642d1b37f7d24dc37f938b999f00ff7aa4303b2602d04164d53f221005"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/11-lcdfilter-default.conf",
+    "sha256": "76aec9d8dac48faabe1bbde9e887cfb09fa45f30be5f8826e945a394a0097e48"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/20-unhint-small-vera.conf",
+    "sha256": "278732c68c16177f2aa3c7e4ea318b9f720aee13a433c32eb15ba626806c609d"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/30-metric-aliases.conf",
+    "sha256": "3baf25c82e1a14c606d45c212296852be06ae9795d60e84aab573226151450a2"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/40-nonlatin.conf",
+    "sha256": "f5f15e22979e2c98b8446706a24b44a904ef46e369052f9d3e738cd6e864a4d7"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/45-generic.conf",
+    "sha256": "63fc016a6ef6ad5a6df2caab714822c0cee9a5317c38237e9fbf6cd42f52f514"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/45-latin.conf",
+    "sha256": "b46e539c25dfd5531c8fcf4f22c3d156b09272ffbc6f8a83a8eeb7431c09aee5"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/48-guessfamily.conf",
+    "sha256": "f6048ea7d8ed97cc4efef847b98c71ea9d20f16835feb43860b221d40770508e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/48-spacing.conf",
+    "sha256": "4395913fda6088c968f3145f5d41374cfe7b020e99445f56d81de91a1b361135"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/49-sansserif.conf",
+    "sha256": "35b1d7dac8bb9f61a19f5a9f5e16fc6ddff1d0844ac04503a85a54b232a35c67"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/50-user.conf",
+    "sha256": "bc6e31684e4f5e0176200e558a250ff63e9ab0773300f47071223edc320c4c5e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/51-local.conf",
+    "sha256": "dca9d917e1f66f73bfa495943b4d1eaab2d93810a51bc8e600cf4d4e9df03e67"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/60-generic.conf",
+    "sha256": "540302fe1576a6de20a3194b64e8090a816ba70cfdb66d61ddbe770aff6e4c23"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/60-latin.conf",
+    "sha256": "a4b23d19e5348750ec0c2883b0cbb3f31367b22debe63c4113af389a719484a5"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/65-fonts-persian.conf",
+    "sha256": "c675fab143a3638346874798be45f51f6878ebec591b4362d83cfffb828ec4ca"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/65-nonlatin.conf",
+    "sha256": "2a0232e5423f38023efb29b67a95bae982da3c474ec5ec7bbf5b418f42357a50"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/69-unifont.conf",
+    "sha256": "fa97c0cf5f79d70e2dc3dc48155d4c9220cd7c6a8bc95b89c4ebcc517f97479e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/70-no-bitmaps-except-emoji.conf",
+    "sha256": "bb5df65896bf3011b2f2935b63ab12db1ecf078674ff73a533123445f122a92b"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/80-delicious.conf",
+    "sha256": "34f27b7fe9cd83b2b6d46f16ef9c477412f2d7ef63634f86b9b38b79bc4f81ad"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/90-synthetic.conf",
+    "sha256": "cdd0aac7840c664a7127b64db66bdfe8dc22be3774d10bc22f4a41c98de5d85e"
+  },
+  {
+    "path": "tools/pdf-runtime/onedir/weasyprint/_internal/etc/fonts/conf.d/README",
+    "sha256": "41cea02077ac14623f8d10f12dbc95444200718f3ec18c8a945c99438548eb10"
+  },
+  {
+    "path": "migrations/versions/0654c75ccbdc_add_blotter_incident_management_workflow.py",
+    "sha256": "805eba3be4d117c8dc632412193d86512c812eb6f6c51fa5086d00a1cdba986a"
+  },
+  {
+    "path": "migrations/versions/20b05723abe7_add_administrator_settings_and_fee_.py",
+    "sha256": "19482a0151dc30dba8f4d4cdd329d186bae938837ec5c2db87378fedab781d01"
+  },
+  {
+    "path": "migrations/versions/257cf6dbe79c_add_resident_profile_and_correction_.py",
+    "sha256": "d5f5387f0d74deaffa684e97e703963801779c716a2edc32ee5ae219a258b2ab"
+  },
+  {
+    "path": "migrations/versions/2b99784a1041_create_normalized_barangay_records_.py",
+    "sha256": "ba0cf7f32c778e6940afdc32c0c2f6da07a2762080e96259b79471807ff11cfb"
+  },
+  {
+    "path": "migrations/versions/32386991b14f_add_blotter_resident_viewing_.py",
+    "sha256": "b495556af25ea6a27078a0bae5489c2316b933d026eb41ec5f7c2266f4dc522f"
+  },
+  {
+    "path": "migrations/versions/42253b4a95b6_add_document_request_workflow_and_.py",
+    "sha256": "15600d10fbd20f3f10c1f0955356cdbdafbad1c0dce83f81d2e6ad0da7bec0ef"
+  },
+  {
+    "path": "migrations/versions/4f2b9a8c1d77_add_business_and_welfare_registries.py",
+    "sha256": "4cc7919090a6551e957972adfe3656575e7f30650599ac0c6c1026cdad9986fe"
+  },
+  {
+    "path": "migrations/versions/5a7c3e91d204_add_request_queue_and_collections.py",
+    "sha256": "a7c2ec21a5dd79ec0ef35ddf977385cddda7f06a3bc1b4cdae1461afb4a66333"
+  },
+  {
+    "path": "migrations/versions/6c8e4f12b903_expand_drrm_module.py",
+    "sha256": "777984e7f893f22428ec5acd84f048effbd828c426726d268c2c0aed517f8f76"
+  },
+  {
+    "path": "migrations/versions/7d1f5a29c804_expand_audit_log_metadata.py",
+    "sha256": "b91376c8e1ef26c6c248812110fc96c1c91d8599cc1e73180ff8a4f708647402"
+  },
+  {
+    "path": "migrations/versions/8e2c6b40d915_add_privacy_consent.py",
+    "sha256": "efe3221eb3775cc0524c1058db7def82b3067a1001a601fab5ff23221d6cb3e3"
+  },
+  {
+    "path": "migrations/versions/8f8973bcaa72_add_authentication_lifecycle_and_.py",
+    "sha256": "c9df4457eb37bd532003975485107548820b9d672214787bd1056db407264601"
+  },
+  {
+    "path": "migrations/versions/a7c20d9e6410_integrity_uploads_queue.py",
+    "sha256": "fa4e3a852fa1f17a6a24363755323908b834face85f2bbd2dc991f972b692f1e"
+  },
+  {
+    "path": "migrations/versions/ab91f2d7c640_add_first_login_password_change.py",
+    "sha256": "e8b75afd0df0c8a0c06eedacb45bb7263f844d5f0154d60b2955a4c3629b7c46"
+  },
+  {
+    "path": "migrations/versions/b8d31f04c720_extended_registration.py",
+    "sha256": "47795dbef3b0c14a88cf50aebc88cb232c6522a6007f3e93e7857c841d00e0a6"
+  },
+  {
+    "path": "migrations/versions/bd279d5aa301_add_qr_document_verification_metadata.py",
+    "sha256": "da67253ead04ee522e189bded09a62a4f8442729c5c454d0b6f15386eb4471a1"
+  },
+  {
+    "path": "migrations/versions/c31a8f7e2b11_add_resident_official_messaging.py",
+    "sha256": "bb95e19dbba1a726e348de03ea10698de118f81af3ba5ce3f5f2e86d0862b03c"
+  },
+  {
+    "path": "migrations/versions/c9e42a15d831_official_templates.py",
+    "sha256": "75093d81e6a46e5992ce02202efcb1b0a55551ebed55d6e83337d457ff3459a3"
+  },
+  {
+    "path": "migrations/versions/d4e9a1c73b58_add_email_verification.py",
+    "sha256": "69a7642969b93d4afb4659e8186cd6697ff66a17fc71cbfd942b6db1ba2478b1"
+  },
+  {
+    "path": "migrations/versions/d7a91e8b420c_attendance_incidents.py",
+    "sha256": "8a6f017b09f07a394858893e15df74b11ddf9ed8ce73220c19d16239ba904a73"
+  },
+  {
+    "path": "migrations/versions/e5a2c9f13b07_add_blotter_case_coordinates.py",
+    "sha256": "61d2413454dc26c61f023c5bee7a1c661ea409c73d890ecb3af95cfc727ac8a4"
+  },
+  {
+    "path": "migrations/versions/f6b4d8e9c914_add_terms_accepted_at.py",
+    "sha256": "6d7fdd6f55d805c92b4d50f3cc78e3439456e0bf66bf436f9ec52652cc74add0"
+  },
+  {
+    "path": "hardware/arduino_rfid/arduino_rfid.ino",
+    "sha256": "1f216c6f1cfdb90b0d01d4c9a1e86f98ef35ae6735d546228e65cdc0136b27a8"
+  },
+  {
+    "path": "app/admin/management.py",
+    "sha256": "8135b7a63da4b1bb1f2cbf98677eee7e1880d37b358fc20828a8429d0b8d8496"
+  },
+  {
+    "path": "app/admin/__init__.py",
+    "sha256": "074f9e91a6f6bbbdc40afd3907d26df01506279983f90c71e0aa444697f8956c"
+  },
+  {
+    "path": "app/attendance/routes.py",
+    "sha256": "cdbbdb8c560b3269ffa107b4760059789228b3e61569a02d7603a0deacb0be53"
+  },
+  {
+    "path": "app/attendance/service.py",
+    "sha256": "cc31103d0194f6fee9f4d851339a7810b2d03434ef050f463e6ca9676f93094d"
+  },
+  {
+    "path": "app/attendance/__init__.py",
+    "sha256": "0c96283967ebc2503644d8a78a21044f937e32afa7ae45c44233f0bcff81ba05"
+  },
+  {
+    "path": "app/auth/decorators.py",
+    "sha256": "91b82e90ce507cb9c90a4e4447547c506410f785781424c88ea29e8af5dba3b7"
+  },
+  {
+    "path": "app/auth/routes.py",
+    "sha256": "03e315ba742b6995e01ee2107f3ac10fb1ccb73aaa466bbaadcbccc75d39a271"
+  },
+  {
+    "path": "app/auth/session.py",
+    "sha256": "8439b1edea61fcf8b3499f0fbf690709622dd9209a57573ee51669a1fee4ebe1"
+  },
+  {
+    "path": "app/auth/__init__.py",
+    "sha256": "af02bc06818779ee8f0820f3960fd254728eff694cf2127b270c60f3f88eabdf"
+  },
+  {
+    "path": "app/blotter/submissions.py",
+    "sha256": "66d85256191a2239590f6106168b5e260bf095fbb4db5a663bafb68a8e727947"
+  },
+  {
+    "path": "app/blotter/workflow.py",
+    "sha256": "9dd46356aa20079ed55a09b130241e954c0d1a36b2071ea7630687704243a4d0"
+  },
+  {
+    "path": "app/blotter/__init__.py",
+    "sha256": "573946c39887c0ce56c6e452eea5d2cd5f915613a526c31b47be4ce026d47ef9"
+  },
+  {
+    "path": "app/documents/engine.py",
+    "sha256": "2f83d3a128e7fdb7d2c760dcafd5a6da2a897a625c2785c49b916df7681cb72e"
+  },
+  {
+    "path": "app/documents/routes.py",
+    "sha256": "faeb95c315637fe46fc94d0841a6e89779a8ffa1a1e04a0fb0bcd7d0b787142a"
+  },
+  {
+    "path": "app/documents/verification.py",
+    "sha256": "e70af800c628324641d703f7ef7534b80cefa918a08e1d501d69a00b7a43e318"
+  },
+  {
+    "path": "app/documents/workflow.py",
+    "sha256": "78078ce63cc07d7585699ed74d93c60a5ad408917034ece3eb51d7b6c53fb3cc"
+  },
+  {
+    "path": "app/documents/__init__.py",
+    "sha256": "ee761f96135303010d3a9764e3055a09710d4eab59ca61113cfc3a7b000210a0"
+  },
+  {
+    "path": "app/forms/admin.py",
+    "sha256": "0c2d3b8a0b99308c3f39f2424c7c5fcaf7ad62bd799435387f6c4d145a5eb115"
+  },
+  {
+    "path": "app/forms/auth.py",
+    "sha256": "cf018aa28456b57f55388af9c70b387ba5046275f207484d1a68b8fd671edea8"
+  },
+  {
+    "path": "app/forms/common.py",
+    "sha256": "06bb1262e56573fef02cb8a61d6eec2d59ba3e20b09f0a2fcef2e63a510b641c"
+  },
+  {
+    "path": "app/forms/official.py",
+    "sha256": "bfd670022cd11ebfb81a237f0b867fab823ff94c5e12f00be8b7228322206f02"
+  },
+  {
+    "path": "app/forms/resident.py",
+    "sha256": "bc8fdaf6d59899c4ce6303b3f9cd4a7416d88459deb5d0bb2f5eb6dda58ce6bb"
+  },
+  {
+    "path": "app/forms/__init__.py",
+    "sha256": "21c008328d018d87d2449def210d5a0071b84b58dd53cbbbf035b56ad2e70cb3"
+  },
+  {
+    "path": "app/incidents/pila_contacts.py",
+    "sha256": "50c0cd130b341ca91be52b3e32677ada5defff397e5ef5fcf688388b2b736e74"
+  },
+  {
+    "path": "app/incidents/resident_workspace.py",
+    "sha256": "0f80b4aca2bc911b1361065176b7888c0a0cfcaa285803a2a1460be39b545023"
+  },
+  {
+    "path": "app/incidents/routes.py",
+    "sha256": "944f262faa916c67417e3c243e1e0ccd2ab65888761846cd0c27c59cb93a6e0d"
+  },
+  {
+    "path": "app/incidents/service.py",
+    "sha256": "d1c79eb15d24e8ffc75a8656e93779b1763aeb8a28ce3581d33cae2342ca90df"
+  },
+  {
+    "path": "app/incidents/__init__.py",
+    "sha256": "50139eb4e81ef5ac4435a885420cbde5dba81673d3029853605d398b9a7c18ac"
+  },
+  {
+    "path": "app/main/routes.py",
+    "sha256": "d9583bd6dd115f5a42580bce4746539299111a70c59071652bfac40f5a806837"
+  },
+  {
+    "path": "app/main/__init__.py",
+    "sha256": "5ed42a0baebcbfc55cc322d7fe3d38e42b49dcbd49c5d7bdcf492e50906f0f15"
+  },
+  {
+    "path": "app/models/attendance.py",
+    "sha256": "4b530fabce4b82046ffdc9be8200901eb573f08e2657226af5e0072106739a04"
+  },
+  {
+    "path": "app/models/auth.py",
+    "sha256": "e2f68d2dd7725391b176b4077b4a70802648205a1a5df70dea2643beec3c9bd7"
+  },
+  {
+    "path": "app/models/base.py",
+    "sha256": "c913b53749fe6e941a97bc7b9808019cdb75b9e2bc785e5c7919382e923cdad7"
+  },
+  {
+    "path": "app/models/disaster.py",
+    "sha256": "e4d6c3ea6ac9c3ebb5b2aff40aab8bb10ae016e4fbc77bb70a5c9a5c743ce8b0"
+  },
+  {
+    "path": "app/models/governance.py",
+    "sha256": "ffbca1c8ef3424de88bdff18a6b4552e969d767d0c95bd69a3f846a922f98587"
+  },
+  {
+    "path": "app/models/incidents.py",
+    "sha256": "a6d90bf39e559091afc1c496830c4d2dc51e13d7e7474d2e7226d9d09a568599"
+  },
+  {
+    "path": "app/models/messaging.py",
+    "sha256": "6b5426f8bbdc8066dd67076342f5f73eac053559cafc90579939f0ad620518f4"
+  },
+  {
+    "path": "app/models/people.py",
+    "sha256": "61c8a47d2eab59a7b5eccab47dddce8364a24f1e4400ee09a404a1cbbe2a04a5"
+  },
+  {
+    "path": "app/models/phase12.py",
+    "sha256": "b3d51b2743f6a7e208f67e2746a4230e2f0274f2be0cddb7274250d75d8d3881"
+  },
+  {
+    "path": "app/models/phase9.py",
+    "sha256": "eef1dfa8987d5d95e49449cff21189652aec10fc6c520116c05638fa48d684bc"
+  },
+  {
+    "path": "app/models/services.py",
+    "sha256": "9a8e55ce394ad1d79672dd584b4c3640a7345212f8e7c1c10419fb0938abcad8"
+  },
+  {
+    "path": "app/models/system.py",
+    "sha256": "f652bc89efaddded8398fcaf910d20a007d346f3162b6bb925a953174f5a50ba"
+  },
+  {
+    "path": "app/models/__init__.py",
+    "sha256": "727c07f2e7daf87720e522b802b3407fcf673eab33c821662008d0d1ff64ff4b"
+  },
+  {
+    "path": "app/official/walk_in.py",
+    "sha256": "775ff406566d4e73840db487eaf66cdde773b0aaebbefd0f67502017a5f1d525"
+  },
+  {
+    "path": "app/official/__init__.py",
+    "sha256": "f60cc60137a5a3b1f3f27e52c3ac6cf3d123568e180844a454fdca83fe2b9623"
+  },
+  {
+    "path": "app/resident/__init__.py",
+    "sha256": "052a922cba131137f12a41eb42ec1debcb07e40a3fa812d3feb2eccf518570fa"
+  },
+  {
+    "path": "app/templates/base.html",
+    "sha256": "8b8084c0b7958df0b84cb11edfa526cdd277d05ddd3dc6a8b44293a652fc0579"
+  },
+  {
+    "path": "app/templates/help.html",
+    "sha256": "c02822bac4eed6a0cf6a191defa56aeda1d6984ee17c254a1bf8a8ba21e5ba50"
+  },
+  {
+    "path": "app/templates/index.html",
+    "sha256": "e0fa9dcc23905be423ea83695a47fa75118c4904b5cfafbd43bda295d03791b7"
+  },
+  {
+    "path": "app/templates/privacy.html",
+    "sha256": "d354b3da6ecdeaef31abbd53b638295387a7a72c2b9f6d1862fb058a896bb526"
+  },
+  {
+    "path": "app/templates/profile_image.html",
+    "sha256": "f29ba37f4b1c0b2edbb0e1bb4fb5e4fe5d05249c0f3cea0e2bb9a447a77ff542"
+  },
+  {
+    "path": "app/templates/profile_management.html",
+    "sha256": "e031b577127ea33b20c7df63336bb9f094dc057def547d9e990094d77f70a0ad"
+  },
+  {
+    "path": "app/templates/search.html",
+    "sha256": "b7cc34eb2f62adff95ba7f429637c469a56acef9c905ebb5d91a248ec64a044d"
+  },
+  {
+    "path": "app/templates/verify.html",
+    "sha256": "ea7a26956de56291985c0b15d4a59262047efc1b6877a223b0c52925916ea3b3"
+  },
+  {
+    "path": "app/templates/verify_search.html",
+    "sha256": "83c47e54aa74efca76edf9502c85af96f5c7a050945099f95a05f6ffe93dcb85"
+  },
+  {
+    "path": "app/templates/admin/analytics.html",
+    "sha256": "f3442a3714fc47002dc56232cd5e5227ebe6f976748fc10999a7459c4849a474"
+  },
+  {
+    "path": "app/templates/admin/audit_logs.html",
+    "sha256": "7c1efd00bf798689e7fcb42dd45a541952e670378cf0954ca03de8b66882a921"
+  },
+  {
+    "path": "app/templates/admin/blotter_map.html",
+    "sha256": "1cd7a4c348ea839cbb27d71d91f6d9302f1dbadb1cf0a78906cd8727d18c05a3"
+  },
+  {
+    "path": "app/templates/admin/document_types.html",
+    "sha256": "1fa5bb98b1a13cbf0ca385d65cae0216af7b1f79eed94caf4e284d1d00f17de5"
+  },
+  {
+    "path": "app/templates/admin/fees.html",
+    "sha256": "6fd060ba401da7d6ba7402a1288f9dac7e7602cce765ca5c2eba07cd9c1df01d"
+  },
+  {
+    "path": "app/templates/admin/manage_edit.html",
+    "sha256": "f3d35d9009983f5d89600731c035da82340360024e46f1ec6d1d7633774921ad"
+  },
+  {
+    "path": "app/templates/admin/official_accounts.html",
+    "sha256": "165a738fd07bea6a51c96117d893462ef80844171eac1bcfeb0b5e380869aaa0"
+  },
+  {
+    "path": "app/templates/admin/permissions.html",
+    "sha256": "d54197ad598c764649eaa21eaa7fdd4b892a39a6dd0a66830506981cc4fa3376"
+  },
+  {
+    "path": "app/templates/admin/puroks.html",
+    "sha256": "425b741e0da1dbb4d41261b0de5b10e36b29d48d57ef1d7c6c1ed4bcf419ea0a"
+  },
+  {
+    "path": "app/templates/admin/purok_edit.html",
+    "sha256": "017050d00f96a620c13d34fcce2a2edc419577a3f6f872035e741468695fd85a"
+  },
+  {
+    "path": "app/templates/admin/reports.html",
+    "sha256": "50290497becdd9c38996161525b596e90023e1bf851fffc737db5c3d4d749155"
+  },
+  {
+    "path": "app/templates/admin/roles.html",
+    "sha256": "b0ebfa3338ee6551a5bb1147b8e6db9099552dc353c6a42996dfe0c76502900f"
+  },
+  {
+    "path": "app/templates/admin/role_access.html",
+    "sha256": "501b925d4d5d88a5e5c4351b020bf3627d9fd42e763ae4bc91f65afbbeaa28e0"
+  },
+  {
+    "path": "app/templates/admin/settings.html",
+    "sha256": "c16a59382515ec8944a49e9e16c469f8b5f521355cf5a650b8bce903b3579e5f"
+  },
+  {
+    "path": "app/templates/admin/users.html",
+    "sha256": "b22b5eae16f64947518c1da536cd8a6d8decb7d1b7774a57ce7239812fa5f90c"
+  },
+  {
+    "path": "app/templates/admin/_admin_base.html",
+    "sha256": "2619d215eeea098e262b66b111075a1e6f9b45d8e049398148a9575abda08805"
+  },
+  {
+    "path": "app/templates/areas/admin_dashboard.html",
+    "sha256": "fbf81d483ef70213fd949687147d6f0181317939f11a9158b977de959e490fcb"
+  },
+  {
+    "path": "app/templates/areas/official_dashboard.html",
+    "sha256": "45d9f0e5d504a452c4721a95ed501930242d81514d735ae4268c262663e23e0d"
+  },
+  {
+    "path": "app/templates/areas/resident_dashboard.html",
+    "sha256": "b3ed618b1f3b2a816d00db1d6d7a77ea3a3cfcc113331a1ce449251aa3bfab2b"
+  },
+  {
+    "path": "app/templates/areas/resident_profile.html",
+    "sha256": "4d04356fd09215ca85cc5caf11aa7e0572d5e36f51eced688493c7e9a8f30bb2"
+  },
+  {
+    "path": "app/templates/areas/resident_requests.html",
+    "sha256": "eefb5b496554fecdaf2a53c15ee47a563dc8ecedc715cde01fc378c0154ff6c8"
+  },
+  {
+    "path": "app/templates/attendance/dashboard.html",
+    "sha256": "af3c3a4b2c83fb63d0f4088f15b348083e748701308f0ec3e85fc52a1b1b8fe6"
+  },
+  {
+    "path": "app/templates/attendance/devices.html",
+    "sha256": "9660ce459ed75d0a5fde032e7381523580816690b57672610647c8b7b5cacd3f"
+  },
+  {
+    "path": "app/templates/attendance/personnel.html",
+    "sha256": "2e81797cd59f06e8c35012772d7ddf46a0da1cdf731ffe3b537f8c614eaa015e"
+  },
+  {
+    "path": "app/templates/attendance/personnel_detail.html",
+    "sha256": "a17265d6dab9549ae20b9efe149df09b6852e3228fe93627bed3cf22177fdf9b"
+  },
+  {
+    "path": "app/templates/attendance/reports.html",
+    "sha256": "76bb781a1bec63efd3cbde202e2704dd010e9ea2c397ded55cc7c35fbd56834e"
+  },
+  {
+    "path": "app/templates/attendance/_base.html",
+    "sha256": "eee44b190ad4076869f750700342e4d81ffc12f3d2e413cf7e7b6963dbce1be2"
+  },
+  {
+    "path": "app/templates/attendance/_nav.html",
+    "sha256": "5b5250f1becd4f1b8864e374b58a0e1e73bcc95564fbaad5d23a78aa892531d6"
+  },
+  {
+    "path": "app/templates/auth/activation_created.html",
+    "sha256": "2f166558296c20bda8aadf77b3426bf50c19ebd9de20baf674c5e8af515cf7ef"
+  },
+  {
+    "path": "app/templates/auth/change_password.html",
+    "sha256": "e8f82d8f03f65e9ac397bb52c4a946e7b5ab544b6e472b9fb12e4661b6d189e6"
+  },
+  {
+    "path": "app/templates/auth/email_verified.html",
+    "sha256": "056e118fb2f90e0c7368a566661e41438a802e0a8afcc5295123281cf1f5a99b"
+  },
+  {
+    "path": "app/templates/auth/enter_activation_code.html",
+    "sha256": "ec72619c776a720b3b13d513fa3014e562a17cf761d9b8ddb384866235f23cc6"
+  },
+  {
+    "path": "app/templates/auth/forgot_password.html",
+    "sha256": "509541c128982d9a2d8d720c2e63b9a80cbd58821e5d97e0846db98c2c4cf817"
+  },
+  {
+    "path": "app/templates/auth/login.html",
+    "sha256": "d5c5d2e9043bced9b76cb40b841d62a2b4e3ed8f9978980b5a7ccba4605eace3"
+  },
+  {
+    "path": "app/templates/auth/register.html",
+    "sha256": "9dc2ffcba795b982d1f434ceb1d282607243d69e5778dc6d3f2ff078b96ca2f6"
+  },
+  {
+    "path": "app/templates/auth/reset_password.html",
+    "sha256": "09c20a36c13824fb0f5ddf0d72051d6030563bb09ebc6ea6ec89357ecb4287ad"
+  },
+  {
+    "path": "app/templates/auth/terms_and_conditions.html",
+    "sha256": "d0f3c7b7091ffb5589cc4217672f117f5bbd70318ea09cb8b69d26466b60eabc"
+  },
+  {
+    "path": "app/templates/components/icons.html",
+    "sha256": "177019b105c26f047c313cfee11155750051edf20908b61fdc1cb7ef6c2726aa"
+  },
+  {
+    "path": "app/templates/components/openstreetmap_cases_view.html",
+    "sha256": "11b49bffc059f39b33b937eada913954003401358f622f3125a230446104f28d"
+  },
+  {
+    "path": "app/templates/components/openstreetmap_incident.html",
+    "sha256": "2ebaecbcb0a7b5bb4179c8ae5121f3cdf1bbe2e2d56ceb49a958259a9fea5a62"
+  },
+  {
+    "path": "app/templates/documents/correction.html",
+    "sha256": "d6094bc1e672922a9024e2f17fd75f402f9c21b757701ff5089b9889f897002b"
+  },
+  {
+    "path": "app/templates/documents/preview.html",
+    "sha256": "d34a0fb6b4126efe0d66d2c1922ee4c2b5efc40bce25abcd83d951409c2c0cd2"
+  },
+  {
+    "path": "app/templates/documents/settings.html",
+    "sha256": "7081ab5b27be6761e44092b2869faa78f61e474f72f5a789f995de659f5fa413"
+  },
+  {
+    "path": "app/templates/errors/403.html",
+    "sha256": "d2728c13bb13204a862cc496411585fa75e68589e1bdedc282ed5f37194255f0"
+  },
+  {
+    "path": "app/templates/errors/404.html",
+    "sha256": "321a17a47d7fd1d74cdaef1cda07b3811474012ef217013d9528262e97a4af9a"
+  },
+  {
+    "path": "app/templates/errors/429.html",
+    "sha256": "dc0592de9e275dc97339ab9c860c40ebb34bfdd62dcd0cb9888aac0c58c2030a"
+  },
+  {
+    "path": "app/templates/errors/500.html",
+    "sha256": "4915963f8a6826f9fae22eeb0602ad67f59489cc767a16aa4fe4f3ed86ac160d"
+  },
+  {
+    "path": "app/templates/errors/request.html",
+    "sha256": "3aedf00938b9993fffdab0d8bdd49f0db3498e214ecd79e35323f68c4dd0620c"
+  },
+  {
+    "path": "app/templates/incidents/dashboard.html",
+    "sha256": "60d157455dc11d71af94e53e57e610a0199fe363ca9b3279b5e8e8de1466ac3d"
+  },
+  {
+    "path": "app/templates/incidents/detail.html",
+    "sha256": "c97f4950b0bc70fde2760869775a78aac1169e128455822246658869ffa471e2"
+  },
+  {
+    "path": "app/templates/incidents/directory.html",
+    "sha256": "1d643688cfa35cd25b8a1e6f724a79bfc9a9003bc9f93105c1162acc9cc255ec"
+  },
+  {
+    "path": "app/templates/incidents/referral_print.html",
+    "sha256": "9380f25f2fcc16a93abdba93e278265adba0a1a3fa9211733bcdaefc447d8bbf"
+  },
+  {
+    "path": "app/templates/incidents/reports.html",
+    "sha256": "98e078255fb7eec1198f9d50e451666296c3799c14dd6fa09b7d6e15da16615f"
+  },
+  {
+    "path": "app/templates/incidents/rules.html",
+    "sha256": "3a8cb976918a50ccff48c234f1eeb518f5259c7314a93d4d6d4389b9176bad39"
+  },
+  {
+    "path": "app/templates/incidents/submit.html",
+    "sha256": "169fac2a8b7d696f35005673b91775401f183dd4f9992169a010c4c8996fb39f"
+  },
+  {
+    "path": "app/templates/incidents/workspace.html",
+    "sha256": "9cfa538dee79cf8e4937615d805c43e832f7e4787f281c9f21ad57b1810da00c"
+  },
+  {
+    "path": "app/templates/incidents/_base.html",
+    "sha256": "f8245aa725ad52668fb08ff8222b7f2cb36ca96a3ead1ef98582f67e6f1d9e58"
+  },
+  {
+    "path": "app/templates/incidents/_nav.html",
+    "sha256": "e48812f99b0a3a759b9ebebbf5e3bcdca0f858bce27bacc62b11eca5bec703ec"
+  },
+  {
+    "path": "app/templates/layouts/auth_base.html",
+    "sha256": "4aa4b5afd4ce2efe6674a932317a744779d1391b3dc29363172f726b699ee051"
+  },
+  {
+    "path": "app/templates/macros/form_fields.html",
+    "sha256": "854ff0c81c04949e3939e79ffe0bfcb8113c98811612c7878cb78c95783ac036"
+  },
+  {
+    "path": "app/templates/official/account_approvals.html",
+    "sha256": "bbf9f85608bd99f08ec732e70e01546a301d48251ad6a3cf930aeedac0358c79"
+  },
+  {
+    "path": "app/templates/official/blotter_cases.html",
+    "sha256": "2552d249ecdb4bf2b074f87580fad6e21d66d06ffdd913ddcc70be4caf279e46"
+  },
+  {
+    "path": "app/templates/official/blotter_detail.html",
+    "sha256": "f8a68afff98a69c627553f952e84e6de5d77abb7f0e61f57c61af4f5d4138cf0"
+  },
+  {
+    "path": "app/templates/official/blotter_map.html",
+    "sha256": "5f36f31e698372be870037ce6e27a888a0c43e19710b53dc8d96c0af70c92783"
+  },
+  {
+    "path": "app/templates/official/blotter_statistics.html",
+    "sha256": "1f1a72aac80e6a712d7c33c4ccc4bb23cf373d90b70e5a59799b097cd7c0d358"
+  },
+  {
+    "path": "app/templates/official/businesses.html",
+    "sha256": "6d382427515451715f675a4dd1ef3a205110c20e639959b7149f74dfa2f1306a"
+  },
+  {
+    "path": "app/templates/official/business_form.html",
+    "sha256": "265cf50a3573485cef6112b534123c13959e10ed16b995b913c73d4a4d9f9093"
+  },
+  {
+    "path": "app/templates/official/business_requests.html",
+    "sha256": "84b0a636c68454e399f401ae46bad5d5f1a28aef86a442a5ae235e8d04c06e49"
+  },
+  {
+    "path": "app/templates/official/collections.html",
+    "sha256": "b3634e0826620bd42d2c8c159191f8eba67952c2bb93e2c5483ad70d522e9389"
+  },
+  {
+    "path": "app/templates/official/correction_requests.html",
+    "sha256": "c759f299af42007935341bd48480b86e97aa752c7aa5bf1e5411a2dfe8b97436"
+  },
+  {
+    "path": "app/templates/official/document_requests.html",
+    "sha256": "70b20c1f739911e7c00ef8fed89e5ce457607614c84ba86ab617553b593978dc"
+  },
+  {
+    "path": "app/templates/official/document_request_detail.html",
+    "sha256": "9af4e64f7e8966ba7f8b21521d4199e68755afb80ee88a8381255901ee6990ec"
+  },
+  {
+    "path": "app/templates/official/document_walk_in.html",
+    "sha256": "a4c79ab4b50855c2d66201cc2f700c19a041637788d211484c13330f7fa55548"
+  },
+  {
+    "path": "app/templates/official/drrm.html",
+    "sha256": "1e7605cc005c2515af2bcc45d0d999b509259b494b44d4ae0505c6f66908b957"
+  },
+  {
+    "path": "app/templates/official/households.html",
+    "sha256": "9772dd27eff546dfacedd07c772660f5fc5301c93fd5e23ad2f5a67dfa2e25f7"
+  },
+  {
+    "path": "app/templates/official/household_members.html",
+    "sha256": "480e6770fc7756babec1d21120ee9a9b9e374f90dad260da250f400fe56ce117"
+  },
+  {
+    "path": "app/templates/official/messages.html",
+    "sha256": "e46ffaa50dde460490e61a8479ea794415aacf5b8fc53a807f78e0cc1c3a7f40"
+  },
+  {
+    "path": "app/templates/official/puroks.html",
+    "sha256": "6717b80516bdf48c03037d3e3a8874918ac1f451fe79299ede2608f7ee75c349"
+  },
+  {
+    "path": "app/templates/official/queue.html",
+    "sha256": "60ae5b94cbf06bbf5b17f1a7b3292f937b046e5c484e9e4ecf8b6477ab8e202b"
+  },
+  {
+    "path": "app/templates/official/reports.html",
+    "sha256": "17dd1af8c7b334e98e8ceff2076e035d0359e094a06143f5f4b60dea66c7f9e9"
+  },
+  {
+    "path": "app/templates/official/residents.html",
+    "sha256": "762dd458b916c7d4c08d0305005df40e7537aa948f00fcc720d088d8b21c8620"
+  },
+  {
+    "path": "app/templates/official/resident_detail.html",
+    "sha256": "3c9a4c46c260050f3e3fe2763f0e3dbf562b0f26bd9985031bb05654052ff3c3"
+  },
+  {
+    "path": "app/templates/official/resident_form.html",
+    "sha256": "297a80ad9c1216115a5841a4f2814593c51a23a44b81ad45cf8c7b5e5e5848fc"
+  },
+  {
+    "path": "app/templates/official/welfare.html",
+    "sha256": "bdf6e398d3b5c884c251f678870a07787a4ddf5d36fd60c14ebd3bfe00868346"
+  },
+  {
+    "path": "app/templates/official/welfare_form.html",
+    "sha256": "aa57de0bc7c1211964ddf0d95121d32768969e49b4a629ee41373ea7567c56a3"
+  },
+  {
+    "path": "app/templates/official/_official_base.html",
+    "sha256": "a575be768618478d672c14305a2910b3e2a61872a16f4f33c327ea8609867490"
+  },
+  {
+    "path": "app/templates/partials/_macros.html",
+    "sha256": "95e9656f74314387198ba6227bcae2f8042f61fd31c0c65c61a7b23517d80b06"
+  },
+  {
+    "path": "app/templates/partials/_pagination.html",
+    "sha256": "fe15dc6c9db892746074a8b5a1f4896a4ae4df401eb66a5941b8b4b7320036d0"
+  },
+  {
+    "path": "app/templates/partials/_registration_details.html",
+    "sha256": "de7f50ddd5d18579b75b61404b7ff24ff9b636cf54b21620f880ba13e3d4e113"
+  },
+  {
+    "path": "app/templates/partials/_site_info.html",
+    "sha256": "4a35e0804810f7eb42f24e9a273812a5956f8ca510de4b132ecbbdfe2756ee01"
+  },
+  {
+    "path": "app/templates/resident/blotter_cases.html",
+    "sha256": "4ccc28a6fa42d7e84f720ef848c62b05b7f6b98d1065c311a2d391e5343a0528"
+  },
+  {
+    "path": "app/templates/resident/blotter_detail.html",
+    "sha256": "9eebbb52ee963dff801550d041b39c6d9a9ee020c252119097ff16c0245c471f"
+  },
+  {
+    "path": "app/templates/resident/blotter_form.html",
+    "sha256": "fbeca1703381e19b3bfd8b71ac59e61b2de207a10d5b652296495bb497be5a0a"
+  },
+  {
+    "path": "app/templates/resident/correction_requests.html",
+    "sha256": "87f049c13c6e3ebad0b9fa18accd5fb49b628e172bc401e1bff0e35f34d737a0"
+  },
+  {
+    "path": "app/templates/resident/documents.html",
+    "sha256": "b317c82b5d542c53e269b97195bb5b8e96449091215a1dd4a77eb9caad21ae48"
+  },
+  {
+    "path": "app/templates/resident/document_request_detail.html",
+    "sha256": "8c894635c405c9651eca68de4ef9f270ce4e59e5e45b97bb5d8c4723a379833f"
+  },
+  {
+    "path": "app/templates/resident/document_request_form.html",
+    "sha256": "ae1d03104b891427fbceaffa8923764a19a23f67695d165adb97dfa206ff0a99"
+  },
+  {
+    "path": "app/templates/resident/emergency_alerts.html",
+    "sha256": "eac1d4bc3ade86c58c05638d4c6caf160848dba9389d2bcc1a670b33268877d4"
+  },
+  {
+    "path": "app/templates/resident/household.html",
+    "sha256": "4535a3c4af72f3d75d2699d648f0968dec3bcdd66fd213459decb98e558270ad"
+  },
+  {
+    "path": "app/templates/resident/notifications.html",
+    "sha256": "ccda4eaff29a17afb51c3efa2929de332a8e22526fdc44d0db9184944bdc6e0c"
+  },
+  {
+    "path": "app/templates/resident/queue.html",
+    "sha256": "f08de5aa4b143f00260f87c173040729f67c1f57f6e80f4106f9144805cd56b6"
+  },
+  {
+    "path": "app/templates/resident/queue_form.html",
+    "sha256": "8b05ed5a4caf4d03ad70969ba23fe2d5882af29d72b69e49ec80ca98ba2ffcea"
+  },
+  {
+    "path": "app/templates/resident/_portal_base.html",
+    "sha256": "4a6eba6631c9e408d423865e7d8e6a4c5fc64d74119937121259e2c98f3a1ad4"
+  },
+  {
+    "path": "app/templates/partials/admin/_header.html",
+    "sha256": "9136813c6b4987b5a01d3664906a8f9ffaf5fb19e3550817752a227dbc300dcb"
+  },
+  {
+    "path": "app/templates/partials/admin/_official_account_form.html",
+    "sha256": "a728f360a16dcd0db08fa9354b1b6592e111a5a89a248a858f63c755918cb445"
+  },
+  {
+    "path": "app/templates/partials/admin/_sidebar.html",
+    "sha256": "2b475f4d1dbd6805a8e2810657aaefc447bd0bdb35ae167a0a2976e1e426f9cc"
+  },
+  {
+    "path": "app/templates/partials/auth/_footer.html",
+    "sha256": "44262f8126a2e5cfba33e445446759583638b116a8dc41804f5412f9fa714d0f"
+  },
+  {
+    "path": "app/templates/partials/auth/_footer_landing.html",
+    "sha256": "c50cb8af1385d8cf1d580f25ec4d87a312a0d2d6f6faff3c20b847e2c6d378df"
+  },
+  {
+    "path": "app/templates/partials/auth/_hero_compact.html",
+    "sha256": "63cb6aedc47cdddfc6fa3aa92ccbda4ec78fe954c2bd115e45f1b513b7ee9774"
+  },
+  {
+    "path": "app/templates/partials/auth/_hero_landing.html",
+    "sha256": "565aece2e58dfe6156e87ce9e22fc7ef74da622f7c7a01853450c60e4619ccc4"
+  },
+  {
+    "path": "app/templates/partials/auth/_hero_wizard.html",
+    "sha256": "bac2a3909d67404ae27bc4ba9af594d43d78ead98b1a0c67189949a3d1485aa4"
+  },
+  {
+    "path": "app/templates/partials/auth/_privacy_modal.html",
+    "sha256": "d35ba55f0b56473ff9ad14990d4f78a995ed48ae73c9afb0baa077ccc5599d1d"
+  },
+  {
+    "path": "app/templates/partials/auth/_ribbon.html",
+    "sha256": "ddd4257522f4eefc01f735f581bc3a646615da2dd4a0025bdb673adcaba6e457"
+  },
+  {
+    "path": "app/templates/partials/auth/_ribbon_landing.html",
+    "sha256": "12dc4f7084ff3eb8cc721986a6fea40e914de138dba14d6d28aea196b3dfc71b"
+  },
+  {
+    "path": "app/templates/partials/auth/_toast.html",
+    "sha256": "25ddf6ff112000d052a10c132824a870fdcaa8ffd9e541a3e2207f1ecd19fe1e"
+  },
+  {
+    "path": "app/templates/partials/messaging/_widget.html",
+    "sha256": "338db063ed0df74c9aa17807f948f05e7370bdbb54c4940dcbbf5ed7c869f16e"
+  },
+  {
+    "path": "app/templates/partials/official/_header.html",
+    "sha256": "069e87b091c6b7a6b30a39267b5734b00033a13bf6063b0b0d419338e6c0bf88"
+  },
+  {
+    "path": "app/templates/partials/official/_sidebar.html",
+    "sha256": "ef00f6b2636dacc4da21a93463ea2c68b7709b599ef480529c29f937b8b977e7"
+  },
+  {
+    "path": "app/templates/partials/portal/_announcement_carousel.html",
+    "sha256": "bf4f935df762359c8cd08839420d72a32ecbf49d8ce908f7390ed6713537cfa6"
+  },
+  {
+    "path": "app/templates/partials/portal/_calendar.html",
+    "sha256": "d7ee50e67343d1b8564bd025427eb32414426c7323ad5a0152e47f9e88d1ce4e"
+  },
+  {
+    "path": "app/templates/partials/portal/_footer.html",
+    "sha256": "d77483b55e7df307c744d3f4e5c758aa214d5539c2d7706c925f6dc6aa56454b"
+  },
+  {
+    "path": "app/templates/partials/portal/_header.html",
+    "sha256": "f01c90a8d2daaadaab7885396e55e7bac1d47698f177377d12fc1026e29797bc"
+  },
+  {
+    "path": "app/templates/partials/portal/_macros.html",
+    "sha256": "7c6fe49d304461dbfa603eeb316df93f8375ada1b9b225556f9930e57d80313d"
+  },
+  {
+    "path": "app/templates/partials/portal/_meta_bar.html",
+    "sha256": "4de8d03d140f0cfac0992520fd772d083852bdadf9c97abdcda884664e6056bb"
+  },
+  {
+    "path": "app/templates/partials/portal/_modals.html",
+    "sha256": "f5b14d938c9ac5d440cf65c9f07f2df05df53e2c0ead9b8abbd37e14105041b7"
+  },
+  {
+    "path": "app/templates/partials/portal/_notifications.html",
+    "sha256": "baa9fe7cce29c1938526644881cf90f31baabd09ef1389630fbf55d4e14763ae"
+  },
+  {
+    "path": "app/templates/partials/portal/_sidebar.html",
+    "sha256": "c41053a2e81e2ac945341857e4e6e43d577afe75649febef5f8d14c96b2b8e4e"
+  },
+  {
+    "path": "app/templates/partials/premium/_avatar.html",
+    "sha256": "c10e0fa5099507b0d17190cda0e3630ee01de0eee88c0fe87cc845ea17a3552a"
+  },
+  {
+    "path": "app/templates/partials/premium/_sidebar_footer.html",
+    "sha256": "29948778f3123de0a2b2438ff913f0f61b2f649ef361d1a912db3992c7bda3a0"
+  },
+  {
+    "path": "app/templates/partials/premium/_sidebar_identity.html",
+    "sha256": "f1fa00c4aa29d75f16a2cec2b55c24750b609016450f32759fd1c4ff0badc723"
+  },
+  {
+    "path": "app/templates/partials/premium/_toolbar.html",
+    "sha256": "9d5edae02f1365b1af2df7ad76fb3bdf04f91e6c4af343807977d27e3a6d42a1"
+  },
+  {
+    "path": "app/templates/documents/original/base.html",
+    "sha256": "ac66228c917edbd8b0f23174ae16e270c1128eff86096e6ab561da9932b4e7d5"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-BIZ-application.html",
+    "sha256": "5e9beaece2c52d97ada64ecc30cb04057f9c1c51553c9f0bffb798594a042691"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-BIZ-certificate.html",
+    "sha256": "8148b7cdaf03acbb06ecfcdcd3a49e60774b9c7ed0ed349b5fa74f27be136c20"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-CLR-application.html",
+    "sha256": "780f0658ad7a0b8303f46c9a52793e034f4bbc85973ad3cf5e7b0d89b663afb9"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-CLR-certificate.html",
+    "sha256": "a9893a24e88ff12cc1a350eccb46c3fe2a4429abb66d8f4376d6d2380733b747"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-FTJ-application.html",
+    "sha256": "a6e5ff581ad9228a619937428be9e92d5596ab1e4acfa618ad62068733b08f41"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-FTJ-certificate.html",
+    "sha256": "0aab92903345b937ee8ed5ef902e0b3f7c85357c051994c621127cd99c33fac7"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-GMC-application.html",
+    "sha256": "09e00a35180bb1db9dd30ffb5a0863139cb3c67dddfc0eb9238fe67ac7cf947a"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-GMC-certificate.html",
+    "sha256": "64f67b98bbdb3ce3e04da2b43e4a96dc822e09539aed1f0140bd9a29213f854b"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-IND-application.html",
+    "sha256": "fe18c3adb510222965e344c36a42f57134a800dad0b8d4524b17d09cc23b9dea"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-IND-certificate.html",
+    "sha256": "34a348453c81d0e6c0fd09ac0e7986f0c02b7b48ec19bd7ff21a32f0470738f1"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-RSD-application.html",
+    "sha256": "6e7d2ee5ab042f5007b52e16a8ee24cc58d6937e52e25e9d5e336646e6c9cee0"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-RSD-certificate.html",
+    "sha256": "05999fa9ae9ac1347fe0b42e81e0e665f3ffaf06a13c9d94ada488f75763fc75"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-SPE-application.html",
+    "sha256": "056a8c82793ca4f47702a1cf8ac7a38996cc33162321229370a4c2c78ea92fdc"
+  },
+  {
+    "path": "app/templates/documents/original/SCN-SPE-certificate.html",
+    "sha256": "2b5956b2377068df56b68fb2d034309c146089990f39a1a48596303abeee1a3a"
+  },
+  {
+    "path": "app/static/css/app.css",
+    "sha256": "f80f49f55fa4c7b091eda819b6390ae3344f5946fcd30737689985c5d587e436"
+  },
+  {
+    "path": "app/static/css/auth.css",
+    "sha256": "440bf080cfb52a2514572f7a66c6d404a46cf8d1a60f82f1d6dc743bc46097a9"
+  },
+  {
+    "path": "app/static/css/auth.src.css",
+    "sha256": "82bf028875bc403e71cc181d67dd02ca4b7c43eecfec304bafcd7e55fa1812ed"
+  },
+  {
+    "path": "app/static/css/blotter-form.css",
+    "sha256": "0c74164b631fd40759f61a03dce9a834ff10a894a7c29b9e7afa8bd86da15e24"
+  },
+  {
+    "path": "app/static/css/case-management.css",
+    "sha256": "83348232f94944e1f18c673423c61eac9c387cf81a2d3cfc9166351edec1d6a9"
+  },
+  {
+    "path": "app/static/css/change-password.css",
+    "sha256": "51aa2cf8ae4d58fd2581e8243aabc036c61e01f33c37b5f9a0ca9e62e358e582"
+  },
+  {
+    "path": "app/static/css/civic-palette.css",
+    "sha256": "98e717066bfe972afe8919fd19a1252ac7877cee25dff169863026a158d7d408"
+  },
+  {
+    "path": "app/static/css/civic-premium.css",
+    "sha256": "214e69f874e22e3364aee3455fc02880e8205fc34624c7f03c866456297358f6"
+  },
+  {
+    "path": "app/static/css/complaint-workspace.css",
+    "sha256": "0f9f88f82a5d285fbcd0e4eb0ba2a478ea92d7bfbb5c3560ab8aeaa80b9f6fa5"
+  },
+  {
+    "path": "app/static/css/document-requests.css",
+    "sha256": "fa81860bf40675526c080e970c0b86ef8d68fb870c0533117bbabe4ca61ea02d"
+  },
+  {
+    "path": "app/static/css/form-validation.css",
+    "sha256": "6f057fe6898dbd80aabc2e12b8bcfaa0b4f11fbf3e1a844972419a0e7603f90c"
+  },
+  {
+    "path": "app/static/css/messaging.css",
+    "sha256": "e6083faec43ae6f2f185c7ffda2d1a4d7fd19f951ad69386829674f1586634ad"
+  },
+  {
+    "path": "app/static/css/official-accounts.css",
+    "sha256": "81f551ccfb38cc7b758b8f7652ae9d8a6806093fc39a3816349cf7804915d520"
+  },
+  {
+    "path": "app/static/css/official-admin-green-theme.css",
+    "sha256": "2acce9e59fa0668dd41d91691f08b65a9c6ea795e960f7d31ca951fd4316939d"
+  },
+  {
+    "path": "app/static/css/official-blotter-detail.css",
+    "sha256": "73786b3272095886803214b26b1f6db2be8aacb5f1d3e16ab7e0537502af7b44"
+  },
+  {
+    "path": "app/static/css/official-blotter.css",
+    "sha256": "16b5c105f920a854de6d33dcbd20efdd78607eab20e381b9c86e314a61b3c2cd"
+  },
+  {
+    "path": "app/static/css/operations.css",
+    "sha256": "6e23305cfda177842459d810e371308401cc7f80062f87c907d7bc6c6036e8f2"
+  },
+  {
+    "path": "app/static/css/portal.css",
+    "sha256": "56605e970724daeb14dd3ce5b41b9bb4b45bfe3c5f34bdd6654cd98db1dd718d"
+  },
+  {
+    "path": "app/static/css/portal.src.css",
+    "sha256": "5028a10f0d39f5d5bb960e0e6dfbe8ea3aae59f623d6ec4b8030f38fce1daf0c"
+  },
+  {
+    "path": "app/static/css/profile-cards.css",
+    "sha256": "16f5d0a13849f10e4952357098a22a2bc3d30eb48fa8eb3a92d0a344275e9053"
+  },
+  {
+    "path": "app/static/css/public-green.css",
+    "sha256": "d1cb371d0e1e28b4cc6135d9886455bbfbe421bd6b24d5aabe027c548b665ec9"
+  },
+  {
+    "path": "app/static/css/registration.css",
+    "sha256": "ff01617d895dcd582f0a21f7a02a7fc2191b386da5f752f686e1be95b524d7d4"
+  },
+  {
+    "path": "app/static/css/resident-case-detail.css",
+    "sha256": "5d2f15b3cf516e8f50a53a5c52200225d22965514eef11b937f5dc8e8121d1b5"
+  },
+  {
+    "path": "app/static/css/resident-dashboard.css",
+    "sha256": "033aa05eb486d9730f7737ed4475e80a262e09bad1d7b608ad66773bba2551e0"
+  },
+  {
+    "path": "app/static/css/resident-sidebar.css",
+    "sha256": "66edf6ece525de8ad3d7571f1383e3541f048d1882b04377ab1753ec38a9a70a"
+  },
+  {
+    "path": "app/static/css/stitch-resident.css",
+    "sha256": "bd1b885f0f9840a3fe87ce31ce1e6e57be7ddd7fe25a10dde44c29861cc05302"
+  },
+  {
+    "path": "app/static/css/ui-enhancements.css",
+    "sha256": "a37015e7a7a372b4eaa2a2c8ed1bd9b13414d2d7024c2990156f07d7897c15ab"
+  },
+  {
+    "path": "app/static/css/ui-pagination.css",
+    "sha256": "09f680e03b4623fe9357096ab8975aaa52586e5d448aa0e3847aa5e229372fc9"
+  },
+  {
+    "path": "app/static/css/ui-polish.css",
+    "sha256": "82f93b09b0c2c0270852a7974ae8a5c3f169ed838a228998a748fbe0523d4bc6"
+  },
+  {
+    "path": "app/static/css/ui-system.css",
+    "sha256": "9ff6f2815fab42bd1af7d538a0873cc595460ebc75fe382444eb9ca4247e7c17"
+  },
+  {
+    "path": "app/static/css/workspace.css",
+    "sha256": "d2b339844cc66891b4f54af157673a507b2010414b13b0b7a20eba9b5ad27acd"
+  },
+  {
+    "path": "app/static/fonts/Inter-Bold.woff2",
+    "sha256": "aac638f7503cebb084ec494cf00f75f7d8260d50c2f4e7820bccabba09626a3a"
+  },
+  {
+    "path": "app/static/fonts/Inter-ExtraBold.woff2",
+    "sha256": "e4a6db93190ce6c09e9871496bc63a2b7a59838435e8ec23996afd9619bc3883"
+  },
+  {
+    "path": "app/static/fonts/Inter-Medium.woff2",
+    "sha256": "b0e7558f4710a1e255b93e3deefe3aebb19f3bb41c150f685a74d3b1a1c79e87"
+  },
+  {
+    "path": "app/static/fonts/Inter-Regular.woff2",
+    "sha256": "dd05e326cf8eac3b55acecf29c842ed73e6e6dd06491cf47f7e8800680ab3e33"
+  },
+  {
+    "path": "app/static/fonts/Inter-SemiBold.woff2",
+    "sha256": "62553d159189834af73c9a6264704be5b2bee9a08da66a14768d8e5c6ffd2cdb"
+  },
+  {
+    "path": "app/static/img/barangay-seal.png",
+    "sha256": "a21c7bf481f33832bece7014f5042dc88197fc47ac2261c9bd65757f4e73c3cf"
+  },
+  {
+    "path": "app/static/img/icons.svg",
+    "sha256": "227a8cba17aefe71b3cfc61ae5d8e14566dc54344f0c69a55bb805e36c61faa8"
+  },
+  {
+    "path": "app/static/js/attendance.js",
+    "sha256": "5c028ca4ef7ec72d47ffa217922cc72419e2e276e83c60b98e67703c15c5cc03"
+  },
+  {
+    "path": "app/static/js/auth-ui.js",
+    "sha256": "db14971ce9d1855f4585abba76b4d40ed83085a97dc86b8a493316072967e71d"
+  },
+  {
+    "path": "app/static/js/certificate-print.js",
+    "sha256": "a6577361e49ec7dab8048407ccf6d6756a5c6349d290e5771211eb032eca5690"
+  },
+  {
+    "path": "app/static/js/change-password.js",
+    "sha256": "4db8ed3bdfea4bad591240cd7f95bcaa45389bf44deaf5eada98d0a1ecb6745d"
+  },
+  {
+    "path": "app/static/js/civic-premium.js",
+    "sha256": "9a9c3443446b062f0e9e60491557778b2a71311ab267139b5f4a30754136389e"
+  },
+  {
+    "path": "app/static/js/civic-ui.js",
+    "sha256": "6c1f2539572be5b938f6dbc5b4c8d0c9bed9e127b28d8d007a9bc3c993e3936f"
+  },
+  {
+    "path": "app/static/js/document-request.js",
+    "sha256": "b57c180216642b532cc03ac752010c3c9480e2ae3eeccd5f768f4fdc86aad74b"
+  },
+  {
+    "path": "app/static/js/form-enhancements.js",
+    "sha256": "9cf4bd4984f2bd6f6cf287bef30c8067e1c184e7afcfa3861dd8069b212a9612"
+  },
+  {
+    "path": "app/static/js/form-validation.js",
+    "sha256": "7cde4f6dcb7f52fac7dcc29ecd7e74943424b1ec76cc7383d4b9f38a6ae2e41c"
+  },
+  {
+    "path": "app/static/js/incident-routing.js",
+    "sha256": "53a92334a2b5e882760bd91e0cbbf39be314bac25a0543d35a6af596e4e4d26f"
+  },
+  {
+    "path": "app/static/js/messaging.js",
+    "sha256": "fcc78bf48cbc2a261a1b493894d87f010274d2a0121388df303aab6066a7c91d"
+  },
+  {
+    "path": "app/static/js/portal.js",
+    "sha256": "82d6285f09cc2ef5bd2a04da97aae1eb777bd96694c87994ac91c97b6e89d907"
+  },
+  {
+    "path": "app/static/js/profile-management.js",
+    "sha256": "99e8fd8dd3d94bd45791924af2beeff8688ab49a77cc061302a091c0969bb26e"
+  },
+  {
+    "path": "app/static/js/referral-print.js",
+    "sha256": "8a8fa4a7b1d0c871fd1d8fb9deb6a1a916755b8f14fc75f454130fd3476a564f"
+  },
+  {
+    "path": "app/static/js/registration-uploads.js",
+    "sha256": "87268b6349cc865d34c767b20b1e139f7bda617c47f232526104a0ab410e1059"
+  },
+  {
+    "path": "app/static/js/resident-sidebar.js",
+    "sha256": "c5e758ca25843fb8f489f079c29a98bcc8593f79f401065652a6e45ed417c24d"
+  },
+  {
+    "path": "app/static/js/stitch-resident.js",
+    "sha256": "9d8d81b6a0f10f39df98be86b691c50f5f1a7b0c0e4dd333e5b2a01e9ac5091a"
+  },
+  {
+    "path": "app/static/js/table-sort.js",
+    "sha256": "516cf195688c94be4831ca64b7fd224a2493e3d546157bfbcd0e9afad32d5d50"
+  },
+  {
+    "path": "app/static/js/tutorial.js",
+    "sha256": "681d110e9f8e794fdb8b74f7bb3f83062a688627da0a10106fdc355b5e5d73cd"
+  },
+  {
+    "path": "app/static/js/workspace.js",
+    "sha256": "2bcc4775d079a3dcdfc3ef80c0db9d6f7c55c8d5d453b9db55e54d91cd80ae82"
+  },
+  {
+    "path": "app/static/vendor/bootstrap/bootstrap.bundle.min.js",
+    "sha256": "0833b2e9c3a26c258476c46266e6877fc75218625162e0460be9a3a098a61c6c"
+  },
+  {
+    "path": "app/static/vendor/bootstrap/bootstrap.min.css",
+    "sha256": "3c8f27e6009ccfd710a905e6dcf12d0ee3c6f2ac7da05b0572d3e0d12e736fc8"
+  },
+  {
+    "path": "app/static/vendor/bootstrap/LICENSE.txt",
+    "sha256": "8c14611ae41ac6fd543c13349f22188eb12c69b3e59105c5eca3925a8e4eca3e"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationMono-Bold.ttf",
+    "sha256": "267ae0b63fc67980d11fc4cbb630de84d845c6bf350988ec56766baf98706b8b"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationMono-BoldItalic.ttf",
+    "sha256": "c8f21356b3948b9ae2858b82a5514a8384c53847fde1f9ecd38cb6849582f864"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationMono-Italic.ttf",
+    "sha256": "8d39f087bf0d103586624233981c048818e1d4bcb74e4c5ca96a34f6caed583d"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationMono-Regular.ttf",
+    "sha256": "a2e642d350acb1c5e368f375db8a4ef5a2f4ff2b79056d8c3be8bd8a7e9fcb44"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSans-Bold.ttf",
+    "sha256": "361c61b82d575c5c35fd9157fda8b0194bcfcd0d88ea8521a4fb5dd53d33dddc"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSans-BoldItalic.ttf",
+    "sha256": "a224075ac17495ad0a3af3bc0a419ac0704a8b3fd1095456201fb9b095fc281d"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSans-Italic.ttf",
+    "sha256": "832b4406dbef23628800d3aaad21048534ac84d7e3ad955be83b8172ed8ef512"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSans-Regular.ttf",
+    "sha256": "f8ace1f892b2bd9dc1792ba7f097fa7588f84fed48321480e04de5390828221f"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSansNarrow-Bold.ttf",
+    "sha256": "f77fe6ca01c8b043b99743fad34954c53d625263c076aa844c5a5dbf568743ab"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSansNarrow-BoldItalic.ttf",
+    "sha256": "822ef9cfc11f1409f27611f8d128d67105da5ea616f4010b2ab9af76413bda7e"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSansNarrow-Italic.ttf",
+    "sha256": "a48c86c13c247fbcf3cdbe9bed3e5abcfa6e91a8f61f3ae190a5893885266e59"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSansNarrow-Regular.ttf",
+    "sha256": "ab9719545aeb24156c462601f92bf4897130beaac59ad79bea7da264bce69b19"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSerif-Bold.ttf",
+    "sha256": "af228b9de767e5162168e433351b3d0e086648219c6c12ed888fba0bda3694d5"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSerif-BoldItalic.ttf",
+    "sha256": "19c8cef87d61197323b0501d0f8676669489658f23417ca661de18d85755af06"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSerif-Italic.ttf",
+    "sha256": "ccd19036f8e8599e920345105df8d21eb27a66b700ac23968fb14d70259ddb1e"
+  },
+  {
+    "path": "app/static/fonts/document-original/LiberationSerif-Regular.ttf",
+    "sha256": "1c9c77c2cd0f3c2d2aeef53ea50a4d5d3d684ac73a431d7c70d7864887d194a3"
+  },
+  {
+    "path": "app/static/fonts/document-original/LICENSE.txt",
+    "sha256": "bcb5f95766d5dc969748869eef4559dd991fd31f7e0d30c29e140276cc3c24ee"
+  }
+]

@@ -1,0 +1,25 @@
+{% extends "official/_official_base.html" %}
+{% block active_nav %}official.household_list{% endblock %}
+{% block title %}Households{% endblock %}
+{% block content %}
+{% from "partials/portal/_macros.html" import status_badge, dt, empty_state %}
+<div class="page-head"><h1 class="text-headline-sm font-headline-sm text-on-surface">Households · Sambahayan</h1></div>
+<div class="civic-panel"><div class="card-body">
+{% if households %}
+<div class="table-responsive"><table class="civic-table" data-table><thead><tr><th>Number</th><th>Address</th><th>Purok</th><th>Head</th><th>Members</th><th>Status</th></tr></thead><tbody>
+{% for item in households %}
+<tr>
+    <td>{{ item.household_number }}</td>
+    <td>{{ item.address_line }}</td>
+    <td>{{ item.purok.name if item.purok else '—' }}</td>
+    <td>{% if item.head_resident %}{{ item.head_resident.last_name }}, {{ item.head_resident.first_name }}{% else %}—{% endif %}</td>
+    <td>{{ item.residents|length }}</td>
+    <td>{{ status_badge(item.status) }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+{% else %}
+{{ empty_state('home', 'No households yet', 'Wala pang household — pumunta sa barangay hall o magdagdag ng resident record.') }}
+{% endif %}
+</div></div>
+{% include "partials/_pagination.html" %}{% endblock %}

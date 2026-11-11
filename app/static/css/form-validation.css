@@ -1,0 +1,534 @@
+/* Form Validation Styles */
+
+/* Base form styling improvements */
+.form-control, .form-select {
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Validation state styling */
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: #12902B;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Custom invalid feedback styling */
+.invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.valid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #12902B;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animation for feedback messages */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Real-time validation indicators */
+.form-control:focus {
+    border-color: #E7F8E9;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Field requirement indicators */
+.form-label.required::after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Password strength indicator */
+.password-strength {
+    height: 5px;
+    background-color: #e9ecef;
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.password-strength-bar {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+.password-strength-weak .password-strength-bar {
+    width: 33%;
+    background-color: #dc3545;
+}
+
+.password-strength-medium .password-strength-bar {
+    width: 66%;
+    background-color: #ffc107;
+}
+
+.password-strength-strong .password-strength-bar {
+    width: 100%;
+    background-color: #12902B;
+}
+
+/* Character count for text fields */
+.character-count {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-align: right;
+    margin-top: 0.25rem;
+}
+
+.character-count.warning {
+    color: #fd7e14;
+}
+
+.character-count.danger {
+    color: #dc3545;
+}
+
+/* Form submission states */
+.form-submitting {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.form-submitting .btn[type="submit"] {
+    position: relative;
+    color: transparent;
+}
+
+.form-submitting .btn[type="submit"]::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid transparent;
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Field validation icons */
+.form-control.is-valid {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='m2.3 6.73.94-.94 2.94 2.94L7.7 7.2 6.76 6.26 3.24 2.74 2.3 3.68z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    padding-right: calc(1.5em + 0.75rem);
+}
+
+.form-control.is-invalid {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 5.8 1.4 1.4m0-1.4-1.4 1.4'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    padding-right: calc(1.5em + 0.75rem);
+}
+
+/* Form group validation styling */
+.form-group.has-validation .form-control.is-valid,
+.form-group.has-validation .form-select.is-valid {
+    border-color: #12902B;
+}
+
+.form-group.has-validation .form-control.is-invalid,
+.form-group.has-validation .form-select.is-invalid {
+    border-color: #dc3545;
+}
+
+/* Floating labels validation support */
+.form-floating .form-control.is-valid:focus ~ label,
+.form-floating .form-control.is-valid:not(:placeholder-shown) ~ label {
+    color: #12902B;
+}
+
+.form-floating .form-control.is-invalid:focus ~ label,
+.form-floating .form-control.is-invalid:not(:placeholder-shown) ~ label {
+    color: #dc3545;
+}
+
+/* Custom checkbox/radio validation */
+.form-check-input.is-valid {
+    border-color: #12902B;
+}
+
+.form-check-input.is-valid:checked {
+    background-color: #12902B;
+    border-color: #12902B;
+}
+
+.form-check-input.is-invalid {
+    border-color: #dc3545;
+}
+
+.form-check-input.is-invalid:checked {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* File upload validation */
+.form-control[type="file"].is-valid {
+    background-image: none;
+    padding-right: 0.75rem;
+}
+
+.form-control[type="file"].is-invalid {
+    background-image: none;
+    padding-right: 0.75rem;
+}
+
+/* Validation summary */
+.validation-summary {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    color: #721c24;
+}
+
+.validation-summary h5 {
+    margin-bottom: 0.5rem;
+    color: #721c24;
+}
+
+.validation-summary ul {
+    margin-bottom: 0;
+    padding-left: 1.5rem;
+}
+
+.validation-summary li {
+    margin-bottom: 0.25rem;
+}
+
+/* Success summary */
+.success-summary {
+    background-color: #d1eddd;
+    border: 1px solid #badbcc;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    color: #0A5C1E;
+}
+
+/* Loading overlay for forms */
+.form-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    border-radius: 0.375rem;
+}
+
+.form-loading-overlay .spinner-border {
+    color: #12902B;
+}
+
+/* Responsive validation */
+@media (max-width: 576px) {
+    .invalid-feedback,
+    .valid-feedback {
+        font-size: 0.8rem;
+    }
+    
+    .character-count {
+        font-size: 0.7rem;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .form-control.is-valid,
+    .form-select.is-valid {
+        border-color: #000;
+        box-shadow: 0 0 0 2px #000;
+    }
+    
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+        border-color: #ff0000;
+        box-shadow: 0 0 0 2px #ff0000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .form-control,
+    .form-select,
+    .invalid-feedback,
+    .valid-feedback,
+    .password-strength-bar {
+        transition: none;
+    }
+    
+    .invalid-feedback,
+    .valid-feedback {
+        animation: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    .invalid-feedback,
+    .valid-feedback,
+    .password-strength,
+    .character-count {
+        display: none !important;
+    }
+    
+    .form-control.is-valid,
+    .form-control.is-invalid,
+    .form-select.is-valid,
+    .form-select.is-invalid {
+        border-color: #000 !important;
+        box-shadow: none !important;
+        background-image: none !important;
+    }
+}
+
+/* File Upload Enhancements */
+.file-upload-wrapper {
+    position: relative;
+}
+
+.file-upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 0.375rem;
+    padding: 2rem;
+    text-align: center;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-upload-area:hover,
+.file-upload-area.dragover {
+    border-color: #12902B;
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.file-upload-content i {
+    font-size: 2rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+}
+
+.file-upload-content p {
+    margin-bottom: 0.5rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.file-upload-info {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.file-preview-area {
+    margin-top: 1rem;
+}
+
+.file-preview-item {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.file-preview-icon {
+    margin-right: 0.75rem;
+}
+
+.file-preview-icon i {
+    font-size: 1.5rem;
+    color: #12902B;
+}
+
+.file-preview-info {
+    flex: 1;
+}
+
+.file-name {
+    font-weight: 500;
+    color: #212529;
+    font-size: 0.875rem;
+}
+
+.file-size {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.btn-remove-file {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease;
+}
+
+.btn-remove-file:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* Form Dependencies */
+[data-depends-on] {
+    transition: opacity 0.3s ease;
+}
+
+[data-depends-on][style*="display: none"] {
+    display: none !important;
+}
+
+/* Loading states for file uploads */
+.file-upload-loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.file-upload-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+}
+
+.file-upload-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: #e9ecef;
+    border-radius: 0 0 0.375rem 0.375rem;
+    overflow: hidden;
+}
+
+.file-upload-progress-bar {
+    height: 100%;
+    background-color: #12902B;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* Enhanced form styling for better accessibility */
+.form-floating .form-control:focus ~ .form-label,
+.form-floating .form-control:not(:placeholder-shown) ~ .form-label {
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+    opacity: 0.75;
+}
+
+/* Better focus indicators */
+.form-control:focus,
+.form-select:focus {
+    border-color: #E7F8E9;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    outline: 0;
+}
+
+/* Enhanced checkbox and radio styling */
+.form-check-input:focus {
+    border-color: #E7F8E9;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: #12902B;
+    border-color: #12902B;
+}
+
+/* Better form group spacing */
+.form-group + .form-group {
+    margin-top: 1.5rem;
+}
+
+/* Responsive form adjustments */
+@media (max-width: 768px) {
+    .file-upload-area {
+        padding: 1.5rem 1rem;
+    }
+    
+    .file-upload-content i {
+        font-size: 1.5rem;
+    }
+    
+    .file-preview-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .file-preview-icon {
+        margin-right: 0;
+    }
+}
+
+/* Dark mode support (if implemented) */
+@media (prefers-color-scheme: dark) {
+    .file-upload-area {
+        background-color: #343a40;
+        border-color: #495057;
+    }
+    
+    .file-upload-area:hover,
+    .file-upload-area.dragover {
+        border-color: #12902B;
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+    
+    .file-preview-item {
+        background-color: #343a40;
+        border-color: #495057;
+    }
+}
+/* Local SVG icon system */
+.icon-svg { display:inline-block; vertical-align:-0.125em; flex:0 0 auto; }

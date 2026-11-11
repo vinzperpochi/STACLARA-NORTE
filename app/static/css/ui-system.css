@@ -1,0 +1,179 @@
+/* Shared UI quality layer — Sta. Clara Norte Civic Emerald */
+:root {
+  --ui-primary: #0A5C1E;
+  --ui-primary-strong: #083E14;
+  --ui-ink: #083E14;
+  --ui-muted: #5b6f62;
+  --ui-border: #dce9df;
+  --ui-surface: #fff;
+  --ui-page: #f7fbf8;
+  --ui-focus: rgba(10, 107, 50, .2);
+  --ui-shadow: 0 3px 14px rgba(8, 74, 37, .065);
+  --ui-shadow-soft: 0 1px 2px rgba(8, 74, 37, .04), 0 10px 28px rgba(8, 74, 37, .065);
+  --ui-radius: .9rem;
+}
+
+html { scroll-behavior: smooth; }
+body { color: var(--ui-ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { text-underline-offset: .18em; }
+a:not(.btn):not([class*="no-underline"]):hover { text-decoration-thickness: 1.5px; }
+button, a, input, select, textarea { transition: color .16s ease, background-color .16s ease, border-color .16s ease, box-shadow .16s ease, transform .16s ease; }
+button { font: inherit; }
+button:active, .btn:active, .civic-btn:active, .civic-btn-outline:active, .stitch-btn-primary:active { transform: translateY(1px); }
+:focus-visible { outline: 3px solid var(--ui-focus); outline-offset: 2px; }
+
+/* Shared surface language: calm, airy and easy to scan. */
+body.auth-shell, body.legacy-shell, body.workspace-resident {
+  background-image: radial-gradient(circle at 100% 0, rgba(216,245,221,.42), transparent 28rem);
+}
+.auth-shell main, .public-footer, .public-header { position: relative; }
+.auth-shell .civic-card-shadow, .auth-shell .auth-card {
+  box-shadow: var(--ui-shadow-soft);
+}
+.auth-shell .civic-card-shadow:hover {
+  border-color: #b8d9bd;
+  box-shadow: 0 14px 34px rgba(8, 74, 37, .10);
+  transform: translateY(-2px);
+}
+.public-header {
+  box-shadow: 0 1px 0 rgba(8, 74, 37, .04), 0 8px 22px rgba(8, 74, 37, .035);
+}
+.public-header nav a:not(.btn) { color: #486052; font-weight: 600; }
+.public-header nav a:not(.btn):hover { color: var(--ui-primary); }
+
+/* Legacy workspace chrome. */
+.legacy-shell .app-sidebar {
+  background: linear-gradient(180deg, #0A5C1E 0%, #0A5C1E 54%, #083E14 100%);
+  box-shadow: 8px 0 30px rgba(5, 57, 24, .10);
+}
+.legacy-shell .sidebar-brand { background: rgba(0,0,0,.08); }
+.legacy-shell .app-nav .nav-link { border: 1px solid transparent; }
+.legacy-shell .app-nav .nav-link:hover { background: rgba(255,255,255,.11); border-color: rgba(255,255,255,.12); }
+.legacy-shell .app-nav .nav-link.active { box-shadow: 0 5px 14px rgba(255, 211, 40, .18); }
+.legacy-shell .topbar {
+  background: rgba(255,255,255,.88);
+  border-bottom: 1px solid var(--ui-border);
+  box-shadow: 0 4px 18px rgba(8, 74, 37, .045);
+}
+.legacy-shell .content-area { padding-top: 32px; }
+.legacy-shell .page-head { margin-bottom: 1.6rem; }
+.legacy-shell .search-box .form-control { min-height: 38px; border-radius: 999px; padding-left: 1rem; background: #f7fbf8; }
+.legacy-shell .app-footer { border-top: 1px solid rgba(220,233,223,.7); }
+
+/* Keep the portal shell visually connected to the same system. */
+.portal-stitch .portal-header { box-shadow: 0 4px 18px rgba(8, 74, 37, .055); }
+.portal-stitch #portal-main { padding-top: .15rem; }
+.portal-stitch .stitch-breadcrumb { box-shadow: 0 2px 8px rgba(8, 74, 37, .045); }
+.portal-stitch .stitch-card, .portal-stitch .stitch-notice-card, .portal-stitch .portal-sidebar-card {
+  box-shadow: var(--ui-shadow-soft);
+}
+.portal-stitch .stitch-card:hover, .portal-stitch .portal-sidebar-card:hover {
+  border-color: #b8d9bd;
+}
+
+/* Better desktop density and mobile breathing room without changing markup. */
+.card-body { padding: 1.35rem 1.45rem; }
+.modal-header, .modal-footer { border-color: var(--ui-border); }
+.modal-header { background: #fbfefb; }
+.modal-title { color: #083E14; font-weight: 750; }
+.alert { box-shadow: 0 8px 24px rgba(18, 47, 27, .08); }
+
+/* Clear hierarchy and legible body copy */
+#portal-main, .content-area { color: var(--ui-ink); }
+#portal-main h1, #portal-main h2, #portal-main h3, .content-area h1, .content-area h2, .content-area h3 {
+  color: #083E14;
+  letter-spacing: -.022em;
+  text-wrap: pretty;
+}
+#portal-main p, .content-area p { text-wrap: pretty; }
+#portal-main .text-on-surface-muted, .content-area .text-secondary { color: var(--ui-muted) !important; }
+
+/* One dependable button language across Bootstrap, Tailwind and civic components */
+.btn, .civic-btn, .civic-btn-outline, .civic-btn-danger, .stitch-btn-primary, .stitch-btn-secondary, .stitch-btn-outline {
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  border-radius: .65rem;
+  font-weight: 650;
+  line-height: 1.25;
+  text-decoration: none;
+}
+.btn-primary {
+  --bs-btn-bg: var(--ui-primary);
+  --bs-btn-border-color: var(--ui-primary);
+  --bs-btn-hover-bg: var(--ui-primary-strong);
+  --bs-btn-hover-border-color: var(--ui-primary-strong);
+  --bs-btn-active-bg: var(--ui-primary-strong);
+  --bs-btn-active-border-color: var(--ui-primary-strong);
+  --bs-btn-focus-shadow-rgb: 10, 107, 50;
+  color: #fff;
+}
+.btn-outline-primary { --bs-btn-color: var(--ui-primary); --bs-btn-border-color: #8fb99b; --bs-btn-hover-bg: var(--ui-primary); --bs-btn-hover-border-color: var(--ui-primary); --bs-btn-hover-color: #fff; }
+.btn-secondary, .btn-outline-secondary { --bs-btn-color: #083E14; --bs-btn-border-color: #ccd9cf; }
+.btn:disabled, .btn.disabled, .civic-btn:disabled, .civic-btn-outline:disabled { opacity: .58; box-shadow: none; transform: none; }
+.btn-icon, [data-portal-drawer-open], [data-portal-drawer-close] { display: inline-grid; place-items: center; }
+
+/* Form controls: aligned heights, readable hints, visible focus */
+.form-control, .form-select, .civic-input, .civic-select, #portal-main input:not([type=checkbox]):not([type=radio]):not([type=hidden]), #portal-main select, #portal-main textarea {
+  border-color: #ccdcd0;
+  border-radius: .65rem;
+  color: #083E14;
+}
+.form-control, .form-select { min-height: 42px; }
+.form-control:focus, .form-select:focus, .civic-input:focus, .civic-select:focus,
+#portal-main input:focus, #portal-main select:focus, #portal-main textarea:focus {
+  border-color: var(--ui-primary);
+  box-shadow: 0 0 0 3px var(--ui-focus);
+}
+.form-label, .stitch-form-label { color: #083E14; font-weight: 650; }
+.form-text, .invalid-feedback, .stitch-form-help { line-height: 1.5; }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--ui-primary); }
+
+/* Cards, tables and badges */
+.civic-panel, .stitch-card, .portal-sidebar-card, .content-area .card {
+  border-color: var(--ui-border);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-shadow);
+}
+.civic-table, .stitch-table, #portal-main table, .content-area .table { color: #083E14; }
+.civic-table thead th, .stitch-table thead th, #portal-main table thead th, .content-area .table thead th {
+  color: #0A5C1E;
+  background-color: #f0f7f1;
+  font-size: .7rem;
+  font-weight: 750;
+  letter-spacing: .055em;
+}
+.civic-table tbody tr, .stitch-table tbody tr, #portal-main table tbody tr { transition: background-color .14s ease; }
+.civic-table tbody tr:hover, .stitch-table tbody tr:hover, #portal-main table tbody tr:hover { background-color: #f6fbf6; }
+.table-responsive, .stitch-table-wrap, .civic-table-wrap { border-radius: .75rem; -webkit-overflow-scrolling: touch; }
+.badge, .badge-status, .case-status { font-weight: 650; letter-spacing: .005em; }
+
+/* Icons stay aligned with their labels and don't inherit odd line heights */
+.icon-svg, .bi { display: inline-block; width: 1em; height: 1em; flex: 0 0 auto; line-height: 1; vertical-align: -0.12em; }
+.icon-svg { font-feature-settings: "FILL" 0, "wght" 450, "GRAD" 0, "opsz" 24; }
+.icon-svg.fill-icon { font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24; }
+
+/* Dropdowns and dialogs match the same calm, high-contrast system */
+.dropdown-menu, [data-portal-dropdown-panel], .modal-content { border: 1px solid var(--ui-border); border-radius: .9rem; box-shadow: 0 16px 38px rgba(18, 47, 27, .14); }
+.dropdown-item { padding: .65rem .9rem; }
+.dropdown-item:focus, .dropdown-item:hover { color: var(--ui-primary-strong); background-color: #eef7ef; }
+
+@media (max-width: 767.98px) {
+  #portal-main, .content-area { min-width: 0; }
+  #portal-main .flex-wrap, .content-area .d-flex.flex-wrap { row-gap: .65rem; }
+  #portal-main .overflow-x-auto, .table-responsive, .stitch-table-wrap, .civic-table-wrap { max-width: 100%; }
+  #portal-main th, #portal-main td { white-space: normal; }
+  .content-area { padding-top: 1.15rem; }
+  .legacy-shell .topbar { min-height: 68px; }
+  .legacy-shell .content-area { padding-top: 22px; }
+  .legacy-shell .app-footer, .public-footer { flex-direction: column; align-items: flex-start; }
+  .auth-shell .civic-card-shadow:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+/* Local SVG icon system */
+.icon-svg { display:inline-block; width:1em; height:1em; vertical-align:-0.125em; flex:0 0 auto; }

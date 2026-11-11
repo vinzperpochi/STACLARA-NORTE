@@ -1,0 +1,39 @@
+{% extends "resident/_portal_base.html" %}
+{% from "partials/portal/_macros.html" import status_badge, dt %}
+{% from "components/icons.html" import icon %}
+{% block title %}Complaint detail{% endblock %}
+{% block extra_head %}<link href="{{ url_for('static',filename='css/resident-case-detail.css') }}?v=emerald-20261010-final" rel="stylesheet">{% endblock %}
+{% block content %}
+<div class="resident-case-detail">
+  <a class="rcd-back" href="{{ url_for('resident.blotter_cases') }}">{{ icon('arrow-left') }} Back to complaints</a>
+  <header class="rcd-hero">
+    <div class="rcd-hero-icon">{{ icon('gavel', '', size='1.5em') }}</div>
+    <div class="rcd-hero-copy"><span class="rcd-eyebrow">FORMAL BLOTTER CASE</span><h1>{{ case.category }}</h1><p class="rcd-reference">{{ case.case_number }}</p></div>
+    <div class="rcd-current-status"><span>Current status</span>{{ status_badge(case.status) }}</div>
+  </header>
+  <div class="rcd-grid">
+    <section class="rcd-card" aria-labelledby="rcd-incident-title">
+      <div class="rcd-section-heading"><span class="rcd-section-icon">{{ icon('calendar-event') }}</span><div><span class="rcd-eyebrow">CASE INFORMATION</span><h2 id="rcd-incident-title">Incident details</h2></div></div>
+      <dl class="rcd-details">
+        <div><dt>Incident date</dt><dd>{{ case.incident_date.strftime('%b %d, %Y') if case.incident_date else 'Not recorded' }}</dd></div>
+        {% if case.incident_datetime %}<div><dt>Reported incident date &amp; time</dt><dd>{{ dt(case.incident_datetime) }}</dd></div>{% endif %}
+        <div class="rcd-location"><dt>{{ icon('geo-alt') }} Incident location</dt><dd>{{ case.incident_location or 'Not recorded' }}</dd></div>
+      </dl>
+    </section>
+    <section class="rcd-card" aria-labelledby="rcd-narrative-title">
+      <div class="rcd-section-heading"><span class="rcd-section-icon">{{ icon('file-earmark-text') }}</span><div><span class="rcd-eyebrow">SUBMITTED REPORT</span><h2 id="rcd-narrative-title">What happened</h2></div></div>
+      <div class="rcd-narrative">{{ case.narrative }}</div>
+      <p class="rcd-note">This is the incident narrative recorded in your complaint.</p>
+    </section>
+  </div>
+  <section class="rcd-card rcd-history" aria-labelledby="rcd-history-title">
+    <div class="rcd-history-heading"><div class="rcd-section-heading"><span class="rcd-section-icon">{{ icon('clock') }}</span><div><span class="rcd-eyebrow">CASE ACTIVITY</span><h2 id="rcd-history-title">Status history</h2></div></div><span class="rcd-count">{{ case.status_history|length }} {{ 'update' if case.status_history|length == 1 else 'updates' }}</span></div>
+    <ol class="rcd-timeline">
+      {% for event in case.status_history %}
+      <li><span class="rcd-timeline-dot" aria-hidden="true"></span><div class="rcd-event"><div class="rcd-event-heading"><h3>{{ event.to_status.replace('_',' ')|title }}</h3><time datetime="{{ event.created_at.isoformat() }}">{{ dt(event.created_at) }}</time></div>{% if event.notes %}<p>{{ event.notes }}</p>{% endif %}</div></li>
+      {% else %}<li class="rcd-empty">No status updates have been recorded yet.</li>{% endfor %}
+    </ol>
+  </section>
+  <p class="rcd-privacy">{{ icon('lock') }} This case is visible to residents linked to the record and authorized barangay officials.</p>
+</div>
+{% endblock %}

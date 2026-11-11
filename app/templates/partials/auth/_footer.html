@@ -1,0 +1,16 @@
+{% include "partials/_site_info.html" %}
+<footer class="w-full bg-white border-t border-[#E2EDE3] py-6 px-4 text-xs text-[#5F7265]" data-purpose="footer">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+    <div>
+      <p class="font-semibold text-[#11291A]">© <span data-copyright-year>2026</span> Pamahalaang Barangay Sta. Clara Norte</p>
+      <p class="text-[11px] text-[#5F7265]">Municipality of Pila, Province of Laguna • Republic of the Philippines</p>
+    </div>
+    <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs">
+      <button class="hover:text-[#12902B] hover:underline transition focus:outline-none cursor-pointer bg-transparent border-0" data-open-modal="charter" type="button">Citizens Charter</button>
+      <span class="text-[#E2EDE3]">•</span>
+      <a class="hover:text-[#12902B] hover:underline transition text-[#5F7265]" href="{{ url_for('main.privacy_notice') }}">Privacy Notice</a>
+      <span class="text-[#E2EDE3]">•</span>
+      <button class="hover:text-[#12902B] hover:underline transition focus:outline-none cursor-pointer bg-transparent border-0" data-open-modal="foi" type="button">Freedom of Information (FOI)</button>
+    </nav>
+  </div>
+</footer>

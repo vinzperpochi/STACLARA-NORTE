@@ -1,0 +1,77 @@
+{% from 'components/icons.html' import icon %}
+{% macro nav_item(endpoint, icon_name, label_en, label_fil) -%}
+{%- set on = active_nav == endpoint or (endpoint == 'incidents.workspace' and active_nav in ['official.blotter_list','official.blotter_detail','official.blotter_map','official.blotter_statistics','incidents.dashboard','incidents.detail']) -%}
+<li>
+  <a class="resident-nav-link flex items-center justify-between gap-2 px-3 py-2 rounded-lg transition-colors no-underline {{ 'bg-primary text-white font-semibold shadow-sm' if on else 'text-on-surface-variant hover:bg-surface-container-low hover:text-primary' }}"
+     href="{{ url_for(endpoint) }}"{% if on %} aria-current="page"{% endif %}>
+    <span class="flex items-center space-x-3 min-w-0">
+      {{ icon(icon_name, '', size='20px') }}
+      <span class="resident-nav-copy text-left min-w-0">
+        <span class="resident-nav-title text-body-md leading-tight block {{ '' if on else 'font-medium' }}">{{ label_en }}</span>
+        <span class="resident-nav-subtitle text-[10px] block leading-tight {{ 'text-primary-container opacity-90' if on else 'text-on-surface-muted' }}">{{ label_fil }}</span>
+      </span>
+    </span>
+    {% if on %}<span class="w-1.5 h-1.5 rounded-full bg-highlight-lime shrink-0" aria-hidden="true"></span>{% endif %}
+  </a>
+</li>
+{%- endmacro %}
+
+<div class="portal-sidebar-card bg-surface-card rounded-xl border border-outline-border civic-card-shadow p-4 md:sticky md:top-24 space-y-5">
+  <div class="resident-sidebar-heading flex items-center justify-between pb-3 border-b border-outline-border">
+    <div class="resident-sidebar-brand">
+      <span class="resident-sidebar-mark">{{ icon('shield-check', '', size='22px') }}</span>
+      <div><span class="text-[10px] uppercase font-bold tracking-wider" style="color: #22b33a;">Admin Workspace</span>
+      <p class="text-xs text-on-surface-muted">e-Governance Center</p></div>
+    </div>
+    <button type="button" class="md:hidden p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low" data-portal-drawer-close aria-label="Isara ang menu">
+      {{ icon('x-lg', '') }}
+    </button>
+  </div>
+  <nav class="space-y-4" aria-label="Admin workspace">
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">1. Main</span>
+      <ul class="space-y-1">{{ nav_item('admin.dashboard', 'dashboard', 'Overview', 'Pangkalahatang Pananaw') }}</ul>
+    </div>
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">2. Records</span>
+      <ul class="space-y-1">
+        {{ nav_item('admin.official_accounts', 'admin_panel_settings', 'Official Accounts', 'Mga Account ng Opisyal') }}
+        {{ nav_item('admin.users', 'group', 'Users', 'Mga Rehistradong Gumagamit') }}
+        {{ nav_item('admin.roles', 'badge', 'Roles', 'Gampanin at Antas') }}
+        {{ nav_item('admin.permissions', 'key', 'Permissions', 'Pahintulot at Akses') }}
+      {{ nav_item('official.resident_list', 'groups', 'Residents', 'Mga Residente') }}
+      {{ nav_item('official.document_requests', 'description', 'Documents / IDs', 'Mga Kahilingan') }}
+        {{ nav_item('admin.puroks', 'holiday_village', 'Puroks', 'Mga Purok') }}
+      </ul>
+    </div>
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">3. Services</span>
+      <ul class="space-y-1">
+        {{ nav_item('admin.document_types', 'description', 'Document Types', 'Mga Uri ng Dokumento') }}
+        {{ nav_item('admin.fees', 'payments', 'Fees & Tariffs', 'Taripa at Bayarin') }}
+      </ul>
+    </div>
+    <div><span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">4. Cases</span><ul class="space-y-1">
+      {{ nav_item('incidents.workspace', 'gavel', 'Complaints & Blotter', 'Reklamo, Insidente at Hotlines') }}
+    </ul></div>
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">5. Insights</span>
+      <ul class="space-y-1">
+        {{ nav_item('admin.analytics', 'insights', 'Analytics', 'Estadistika ng Pamayanan') }}
+        {{ nav_item('admin.reports', 'summarize', 'Reports Center', 'Sentro ng Ulat') }}
+      </ul>
+    </div>
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">6. System</span>
+      <ul class="space-y-1">
+        {{ nav_item('admin.audit_logs', 'receipt_long', 'Audit Logs', 'Talaan ng Kilos at Seguridad') }}
+      </ul>
+    </div>
+    <div><span class="text-[10px] font-bold uppercase tracking-wider text-outline px-3 mb-1 block">7. Attendance & routing</span><ul class="space-y-1">
+      {{ nav_item('attendance.dashboard','schedule','Attendance Management','Oras at Attendance') }}
+      {{ nav_item('attendance.devices','person_badge','Personnel & RFID','Tauhan at RFID') }}
+      {{ nav_item('attendance.reports','summarize','Attendance Reports','Mga DTR') }}
+    </ul></div>
+  </nav>
+  {% include "partials/premium/_sidebar_footer.html" %}
+</div>

@@ -1,0 +1,42 @@
+{% extends "resident/_portal_base.html" %}
+{% from "partials/_site_info.html" import v_hotline, v_hall_address, v_office_hours %}
+{% from "partials/portal/_macros.html" import dt %}
+{% block title %}Emergency alerts{% endblock %}
+{% block content %}
+<section class="bg-surface-card rounded-xl border border-outline-border civic-card-shadow mb-5">
+  <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 border-b border-outline-border">
+    <div>
+      <h1 class="text-headline-sm font-headline-sm text-on-surface font-bold">Emergency alerts</h1>
+      <p class="text-body-sm text-on-surface-muted mt-0.5">Officially published DRRM advisories and warnings.</p>
+    </div>
+    <a class="text-label-md font-label-md text-primary font-bold no-underline hover:underline" href="{{ url_for('resident.dashboard') }}">Dashboard</a>
+  </header>
+  <div class="p-5 space-y-3">
+    {% for alert in alerts %}
+    <article class="rounded-lg p-4 border {{ 'bg-error-container/40 border-error/40' if alert.alert_level == 'CRITICAL' else 'bg-warning-pill border-amber-300/80' }}">
+      <h2 class="text-title-md font-title-md text-on-surface">{{ alert.alert_level }} — {{ alert.title }}</h2>
+      <p class="text-body-md text-on-surface mt-1">{{ alert.message }}</p>
+      <p class="text-body-sm text-on-surface-muted mt-2">Issued {{ dt(alert.issued_at) }}{% if alert.expires_at %} · Expires {{ dt(alert.expires_at) }}{% endif %}</p>
+    </article>
+    {% else %}
+    <p class="text-on-surface-muted">No active emergency alerts.</p>
+    {% endfor %}
+
+    {% include "partials/_pagination.html" %}
+  </div>
+</section>
+<section class="bg-surface-card rounded-xl border border-outline-border civic-card-shadow p-5">
+  <h2 class="text-title-md font-title-md text-on-surface font-bold mb-3">Emergency hotlines</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-body-sm">
+    <div class="border border-outline-border rounded-xl p-4">
+      <p class="font-bold text-primary-dark">Barangay Hall</p>
+      <p class="text-on-surface-muted mt-1">{% if v_hotline().startswith('TODO') %}Hotline: hindi pa nakumpirma ng barangay.{% else %}{{ v_hotline() }}{% endif %}</p>
+      <p class="text-on-surface-muted">{% if v_hall_address().startswith('TODO') %}Address: hindi pa nakumpirma.{% else %}{{ v_hall_address() }}{% endif %}</p>
+    </div>
+    <div class="border border-outline-border rounded-xl p-4">
+      <p class="font-bold text-primary-dark">Office hours</p>
+      <p class="text-on-surface-muted mt-1">{% if v_office_hours().startswith('TODO') %}Hindi pa nakumpirma.{% else %}{{ v_office_hours() }}{% endif %}</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

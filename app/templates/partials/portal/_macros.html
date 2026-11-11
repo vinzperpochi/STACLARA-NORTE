@@ -1,0 +1,95 @@
+{% from 'components/icons.html' import icon as svg_icon %}
+{# Resident portal macros. Real status values only; unknown values degrade to a neutral badge. #}
+
+{% macro icon(name, extra="", size=20, fill=false) -%}
+{{ svg_icon(name, extra, size=(size|string if (size|string).endswith('px') else size|string ~ 'px')) }}
+{%- endmacro %}
+
+{% macro status_badge(value, dense=false) -%}
+  {%- set key = (value or "")|string|upper -%}
+  {%- set map = {
+    'PENDING': ('pending', 'schedule', 'PENDING', 'Naghihintay'),
+    'UNDER_REVIEW': ('progress', 'search', 'UNDER REVIEW', 'Sinasuri'),
+    'PROCESSING': ('progress', 'autorenew', 'PROCESSING', 'Pinoproseso'),
+    'APPROVED': ('success', 'check_circle', 'APPROVED', 'Aprubado'),
+    'READY': ('success', 'done_all', 'READY', 'Handa na'),
+    'READY_FOR_RELEASE': ('success', 'inventory_2', 'READY FOR RELEASE', 'Handa nang ibigay'),
+    'RELEASED': ('success', 'task_alt', 'RELEASED', 'Naibigay na'),
+    'REJECTED': ('danger', 'cancel', 'REJECTED', 'Tinanggihan'),
+    'OPEN': ('pending', 'folder_open', 'OPEN', 'Bukas'),
+    'UNDER_MEDIATION': ('progress', 'groups', 'UNDER MEDIATION', 'Nasa mediation'),
+    'HEARING_SCHEDULED': ('progress', 'gavel', 'HEARING SCHEDULED', 'May hearing'),
+    'SETTLED': ('success', 'handshake', 'SETTLED', 'Naayos'),
+    'ENDORSED': ('danger', 'send', 'ENDORSED', 'Na-endorse'),
+    'SCHEDULED': ('progress', 'event', 'SCHEDULED', 'Naka-iskedyul'),
+    'COMPLETED': ('success', 'check_circle', 'COMPLETED', 'Tapos na'),
+    'CLOSED': ('neutral', 'lock', 'CLOSED', 'Sarado'),
+    'UPLOADED': ('success', 'cloud_done', 'UPLOADED', 'Nai-upload'),
+    'ACTIVE': ('success', 'check_circle', 'ACTIVE', 'Aktibo'),
+    'PUBLISHED': ('danger', 'campaign', 'PUBLISHED', 'Nai-publish'),
+  } -%}
+  {%- set tone_classes = {
+    'pending': 'bg-warning-pill text-on-surface border-[#FFD328]',
+    'progress': 'bg-surface-container-low text-primary-dark border-highlight-lime',
+    'success': 'bg-primary-container text-primary-dark border-primary/30',
+    'danger': 'bg-error-container text-on-error-container border-error/30',
+    'neutral': 'bg-surface-container-high text-on-surface-variant border-outline-variant',
+  } -%}
+  {%- set found = map.get(key) -%}
+  {%- set tone = found[0] if found else 'neutral' -%}
+<span class="inline-flex items-center whitespace-nowrap border rounded-[6px] font-label-sm text-label-sm {{ tone_classes[tone] }} {{ 'px-2 py-0.5' if dense else 'px-2 py-1' }}">
+  {%- if found -%}
+  {{ svg_icon(found[1], '') }}
+  {{ found[2] }}<span class="font-normal opacity-80">&nbsp;/ {{ found[3] }}</span>
+  {%- else -%}
+  <span class="w-1.5 h-1.5 rounded-full bg-outline mr-1.5" aria-hidden="true"></span>{{ (value or '—')|string|replace('_', ' ')|title }}
+  {%- endif -%}
+</span>
+{%- endmacro %}
+
+{% macro dt(value, mode="datetime") -%}
+  {%- if value -%}
+<time datetime="{{ value.isoformat() if value.isoformat is defined else value }}" data-fmt="{{ mode }}">{{ value }}</time>
+  {%- else -%}<span class="text-on-surface-muted">—</span>{%- endif -%}
+{%- endmacro %}
+
+{% macro empty_state(icon_name, title_fil, title_en, action_url=None, action_label=None) -%}
+<div class="flex flex-col items-center justify-center text-center py-10 px-4">
+  {{ svg_icon(icon_name, '') }}
+  <p class="text-title-md font-title-md text-on-surface mt-3">{{ title_fil }}</p>
+  <p class="text-body-sm text-on-surface-muted mt-1 max-w-sm">{{ title_en }}</p>
+  {% if action_url and action_label %}
+  <a class="civic-btn-gradient text-white font-semibold px-4 py-2 rounded-lg text-body-md inline-flex items-center gap-1.5 mt-4" href="{{ action_url }}">
+    {{ icon('add', '', size='18px') }}{{ action_label }}
+  </a>
+  {% endif %}
+</div>
+{%- endmacro %}
+
+{% macro card_open(title, subtitle=None, badge=None, badge_tone="progress") -%}
+<section class="bg-surface-card rounded-xl border border-outline-border civic-card-shadow">
+  <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-5 border-b border-outline-border">
+    <div>
+      <h2 class="text-headline-sm font-headline-sm text-on-surface font-bold">{{ title }}</h2>
+      {% if subtitle %}<p class="text-body-sm text-on-surface-muted mt-0.5">{{ subtitle }}</p>{% endif %}
+    </div>
+    {% if badge %}<span class="px-2 py-0.5 rounded-[6px] text-label-sm font-label-sm bg-surface-container text-on-secondary-container border border-highlight-lime font-bold shrink-0">{{ badge }}</span>{% endif %}
+  </header>
+  <div class="p-5">
+{%- endmacro %}
+
+{% macro card_close() -%}
+  </div>
+</section>
+{%- endmacro %}
+
+{# Disabled control for features with no backend support. Never fakes success. #}
+{% macro soon_button(label, icon_name=None, reason="Hindi pa available ang serbisyong ito.") -%}
+<button type="button" disabled aria-disabled="true"
+        class="is-disabled inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-outline-border bg-surface-container-low text-on-surface-variant text-label-md font-label-md"
+        title="Malapit na / Not available yet — {{ reason }}">
+  {% if icon_name %}{{ svg_icon(icon_name, '') }}{% endif %}
+  <span>{{ label }}</span>
+  <span class="text-[10px] uppercase tracking-wide bg-warning-pill text-on-surface border border-[#FFD328] rounded px-1.5 py-0.5">Malapit na</span>
+</button>
+{%- endmacro %}

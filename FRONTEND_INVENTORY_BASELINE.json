@@ -1,0 +1,2400 @@
+{
+  "active_source": "C:\\Users\\SERIES\\Documents\\Codex\\2026-10-09\\files-mentioned-by-the-user-yay\\outputs\\barangay-system",
+  "deployment": "C:/Users/SERIES/Desktop/DAD/barangay-system",
+  "database": "Existing Supabase PostgreSQL",
+  "roles": [
+    "System Administrator",
+    "Barangay Official (official/staff workspace)",
+    "Resident"
+  ],
+  "templates": [
+    {
+      "path": "app/templates/admin/_admin_base.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 2962
+    },
+    {
+      "path": "app/templates/admin/analytics.html",
+      "extends": [
+        "workspace_base|default(\"admin/_admin_base.html\") "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 8445
+    },
+    {
+      "path": "app/templates/admin/audit_logs.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 2872
+    },
+    {
+      "path": "app/templates/admin/blotter_map.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 7240
+    },
+    {
+      "path": "app/templates/admin/document_types.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 1499
+    },
+    {
+      "path": "app/templates/admin/fees.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 1496
+    },
+    {
+      "path": "app/templates/admin/official_accounts.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 5711
+    },
+    {
+      "path": "app/templates/admin/permissions.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 1363
+    },
+    {
+      "path": "app/templates/admin/purok_edit.html",
+      "extends": [
+        "'admin/puroks.html' "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 34
+    },
+    {
+      "path": "app/templates/admin/puroks.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 3,
+      "tables": 1,
+      "bytes": 2266
+    },
+    {
+      "path": "app/templates/admin/reports.html",
+      "extends": [
+        "workspace_base|default(\"admin/_admin_base.html\") "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 2929
+    },
+    {
+      "path": "app/templates/admin/roles.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 0,
+      "bytes": 1784
+    },
+    {
+      "path": "app/templates/admin/settings.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 1438
+    },
+    {
+      "path": "app/templates/admin/users.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 3,
+      "tables": 1,
+      "bytes": 4021
+    },
+    {
+      "path": "app/templates/areas/admin_dashboard.html",
+      "extends": [
+        "\"admin/_admin_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 1,
+      "bytes": 15772
+    },
+    {
+      "path": "app/templates/areas/official_dashboard.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 10855
+    },
+    {
+      "path": "app/templates/areas/resident_dashboard.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 1,
+      "bytes": 12391
+    },
+    {
+      "path": "app/templates/areas/resident_profile.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 11167
+    },
+    {
+      "path": "app/templates/areas/resident_requests.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 1,
+      "bytes": 1425
+    },
+    {
+      "path": "app/templates/auth/activation_created.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1978
+    },
+    {
+      "path": "app/templates/auth/change_password.html",
+      "extends": [
+        "\"admin/_admin_base.html\" if is_admin else \"official/_official_base.html\" if is_official else \"resident/_portal_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 3200
+    },
+    {
+      "path": "app/templates/auth/email_verified.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1249
+    },
+    {
+      "path": "app/templates/auth/enter_activation_code.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 3169
+    },
+    {
+      "path": "app/templates/auth/forgot_password.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 6111
+    },
+    {
+      "path": "app/templates/auth/login.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 9293
+    },
+    {
+      "path": "app/templates/auth/register.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 25317
+    },
+    {
+      "path": "app/templates/auth/reset_password.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 4491
+    },
+    {
+      "path": "app/templates/auth/terms_and_conditions.html",
+      "extends": [
+        "\"base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 12514
+    },
+    {
+      "path": "app/templates/base.html",
+      "extends": [],
+      "forms": 2,
+      "tables": 0,
+      "bytes": 12147
+    },
+    {
+      "path": "app/templates/components/icons.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 3170
+    },
+    {
+      "path": "app/templates/components/openstreetmap_cases_view.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 10870
+    },
+    {
+      "path": "app/templates/components/openstreetmap_incident.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 12489
+    },
+    {
+      "path": "app/templates/documents/correction.html",
+      "extends": [
+        "'resident/_portal_base.html' "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 799
+    },
+    {
+      "path": "app/templates/documents/original/base.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 2620590
+    },
+    {
+      "path": "app/templates/documents/original/SCN-BIZ-application.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 9564
+    },
+    {
+      "path": "app/templates/documents/original/SCN-BIZ-certificate.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 1,
+      "bytes": 4821
+    },
+    {
+      "path": "app/templates/documents/original/SCN-CLR-application.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 8332
+    },
+    {
+      "path": "app/templates/documents/original/SCN-CLR-certificate.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 4591
+    },
+    {
+      "path": "app/templates/documents/original/SCN-FTJ-application.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 8235
+    },
+    {
+      "path": "app/templates/documents/original/SCN-FTJ-certificate.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 4441
+    },
+    {
+      "path": "app/templates/documents/original/SCN-GMC-application.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 8337
+    },
+    {
+      "path": "app/templates/documents/original/SCN-GMC-certificate.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 4049
+    },
+    {
+      "path": "app/templates/documents/original/SCN-IND-application.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 8632
+    },
+    {
+      "path": "app/templates/documents/original/SCN-IND-certificate.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 4070
+    },
+    {
+      "path": "app/templates/documents/original/SCN-RSD-application.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 8184
+    },
+    {
+      "path": "app/templates/documents/original/SCN-RSD-certificate.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 4147
+    },
+    {
+      "path": "app/templates/documents/original/SCN-SPE-application.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 9168
+    },
+    {
+      "path": "app/templates/documents/original/SCN-SPE-certificate.html",
+      "extends": [
+        "\"documents/original/base.html\" "
+      ],
+      "forms": 0,
+      "tables": 1,
+      "bytes": 5176
+    },
+    {
+      "path": "app/templates/documents/preview.html",
+      "extends": [],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 1399
+    },
+    {
+      "path": "app/templates/documents/settings.html",
+      "extends": [
+        "'admin/_admin_base.html' "
+      ],
+      "forms": 3,
+      "tables": 0,
+      "bytes": 2310
+    },
+    {
+      "path": "app/templates/errors/403.html",
+      "extends": [
+        "\"base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 509
+    },
+    {
+      "path": "app/templates/errors/404.html",
+      "extends": [
+        "\"base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 497
+    },
+    {
+      "path": "app/templates/errors/429.html",
+      "extends": [
+        "\"base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 6162
+    },
+    {
+      "path": "app/templates/errors/500.html",
+      "extends": [
+        "\"base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 492
+    },
+    {
+      "path": "app/templates/errors/request.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 503
+    },
+    {
+      "path": "app/templates/help.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 2387
+    },
+    {
+      "path": "app/templates/index.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 9819
+    },
+    {
+      "path": "app/templates/layouts/auth_base.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1610
+    },
+    {
+      "path": "app/templates/macros/form_fields.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 11517
+    },
+    {
+      "path": "app/templates/official/_official_base.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 3260
+    },
+    {
+      "path": "app/templates/official/account_approvals.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 2185
+    },
+    {
+      "path": "app/templates/official/blotter_cases.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 7159
+    },
+    {
+      "path": "app/templates/official/blotter_detail.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 7,
+      "tables": 0,
+      "bytes": 7464
+    },
+    {
+      "path": "app/templates/official/blotter_map.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 7163
+    },
+    {
+      "path": "app/templates/official/blotter_statistics.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1504
+    },
+    {
+      "path": "app/templates/official/business_form.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 2566
+    },
+    {
+      "path": "app/templates/official/business_requests.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 1,
+      "bytes": 2258
+    },
+    {
+      "path": "app/templates/official/businesses.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 1,
+      "bytes": 3218
+    },
+    {
+      "path": "app/templates/official/collections.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 2,
+      "bytes": 3904
+    },
+    {
+      "path": "app/templates/official/correction_requests.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 1,
+      "bytes": 7691
+    },
+    {
+      "path": "app/templates/official/document_request_detail.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 9,
+      "tables": 0,
+      "bytes": 10638
+    },
+    {
+      "path": "app/templates/official/document_requests.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 2595
+    },
+    {
+      "path": "app/templates/official/drrm.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 11,
+      "tables": 0,
+      "bytes": 11926
+    },
+    {
+      "path": "app/templates/official/household_members.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1186
+    },
+    {
+      "path": "app/templates/official/households.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 1,
+      "bytes": 1284
+    },
+    {
+      "path": "app/templates/official/messages.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1053
+    },
+    {
+      "path": "app/templates/official/puroks.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 944
+    },
+    {
+      "path": "app/templates/official/queue.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 1,
+      "bytes": 3266
+    },
+    {
+      "path": "app/templates/official/reports.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 1306
+    },
+    {
+      "path": "app/templates/official/resident_detail.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 2130
+    },
+    {
+      "path": "app/templates/official/resident_form.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 1764
+    },
+    {
+      "path": "app/templates/official/residents.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 1,
+      "bytes": 3653
+    },
+    {
+      "path": "app/templates/official/welfare.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 2,
+      "bytes": 4257
+    },
+    {
+      "path": "app/templates/official/welfare_form.html",
+      "extends": [
+        "\"official/_official_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 2198
+    },
+    {
+      "path": "app/templates/partials/_macros.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 3126
+    },
+    {
+      "path": "app/templates/partials/_pagination.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1440
+    },
+    {
+      "path": "app/templates/partials/_registration_details.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1886
+    },
+    {
+      "path": "app/templates/partials/_site_info.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1566
+    },
+    {
+      "path": "app/templates/partials/admin/_header.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 5537
+    },
+    {
+      "path": "app/templates/partials/admin/_official_account_form.html",
+      "extends": [],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 3585
+    },
+    {
+      "path": "app/templates/partials/admin/_sidebar.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 4028
+    },
+    {
+      "path": "app/templates/partials/auth/_footer.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1292
+    },
+    {
+      "path": "app/templates/partials/auth/_footer_landing.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1695
+    },
+    {
+      "path": "app/templates/partials/auth/_hero_compact.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 3415
+    },
+    {
+      "path": "app/templates/partials/auth/_hero_landing.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1798
+    },
+    {
+      "path": "app/templates/partials/auth/_hero_wizard.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 2886
+    },
+    {
+      "path": "app/templates/partials/auth/_privacy_modal.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 4979
+    },
+    {
+      "path": "app/templates/partials/auth/_ribbon.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 2364
+    },
+    {
+      "path": "app/templates/partials/auth/_ribbon_landing.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1466
+    },
+    {
+      "path": "app/templates/partials/auth/_toast.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1353
+    },
+    {
+      "path": "app/templates/partials/messaging/_widget.html",
+      "extends": [],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 2710
+    },
+    {
+      "path": "app/templates/partials/official/_header.html",
+      "extends": [],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 5459
+    },
+    {
+      "path": "app/templates/partials/official/_sidebar.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 5322
+    },
+    {
+      "path": "app/templates/partials/portal/_announcement_carousel.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1713
+    },
+    {
+      "path": "app/templates/partials/portal/_calendar.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 897
+    },
+    {
+      "path": "app/templates/partials/portal/_footer.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1594
+    },
+    {
+      "path": "app/templates/partials/portal/_header.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 7011
+    },
+    {
+      "path": "app/templates/partials/portal/_macros.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 5308
+    },
+    {
+      "path": "app/templates/partials/portal/_meta_bar.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1090
+    },
+    {
+      "path": "app/templates/partials/portal/_modals.html",
+      "extends": [],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 4104
+    },
+    {
+      "path": "app/templates/partials/portal/_notifications.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1148
+    },
+    {
+      "path": "app/templates/partials/portal/_sidebar.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 5770
+    },
+    {
+      "path": "app/templates/privacy.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 3761
+    },
+    {
+      "path": "app/templates/profile_image.html",
+      "extends": [
+        "'admin/_admin_base.html' if is_admin else ('official/_official_base.html' if is_official else 'resident/_portal_base.html') "
+      ],
+      "forms": 2,
+      "tables": 0,
+      "bytes": 1634
+    },
+    {
+      "path": "app/templates/resident/_portal_base.html",
+      "extends": [],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 3236
+    },
+    {
+      "path": "app/templates/resident/blotter_cases.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 1,
+      "bytes": 2348
+    },
+    {
+      "path": "app/templates/resident/blotter_detail.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 2269
+    },
+    {
+      "path": "app/templates/resident/blotter_form.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 7752
+    },
+    {
+      "path": "app/templates/resident/correction_requests.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 8831
+    },
+    {
+      "path": "app/templates/resident/document_request_detail.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 0,
+      "bytes": 4880
+    },
+    {
+      "path": "app/templates/resident/document_request_form.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 0,
+      "bytes": 4035
+    },
+    {
+      "path": "app/templates/resident/documents.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 1,
+      "bytes": 3275
+    },
+    {
+      "path": "app/templates/resident/emergency_alerts.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 3245
+    },
+    {
+      "path": "app/templates/resident/household.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 1957
+    },
+    {
+      "path": "app/templates/resident/notifications.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 2,
+      "tables": 0,
+      "bytes": 9290
+    },
+    {
+      "path": "app/templates/resident/queue.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 1,
+      "bytes": 4332
+    },
+    {
+      "path": "app/templates/resident/queue_form.html",
+      "extends": [
+        "\"resident/_portal_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 2487
+    },
+    {
+      "path": "app/templates/search.html",
+      "extends": [
+        "\"base.html\" "
+      ],
+      "forms": 1,
+      "tables": 3,
+      "bytes": 2707
+    },
+    {
+      "path": "app/templates/verify.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 0,
+      "tables": 0,
+      "bytes": 3943
+    },
+    {
+      "path": "app/templates/verify_search.html",
+      "extends": [
+        "\"layouts/auth_base.html\" "
+      ],
+      "forms": 1,
+      "tables": 0,
+      "bytes": 2291
+    }
+  ],
+  "assets": [
+    {
+      "path": "app/static/css/app.css",
+      "bytes": 10980
+    },
+    {
+      "path": "app/static/css/auth.css",
+      "bytes": 40541
+    },
+    {
+      "path": "app/static/css/auth.src.css",
+      "bytes": 2611
+    },
+    {
+      "path": "app/static/css/blotter-form.css",
+      "bytes": 6161
+    },
+    {
+      "path": "app/static/css/change-password.css",
+      "bytes": 2770
+    },
+    {
+      "path": "app/static/css/form-validation.css",
+      "bytes": 11290
+    },
+    {
+      "path": "app/static/css/messaging.css",
+      "bytes": 4753
+    },
+    {
+      "path": "app/static/css/official-admin-green-theme.css",
+      "bytes": 5739
+    },
+    {
+      "path": "app/static/css/official-blotter-detail.css",
+      "bytes": 6401
+    },
+    {
+      "path": "app/static/css/official-blotter.css",
+      "bytes": 4439
+    },
+    {
+      "path": "app/static/css/portal.css",
+      "bytes": 46721
+    },
+    {
+      "path": "app/static/css/portal.src.css",
+      "bytes": 6260
+    },
+    {
+      "path": "app/static/css/registration.css",
+      "bytes": 1184
+    },
+    {
+      "path": "app/static/css/resident-dashboard.css",
+      "bytes": 6568
+    },
+    {
+      "path": "app/static/css/stitch-resident.css",
+      "bytes": 22752
+    },
+    {
+      "path": "app/static/css/ui-enhancements.css",
+      "bytes": 13316
+    },
+    {
+      "path": "app/static/css/ui-pagination.css",
+      "bytes": 2105
+    },
+    {
+      "path": "app/static/css/ui-polish.css",
+      "bytes": 2435
+    },
+    {
+      "path": "app/static/css/ui-system.css",
+      "bytes": 9001
+    },
+    {
+      "path": "app/static/css/workspace.css",
+      "bytes": 3632
+    },
+    {
+      "path": "app/static/js/auth-ui.js",
+      "bytes": 16494
+    },
+    {
+      "path": "app/static/js/certificate-print.js",
+      "bytes": 410
+    },
+    {
+      "path": "app/static/js/change-password.js",
+      "bytes": 2049
+    },
+    {
+      "path": "app/static/js/civic-ui.js",
+      "bytes": 4018
+    },
+    {
+      "path": "app/static/js/document-request.js",
+      "bytes": 190
+    },
+    {
+      "path": "app/static/js/form-enhancements.js",
+      "bytes": 14166
+    },
+    {
+      "path": "app/static/js/form-validation.js",
+      "bytes": 19485
+    },
+    {
+      "path": "app/static/js/messaging.js",
+      "bytes": 4973
+    },
+    {
+      "path": "app/static/js/portal.js",
+      "bytes": 11122
+    },
+    {
+      "path": "app/static/js/registration-uploads.js",
+      "bytes": 1411
+    },
+    {
+      "path": "app/static/js/stitch-resident.js",
+      "bytes": 4921
+    },
+    {
+      "path": "app/static/js/table-sort.js",
+      "bytes": 2835
+    },
+    {
+      "path": "app/static/js/tutorial.js",
+      "bytes": 9678
+    },
+    {
+      "path": "app/static/js/workspace.js",
+      "bytes": 8122
+    }
+  ],
+  "routes": [
+    {
+      "path": "/static/<path:filename>",
+      "endpoint": "static",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/workspace/notifications",
+      "endpoint": "workspace.notifications",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/workspace/notifications/read",
+      "endpoint": "workspace.notification_read",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/workspace/calendar",
+      "endpoint": "workspace.calendar",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/workspace/profile",
+      "endpoint": "workspace.profile",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/workspace/profile-photo",
+      "endpoint": "workspace.profile_photo",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/",
+      "endpoint": "main.index",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/health",
+      "endpoint": "main.health_check",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/privacy",
+      "endpoint": "main.privacy_notice",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/search",
+      "endpoint": "main.search",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/help",
+      "endpoint": "main.help_page",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/verify",
+      "endpoint": "main.verify",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/verify/<document_number>",
+      "endpoint": "main.verify_document",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/auth/register",
+      "endpoint": "auth.register",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/auth/verify-email/<token>",
+      "endpoint": "auth.verify_email",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/auth/resend-verification",
+      "endpoint": "auth.resend_verification",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/auth/activate/<token>",
+      "endpoint": "auth.activate",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/auth/login",
+      "endpoint": "auth.login",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/auth/session",
+      "endpoint": "auth.session_status",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/auth/logout",
+      "endpoint": "auth.logout",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/auth/change-password",
+      "endpoint": "auth.change_password",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/auth/enter-activation-code",
+      "endpoint": "auth.enter_activation_code",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/auth/forgot-password",
+      "endpoint": "auth.forgot_password",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/auth/reset-password/<token>",
+      "endpoint": "auth.reset_password",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/auth/terms-and-conditions",
+      "endpoint": "auth.terms_and_conditions",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/admin/",
+      "endpoint": "admin.dashboard",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/admin/dashboard-data",
+      "endpoint": "admin.dashboard_data",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/admin/users",
+      "endpoint": "admin.users",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/official-accounts",
+      "endpoint": "admin.official_accounts",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/official-accounts/<int:user_id>/delete",
+      "endpoint": "admin.delete_official_account",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/users/<int:user_id>/toggle",
+      "endpoint": "admin.toggle_user",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/users/<int:user_id>/roles",
+      "endpoint": "admin.assign_user_role",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/roles",
+      "endpoint": "admin.roles",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/permissions",
+      "endpoint": "admin.permissions",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/roles/<int:role_id>/permissions",
+      "endpoint": "admin.assign_permission",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/puroks",
+      "endpoint": "admin.puroks",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/puroks/<int:purok_id>/edit",
+      "endpoint": "admin.purok_edit",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/puroks/<int:purok_id>/archive",
+      "endpoint": "admin.purok_archive",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/document-types",
+      "endpoint": "admin.document_types",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/fees",
+      "endpoint": "admin.fees",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/settings",
+      "endpoint": "admin.settings",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/audit-logs",
+      "endpoint": "admin.audit_logs",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/admin/backup",
+      "endpoint": "admin.backup",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/admin/analytics",
+      "endpoint": "admin.analytics",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/admin/blotter-map",
+      "endpoint": "admin.blotter_map",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/admin/analytics-data",
+      "endpoint": "admin.analytics_data",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/admin/reports",
+      "endpoint": "admin.reports",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/admin/reports/export",
+      "endpoint": "admin.report_download",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/admin/reports/export/<kind>/<export_format>",
+      "endpoint": "admin.report_export",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/",
+      "endpoint": "official.dashboard",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/account-approvals",
+      "endpoint": "official.account_approvals",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/account-approvals/<int:user_id>/approve",
+      "endpoint": "official.approve_resident_account",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/residents",
+      "endpoint": "official.resident_list",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/households",
+      "endpoint": "official.household_list",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/residents/new",
+      "endpoint": "official.resident_create",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/residents/<int:resident_id>/edit",
+      "endpoint": "official.resident_edit",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/residents/<int:resident_id>",
+      "endpoint": "official.resident_detail",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/residents/<int:resident_id>/household-members",
+      "endpoint": "official.household_members",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/residents/<int:resident_id>/photo",
+      "endpoint": "official.resident_photo",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/correction-requests",
+      "endpoint": "official.correction_requests",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/correction-requests/<int:correction_id>/approve",
+      "endpoint": "official.correction_approve",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/correction-requests/<int:correction_id>/reject",
+      "endpoint": "official.correction_reject",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/document-requests",
+      "endpoint": "official.document_requests",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>",
+      "endpoint": "official.document_request_detail",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/status",
+      "endpoint": "official.document_request_status",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/additional-requirement",
+      "endpoint": "official.document_additional_requirement",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/generate",
+      "endpoint": "official.document_generate",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/release",
+      "endpoint": "official.document_release",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/requirements/<int:requirement_id>/download",
+      "endpoint": "official.document_requirement_download",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/requirements/<int:requirement_id>/view",
+      "endpoint": "official.document_requirement_view",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/blotter",
+      "endpoint": "official.blotter_list",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/blotter/updates",
+      "endpoint": "official.blotter_updates",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/blotter/statistics",
+      "endpoint": "official.blotter_statistics",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/blotter-map",
+      "endpoint": "official.blotter_map",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/blotter-map/data",
+      "endpoint": "official.blotter_map_data",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/blotter/<int:case_id>",
+      "endpoint": "official.blotter_detail",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/blotter/<int:case_id>/status",
+      "endpoint": "official.blotter_status",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/blotter/<int:case_id>/party",
+      "endpoint": "official.blotter_party",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/blotter/<int:case_id>/hearing",
+      "endpoint": "official.blotter_hearing",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/blotter/<int:case_id>/mediation",
+      "endpoint": "official.blotter_mediation",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/blotter/<int:case_id>/settlement",
+      "endpoint": "official.blotter_settlement",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/blotter/<int:case_id>/endorsement",
+      "endpoint": "official.blotter_endorsement",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/blotter/<int:case_id>/access",
+      "endpoint": "official.blotter_access",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/businesses",
+      "endpoint": "official.business_list",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/businesses/new",
+      "endpoint": "official.business_create",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/businesses/<int:business_id>/edit",
+      "endpoint": "official.business_edit",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/business-clearance-requests",
+      "endpoint": "official.business_clearance_requests",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/businesses/<int:business_id>/request-clearance",
+      "endpoint": "official.business_request_clearance",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/business-clearance-requests/<int:request_id>/status",
+      "endpoint": "official.business_clearance_status",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/welfare",
+      "endpoint": "official.welfare_registry",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/welfare/new",
+      "endpoint": "official.welfare_create",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/welfare/<int:beneficiary_id>/edit",
+      "endpoint": "official.welfare_edit",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/welfare/<int:beneficiary_id>/assistance",
+      "endpoint": "official.welfare_assistance",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/queue",
+      "endpoint": "official.queue_management",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/queue/<int:queue_id>/update",
+      "endpoint": "official.queue_update",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/collections",
+      "endpoint": "official.collections",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/reports",
+      "endpoint": "official.reports",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/collections/new",
+      "endpoint": "official.collection_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm",
+      "endpoint": "official.drrm_dashboard",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/drrm/hazards",
+      "endpoint": "official.drrm_hazard_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/centers",
+      "endpoint": "official.drrm_center_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/contacts",
+      "endpoint": "official.drrm_contact_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/equipment",
+      "endpoint": "official.drrm_equipment_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/supplies",
+      "endpoint": "official.drrm_supply_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/incidents",
+      "endpoint": "official.drrm_incident_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/incidents/<int:incident_id>/relief",
+      "endpoint": "official.drrm_relief_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/incidents/<int:incident_id>/damage",
+      "endpoint": "official.drrm_damage_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/alerts",
+      "endpoint": "official.drrm_alert_create",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/alerts/<int:alert_id>/edit",
+      "endpoint": "official.drrm_alert_edit",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/drrm/alerts/<int:alert_id>/update",
+      "endpoint": "official.drrm_alert_update",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/alerts/<int:alert_id>/delete",
+      "endpoint": "official.drrm_alert_delete",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/drrm/alerts/<int:alert_id>/archive",
+      "endpoint": "official.drrm_alert_archive",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/puroks",
+      "endpoint": "official.purok_list",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/residents/<int:resident_id>/registration-files/<kind>",
+      "endpoint": "official.registration_file",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/analytics",
+      "endpoint": "official.analytics",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/analytics-data",
+      "endpoint": "official.analytics_data",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/report-center",
+      "endpoint": "official.report_center",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/report-center/export/<kind>/<export_format>",
+      "endpoint": "official.report_export",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/report-center/export",
+      "endpoint": "official.report_download",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/verify",
+      "endpoint": "official.document_verify",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/preview",
+      "endpoint": "official.document_preview",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/certificate",
+      "endpoint": "official.document_certificate",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/pdf",
+      "endpoint": "official.document_pdf",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/application",
+      "endpoint": "official.document_application",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/printed",
+      "endpoint": "official.document_printed",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/receipt",
+      "endpoint": "official.document_receipt",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/document-requests/<int:request_id>/revoke",
+      "endpoint": "official.document_revoke",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/official/document-settings",
+      "endpoint": "official.document_settings",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/resident/",
+      "endpoint": "resident.dashboard",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/profile",
+      "endpoint": "resident.profile",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/household",
+      "endpoint": "resident.household",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/profile-photo",
+      "endpoint": "resident.profile_photo",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/requests",
+      "endpoint": "resident.requests",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/correction-requests",
+      "endpoint": "resident.correction_requests",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/resident/documents",
+      "endpoint": "resident.documents",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/documents/new",
+      "endpoint": "resident.document_request_create",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/resident/documents/<int:request_id>",
+      "endpoint": "resident.document_request_detail",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/documents/<int:request_id>/requirements/<int:requirement_id>/upload",
+      "endpoint": "resident.document_requirement_upload",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/resident/documents/<int:request_id>/download",
+      "endpoint": "resident.document_download",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/notifications",
+      "endpoint": "resident.notifications",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/notifications/<int:notification_id>/read",
+      "endpoint": "resident.notification_read",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/resident/notifications/read-all",
+      "endpoint": "resident.notifications_read_all",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/resident/queue",
+      "endpoint": "resident.queue_requests",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/queue/new",
+      "endpoint": "resident.queue_request_create",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/resident/emergency-alerts",
+      "endpoint": "resident.emergency_alerts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/blotter",
+      "endpoint": "resident.blotter_cases",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/blotter/new",
+      "endpoint": "resident.blotter_create",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/resident/blotter/<int:case_id>",
+      "endpoint": "resident.blotter_detail",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/documents/<int:request_id>/requirements/<int:requirement_id>/view",
+      "endpoint": "resident.document_requirement_view",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/documents/<int:request_id>/requirements/<int:requirement_id>/remove",
+      "endpoint": "resident.document_requirement_remove",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/resident/registration-files/<kind>",
+      "endpoint": "resident.registration_file",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/resident/documents/<int:request_id>/correction",
+      "endpoint": "resident.document_correction",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/messaging/api/thread",
+      "endpoint": "messaging.resident_thread",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/messaging/api/thread/messages",
+      "endpoint": "messaging.resident_send",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/messaging/official",
+      "endpoint": "messaging.official_inbox",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/messaging/api/inbox",
+      "endpoint": "messaging.official_inbox_api",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/messaging/api/inbox/<int:thread_id>",
+      "endpoint": "messaging.official_thread",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/messaging/api/inbox/<int:thread_id>/messages",
+      "endpoint": "messaging.official_send",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/geocode/search",
+      "endpoint": "geocoding.search",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/geocode/reverse",
+      "endpoint": "geocoding.reverse",
+      "methods": [
+        "GET"
+      ]
+    }
+  ],
+  "findings": [
+    "Three portal layouts and one public/auth layout have conflicting final CSS layers.",
+    "Resident portal does not load Bootstrap although profile forms need Bootstrap.",
+    "Profile image page has no information tabs or role-specific edit forms.",
+    "Resident header renders initials even when a profile photo exists.",
+    "Profile uploads decode and re-encode safely but support JPEG/PNG only.",
+    "Official/admin photo and resident photo references can diverge after staff replacements.",
+    "Navigation lacks desktop compact mode and a persistent theme switcher.",
+    "Original A4 templates must be isolated from global frontend styles."
+  ]
+}
