@@ -72,6 +72,19 @@ def register_extensions(app: Flask) -> None:
     migrate.init_app(app, db)
     login_manager.init_app(app)
     csrf.init_app(app)
+    from .extensions import oauth
+    oauth.init_app(app)
+    oauth.register(
+        name="github",
+        client_id=app.config.get("GITHUB_CLIENT_ID", ""),
+        client_secret=app.config.get("GITHUB_CLIENT_SECRET", ""),
+        access_token_url="https://github.com/login/oauth/access_token",
+        access_token_params=None,
+        authorize_url="https://github.com/login/oauth/authorize",
+        authorize_params=None,
+        api_base_url="https://api.github.com/",
+        client_kwargs={"scope": "user:email"},
+    )
 
 
 def register_models() -> None:
@@ -152,7 +165,7 @@ def register_session_hooks(app: Flask) -> None:
             "default-src 'self'; "
             "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; "
             "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; "
-            "img-src 'self' data: https://*.tile.openstreetmap.org; "
+            "img-src 'self' data: https://*.tile.openstreetmap.org https://avatars.githubusercontent.com; "
             "font-src 'self' data: https://cdn.jsdelivr.net https://unpkg.com; "
             "connect-src 'self'; " +
             ("frame-ancestors 'self'; " if request.endpoint == 'official.document_certificate' else "frame-ancestors 'none'; ") + "base-uri 'self'; form-action 'self'",

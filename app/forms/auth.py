@@ -10,7 +10,7 @@ from wtforms import (
     TextAreaField, BooleanField, HiddenField, SelectMultipleField
 )
 from wtforms.validators import (
-    DataRequired, Email, Length, EqualTo, Optional, ValidationError
+    DataRequired, Email, Length, EqualTo, Optional, Regexp, ValidationError
 )
 from sqlalchemy import or_
 
@@ -424,8 +424,79 @@ class ForgotPasswordForm(BaseForm):
     )
 
 
+class VerifyOtpForm(BaseForm):
+    """Step 1 of password reset — verify the 6-digit email OTP only."""
+
+    otp = StringField(
+        'One-time code',
+        validators=[
+            DataRequired(message='Enter the 6-digit code from your email'),
+            Regexp(r'^\d{6}$', message='Enter the 6-digit code from your email'),
+        ],
+        render_kw={
+            'placeholder': '000000',
+            'autocomplete': 'one-time-code',
+            'inputmode': 'numeric',
+            'maxlength': '6',
+        },
+    )
+
+
+class NewPasswordForm(BaseForm):
+    """Step 2 of password reset — choose a new password after OTP is verified."""
+
+    password = PasswordField(
+        'New Password',
+        validators=[
+            DataRequired(message='Password is required'),
+            Length(min=8, message='Password must be at least 8 characters'),
+        ],
+        render_kw={
+            'placeholder': 'Enter new password',
+            'autocomplete': 'new-password',
+        },
+    )
+
+    password_confirmation = PasswordField(
+        'Confirm Password',
+        validators=[
+            DataRequired(message='Password confirmation is required'),
+            EqualTo('password', message='Passwords must match'),
+        ],
+        render_kw={
+            'placeholder': 'Confirm new password',
+            'autocomplete': 'new-password',
+        },
+    )
+
+    def validate_password(self, field):
+        if field.data:
+            min_length = current_app.config.get('PASSWORD_MIN_LENGTH', 8)
+            if len(field.data) < min_length:
+                raise ValidationError(f'Password must be at least {min_length} characters')
+            has_lower = any(c.islower() for c in field.data)
+            has_upper = any(c.isupper() for c in field.data)
+            has_digit = any(c.isdigit() for c in field.data)
+            if not (has_lower and has_upper and has_digit):
+                raise ValidationError('Password must contain uppercase, lowercase, and numbers')
+
+
 class ResetPasswordForm(BaseForm):
-    """Form for resetting password with token."""
+    """Form for resetting a password after a verified email OTP."""
+
+    otp = StringField(
+        'One-time code',
+        validators=[
+            DataRequired(message='Enter the 6-digit code from your email'),
+            Regexp(r'^\d{6}$', message='Enter the 6-digit code from your email'),
+        ],
+        render_kw={
+            'placeholder': '000000',
+            'autocomplete': 'one-time-code',
+            'inputmode': 'numeric',
+            'maxlength': '6',
+        },
+    )
     
     password = PasswordField(
         'New Password',

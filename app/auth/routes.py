@@ -7,16 +7,17 @@ import secrets
 from datetime import datetime, timedelta, timezone
 from urllib.parse import urlsplit
 
-from flask import Blueprint, current_app, flash, g, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, current_app, flash, g, jsonify, redirect, render_template, request, session, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import func, or_
 from sqlalchemy.exc import IntegrityError
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.extensions import db
 from app.models import LoginAttempt, Purok, Resident, Role, User
 from app.audit import record as audit_record
-from app.email_service import send_verification_email
-from app.forms import LoginForm, RegisterForm, ChangePasswordForm, ForgotPasswordForm, ResetPasswordForm
+from app.email_service import send_password_reset_otp, send_verification_email
+from app.forms import LoginForm, RegisterForm, ChangePasswordForm, ForgotPasswordForm, ResetPasswordForm, VerifyOtpForm, NewPasswordForm
 from app.validation import ValidationService
 
 from .session import (
@@ -435,46 +436,197 @@ def enter_activation_code():
 
 @auth_bp.route("/forgot-password", methods=["GET", "POST"])
 def forgot_password():
-    reset_url = None
-    if request.method == "POST":
-        email = request.form.get("email", "").strip().lower()
+    """Issue a short-lived, single-use email OTP without exposing account existence."""
+    form = ForgotPasswordForm()
+    if form.validate_on_submit():
+        email = form.email.data.strip().lower()
         user = db.session.scalar(db.select(User).where(User.email == email, User.is_active.is_(True)))
         if user:
-            token = secrets.token_urlsafe(32)
-            user.reset_token_hash = token_digest(token)
+            otp = f"{secrets.randbelow(1_000_000):06d}"
+            user.reset_token_hash = generate_password_hash(otp)
             user.reset_expires_at = now() + timedelta(minutes=current_app.config["PASSWORD_RESET_TOKEN_MINUTES"])
+            session["password_reset_user_id"] = user.id
+            session.pop("password_reset_attempts", None)
             db.session.commit()
-            reset_url = url_for("auth.reset_password", token=token, _external=False)
-        flash("If an active account matches that email, a reset link is available.", "info")
-    return render_template("auth/forgot_password.html", reset_url=reset_url)
+            try:
+                send_password_reset_otp(
+                    recipient=user.email,
+                    full_name=_full_name(user),
+                    otp=otp,
+                    valid_minutes=current_app.config["PASSWORD_RESET_TOKEN_MINUTES"],
+                )
+                audit_record("PASSWORD_RESET_OTP_SENT", "auth", "User", user.id, "Password recovery OTP sent")
+                db.session.commit()
+            except Exception:
+                current_app.logger.exception("Password reset OTP delivery failed for user id %s", user.id)
+        flash("If an active account matches that email, a one-time code has been sent.", "info")
+        return redirect(url_for("auth.reset_password"))
+    return render_template("auth/forgot_password.html", form=form)
 
 
-@auth_bp.route("/reset-password/<token>", methods=["GET", "POST"])
-def reset_password(token: str):
-    user = db.session.scalar(db.select(User).where(User.reset_token_hash == token_digest(token)))
-    if user is None or is_expired(user.reset_expires_at):
-        flash("The reset link is invalid or expired.", "danger")
+@auth_bp.route("/reset-password", methods=["GET", "POST"])
+def reset_password():
+    """Step 1 — verify the 6-digit OTP. On success, mark session and redirect to new-password."""
+    user_id = session.get("password_reset_user_id")
+    user = db.session.get(User, user_id) if user_id else None
+    if user is None or not user.is_active or not user.reset_token_hash or is_expired(user.reset_expires_at):
+        session.pop("password_reset_user_id", None)
+        session.pop("password_reset_otp_verified", None)
+        flash("Your password recovery code is invalid or expired. Request a new code.", "danger")
         return redirect(url_for("auth.forgot_password"))
-    if request.method == "POST":
-        password = request.form.get("password", "")
-        confirmation = request.form.get("password_confirmation", "")
-        if not valid_password(password):
-            flash(f"Password must be at least {current_app.config['PASSWORD_MIN_LENGTH']} characters.", "danger")
-        elif password != confirmation:
-            flash("Password confirmation does not match.", "danger")
+
+    form = VerifyOtpForm()
+    if form.validate_on_submit():
+        reset_attempt = attempt_record(f"password-reset:{user.id}")
+        if locked(reset_attempt):
+            flash("Too many incorrect codes. Please wait before trying again.", "danger")
+        elif not check_password_hash(user.reset_token_hash, form.otp.data):
+            record_failed_login(reset_attempt)
+            flash("The one-time code is incorrect. Please check your email and try again.", "danger")
         else:
-            user.set_password(password)
-            user.must_change_password = False
-            user.reset_token_hash = None
-            user.reset_expires_at = None
-            revoke_user_sessions(user.id)
+            clear_failed_logins(reset_attempt)
+            # Mark OTP as verified — gate the new-password page behind this flag
+            session["password_reset_otp_verified"] = True
+            audit_record("PASSWORD_RESET_OTP_VERIFIED", "auth", "User", user.id,
+                         "Password reset OTP verified; proceeding to new password step")
             db.session.commit()
-            flash("Your password has been reset. You may now sign in.", "success")
-            return redirect(url_for("auth.login"))
-    return render_template("auth/reset_password.html")
+            return redirect(url_for("auth.new_password"))
+    return render_template(
+        "auth/reset_password.html",
+        form=form,
+        reset_valid_minutes=current_app.config["PASSWORD_RESET_TOKEN_MINUTES"],
+        reset_email=user.email,
+    )
+
+
+@auth_bp.route("/new-password", methods=["GET", "POST"])
+def new_password():
+    """Step 2 — set the new password, only reachable after OTP is verified."""
+    user_id = session.get("password_reset_user_id")
+    otp_verified = session.get("password_reset_otp_verified", False)
+    user = db.session.get(User, user_id) if user_id else None
+
+    if not otp_verified or user is None or not user.is_active or is_expired(user.reset_expires_at):
+        session.pop("password_reset_user_id", None)
+        session.pop("password_reset_otp_verified", None)
+        flash("Please verify your one-time code first.", "warning")
+        return redirect(url_for("auth.forgot_password"))
+
+    form = NewPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        user.must_change_password = False
+        user.reset_token_hash = None
+        user.reset_expires_at = None
+        revoke_user_sessions(user.id)
+        audit_record("PASSWORD_RESET_WITH_OTP", "auth", "User", user.id,
+                     "Password reset after email OTP verification")
+        db.session.commit()
+        session.pop("password_reset_user_id", None)
+        session.pop("password_reset_otp_verified", None)
+        flash("Your password has been reset. You may now sign in.", "success")
+        return redirect(url_for("auth.login"))
+    return render_template(
+        "auth/new_password.html",
+        form=form,
+        password_min_length=current_app.config["PASSWORD_MIN_LENGTH"],
+    )
+
+
+@auth_bp.route("/reset-password/<token>")
+def legacy_reset_password(token: str):
+    """Gracefully retire old link-based recovery URLs without accepting them."""
+    flash("Password reset now uses a one-time code sent to your email.", "info")
+    return redirect(url_for("auth.forgot_password"))
 
 
 @auth_bp.route("/terms-and-conditions")
 def terms_and_conditions():
     """Display Terms and Conditions page."""
     return render_template("auth/terms_and_conditions.html")
+
+
+# ---------------------------------------------------------------------------
+# GitHub OAuth
+# ---------------------------------------------------------------------------
+
+@auth_bp.get("/login/github")
+def github_login():
+    """Redirect to GitHub for OAuth authorisation."""
+    from app.extensions import oauth
+    redirect_uri = url_for("auth.github_callback", _external=True)
+    return oauth.github.authorize_redirect(redirect_uri)
+
+
+@auth_bp.get("/login/github/callback")
+def github_callback():
+    """Handle GitHub OAuth callback — link or log in the matching resident account."""
+    from app.extensions import oauth
+    try:
+        token = oauth.github.authorize_access_token()
+    except Exception:
+        current_app.logger.exception("GitHub OAuth token exchange failed")
+        flash("GitHub login failed. Please try again.", "danger")
+        return redirect(url_for("auth.login"))
+
+    # Fetch the authenticated GitHub user profile.
+    resp = oauth.github.get("user", token=token)
+    github_profile = resp.json()
+    github_id = str(github_profile.get("id", ""))
+
+    # Fetch the primary verified email if the profile email is hidden.
+    email = github_profile.get("email")
+    if not email:
+        emails_resp = oauth.github.get("user/emails", token=token)
+        for entry in emails_resp.json():
+            if entry.get("primary") and entry.get("verified"):
+                email = entry["email"]
+                break
+
+    if not email:
+        flash("Your GitHub account does not have a verified public email. Please add one and try again.", "warning")
+        return redirect(url_for("auth.login"))
+
+    email = email.strip().lower()
+
+    # --- Link by GitHub ID first (fastest and most stable path) ---
+    user = db.session.scalar(db.select(User).where(User.github_id == github_id))
+
+    # --- Fall back to email match for first-time GitHub login ---
+    if user is None:
+        user = db.session.scalar(
+            db.select(User).where(
+                db.func.lower(User.email) == email,
+                User.is_active.is_(True),
+                User.status == "active",
+            )
+        )
+        if user is not None:
+            # Permanently link this GitHub account to the matched user.
+            user.github_id = github_id
+            audit_record("GITHUB_ACCOUNT_LINKED", "auth", "User", user.id,
+                         f"GitHub account {github_profile.get('login')} linked to user")
+            db.session.commit()
+
+    if user is None:
+        flash(
+            "No active account was found for the GitHub email address. "
+            "Please register first or contact the barangay office.",
+            "warning",
+        )
+        return redirect(url_for("auth.login"))
+
+    if not user.is_active or user.status != "active":
+        flash("Your account is not yet active. Please wait for barangay approval.", "warning")
+        return redirect(url_for("auth.login"))
+
+    login_user(user, fresh=True)
+    user.last_login_at = now()
+    create_session_record(user.id)
+    audit_record("LOGIN_GITHUB", "auth", "User", user.id,
+                 f"User {user.username} signed in via GitHub OAuth")
+    db.session.commit()
+    if user.must_change_password:
+        flash("Palitan muna ang pansamantalang password bago magpatuloy.", "warning")
+        return redirect(url_for("auth.change_password"))
+    return redirect(safe_next_url(request.args.get("next")) or post_login_url())

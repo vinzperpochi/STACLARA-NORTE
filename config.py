@@ -53,7 +53,7 @@ class BaseConfig:
     LOGIN_MAX_ATTEMPTS = int(os.getenv("LOGIN_MAX_ATTEMPTS", "5"))
     LOGIN_LOCKOUT_MINUTES = int(os.getenv("LOGIN_LOCKOUT_MINUTES", "15"))
     ACTIVATION_TOKEN_HOURS = int(os.getenv("ACTIVATION_TOKEN_HOURS", "24"))
-    PASSWORD_RESET_TOKEN_MINUTES = int(os.getenv("PASSWORD_RESET_TOKEN_MINUTES", "30"))
+    PASSWORD_RESET_TOKEN_MINUTES = int(os.getenv("PASSWORD_RESET_TOKEN_MINUTES", "5"))
     PASSWORD_MIN_LENGTH = int(os.getenv("PASSWORD_MIN_LENGTH", "12"))
     SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com").strip()
     SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
@@ -105,6 +105,10 @@ class BaseConfig:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", os.getenv("GOOGLE_API_KEY", "")).strip()
     GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
     GEMINI_API_TIMEOUT_SECONDS = int(os.getenv("GEMINI_API_TIMEOUT_SECONDS", "12"))
+
+    # GitHub OAuth login
+    GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID", "").strip()
+    GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET", "").strip()
 
 
 class DevelopmentConfig(BaseConfig):

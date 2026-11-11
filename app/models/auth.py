@@ -42,6 +42,7 @@ class User(UserMixin, StatusMixin, TimestampedModel):
         UniqueConstraint("official_id", name="uq_users_official_id"),
         UniqueConstraint("activation_token_hash", name="uq_users_activation_token_hash"),
         UniqueConstraint("reset_token_hash", name="uq_users_reset_token_hash"),
+        UniqueConstraint("github_id", name="uq_users_github_id"),
         Index("ix_users_status_email", "status", "email"),
     )
 
@@ -57,12 +58,13 @@ class User(UserMixin, StatusMixin, TimestampedModel):
     official_id: Mapped[int | None] = mapped_column(
         ForeignKey("officials.id", name="fk_users_official", ondelete="SET NULL")
     )
-    activation_token_hash: Mapped[str | None] = mapped_column(String(128))
+    activation_token_hash: Mapped[str | None] = mapped_column(String(255))
     activation_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     activated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     email_verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    reset_token_hash: Mapped[str | None] = mapped_column(String(128))
+    reset_token_hash: Mapped[str | None] = mapped_column(String(255))
     reset_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    github_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True)
     last_login_at: Mapped[datetime | None] = mapped_column(nullable=True)
     privacy_consent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     privacy_consent_version: Mapped[str | None] = mapped_column(String(30))

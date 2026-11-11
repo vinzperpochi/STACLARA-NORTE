@@ -1,6 +1,6 @@
 """Form validation classes using Flask-WTF for the Barangay Records Management System."""
 
-from .auth import LoginForm, RegisterForm, ChangePasswordForm, ForgotPasswordForm, ResetPasswordForm
+from .auth import LoginForm, RegisterForm, ChangePasswordForm, ForgotPasswordForm, ResetPasswordForm, VerifyOtpForm, NewPasswordForm
 from .resident import (
     CorrectionRequestForm, DocumentRequestForm, BlotterCaseForm, QueueRequestForm,
     RequirementUploadForm
@@ -23,6 +23,7 @@ from .common import (
 __all__ = [
     # Auth forms
     'LoginForm', 'RegisterForm', 'ChangePasswordForm', 'ForgotPasswordForm', 'ResetPasswordForm',
+    'VerifyOtpForm', 'NewPasswordForm',
     
     # Resident forms
     'CorrectionRequestForm', 'DocumentRequestForm', 'BlotterCaseForm', 'QueueRequestForm',

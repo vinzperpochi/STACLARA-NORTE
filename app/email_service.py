@@ -104,6 +104,29 @@ Barangay Sta. Clara Norte e-Governance
     _deliver(message)
 
 
+def send_password_reset_otp(*, recipient: str, full_name: str, otp: str, valid_minutes: int) -> None:
+    """Send the short-lived code used to authorize password recovery."""
+    message = _new_message(
+        recipient=recipient,
+        subject="Password reset code - Barangay Sta. Clara Norte",
+        body=f"""Magandang araw, {full_name}!
+
+May humiling na i-reset ang password ng inyong Barangay Sta. Clara Norte account.
+
+Ang inyong one-time code ay:
+
+{otp}
+
+I-enter ang 6-digit code sa password recovery page. May bisa ito sa loob ng {valid_minutes} minuto at isang beses lamang magagamit.
+
+Kung hindi ikaw ang humiling nito, huwag ibahagi ang code at maaari mong balewalain ang email na ito.
+
+Barangay Sta. Clara Norte e-Governance
+""",
+    )
+    _deliver(message)
+
+
 def send_official_credentials(*, recipient: str, full_name: str, official_id: str, temporary_password: str) -> None:
     """Send the generated official login credentials through the configured SMTP server."""
     message = _new_message(
