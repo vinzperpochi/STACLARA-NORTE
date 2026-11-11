@@ -1,0 +1,24 @@
+# Local and Windows-only runtime artifacts are not needed by Vercel.
+.git/
+.venv/
+venv/
+instance/
+.test-storage/
+hardware/
+tools/pdf-runtime/
+vendor/
+__pycache__/
+*.pyc
+*.log
+
+# Local reference material and test-only artifacts.
+tests/
+*.zip
+*.ps1
+*.patch
+FRONTEND_*.json
+FILE_MANIFEST.json
+ROUTE_INVENTORY.json
+TEST_RESULTS.txt
+AUDIT_*.md
+SYSTEM_AUDIT_REPORT.md
