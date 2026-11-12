@@ -7,4 +7,5 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 # credentials are supplied through Vercel environment variables, never source.
 app = create_app("production", vercel=True)
 app.config["ATTENDANCE_SHARED_CAPTURE"] = True
+app.config["DOCUMENT_BROWSER_PDF"] = True
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_for=1)

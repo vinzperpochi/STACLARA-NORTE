@@ -1,3 +1,40 @@
-<!doctype html><html><head><meta charset="utf-8"><title>{{ item.issued_document.document_number }}</title><style>body{margin:0;background:#e9f0eb;font:14px Arial}header{padding:12px;background:white;display:flex;gap:12px;align-items:center;flex-wrap:wrap}a,button{padding:9px;border:1px solid #b8cbbb;border-radius:6px;color:#075b21;background:white;cursor:pointer;text-decoration:none}iframe{border:0;width:100%;height:calc(100vh - 70px)}@media print{header{display:none}iframe{height:297mm}}</style></head><body>
-<header><strong>{{ item.issued_document.document_number }}</strong><button type="button" id="print-certificate">Print Certificate</button><a href="{{ url_for('official.document_pdf',request_id=item.id) }}">Generate PDF</a><form method="post" action="{{ url_for('official.document_printed',request_id=item.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button>Confirm printed</button></form><a href="{{ url_for('official.document_request_detail',request_id=item.id) }}">Back to request</a><span>Sign and apply the official dry seal after printing.</span></header>
-<iframe id="certificate-frame" title="Original A4 certificate" src="{{ url_for('official.document_certificate',request_id=item.id) }}" data-print-now="{{ 'yes' if print_now else 'no' }}"></iframe><script src="{{ url_for('static',filename='js/certificate-print.js') }}"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <style>
+    body{margin:0;background:#e9f0eb;font:14px Arial}
+    header{padding:12px;background:white;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    a,button{padding:9px;border:1px solid #b8cbbb;border-radius:6px;color:#075b21;background:white;cursor:pointer;text-decoration:none}
+    iframe{border:0;width:100%;height:calc(100vh - 100px)}
+  </style>
+</head>
+<body>
+<header>
+  <strong>{{ title }}</strong>
+  <button type="button" id="print-certificate">{{ 'Print application' if application else 'Print certificate' }}</button>
+  {% if browser_pdf %}
+  <button type="button" id="download-document">Generate PDF</button>
+  {% else %}
+  <a href="{{ url_for('official.document_pdf',request_id=item.id) }}">Generate PDF</a>
+  {% endif %}
+  {% if not application %}
+  <form method="post" action="{{ url_for('official.document_printed',request_id=item.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button>Confirm printed</button>
+  </form>
+  {% endif %}
+  <a href="{{ url_for('official.document_request_detail',request_id=item.id) }}">Back to request</a>
+  <span id="document-output-status" role="status"></span>
+  {% if not application %}<span>Sign and apply the official dry seal after printing.</span>{% endif %}
+</header>
+<iframe id="certificate-frame" title="Original A4 {{ 'application' if application else 'certificate' }}" src="{{ frame_url }}"
+  data-print-now="{{ 'yes' if print_now else 'no' }}" data-download-now="{{ 'yes' if download_now else 'no' }}"></iframe>
+{% if browser_pdf %}
+<script defer src="{{ url_for('static',filename='vendor/document-pdf/html2canvas.min.js') }}"></script>
+<script defer src="{{ url_for('static',filename='vendor/document-pdf/jspdf.umd.min.js') }}"></script>
+{% endif %}
+<script defer src="{{ url_for('static',filename='js/certificate-print.js') }}"></script>
+</body>
+</html>

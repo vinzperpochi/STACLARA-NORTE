@@ -131,14 +131,21 @@ def artifact_content(item):
     filename=item.generated_filename
     if Path(filename).name!=filename: abort(404)
     path=Path(current_app.config['STORAGE_ROOT'])/'generated_documents'/filename
-    if not path.is_file(): abort(404)
-    return path.read_text(encoding='utf-8')
+    if path.is_file():
+        return path.read_text(encoding='utf-8')
+    if item.issued_document.snapshot:
+        return render_original(template_code(item.document_type), item.issued_document.snapshot)
+    abort(404)
 
 @official_bp.get('/document-requests/<int:request_id>/preview')
 @official_account_required
 def document_preview(request_id):
     item=issued_request(request_id)
-    return render_template('documents/preview.html',item=item,print_now=request.args.get('print')=='1')
+    return render_template('documents/preview.html', item=item,
+        title=item.issued_document.document_number,
+        frame_url=url_for('official.document_certificate', request_id=item.id),
+        browser_pdf=current_app.config.get('DOCUMENT_BROWSER_PDF'),
+        download_now=request.args.get('pdf')=='1', print_now=request.args.get('print')=='1')
 
 @official_bp.get('/document-requests/<int:request_id>/certificate')
 @official_account_required
@@ -151,6 +158,8 @@ def document_certificate(request_id):
 @official_account_required
 def document_pdf(request_id):
     item=issued_request(request_id)
+    if current_app.config.get('DOCUMENT_BROWSER_PDF'):
+        return redirect(url_for('official.document_preview', request_id=item.id, pdf=1))
     try:
         directory=Path(current_app.config['STORAGE_ROOT'])/'generated_documents'
         doc=item.issued_document
@@ -174,6 +183,18 @@ def document_application(request_id):
     else:
         data=resident_data(item.resident);data.update({k:v for k,v in (item.additional_data or {}).items() if not data.get(k)});data.update(purpose=item.description or '',date_received=item.created_at.strftime('%m/%d/%Y'))
     return current_app.response_class(render_original(code,data,'application'),mimetype='text/html',headers={'Cache-Control':'private, no-store'})
+
+
+@official_bp.get('/document-requests/<int:request_id>/application-preview')
+@official_account_required
+def document_application_preview(request_id):
+    item = db.get_or_404(Request, request_id)
+    if not item.document_type:
+        abort(404)
+    return render_template('documents/preview.html', item=item, application=True,
+        title=f'{item.request_number}-application',
+        frame_url=url_for('official.document_application', request_id=item.id),
+        browser_pdf=True)
 
 @official_bp.post('/document-requests/<int:request_id>/printed')
 @official_account_required

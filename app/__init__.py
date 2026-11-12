@@ -170,7 +170,7 @@ def register_session_hooks(app: Flask) -> None:
             "img-src 'self' data: https://*.tile.openstreetmap.org https://avatars.githubusercontent.com; "
             "font-src 'self' data: https://cdn.jsdelivr.net https://unpkg.com; "
             "connect-src 'self'; " +
-            ("frame-ancestors 'self'; " if request.endpoint == 'official.document_certificate' else "frame-ancestors 'none'; ") + "base-uri 'self'; form-action 'self'",
+            ("frame-ancestors 'self'; " if request.endpoint in {'official.document_certificate', 'official.document_application'} else "frame-ancestors 'none'; ") + "base-uri 'self'; form-action 'self'",
         )
         if request.endpoint != "static" and (current_user.is_authenticated or request.path.startswith("/verify/") or request.path.startswith("/admin/")):
             response.headers["Cache-Control"] = "no-store"

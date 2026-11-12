@@ -179,8 +179,10 @@ def generate_document(request_record: Request, actor, *, allow_blank_fields=Fals
     issued.snapshot=snapshot_data(request_record,issued,allow_pending_payment=allow_blank_fields)
     content=render_original(code,issued.snapshot)
     filename=f"{number}-{uuid4().hex}.html"
-    directory=Path(current_app.config["STORAGE_ROOT"])/"generated_documents";directory.mkdir(parents=True,exist_ok=True)
-    (directory/filename).write_text(content,encoding="utf-8")
+    if not current_app.config.get("DOCUMENT_BROWSER_PDF"):
+        directory=Path(current_app.config["STORAGE_ROOT"])/"generated_documents"
+        directory.mkdir(parents=True,exist_ok=True)
+        (directory/filename).write_text(content,encoding="utf-8")
     request_record.generated_filename=filename;request_record.generated_at=datetime.now(timezone.utc);request_record.ready_at=request_record.generated_at
     transition_request(request_record,"READY_FOR_PRINTING",actor,"Original certificate generated after verified approval.")
 

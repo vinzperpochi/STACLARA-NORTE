@@ -22,7 +22,7 @@
   </div>
   <div class="civic-panel p-4 mb-4"><h2 class="h5 mb-3">Resident information</h2><dl class="civic-review-record">{% for key,value in resident_info.items() %}{% if value and key in ['full_name','birth_date','age','sex','civil_status','citizenship','complete_address','contact_number','email','occupation','education'] %}<div><dt>{{ key|replace('_',' ')|title }}</dt><dd>{{ value }}</dd></div>{% endif %}{% endfor %}</dl>
     <p class="mt-3 mb-0"><strong>Purpose:</strong> {{ doc_request.description or 'To be confirmed at the barangay' }}</p>
-    <a class="civic-btn-outline mt-3" target="_blank" rel="noopener" href="{{ url_for('official.document_application',request_id=doc_request.id) }}">View populated application</a>
+    <a class="civic-btn-outline mt-3" target="_blank" rel="noopener" href="{{ url_for('official.document_application_preview',request_id=doc_request.id) }}">View populated application</a>
   </div>
 </section>
 <aside class="col-lg-5">
