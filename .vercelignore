@@ -6,7 +6,7 @@ instance/
 .test-storage/
 hardware/
 tools/pdf-runtime/
-vendor/
+/vendor/
 __pycache__/
 *.pyc
 *.log

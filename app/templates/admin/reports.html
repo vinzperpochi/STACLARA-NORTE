@@ -20,8 +20,10 @@
   {% for kind, label in catalog.items() %}
   <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body">
     <h2 class="text-title-md font-title-md text-on-surface">{{ label }}</h2><p class="text-on-surface-muted small">Export this report using the date range above.</p>
-    <button type="submit" form="report-form" formaction="{{ url_for(report_export_endpoint|default('admin.report_export'), kind=kind, export_format='pdf') }}" class="civic-btn-outline text-xs py-1">PDF</button>
-    <button type="submit" form="report-form" formaction="{{ url_for(report_export_endpoint|default('admin.report_export'), kind=kind, export_format='csv') }}" class="civic-btn-outline text-xs py-1 ms-1">CSV</button>
+    <div class="civic-record-actions">
+    <button type="submit" form="report-form" formaction="{{ url_for(report_export_endpoint|default('admin.report_export'), kind=kind, export_format='pdf') }}" class="civic-btn-outline">PDF</button>
+    <button type="submit" form="report-form" formaction="{{ url_for(report_export_endpoint|default('admin.report_export'), kind=kind, export_format='csv') }}" class="civic-btn-outline">CSV</button>
+    </div>
   </div></div></div>
   {% endfor %}
 </div>

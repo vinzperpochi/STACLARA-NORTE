@@ -10,14 +10,14 @@
     <div class="col-md-2"><label class="form-label" for="purok_id">Purok</label><select class="civic-input" id="purok_id" name="purok_id"><option value="">All Puroks</option>{% for item in puroks %}<option value="{{ item.id }}" {% if selected_purok_id == item.id %}selected{% endif %}>{{ item.name }}</option>{% endfor %}</select></div>
     <div class="col-md-2"><label class="form-label" for="civil_status">Civil status</label><select class="civic-input" id="civil_status" name="civil_status"><option value="">All</option>{% for item in ['Single','Married','Widowed','Separated'] %}<option {% if filters.get('civil_status') == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></div>
     <div class="col-md-1"><label class="form-label" for="age">Age</label><input type="number" class="civic-input" id="age" name="age" value="{{ filters.get('age','') }}"></div>
-    <div class="col-md-4 d-flex flex-wrap align-items-end gap-3">
-        <label class="form-check"><input class="" type="checkbox" name="senior" value="1" {% if filters.get('senior') == '1' %}checked{% endif %}> Senior</label>
-        <label class="form-check"><input class="" type="checkbox" name="pwd" value="1" {% if filters.get('pwd') == '1' %}checked{% endif %}> PWD</label>
-        <label class="form-check"><input class="" type="checkbox" name="four_ps" value="1" {% if filters.get('four_ps') == '1' %}checked{% endif %}> 4Ps</label>
-        <label class="form-check"><input class="" type="checkbox" name="solo_parent" value="1" {% if filters.get('solo_parent') == '1' %}checked{% endif %}> Solo parent</label>
+    <div class="col-md-4 civic-filter-checks">
+        <label><input type="checkbox" name="senior" value="1" {% if filters.get('senior') == '1' %}checked{% endif %}> Senior</label>
+        <label><input type="checkbox" name="pwd" value="1" {% if filters.get('pwd') == '1' %}checked{% endif %}> PWD</label>
+        <label><input type="checkbox" name="four_ps" value="1" {% if filters.get('four_ps') == '1' %}checked{% endif %}> 4Ps</label>
+        <label><input type="checkbox" name="solo_parent" value="1" {% if filters.get('solo_parent') == '1' %}checked{% endif %}> Solo parent</label>
     </div>
 </div>
-<div class="mt-3 d-flex gap-2"><button class="civic-btn">Filter</button><a class="civic-btn-outline" href="{{ url_for('official.resident_list') }}">Clear filters</a></div>
+<div class="mt-3 civic-record-actions"><button class="civic-btn">Filter</button><a class="civic-btn-outline" href="{{ url_for('official.resident_list') }}">Clear filters</a></div>
 </form>
 <div class="civic-panel"><div class="table-responsive">
 <table class="civic-table"><thead><tr><th>Name</th><th>Age</th><th>Sex</th><th>Purok</th><th>Household</th><th>Status</th><th></th></tr></thead><tbody>
