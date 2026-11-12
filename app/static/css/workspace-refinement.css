@@ -168,6 +168,23 @@
     flex: 0 1 22rem;
     min-width: 0;
   }
+  body[class*="workspace-"] #portal-main .civic-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+  }
+  body[class*="workspace-"] #portal-main .civic-filter-bar > :is(.civic-filter-search, .civic-filter-choice) {
+    flex: 0 1 12rem;
+    min-width: 0;
+    max-width: 100%;
+  }
+  body[class*="workspace-"] #portal-main .civic-filter-bar > .civic-filter-search {
+    flex-basis: 15rem;
+  }
+  body[class*="workspace-"] #portal-main .civic-filter-bar > .civic-btn-outline {
+    min-height: 44px;
+  }
   body[class*="workspace-"] #portal-main .civic-inline-form > .civic-btn {
     min-height: 44px;
   }
@@ -313,6 +330,7 @@
   body[class*="workspace-"] #portal-main table td { padding: 13px 14px !important; }
 }
 @media screen and (max-width: 480px) {
+  body[class*="workspace-"] #portal-main .civic-filter-bar > :is(.civic-filter-search, .civic-filter-choice) { flex-basis: 100%; }
   body[class*="workspace-"] #portal-main .ops-stat { padding: 16px; }
   body[class*="workspace-"] #portal-main :is(.ops-filter, .civic-security-actions) > :is(button, a) { max-width: 100%; }
   body[class*="workspace-"] #portal-main .civic-breadcrumb { font-size: 11px; }
