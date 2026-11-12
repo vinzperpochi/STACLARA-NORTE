@@ -1,4 +1,5 @@
 {% extends workspace_base|default("admin/_admin_base.html") %}
+{% from 'components/icons.html' import icon %}
 {% block active_nav %}{{ reports_endpoint|default('admin.reports') }}{% endblock %}
 {% block title %}Report Center{% endblock %}
 {% block content %}
@@ -21,13 +22,15 @@
 </form>
 <div class="report-export-grid">
   {% for kind, label in catalog.items() %}
-  <article class="card shadow-sm"><div class="card-body">
-    <h2 class="text-title-md font-title-md text-on-surface">{{ label }}</h2><p class="text-on-surface-muted small">Export this report using the date range above.</p>
-    <div class="civic-record-actions">
+  <article class="report-export-card">
+    <div class="report-export-card-title">
+      <h2>{{ label }}</h2>{{ icon('description', '', size='20px') }}
+    </div>
+    <div class="civic-record-actions report-export-card-actions">
     <button type="submit" form="report-form" formaction="{{ url_for(report_export_endpoint|default('admin.report_export'), kind=kind, export_format='pdf') }}" class="civic-btn-outline">PDF</button>
     <button type="submit" form="report-form" formaction="{{ url_for(report_export_endpoint|default('admin.report_export'), kind=kind, export_format='csv') }}" class="civic-btn-outline">CSV</button>
     </div>
-  </div></article>
+  </article>
   {% endfor %}
 </div>
 {% endblock %}
