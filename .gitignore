@@ -12,5 +12,7 @@ __pycache__/
 
 # Device firmware currently contains local Wi-Fi settings. Keep it local until
 # each sketch is moved to a separate secrets.h configuration.
-hardware/
+hardware/*
+!hardware/esp32_rfid_public/
+hardware/esp32_rfid_public/reader_secrets.h
 .vercel

@@ -8,10 +8,34 @@ import time
 from contextlib import contextmanager, closing
 from pathlib import Path
 from flask import current_app
+from sqlalchemy import text
+from app.extensions import db as application_db
+
+
+class SharedCaptureConnection:
+    def __init__(self, connection):
+        self.connection = connection
+
+    def execute(self, statement, values=()):
+        parts = statement.split('?')
+        sql = parts[0] + ''.join(
+            f':value_{index}{part}' for index, part in enumerate(parts[1:])
+        )
+        return self.connection.execute(
+            text(sql), {f'value_{index}': value for index, value in enumerate(values)}
+        ).mappings()
 
 
 @contextmanager
 def connection():
+    if current_app.config.get('ATTENDANCE_SHARED_CAPTURE'):
+        with application_db.engine.begin() as transaction:
+            # Serialize the capture state transitions across Vercel instances.
+            transaction.execute(text('SELECT pg_advisory_xact_lock(84652123)'))
+            store = SharedCaptureConnection(transaction)
+            store.execute('DELETE FROM captures WHERE expires < ?', (time.time() - 600,))
+            yield store
+        return
     path = Path(current_app.config.get('ATTENDANCE_CAPTURE_PATH', Path(current_app.config['STORAGE_ROOT']) / 'bridge' / 'registration.sqlite'))
     path.parent.mkdir(parents=True, exist_ok=True)
     with closing(sqlite3.connect(path, timeout=10)) as db, db:

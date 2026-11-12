@@ -1,0 +1,7 @@
+# Public RFID reader setup
+
+1. In an authorized terminal, load the Vercel Production settings for the verified Supabase PostgreSQL database. Keep `ATTENDANCE_LOCAL_TEST_MODE` off. Apply the additive migration with `python -m flask --app app:create_app db upgrade heads` before deploying this code to Production.
+2. From the project root, run `python -m tools.provision_rfid_reader`. The terminal prints the device credential once. If there is already an active reader, review its ID. Use `--rotate-reader ID` only when replacing the credential of that reader. This invalidates its previous credential.
+3. Copy `reader_secrets_example.h` to `reader_secrets.h`. Enter the Wi-Fi details, reader credential, and a trusted root CA PEM for the deployment's certificate chain. Keep this file local. The sketch synchronizes its clock with NTP before connecting over HTTPS.
+4. In Arduino IDE, open `esp32_rfid_public.ino` and upload it to the classic ESP32. For a 4 MB board, select **Huge APP (3 MB No OTA)**. Install MFRC522, Adafruit GFX, Adafruit SSD1306 and ArduinoJson 7. Leave the audio and OLED headers in the sketch folder.
+5. At 115200 baud, check that the ESP32 connects to Wi-Fi. In **Personnel & RFID**, open **Scan RFID Card/Tag** and wait for **Reader ready** before tapping an unregistered card. Confirm and save. To check attendance, close the registration modal, then tap a registered card and confirm Time In with the button.
