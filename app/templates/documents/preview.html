@@ -32,8 +32,8 @@
 <iframe id="certificate-frame" title="Original A4 {{ 'application' if application else 'certificate' }}" src="{{ frame_url }}"
   data-print-now="{{ 'yes' if print_now else 'no' }}" data-download-now="{{ 'yes' if download_now else 'no' }}"></iframe>
 {% if browser_pdf %}
-<script defer src="{{ url_for('static',filename='vendor/document-pdf/html2canvas.min.js') }}"></script>
-<script defer src="{{ url_for('static',filename='vendor/document-pdf/jspdf.umd.min.js') }}"></script>
+<script defer src="{{ url_for('static',filename='js/document-pdf/html2canvas.min.js') }}"></script>
+<script defer src="{{ url_for('static',filename='js/document-pdf/jspdf.umd.min.js') }}"></script>
 {% endif %}
 <script defer src="{{ url_for('static',filename='js/certificate-print.js') }}"></script>
 </body>
