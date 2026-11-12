@@ -2,6 +2,8 @@
 @media screen {
   body:is(.workspace-admin, .workspace-official, .workspace-resident) {
     --workspace-gap: 24px;
+    --workspace-card-gap: 16px;
+    --workspace-action-gap: 8px;
     --civic-radius: 16px;
     --civic-shadow: 0 2px 8px rgb(8 62 20 / 4%);
     background: var(--civic-page);
@@ -15,7 +17,8 @@
     gap: var(--workspace-gap);
     align-items: flex-start;
   }
-  body[class*="workspace-"] #portal-main { min-width: 0; }
+  html:has(body:is(.workspace-admin, .workspace-official, .workspace-resident)) { scrollbar-gutter: stable; }
+  body[class*="workspace-"] #portal-main { min-width: 0; max-width: 100%; }
   body[class*="workspace-"] #portal-main > * + * { margin-top: var(--workspace-gap); }
   body[class*="workspace-"] #portal-main .dashboard-content { gap: var(--workspace-gap); }
   body[class*="workspace-"] #portal-main .dashboard-content > section + section { margin-top: 0; }
@@ -92,13 +95,41 @@
     background-color: var(--civic-card) !important;
   }
   body[class*="workspace-"] #portal-main :is(input, textarea)::placeholder { color: var(--civic-muted); opacity: 1; }
-  body[class*="workspace-"] #portal-main :is(.civic-btn, .civic-btn-outline, .civic-btn-gradient, .stitch-btn-primary, .stitch-btn-outline) {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    min-height: 44px; padding: 10px 16px; font-size: 13px; line-height: 1.5;
-    font-weight: 600; text-decoration: none; white-space: normal; text-align: center;
+  body[class*="workspace-"] #portal-main :is(.civic-btn, .civic-btn-outline, .civic-btn-gradient, .civic-btn-danger, .stitch-btn-primary, .stitch-btn-outline, .stitch-hero-action, .btn) {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--workspace-action-gap);
+    min-height: 40px; max-width: 100%; padding: 8px 14px; font-size: 13px; line-height: 1.4;
+    font-weight: 600; text-decoration: none; white-space: normal; overflow-wrap: anywhere; text-align: center;
+  }
+  body[class*="workspace-"] #portal-main :is(.civic-btn, .civic-btn-outline, .civic-btn-danger, .btn).btn-sm {
+    min-height: 34px; padding: 6px 10px; font-size: 12px;
+  }
+  body[class*="workspace-"] #portal-main :is(.civic-panel, .ops-panel, .card, .stitch-card, .stitch-stat-card, .stitch-service-card, .stitch-notice-card, .civic-service-card, .civic-card-shadow, .civic-hover-shadow, .tile-card, .dq-stat, .civic-btn, .civic-btn-outline, .civic-btn-gradient, .civic-btn-danger, .stitch-btn-primary, .stitch-btn-outline, .stitch-hero-action, .btn):is(:hover, :active) {
+    transform: none !important;
+    translate: none;
+    scale: none;
+  }
+  body[class*="workspace-"] #portal-main :is(.civic-record-actions, .civic-profile-actions, .civic-security-actions, .civic-document-submit, .ops-actions, .ops-list-toolbar, .civic-page-size, .modal-footer) {
+    gap: var(--workspace-action-gap);
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  body[class*="workspace-"] #portal-main :is(.civic-panel, .ops-panel, .stitch-card, .civic-table-wrap, .civic-table-scroll, .ops-table-wrap) {
+    min-width: 0;
+    max-width: 100%;
+  }
+  body[class*="workspace-"] #portal-main :is(.ops-grid, .ops-stats, .civic-service-grid, .civic-member-grid, .stitch-stat-grid, .stitch-service-grid, .civic-review-record) {
+    gap: var(--workspace-card-gap);
+  }
+  body[class*="workspace-"] #portal-main :is(.ops-grid, .ops-stats, .civic-service-grid, .civic-member-grid, .stitch-stat-grid, .stitch-service-grid, .civic-review-record) > * {
+    min-width: 0;
+  }
+  body[class*="workspace-"] #portal-main :is(.ops-page, .civic-panel, .ops-panel) > :is(.civic-panel, .ops-panel, .card) + :is(.civic-panel, .ops-panel, .card) {
+    margin-block-start: var(--workspace-card-gap);
+  }
+  body[class*="workspace-"] #portal-main .row:not([class*="g-"]):not([class*="gy-"]) {
+    --bs-gutter-y: var(--workspace-card-gap);
   }
   body[class*="workspace-"] #portal-main :is(.ops-muted, .civic-note, .civic-table-hint) { font-size: 13px; line-height: 1.65; }
-  body[class*="workspace-"] #portal-main :is(.ops-stats, .civic-service-grid) { gap: 16px; }
   body[class*="workspace-"] #portal-main .ops-stat { padding: 20px; border-radius: 14px; }
   body[class*="workspace-"] #portal-main .ops-stat span { font-size: 12px; }
   body[class*="workspace-"] #portal-main .ops-stat strong { font-size: 28px; line-height: 1.3; margin-top: 8px; font-variant-numeric: tabular-nums; }
@@ -178,7 +209,7 @@
   body[class*="workspace-"] #portal-main :is(.civic-hero, .stitch-hero) > .flex { flex-wrap: wrap; }
 }
 @media screen and (max-width: 767px) {
-  body:is(.workspace-admin, .workspace-official, .workspace-resident) { --workspace-gap: 20px; }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) { --workspace-gap: 20px; --workspace-card-gap: 12px; }
   body[class*="workspace-"] > div.max-w-7xl { padding: 18px 16px 28px; }
   body[class*="workspace-"] > :is(nav, header.portal-header, div.sticky) > div { min-height: 68px; gap: 8px; padding-inline: 12px; }
   body[class*="workspace-"] .civic-toolbar { gap: 12px; flex-wrap: wrap; padding-bottom: 14px; }
@@ -195,9 +226,8 @@
   body[class*="workspace-"] #portal-main table td { padding: 13px 14px !important; }
 }
 @media screen and (max-width: 480px) {
-  body[class*="workspace-"] #portal-main .ops-stats { gap: 10px; }
   body[class*="workspace-"] #portal-main .ops-stat { padding: 16px; }
-  body[class*="workspace-"] #portal-main :is(.ops-filter, .civic-security-actions) > :is(button, a) { width: 100%; }
+  body[class*="workspace-"] #portal-main :is(.ops-filter, .civic-security-actions) > :is(button, a) { max-width: 100%; }
   body[class*="workspace-"] #portal-main .civic-breadcrumb { font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) {
