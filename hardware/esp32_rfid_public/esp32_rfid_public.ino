@@ -81,6 +81,7 @@ String lastScreen;
 String feedbackInFlight, audioAckToken;
 ReaderState readerState=BOOTING;
 bool wasReady=false;
+uint32_t greenUntil=0;
 uint32_t wifiDownSince=0;
 
 void readerStatus(ReaderState next) {
@@ -121,22 +122,6 @@ void failure(const String& message, SoundKind voice=GENERIC_ERROR) {
   delay(1500); digitalWrite(RED_LED,LOW);
 }
 
-// Dedicated owner screen: wrap the name and page it if it exceeds four lines.
-// This identifies the saved card owner; it does not mean attendance succeeded.
-void showCardOwner(const String& owner, const String& nextAction="") {
-  String name=owner; name.trim();
-  name.replace("\r"," "); name.replace("\n"," ");
-  if (!name.length()) return;
-  auto pages=CivicOLED::wrap(name,20);
-  size_t pageCount=(pages.size()+3)/4;
-  for(size_t page=0;page<pageCount;page++) {
-    lastScreen="";
-    CivicOLED::owner(display,pages,page,pageCount,nextAction);
-    delay(2000);
-  }
-  lastScreen="";
-}
-
 bool clockReady() { return time(nullptr)>1700000000; }
 
 void syncServerTime(JsonDocument& reply) {
@@ -162,7 +147,7 @@ int postJson(const char* endpoint, const String& body, JsonDocument& reply) {
   WiFiClientSecure client;
   client.setCACert(READER_ROOT_CA);
   HTTPClient http;
-  http.setConnectTimeout(4000); http.setTimeout(5000);
+  http.setConnectTimeout(4000); http.setTimeout(20000);
   if (!http.begin(client,server+endpoint)) {
     reply["message"]="Cannot open server URL"; return -1;
   }
@@ -224,7 +209,7 @@ bool refreshMode() {
     else if(!pendingEvent.length() && !feedbackInFlight.length() && !audioAckToken.length())queueSound(READY);
   }
   syncServerTime(reply);
-  screen(captureId.length() ? "REGISTER" : "ATTENDANCE",
+  if (!greenUntil || captureId.length()) screen(captureId.length() ? "REGISTER" : "ATTENDANCE",
          captureId.length() ? "Tap card for web form" : "Tap your card",
          "Wi-Fi connected", "Barangay Sta. Clara");
   return true;
@@ -295,7 +280,7 @@ void retryPending() {
     digitalWrite(GREEN_LED,HIGH);
     invalidateTransientAudio();
     queueSound(action=="IN" ? TIME_IN_VOICE : TIME_OUT_VOICE);
-    delay(2500); digitalWrite(GREEN_LED,LOW); lastModePoll=0;
+    greenUntil=millis()+2500; lastModePoll=0;
   } else if (code>=400 && code<500 && code!=401 && code!=403 && code!=429 && code!=408) {
     storage.remove("pending"); pendingEvent=""; pendingAnnounced=false;
     failure(messageOf(reply),voiceForReply(reply)); lastModePoll=0;
@@ -319,11 +304,9 @@ void handleCard(const String& uid) {
     request["capture_id"]=captureId; request["uid"]=uid;
     serializeJson(request,body);
     int code=postJson("/attendance/api/registration-tap",body,reply);
-    String owner=String(reply["employee"] | "");
-    if (owner.length()) showCardOwner(owner);
     if (code==200 && reply["success"].as<bool>()) {
       screen("CAPTURED","Card sent to web form","Click Register there","Not attendance yet");
-      invalidateTransientAudio(); queueSound(CAPTURED); delay(2000);
+      invalidateTransientAudio(); queueSound(CAPTURED);
     } else { failure(messageOf(reply),voiceForReply(reply)); }
     // No attendance event is created or queued for registration taps.
     lastModePoll=0; return;
@@ -332,16 +315,13 @@ void handleCard(const String& uid) {
   int code=postJson("/attendance/api/preview",body,reply);
   String name=String(reply["employee"] | "");
   String action=String(reply["action"] | "");
-  if (name.length()) showCardOwner(name,action);
   if (code!=200 || !reply["success"].as<bool>()) {
     failure(messageOf(reply),voiceForReply(reply));
     lastModePoll=0;return;
   }
   if (action!="IN" && action!="OUT") { failure("Invalid action from server"); return; }
   if (action=="IN" && !waitForButton(name)) { failure("Time in cancelled. Tap card again.",CANCELLED); lastModePoll=0; return; }
-  // A registration modal might have opened during the confirmation countdown.
-  if (!refreshMode()) return;
-  if (captureId.length()) { screen("REGISTER","Web registration active","Tap card again"); return; }
+  // The server rechecks the registration reservation before accepting attendance.
   if (!clockReady()) { failure("Clock not synced. Check Wi-Fi and retry."); return; }
   request.clear(); body="";
   request["event_id"]=eventId(); request["uid"]=uid;
@@ -405,6 +385,10 @@ void setup() {
 }
 
 void loop() {
+  if (greenUntil && int32_t(millis()-greenUntil)>=0) {
+    digitalWrite(GREEN_LED,LOW);
+    greenUntil=0;
+  }
   while(Serial.available()) {
     char command=(char)Serial.read();
     if(command=='t' || command=='T')Serial.println(queueSound(AUDIO_TEST) ? "Audio test queued." : "Audio unavailable or queue busy.");

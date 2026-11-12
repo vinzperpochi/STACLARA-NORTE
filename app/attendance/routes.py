@@ -69,9 +69,19 @@ def people_query():
     return query.order_by(PersonnelProfile.full_name,PersonnelProfile.id)
 
 
+def latest_activity_version():
+    query = select(func.max(AttendanceLog.id))
+    if not is_admin() or any(request.args.get(key) for key in ('q', 'department', 'personnel_id')):
+        query = query.where(AttendanceLog.personnel_id.in_(
+            people_query().with_only_columns(PersonnelProfile.id).order_by(None)
+        ))
+    return db.session.scalar(query) or 0
+
+
 @attendance_bp.get('/')
 @official_account_required
 def dashboard():
+    activity_version = latest_activity_version()
     try: day=date.fromisoformat(request.args.get('date',datetime.now(MANILA).date().isoformat()))
     except ValueError: abort(400)
     import calendar
@@ -96,8 +106,16 @@ def dashboard():
     leave_query=select(EmployeeLeave).where(EmployeeLeave.personnel_id.in_(ids)).options(selectinload(EmployeeLeave.personnel)).order_by(EmployeeLeave.created_at.desc(),EmployeeLeave.id.desc())
     leave_pagination=paginate(leave_query,request.args.get('leave_page',1,type=int),5)
     missing_personnel_link=not is_admin() and not people and db.session.scalar(select(PersonnelProfile.id).where(PersonnelProfile.user_id==current_user.id)) is None
-    response=current_app.make_response(render_template('attendance/dashboard.html',rows=pagination.items,pagination=pagination,people=people,statuses=statuses,stats=stats,day=day,logs=feed_pagination.items,feed_pagination=feed_pagination,trends=trends,period=period,month_days=month_days,calendar_offset=day.replace(day=1).weekday(),departments=departments,manage=is_admin(),metrics=session_metrics,leaves=leave_pagination.items,leave_pagination=leave_pagination,missing_personnel_link=missing_personnel_link))
+    response=current_app.make_response(render_template('attendance/dashboard.html',activity_version=activity_version,rows=pagination.items,pagination=pagination,people=people,statuses=statuses,stats=stats,day=day,logs=feed_pagination.items,feed_pagination=feed_pagination,trends=trends,period=period,month_days=month_days,calendar_offset=day.replace(day=1).weekday(),departments=departments,manage=is_admin(),metrics=session_metrics,leaves=leave_pagination.items,leave_pagination=leave_pagination,missing_personnel_link=missing_personnel_link))
     response.headers['Cache-Control']='private, no-store'
+    return response
+
+
+@attendance_bp.get('/activity-version')
+@official_account_required
+def activity_version():
+    response = jsonify(version=latest_activity_version())
+    response.headers['Cache-Control'] = 'private, no-store'
     return response
 
 

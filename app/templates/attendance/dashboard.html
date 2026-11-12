@@ -1,6 +1,6 @@
 {% extends 'attendance/_base.html' %}{% from 'attendance/_lists.html' import toolbar,pager with context %}{% block title %}Attendance{% endblock %}{% block content %}
-<div class="ops-page ops-attendance" data-attendance-live>
-<header class="ops-hero"><div><p class="civic-eyebrow">PERSONNEL & ATTENDANCE</p><h1>{{ 'Attendance command center' if manage else 'My attendance' }}</h1><p>RFID attendance, schedules and work sessions · Philippine Standard Time</p></div><span class="ops-live">Auto-refresh every 30s · pauses while editing or browsing older pages</span></header>
+<div class="ops-page ops-attendance" data-attendance-live="{{ activity_version }}" data-activity-url="{{ url_for('attendance.activity_version') }}">
+<header class="ops-hero"><div><p class="civic-eyebrow">PERSONNEL & ATTENDANCE</p><h1>{{ 'Attendance command center' if manage else 'My attendance' }}</h1><p>RFID attendance, schedules and work sessions · Philippine Standard Time</p></div><span class="ops-live">Updates after new RFID activity · pauses while editing or browsing older pages</span></header>
 {% include 'attendance/_nav.html' %}
 {% if missing_personnel_link %}<section class="civic-panel ops-panel" role="status"><h2>Attendance account setup needed</h2><p class="ops-muted mb-0">Your login is not linked to a personnel record yet. Ask the Super Admin to link your existing record under Personnel &amp; RFID so your saved scans and attendance history appear here.</p></section>{% endif %}
 <section class="ops-stats" aria-label="Attendance summary">{% for label,value in stats.items() %}<article class="ops-stat"><span>{{ label }}</span><strong>{{ value }}</strong></article>{% endfor %}</section>
