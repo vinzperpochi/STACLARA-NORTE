@@ -20,7 +20,7 @@ import config as app_config
 from .extensions import csrf, db, login_manager, migrate
 
 
-def create_app(config_name: str | None = None) -> Flask:
+def create_app(config_name: str | None = None, *, vercel: bool = False) -> Flask:
     """Create and configure a Flask application instance."""
     importlib.reload(app_config)
     config_by_name = app_config.config_by_name
@@ -31,6 +31,8 @@ def create_app(config_name: str | None = None) -> Flask:
 
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
+    if vercel:
+        app_config.configure_vercel_database(app.config)
     storage_root = Path(app.config["STORAGE_ROOT"])
     storage_root.mkdir(parents=True, exist_ok=True)
     for directory in ("profile_photos", "document_requirements", "generated_documents", "registration_documents", "backups", "logs"):

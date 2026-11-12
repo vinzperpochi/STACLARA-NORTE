@@ -5,6 +5,8 @@ from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
+from sqlalchemy.engine import make_url
+from sqlalchemy.pool import NullPool
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -30,6 +32,20 @@ def _database_uri() -> str:
         configured_uri = configured_uri.replace("postgresql://", "postgresql+psycopg://", 1)
     
     return configured_uri
+
+
+def configure_vercel_database(config):
+    """Use Supabase transaction pooling for short-lived Vercel workers."""
+    url = make_url(config["SQLALCHEMY_DATABASE_URI"])
+    if url.drivername != "postgresql+psycopg" or not (url.host or "").endswith(".pooler.supabase.com"):
+        return
+    if url.port not in (None, 5432, 6543):
+        return
+    config["SQLALCHEMY_DATABASE_URI"] = url.set(port=6543)
+    config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "poolclass": NullPool,
+        "connect_args": {"prepare_threshold": None, "connect_timeout": 5},
+    }
 
 
 class BaseConfig:
