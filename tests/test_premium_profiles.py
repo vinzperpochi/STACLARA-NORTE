@@ -122,5 +122,5 @@ def test_registration_and_document_templates_keep_correct_asset_boundaries(syste
     assert b'Remove selected photo' in system.test_client().get('/auth/register').data
     for layout in ['admin/_admin_base.html','official/_official_base.html','resident/_portal_base.html','layouts/auth_base.html','base.html']:
         source=system.jinja_loader.get_source(system.jinja_env,layout)[0]
-        assert 'civic-premium.css' in source and 'vendor/bootstrap/bootstrap.min.css' in source
+        assert 'civic-premium.css' in source and 'bootstrap/bootstrap.min.css' in source
     assert 'civic-premium.css' not in system.jinja_loader.get_source(system.jinja_env,'documents/original/base.html')[0]

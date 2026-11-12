@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>{% block title %}Officials &amp; Staff Workspace{% endblock %} · Barangay Sta. Clara Norte</title>
-  <link href="{{ url_for('static',filename='vendor/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='bootstrap/bootstrap.min.css') }}" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/portal.css') }}?v=emerald-20261010-final" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/messaging.css') }}?v=emerald-20261010-final" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/ui-polish.css') }}?v=emerald-20261010-final" rel="stylesheet">
@@ -54,7 +54,7 @@
     {% endif %}
   {% endwith %}
 
-  <script src="{{ url_for('static',filename='vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static',filename='bootstrap/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/portal.js') }}?v=20261112"></script>
   <script src="{{ url_for('static', filename='js/messaging.js') }}"></script>
   <script src="{{ url_for('static', filename='js/workspace.js') }}"></script>
