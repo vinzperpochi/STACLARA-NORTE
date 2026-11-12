@@ -171,6 +171,27 @@
   body[class*="workspace-"] #portal-main .civic-inline-form > .civic-btn {
     min-height: 44px;
   }
+  body[class*="workspace-"] #portal-main .report-export-fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--workspace-card-gap);
+  }
+  body[class*="workspace-"] #portal-main .report-export-field {
+    flex: 1 1 10rem;
+    min-width: 0;
+  }
+  body[class*="workspace-"] #portal-main .report-export-field:first-child {
+    flex-basis: 15rem;
+  }
+  body[class*="workspace-"] #portal-main .report-export-actions.civic-record-actions > button {
+    min-height: 44px;
+  }
+  body[class*="workspace-"] #portal-main .report-export-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: var(--workspace-card-gap);
+  }
   body[class*="workspace-"] #portal-main .civic-summary-stat {
     display: flex;
     flex-direction: column;
