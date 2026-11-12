@@ -14,8 +14,8 @@ from app.auth.decorators import official_account_required, roles_required
 from app.models import PersonnelProfile, RFIDCard, AttendanceDevice, AttendanceLog, AttendanceSession, EmployeeSchedule, EmployeeLeave, AttendanceAdjustment, AttendanceAuditLog, User, Role
 from app.image_uploads import save_image, remove_image
 from app.operations_common import text_field, export_report
-from app.pagination import paginate
-from .listing import page_size, page_items, page_window, list_url, dashboard_return_url
+from app.pagination import paginate_named, paginate_items
+from .listing import page_window, list_url, dashboard_return_url
 from .service import scan, uid_hash, daily_rows, attendance_dataset, session_metrics, utc, MANILA, change_duty_days, duty_days_change_date
 from . import capture, local_reader
 from .voice import response_voice_code
@@ -95,16 +95,16 @@ def dashboard():
     ids=[p.id for p in people]
     log_query=select(AttendanceLog)
     if not is_admin() or any(request.args.get(key) for key in ['q','department','personnel_id']): log_query=log_query.where(AttendanceLog.personnel_id.in_(ids))
-    feed_pagination=paginate(log_query.options(selectinload(AttendanceLog.personnel)).order_by(AttendanceLog.created_at.desc(),AttendanceLog.id.desc()),request.args.get('feed_page',1,type=int),5)
+    feed_pagination=paginate_named(log_query.options(selectinload(AttendanceLog.personnel)).order_by(AttendanceLog.created_at.desc(),AttendanceLog.id.desc()),'feed_page')
     trends=[{'date':(day-timedelta(days=offset)).isoformat(),'present':sum(bool(r['sessions']) for r in daily_rows(day-timedelta(days=offset),people,cache))} for offset in range(period-1,-1,-1)]
     departments={p.department:sum(bool(r['sessions']) for r in rows if r['person'].department==p.department) for p in people}
     month_days=[{'date':day.replace(day=d),'present':sum(bool(r['sessions']) for r in daily_rows(day.replace(day=d),people,cache))} for d in range(1,calendar.monthrange(day.year,day.month)[1]+1)]
     statuses=['Clocked in','Present','Late','Absent','On leave','Awaiting scan','Off duty']
     status=request.args.get('status','')
     visible_rows=[row for row in rows if row['status']==status] if status in statuses else rows
-    pagination=page_items(visible_rows)
+    pagination=paginate_items(visible_rows)
     leave_query=select(EmployeeLeave).where(EmployeeLeave.personnel_id.in_(ids)).options(selectinload(EmployeeLeave.personnel)).order_by(EmployeeLeave.created_at.desc(),EmployeeLeave.id.desc())
-    leave_pagination=paginate(leave_query,request.args.get('leave_page',1,type=int),5)
+    leave_pagination=paginate_named(leave_query,'leave_page')
     missing_personnel_link=not is_admin() and not people and db.session.scalar(select(PersonnelProfile.id).where(PersonnelProfile.user_id==current_user.id)) is None
     response=current_app.make_response(render_template('attendance/dashboard.html',activity_version=activity_version,rows=pagination.items,pagination=pagination,people=people,statuses=statuses,stats=stats,day=day,logs=feed_pagination.items,feed_pagination=feed_pagination,trends=trends,period=period,month_days=month_days,calendar_offset=day.replace(day=1).weekday(),departments=departments,manage=is_admin(),metrics=session_metrics,leaves=leave_pagination.items,leave_pagination=leave_pagination,missing_personnel_link=missing_personnel_link))
     response.headers['Cache-Control']='private, no-store'
@@ -196,8 +196,8 @@ def personnel_detail(personnel_id):
         return redirect(url_for('attendance.personnel_detail',personnel_id=person.id))
     available_accounts=db.session.scalars(attendance_accounts().where(~select(PersonnelProfile.id).where(PersonnelProfile.user_id==User.id).exists()).order_by(User.username)).all() if person.user_id is None else []
     today=datetime.now(MANILA).date()
-    card_pagination=paginate(select(RFIDCard).where(RFIDCard.personnel_id==person.id).order_by(RFIDCard.active.desc(),RFIDCard.id.desc()),request.args.get('cards_page',1,type=int),5)
-    schedule_pagination=paginate(select(EmployeeSchedule).where(EmployeeSchedule.personnel_id==person.id).order_by(EmployeeSchedule.active.desc(),EmployeeSchedule.effective_from.desc(),EmployeeSchedule.id.desc()),request.args.get('schedules_page',1,type=int),5)
+    card_pagination=paginate_named(select(RFIDCard).where(RFIDCard.personnel_id==person.id).order_by(RFIDCard.active.desc(),RFIDCard.id.desc()),'cards_page')
+    schedule_pagination=paginate_named(select(EmployeeSchedule).where(EmployeeSchedule.personnel_id==person.id).order_by(EmployeeSchedule.active.desc(),EmployeeSchedule.effective_from.desc(),EmployeeSchedule.id.desc()),'schedules_page')
     change_dates={schedule.id:duty_days_change_date(schedule,today) for schedule in schedule_pagination.items}
     return render_template('attendance/personnel_detail.html',person=person,today=today,available_accounts=available_accounts,schedule_change_dates=change_dates,card_pagination=card_pagination,schedule_pagination=schedule_pagination)
 
@@ -306,7 +306,7 @@ def devices():
     if search: directory_query=directory_query.where(or_(PersonnelProfile.full_name.ilike('%'+search+'%'),PersonnelProfile.employee_id.ilike('%'+search+'%')))
     if request.args.get('department'): directory_query=directory_query.where(PersonnelProfile.department==request.args['department'])
     if request.args.get('active') in ('yes','no'): directory_query=directory_query.where(PersonnelProfile.active.is_(request.args['active']=='yes'))
-    pagination=paginate(directory_query.order_by(PersonnelProfile.full_name,PersonnelProfile.id),request.args.get('page',1,type=int),page_size())
+    pagination=paginate_named(directory_query.order_by(PersonnelProfile.full_name,PersonnelProfile.id),'page')
     total_personnel=db.session.scalar(select(func.count(PersonnelProfile.id))) or 0
     accounts=db.session.scalars(attendance_accounts().options(selectinload(User.roles),selectinload(User.official)).order_by(User.username)).all()
     linked_profiles=db.session.scalars(select(PersonnelProfile).where(PersonnelProfile.user_id.in_([account.id for account in accounts])).options(selectinload(PersonnelProfile.cards))).all()

@@ -1,7 +1,6 @@
 {% macro render_pagination(pagination, parameter='page', anchor='', label='Records') %}
 {% if pagination and pagination.total %}
-<nav class="pagination-wrap" aria-label="{{ label }} pagination">
-  <span class="sr-only">Page {{ pagination.page }} of {{ pagination.pages }}</span>
+<div class="pagination-wrap" role="group" aria-label="{{ label }} display options">
   <div class="pagination-summary">Showing <strong>{{ (pagination.page-1)*pagination.per_page+1 }}–{{ [pagination.page*pagination.per_page,pagination.total]|min }}</strong> of <strong>{{ pagination.total }}</strong></div>
   {% if pagination.size_parameter %}
   <form class="civic-page-size" method="get" action="{{ request.path }}{% if anchor %}#{{ anchor }}{% endif %}">
@@ -11,18 +10,14 @@
     <label>Rows per page
       <select class="form-select" name="{{ pagination.size_parameter }}">
         {% for size in [5,10,25,50] %}
-        <option value="{{ size }}"{% if size == pagination.per_page %} selected{% endif %}>{{ size }}</option>
+        <option value="{{ size }}"{% if not pagination.show_all and size == pagination.per_page %} selected{% endif %}>{{ size }}</option>
         {% endfor %}
+        <option value="all"{% if pagination.show_all %} selected{% endif %}>All</option>
       </select>
     </label>
     <button type="submit" class="civic-btn-outline">Apply</button>
   </form>
   {% endif %}
-  <div class="pagination-controls">
-    {% if pagination.has_prev %}<a class="page-link" href="{{ pagination_url(pagination.prev_num,parameter,anchor) }}" aria-label="Previous {{ label|lower }} page">‹</a>{% else %}<span class="page-link disabled" aria-disabled="true" aria-label="Previous page unavailable">‹</span>{% endif %}
-    {% for number in pagination.iter_pages() %}{% if number %}<a class="page-link {{ 'active' if number==pagination.page }}" href="{{ pagination_url(number,parameter,anchor) }}"{% if number==pagination.page %} aria-current="page"{% endif %} aria-label="{{ label }} page {{ number }}">{{ number }}</a>{% else %}<span class="page-ellipsis" aria-hidden="true">…</span>{% endif %}{% endfor %}
-    {% if pagination.has_next %}<a class="page-link" href="{{ pagination_url(pagination.next_num,parameter,anchor) }}" aria-label="Next {{ label|lower }} page">›</a>{% else %}<span class="page-link disabled" aria-disabled="true" aria-label="Next page unavailable">›</span>{% endif %}
-  </div>
-</nav>
+</div>
 {% endif %}
 {% endmacro %}

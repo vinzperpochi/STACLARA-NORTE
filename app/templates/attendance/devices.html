@@ -1,6 +1,6 @@
 {% extends 'attendance/_base.html' %}
 {% from 'attendance/_controls.html' import duty_days %}
-{% from 'attendance/_lists.html' import toolbar,pager with context %}
+{% from 'attendance/_lists.html' import pager with context %}
 {% block title %}Personnel & RFID registration{% endblock %}
 {% block extra_head %}{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/rfid-registration.css') }}?v=20261106-2">
@@ -72,7 +72,7 @@
       <label class="ops-field">Personnel status<select class="form-select" name="active"><option value="">All statuses</option><option value="yes" {{ 'selected' if request.args.get('active')=='yes' }}>Active</option><option value="no" {{ 'selected' if request.args.get('active')=='no' }}>Inactive</option></select></label>
       <button class="civic-btn">Apply filters</button><a class="civic-btn-outline" href="{{ url_for('attendance.devices',_anchor='personnel-directory') }}">Clear filters</a>
     </form>
-    {{ toolbar(pagination,anchor='personnel-directory') }}
+
     {% for person in people %}<article class="ops-contact" data-personnel-id="{{ person.id }}"><div><strong>{{ person.full_name }}</strong><p>{{ person.employee_id }} · {{ person.position }}{% if person.department %} · {{ person.department }}{% endif %} · {{ 'Active' if person.active else 'Inactive' }}</p><p class="ops-muted">System account: {{ person.user.username if person.user else "None — attendance only" }}</p>{% for card in person.cards if card.active %}<span class="ops-status">Active · UID ending {{ card.uid_suffix }}</span> {% else %}<p>{{ "No active RFID card." if person.cards else "No RFID card assigned yet." }}</p>{% endfor %}{% if not person.schedules %}<p>No work schedule assigned yet.</p>{% endif %}</div><a class="civic-btn-outline" href="{{ url_for('attendance.personnel_detail',personnel_id=person.id) }}">Manage record</a></article>{% else %}<p class="ops-empty">{% if total_personnel %}No personnel match these filters. Try another search or clear the filters.{% else %}No personnel records yet. Register the first person and RFID card above.{% endif %}</p>{% endfor %}
     {{ pager(pagination,anchor='personnel-directory',label='Personnel directory') }}
   </section>

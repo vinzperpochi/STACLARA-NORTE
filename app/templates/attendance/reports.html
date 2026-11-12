@@ -1,5 +1,5 @@
 {% extends 'attendance/_base.html' %}
-{% from 'attendance/_lists.html' import toolbar,pager with context %}
+{% from 'attendance/_lists.html' import pager with context %}
 {% block title %}Attendance reports & DTR{% endblock %}
 {% block content %}
 <div class="ops-page ops-attendance">
@@ -26,7 +26,7 @@
   </section>
   <section class="civic-panel ops-panel ops-list-section" id="report-records">
     <div class="ops-section-heading"><h2>Attendance records</h2><span class="ops-status">{{ pagination.total }} {{ 'record' if pagination.total==1 else 'records' }} · {{ start }} to {{ end }}</span></div>
-    {{ toolbar(pagination,anchor='report-records') }}
+
     <p class="ops-muted">Downloads include all records matching your filters across every page.</p>
     <p class="ops-muted">Scroll horizontally to see all columns on smaller screens.</p>
     <div class="ops-table-wrap" tabindex="0" role="region" aria-label="Attendance report records"><table class="civic-table ops-table"><thead><tr><th>Employee</th><th>Date</th><th>Status</th><th>Hours</th><th>Late min</th><th>Undertime min</th><th>Approved overtime min</th></tr></thead><tbody>

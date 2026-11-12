@@ -18,12 +18,11 @@ def user(name):
 
 def test_five_record_default_matches_reference_at_first_middle_and_last_page(system):
     import re
-    from html import unescape
     records = list(range(22))
-    for requested, expected_page, expected_items, expected_numbers in (
-        (1, 1, records[:5], ['1', '2', '3', '5']),
-        (3, 3, records[10:15], ['1', '2', '3', '4', '5']),
-        (999, 5, records[20:], ['1', '4', '5']),
+    for requested, expected_page, expected_items in (
+        (1, 1, records[:5]),
+        (3, 3, records[10:15]),
+        (999, 5, records[20:]),
     ):
         with system.test_request_context(f'/official/residents?page={requested}&q=Maria'):
             pagination = paginate_items(records)
@@ -32,18 +31,17 @@ def test_five_record_default_matches_reference_at_first_middle_and_last_page(sys
         assert pagination.items == expected_items and pagination.total == 22
         summary = re.search(r'<div class="pagination-summary">(.*?)</div>', html).group(1)
         assert re.sub(r'<[^>]+>', '', summary) == f'Showing {(expected_page-1)*5+1}–{min(expected_page*5,22)} of 22'
-        assert re.search(r'aria-current="page"[^>]*>(\d+)</a>', html).group(1) == str(expected_page)
-        assert re.findall(r'<a\b[^>]*>(\d+)</a>', html) == expected_numbers
-        assert ('Previous page unavailable' in html) == (expected_page == 1)
-        assert ('Next page unavailable' in html) == (expected_page == 5)
-        assert all(parse_qs(urlsplit(unescape(href)).query)['q'] == ['Maria'] for href in re.findall(r'href="([^"]+)"', html))
+        assert 'pagination-controls' not in html
+        assert 'name="per_page"' in html and 'value="all"' in html
+        assert 'name="q" value="Maria"' in html
+        assert 'name="page"' not in html
 
 
 def test_last_page_matches_reference_and_preserves_multiple_filters(system):
     with system.test_request_context('/official/residents?page=50&q=Maria&tag=a&tag=b&format=csv&_anchor=bad'):
         html = render_template('partials/_pagination.html', pagination=Pagination([],50,10,500,50))
         assert '491–500' in html and 'of <strong>500</strong>' in html
-        assert 'aria-current="page"' in html and 'Next page unavailable' in html
+        assert 'pagination-controls' not in html
         link = urlsplit(pagination_url(2,'alerts_page','alerts'))
         args = parse_qs(link.query)
         assert args['tag'] == ['a','b'] and args['q'] == ['Maria']
@@ -90,7 +88,8 @@ def test_drrm_lists_page_independently_and_keep_all_center_options(system):
     assert len(context['centers']) == 3 and context['pagers']['centers'].total == 23
     assert len(context['alerts']) == 1 and context['pagers']['alerts'].total == 16
     assert len(context['all_centers']) == 23
-    assert b'centers_page=5&amp;alerts_page=1' in response.data
+    assert b'name="centers_page" value="5"' in response.data
+    assert b'name="alerts_per_page"' in response.data
     assert b'drrm-centers' in response.data
 
 
@@ -128,7 +127,7 @@ def test_alert_history_uses_shared_pager_and_excludes_unpublished(system):
         response=login(system).get('/resident/emergency-alerts?page=3')
     assert response.status_code==200
     assert contexts[-1]['pagination'].total==12 and len(contexts[-1]['alerts'])==2
-    assert b'pagination-controls' in response.data and b'Private draft' not in response.data
+    assert b'name="per_page"' in response.data and b'Private draft' not in response.data
 
 
 def test_search_reaches_results_beyond_the_twenty_record_cap(system):
@@ -138,7 +137,8 @@ def test_search_reaches_results_beyond_the_twenty_record_cap(system):
         response=login(system,'staff-test').get('/search?q=Searchmatch&residents_page=5&cases_page=1')
     assert response.status_code==200
     assert len(contexts[-1]['residents'])==5 and contexts[-1]['pagers']['residents'].total==25
-    assert b'q=Searchmatch' in response.data and b'residents_page=4' in response.data
+    assert b'name="q" value="Searchmatch"' in response.data
+    assert b'name="residents_per_page"' in response.data
     assert login(system).get('/search?q=Searchmatch').status_code==403
 
 

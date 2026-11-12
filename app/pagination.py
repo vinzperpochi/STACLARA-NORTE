@@ -31,6 +31,8 @@ PAGE_SIZES = (5, 10, 25, 50)
 def requested_page_size(parameter, default):
     from flask import request
     size_key = 'per_page' if parameter == 'page' else parameter.removesuffix('_page') + '_per_page'
+    if request.args.get(size_key) == 'all':
+        return size_key, None
     size = request.args.get(size_key, type=int)
     return size_key, size if size in PAGE_SIZES else default
 
@@ -38,6 +40,9 @@ def requested_page_size(parameter, default):
 def paginate_items(items, parameter='page', per_page=5):
     from flask import request
     size_key, per_page = requested_page_size(parameter, per_page)
+    if per_page is None:
+        total = len(items)
+        return Pagination(items, 1, max(1, total), total, 1, size_key, True)
     per_page = max(1, min(int(per_page or 5), 100))
     total = len(items)
     pages = max(1, ceil(total / per_page))
@@ -53,6 +58,7 @@ class Pagination:
     total: int
     pages: int
     size_parameter: str | None = None
+    show_all: bool = False
 
     @property
     def has_prev(self) -> bool:
@@ -82,9 +88,8 @@ class Pagination:
             last = number
 
 
-def paginate(query, page: int | None = 1, per_page: int = 5) -> Pagination:
+def paginate(query, page: int | None = 1, per_page: int | None = 5) -> Pagination:
     """Execute a SQLAlchemy select with a bounded page and total count."""
-    per_page = max(1, min(int(per_page or 5), 100))
     # Records with equal names/dates must keep their order across page requests.
     descriptions = query.column_descriptions
     if len(descriptions) == 1 and descriptions[0].get('entity') is descriptions[0].get('expr'):
@@ -92,6 +97,10 @@ def paginate(query, page: int | None = 1, per_page: int = 5) -> Pagination:
         entity = descriptions[0].get('entity')
         if entity is not None:
             query = query.order_by(*inspect(entity).primary_key)
+    if per_page is None:
+        items = db.session.scalars(query).all()
+        return Pagination(items, 1, max(1, len(items)), len(items), 1, show_all=True)
+    per_page = max(1, min(int(per_page or 5), 100))
     total = db.session.scalar(
         db.select(func.count()).select_from(query.order_by(None).subquery())
     ) or 0

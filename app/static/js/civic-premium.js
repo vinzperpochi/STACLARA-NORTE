@@ -57,7 +57,7 @@
         const action = new URL(form.action, location.href);
         if (action.origin !== location.origin || action.pathname !== location.pathname) return;
         for (const [key, value] of new URLSearchParams(location.search)) {
-          if (/^(?:[a-z]+_)*per_page$/.test(key) && ['5','10','25','50'].includes(value) &&
+          if (/^(?:[a-z]+_)*per_page$/.test(key) && ['5','10','25','50','all'].includes(value) &&
               !event.formData.has(key)) event.formData.set(key, value);
         }
       });
