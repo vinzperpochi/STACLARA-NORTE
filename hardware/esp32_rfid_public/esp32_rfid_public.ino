@@ -18,6 +18,7 @@
   flash and retry its SAME ID; they are never displayed as successful.
 */
 #include <WiFi.h>
+#include <freertos/semphr.h>
 #include <WiFiClientSecure.h>
 #if __has_include("reader_secrets.h")
 #include "reader_secrets.h"
@@ -76,11 +77,12 @@ bool beginOLED() {
 Preferences storage;
 String server, captureId, pendingEvent;
 bool configured=false;
-uint32_t lastModePoll=0, lastRetry=0, lastTap=0;
+uint32_t lastModePoll=0, lastRetry=0;
 String lastScreen;
 String feedbackInFlight, audioAckToken;
 ReaderState readerState=BOOTING;
 bool wasReady=false;
+bool classifyingCard=false;
 uint32_t greenUntil=0;
 uint32_t wifiDownSince=0;
 
@@ -172,14 +174,15 @@ String messageOf(JsonDocument& reply) {
   return String(reply["message"] | "Server rejected request");
 }
 
-bool refreshMode() {
-  JsonDocument reply;
+int requestMode(const String& sentAck, JsonDocument& reply) {
   JsonDocument modeRequest;
-  String sentAck=audioAckToken;
   if(sentAck.length())modeRequest["ack_capture_id"]=sentAck;
   String modeBody;serializeJson(modeRequest,modeBody);
+  return postJson("/attendance/api/registration-mode",modeBody,reply);
+}
+
+bool applyMode(int code, JsonDocument& reply, const String& sentAck) {
   String oldCapture=captureId;
-  int code=postJson("/attendance/api/registration-mode",modeBody,reply);
   if(code==200) {
     if(sentAck.length() && String(reply["feedback_acknowledged"] | "")==sentAck)audioAckToken="";
     JsonObject feedback=reply["registration_feedback"].as<JsonObject>();
@@ -209,10 +212,53 @@ bool refreshMode() {
     else if(!pendingEvent.length() && !feedbackInFlight.length() && !audioAckToken.length())queueSound(READY);
   }
   syncServerTime(reply);
+  if (classifyingCard) return true;
   if (!greenUntil || captureId.length()) screen(captureId.length() ? "REGISTER" : "ATTENDANCE",
          captureId.length() ? "Tap card for web form" : "Tap your card",
          "Wi-Fi connected", "Barangay Sta. Clara");
   return true;
+}
+
+// Only the loop owns the display, RFID reader, and registration state.
+TaskHandle_t modeTask=nullptr;
+SemaphoreHandle_t modeDone=nullptr;
+String modeAck;
+JsonDocument modeReply;
+int modeCode=0;
+bool modeInFlight=false, discardModeReply=false;
+
+void pollModeWorker(void*) {
+  for (;;) {
+    ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
+    modeCode=requestMode(modeAck,modeReply);
+    xSemaphoreGive(modeDone);
+  }
+}
+
+bool refreshMode() {
+  if (modeInFlight) discardModeReply=true;
+  JsonDocument reply;
+  String sentAck=audioAckToken;
+  int code=requestMode(sentAck,reply);
+  return applyMode(code,reply,sentAck);
+}
+
+void pollMode() {
+  if (!modeTask) {
+    if (!lastModePoll || millis()-lastModePoll>=MODE_POLL_MS) refreshMode();
+    return;
+  }
+  if (modeInFlight && xSemaphoreTake(modeDone,0)==pdTRUE) {
+    modeInFlight=false;
+    if (!discardModeReply && WiFi.status()==WL_CONNECTED) applyMode(modeCode,modeReply,modeAck);
+    modeReply.clear();
+  }
+  if (!modeInFlight && (!lastModePoll || millis()-lastModePoll>=MODE_POLL_MS)) {
+    discardModeReply=false;
+    modeAck=audioAckToken;
+    modeInFlight=true;
+    xTaskNotifyGive(modeTask);
+  }
 }
 
 String uidString() {
@@ -297,7 +343,6 @@ void handleCard(const String& uid) {
   invalidateTransientAudio();
   // Require a fresh server mode check before classifying every tap.
   if (!refreshMode()) return;
-  queueSound(TAP_TONE);
   JsonDocument request,reply;
   String body;
   if (captureId.length()) {
@@ -380,6 +425,8 @@ void setup() {
   Serial.print("Connecting to: "); Serial.println(WIFI_SSID);
   WiFi.begin(WIFI_SSID,WIFI_PASSWORD);
   configTime(0,0,"time.google.com","pool.ntp.org");
+  modeDone=xSemaphoreCreateBinary();
+  if (modeDone && xTaskCreate(pollModeWorker,"rfid-mode",8192,nullptr,1,&modeTask)!=pdPASS) modeTask=nullptr;
   configured=true;
   screen("CONNECTING","Connecting to Wi-Fi");
 }
@@ -414,12 +461,19 @@ void loop() {
   }
   wifiDownSince=0;
   if (pendingEvent.length()) {
-    if (!lastModePoll || millis()-lastModePoll>=MODE_POLL_MS) refreshMode();
+    pollMode();
     if (!lastRetry || millis()-lastRetry>=RETRY_MS) retryPending();
     delay(20); return;
   }
-  if (!lastModePoll || millis()-lastModePoll>=MODE_POLL_MS) refreshMode();
-  if (millis()-lastTap<1500 || !rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) { delay(5); return; }
+  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) {
+    pollMode();
+    delay(5); return;
+  }
   String uid=uidString(); rfid.PICC_HaltA(); rfid.PCD_StopCrypto1();
-  handleCard(uid); lastTap=millis(); lastModePoll=0;
+  Serial.println("RFID card detected");
+  screen("CARD READ","Checking server...");
+  classifyingCard=true;
+  handleCard(uid);
+  classifyingCard=false;
+  lastModePoll=0;
 }
