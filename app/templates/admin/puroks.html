@@ -7,7 +7,7 @@
 <form method="post" class="row g-3">{{ form.hidden_tag() }}
 <div class="col-md-4">{{ form.name.label(class='form-label') }}{{ form.name(class='civic-input', required=true) }}{% for error in form.name.errors %}<p class="text-error" role="alert">{{ error }}</p>{% endfor %}</div>
 <div class="col-md-6">{{ form.description.label(class='form-label') }}{{ form.description(class='civic-input') }}{% for error in form.description.errors %}<p class="text-error" role="alert">{{ error }}</p>{% endfor %}</div>
-<div class="col-md-2 d-flex align-items-end"><button class="civic-btn">{{ 'Save' if purok is defined else 'Create' }}</button></div>
+<div class="col-12 col-xl-auto civic-form-action"><button class="civic-btn">{{ 'Save' if purok is defined else 'Create' }}</button></div>
 {% if purok is defined %}<a href="{{ url_for('admin.puroks') }}">Cancel</a>{% endif %}
 </form></section>
 {% if puroks is defined %}

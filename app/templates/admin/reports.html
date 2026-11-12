@@ -11,7 +11,7 @@
     <div class="col-md-5"><label class="form-label" for="report-kind">Report</label><select id="report-kind" name="kind" class="civic-input">{% for kind, label in catalog.items() %}<option value="{{ kind }}">{{ label }}</option>{% endfor %}</select></div>
     <div class="col-md-3"><label class="form-label" for="report-start">Start date</label><input id="report-start" name="start" type="date" class="civic-input"></div>
     <div class="col-md-3"><label class="form-label" for="report-end">End date</label><input id="report-end" name="end" type="date" class="civic-input"></div>
-    <div class="col-md-1"><button type="submit" name="format" value="csv" class="civic-btn w-100">CSV</button></div>
+    <div class="col-12 col-xl-auto civic-form-action"><button type="submit" name="format" value="csv" class="civic-btn w-100">CSV</button></div>
   </div>
   <div class="mt-3"><button type="submit" name="format" value="pdf" class="civic-btn-outline me-2">Export PDF</button><span class="small text-on-surface-muted">Leave dates blank to include all records. Date limits are inclusive.</span></div>
   <p class="small text-on-surface-muted mt-3 mb-0">Dates refer to record creation for resident, household, population, Purok and health reports; issuance for documents; incident date for blotter/DRRM; registration for welfare; transaction date for collections.</p>

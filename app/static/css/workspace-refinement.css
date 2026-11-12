@@ -95,10 +95,17 @@
     background-color: var(--civic-card) !important;
   }
   body[class*="workspace-"] #portal-main :is(input, textarea)::placeholder { color: var(--civic-muted); opacity: 1; }
-  body[class*="workspace-"] #portal-main :is(.civic-btn, .civic-btn-outline, .civic-btn-gradient, .civic-btn-danger, .stitch-btn-primary, .stitch-btn-outline, .stitch-hero-action, .btn) {
+  body[class*="workspace-"] #portal-main :is(.civic-btn, .civic-btn-outline, .civic-btn-gradient, .civic-btn-danger, .stitch-btn-primary, .stitch-btn-outline, .stitch-hero-action, .btn):not(.position-absolute) {
     display: inline-flex; align-items: center; justify-content: center; gap: var(--workspace-action-gap);
     min-height: 40px; max-width: 100%; padding: 8px 14px; font-size: 13px; line-height: 1.4;
     font-weight: 600; text-decoration: none; white-space: normal; overflow-wrap: anywhere; text-align: center;
+    box-sizing: border-box; block-size: fit-content; min-inline-size: 0; vertical-align: middle;
+  }
+  body[class*="workspace-"] #portal-main :is(.civic-btn, .civic-btn-outline, .civic-btn-danger, .btn).w-100:not(.position-absolute) {
+    width: fit-content !important;
+  }
+  body[class*="workspace-"] #portal-main :is(.civic-btn, .civic-btn-outline, .civic-btn-danger, .btn) > :is(svg, .icon-svg) {
+    flex-shrink: 0;
   }
   body[class*="workspace-"] #portal-main :is(.civic-btn, .civic-btn-outline, .civic-btn-danger, .btn).btn-sm {
     min-height: 34px; padding: 6px 10px; font-size: 12px;
@@ -112,6 +119,28 @@
     gap: var(--workspace-action-gap);
     flex-wrap: wrap;
     min-width: 0;
+  }
+  body[class*="workspace-"] #portal-main :is(.civic-record-actions, .civic-security-actions, .civic-document-submit, .ops-actions, .ops-list-toolbar, .civic-page-size, .modal-footer) > form {
+    margin-block: 0;
+    max-width: 100%;
+    min-width: 0;
+  }
+  body[class*="workspace-"] #portal-main .civic-form-action {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--workspace-action-gap);
+  }
+  body[class*="workspace-"] #portal-main .civic-form-action > :is(.civic-btn, .civic-btn-outline, .civic-btn-danger, .btn) {
+    min-height: 44px;
+    width: fit-content;
+  }
+  body[class*="workspace-"] #portal-main .civic-title-actions {
+    flex-wrap: wrap;
+  }
+  body[class*="workspace-"] #portal-main .civic-title-actions > :is(form, a) {
+    flex: 0 0 auto;
+    max-width: 100%;
   }
   body[class*="workspace-"] #portal-main :is(.civic-panel, .ops-panel, .stitch-card, .civic-table-wrap, .civic-table-scroll, .ops-table-wrap) {
     min-width: 0;
