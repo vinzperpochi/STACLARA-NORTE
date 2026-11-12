@@ -85,7 +85,10 @@ def dashboard():
     try: day=date.fromisoformat(request.args.get('date',datetime.now(MANILA).date().isoformat()))
     except ValueError: abort(400)
     import calendar
-    people=db.session.scalars(people_query()).all()
+    query = people_query()
+    if is_admin() and not request.args.get('personnel_id', type=int):
+        query = query.where(PersonnelProfile.employee_id != 'RFID-7D2A16239B91')
+    people = db.session.scalars(query).all()
     period=request.args.get('period',7,type=int)
     if period not in {7,30,90}: period=7
     cache=attendance_dataset(min(day.replace(day=1),day-timedelta(days=period-1)),day.replace(day=calendar.monthrange(day.year,day.month)[1]),people)
