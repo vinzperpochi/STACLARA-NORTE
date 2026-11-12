@@ -16,7 +16,7 @@ def fake_official_email(monkeypatch):
 def _login(client, identifier, password):
     return client.post(
         "/auth/login",
-        data={"identifier": identifier, "password": password},
+        data={"role": "captain" if identifier == "admin" else "staff", "identifier": identifier, "password": password},
         follow_redirects=False,
     )
 

@@ -53,7 +53,7 @@ def test_new_emergency_alert_archives_previous_published_alert():
         with app.test_client() as client:
             client.post(
                 "/auth/login",
-                data={"identifier": "official", "password": "Official@123456"},
+                data={"role": "staff", "identifier": "official", "password": "Official@123456"},
                 follow_redirects=False,
             )
             response = client.post(
@@ -131,7 +131,7 @@ def test_resident_emergency_alerts_are_paginated():
         with app.test_client() as client:
             login = client.post(
                 "/auth/login",
-                data={"identifier": "resident_paged", "password": "Resident@123456"},
+                data={"role": "resident", "identifier": "resident_paged", "password": "Resident@123456"},
                 follow_redirects=False,
             )
             assert login.status_code == 302

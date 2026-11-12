@@ -30,7 +30,7 @@ def test_official_can_view_blotter_map():
         with app.test_client() as client:
             login_resp = client.post(
                 "/auth/login",
-                data={"identifier": "official_test", "password": "Official@123456"},
+                data={"role": "staff", "identifier": "official_test", "password": "Official@123456"},
                 follow_redirects=False,
             )
             assert login_resp.status_code == 302

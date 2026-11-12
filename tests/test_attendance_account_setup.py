@@ -44,7 +44,7 @@ def activate_test_login(email="new-official@example.com"):
 
 def official_login(application, username):
     client = application.test_client()
-    response = client.post("/auth/login", data={"identifier": username, "password": PASSWORD})
+    response = client.post("/auth/login", data={"role": "staff", "identifier": username, "password": PASSWORD})
     assert response.status_code == 302
     return client
 

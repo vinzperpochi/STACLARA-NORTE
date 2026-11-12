@@ -41,7 +41,7 @@ def system():
 
 def login(app, username='resident-test'):
     client = app.test_client()
-    response = client.post('/auth/login', data={'identifier': username, 'password': 'Strong-test-password!'})
+    response = client.post('/auth/login', data={'role': {'admin-test':'captain','staff-test':'staff'}.get(username, 'resident'), 'identifier': username, 'password': 'Strong-test-password!'})
     assert response.status_code == 302
     return client
 

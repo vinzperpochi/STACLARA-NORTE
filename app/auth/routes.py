@@ -278,6 +278,30 @@ def activate(token: str):
     return redirect(url_for("auth.login"))
 
 
+LOGIN_ROLES = {
+    "resident": ("Resident", "resident.dashboard"),
+    "staff": ("Barangay Official", "official.dashboard"),
+    "captain": ("System Administrator", "admin.dashboard"),
+}
+
+
+def can_sign_in_as(user, selected_role):
+    required = LOGIN_ROLES.get(selected_role)
+    return required is not None and any(
+        role.status == "active" and role.name.casefold() == required[0].casefold()
+        for role in user.roles
+    )
+
+
+def selected_workspace(user, selected_role):
+    if selected_role == "resident" and user.resident is None:
+        return url_for("main.index")
+    dashboard = url_for(LOGIN_ROLES[selected_role][1])
+    next_url = safe_next_url(request.args.get("next"))
+    prefix = dashboard.rsplit("/", 1)[0] + "/"
+    return next_url if next_url and urlsplit(next_url).path.startswith(prefix) else dashboard
+
+
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -286,6 +310,10 @@ def login():
     form = LoginForm()
     
     if request.method == "POST":
+        selected_role = request.form.get("role", "")
+        if selected_role not in LOGIN_ROLES:
+            flash("Select a valid sign-in role.", "warning")
+            return render_template("auth/login.html", form=form, errors=form.errors), 400
         if ValidationService.validate_form(form, flash_errors=False):
             # Official IDs are generated in uppercase (SCN-OFF-xxxxxx), while
             # users may paste them with spaces or different capitalization.
@@ -312,6 +340,10 @@ def login():
                 flash("Your account must be activated before signing in.", "warning")
                 return render_template("auth/login.html", form=form, errors=form.errors), 403
 
+            if not can_sign_in_as(user, selected_role):
+                flash("This account is not assigned to the selected sign-in role.", "danger")
+                return render_template("auth/login.html", form=form, errors=form.errors), 403
+
             clear_failed_logins(record)
             login_user(user, fresh=True, remember=form.remember_me.data)
             user.last_login_at = now()
@@ -321,7 +353,7 @@ def login():
             if user.must_change_password:
                 flash("Palitan muna ang pansamantalang password bago magpatuloy.", "warning")
                 return redirect(url_for("auth.change_password"))
-            return redirect(safe_next_url(request.args.get("next")) or post_login_url())
+            return redirect(selected_workspace(user, selected_role))
         else:
             # Form validation failed
             ValidationService.flash_form_errors(form)
@@ -554,14 +586,25 @@ def terms_and_conditions():
 def github_login():
     """Redirect to GitHub for OAuth authorisation."""
     from app.extensions import oauth
+    selected_role = request.args.get("role", "")
+    if selected_role not in LOGIN_ROLES:
+        flash("Select a valid sign-in role.", "warning")
+        return redirect(url_for("auth.login"))
+    state = secrets.token_urlsafe(32)
+    session["github_login_role"] = {"state": state, "role": selected_role}
     redirect_uri = url_for("auth.github_callback", _external=True)
-    return oauth.github.authorize_redirect(redirect_uri)
+    return oauth.github.authorize_redirect(redirect_uri, state=state)
 
 
 @auth_bp.get("/login/github/callback")
 def github_callback():
     """Handle GitHub OAuth callback — link or log in the matching resident account."""
     from app.extensions import oauth
+    flow = session.pop("github_login_role", {})
+    selected_role = flow.get("role")
+    if selected_role not in LOGIN_ROLES or flow.get("state") != request.args.get("state"):
+        flash("GitHub sign-in expired. Select your role and try again.", "warning")
+        return redirect(url_for("auth.login"))
     try:
         token = oauth.github.authorize_access_token()
     except Exception:
@@ -573,6 +616,9 @@ def github_callback():
     resp = oauth.github.get("user", token=token)
     github_profile = resp.json()
     github_id = str(github_profile.get("id", ""))
+    if not github_id.isdigit():
+        flash("GitHub sign-in did not return a valid account.", "danger")
+        return redirect(url_for("auth.login", role=selected_role))
 
     # Fetch the primary verified email if the profile email is hidden.
     email = github_profile.get("email")
@@ -597,16 +643,11 @@ def github_callback():
         user = db.session.scalar(
             db.select(User).where(
                 db.func.lower(User.email) == email,
+                User.github_id.is_(None),
                 User.is_active.is_(True),
                 User.status == "active",
             )
         )
-        if user is not None:
-            # Permanently link this GitHub account to the matched user.
-            user.github_id = github_id
-            audit_record("GITHUB_ACCOUNT_LINKED", "auth", "User", user.id,
-                         f"GitHub account {github_profile.get('login')} linked to user")
-            db.session.commit()
 
     if user is None:
         flash(
@@ -620,6 +661,14 @@ def github_callback():
         flash("Your account is not yet active. Please wait for barangay approval.", "warning")
         return redirect(url_for("auth.login"))
 
+    if not can_sign_in_as(user, selected_role):
+        flash("This account is not assigned to the selected sign-in role.", "danger")
+        return redirect(url_for("auth.login", role=selected_role))
+
+    if not user.github_id:
+        user.github_id = github_id
+        audit_record("GITHUB_ACCOUNT_LINKED", "auth", "User", user.id,
+                     f"GitHub account {github_profile.get('login')} linked to user")
     login_user(user, fresh=True)
     user.last_login_at = now()
     create_session_record(user.id)
@@ -629,4 +678,4 @@ def github_callback():
     if user.must_change_password:
         flash("Palitan muna ang pansamantalang password bago magpatuloy.", "warning")
         return redirect(url_for("auth.change_password"))
-    return redirect(safe_next_url(request.args.get("next")) or post_login_url())
+    return redirect(selected_workspace(user, selected_role))

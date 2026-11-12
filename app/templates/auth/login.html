@@ -1,3 +1,5 @@
+{% set selected_role = request.form.get('role') if request.method == 'POST' else request.args.get('role') %}
+{% set selected_role = selected_role if selected_role in ['resident','staff','captain'] else 'resident' %}
 {% extends "layouts/auth_base.html" %}
 {% from 'components/icons.html' import icon %}
 {% block title %}Official Civic Login &amp; Portal Authentication - Pamahalaang Barangay Sta. Clara Norte{% endblock %}
@@ -36,7 +38,7 @@
     </div>
     <form class="flex flex-col gap-4" method="post" data-login-form id="login-panel" role="tabpanel" aria-labelledby="tab-resident" novalidate>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <input type="hidden" name="role" id="login-role" value="resident">
+      <input type="hidden" name="role" id="login-role" value="{{ selected_role }}">
       <div class="flex flex-col gap-1.5" data-field>
         <div class="flex items-center justify-between gap-3">
           <label class="text-xs font-semibold text-[#11291A] flex items-center gap-0.5" for="identifier" id="identifier-label">
@@ -90,7 +92,7 @@
       <button class="btn-civic-primary w-full h-[42px] text-white font-semibold text-sm rounded-[8px] shadow-sm flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#12902B] border-0" data-login-submit type="submit">
         <span data-login-submit-text>Sign in</span>
       </button>
-      <a href="{{ url_for('auth.github_login') }}" class="w-full h-[42px] flex items-center justify-center gap-2.5 px-4 rounded-[8px] bg-[#24292F] hover:bg-[#1b1f24] text-white font-semibold text-sm transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#24292F]" aria-label="Sign in with GitHub">
+      <a data-github-login href="{{ url_for('auth.github_login', role=selected_role) }}" class="w-full h-[42px] flex items-center justify-center gap-2.5 px-4 rounded-[8px] bg-[#24292F] hover:bg-[#1b1f24] text-white font-semibold text-sm transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#24292F]" aria-label="Sign in with GitHub">
         <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.071 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.097-2.646 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.376.202 2.393.1 2.646.64.698 1.027 1.591 1.027 2.682 0 3.841-2.337 4.687-4.565 4.935.359.308.678.92.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
         </svg>

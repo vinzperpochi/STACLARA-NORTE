@@ -224,6 +224,7 @@
     const submitBtn = $("[data-login-submit]", loginForm);
     const submitText = $("[data-login-submit-text]", loginForm);
     const roleInput = $("#login-role", loginForm);
+    const githubLink = $("[data-github-login]");
     const roleLabel = $("#identifier-label");
     const roleHint = $("#identifier-hint");
     const roleIcon = $("#identifier-icon");
@@ -259,6 +260,11 @@
       const config = roleCopy[role];
       if (!config) return;
       if (roleInput) roleInput.value = role;
+      if (githubLink) {
+        const url = new URL(githubLink.href);
+        url.searchParams.set("role", role);
+        githubLink.href = url.href;
+      }
       $$("[data-role-tab]").forEach((btn) => {
         const on = btn.dataset.roleTab === role;
         btn.className = on ? activeTab : idleTab;

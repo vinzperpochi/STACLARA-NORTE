@@ -71,7 +71,7 @@ def test_registration_private_evidence_staff_view_and_resident_ownership(registr
     user=db.session.scalar(db.select(User).where(User.email=='extended@example.com'))
     user.status='active';user.is_active=True;user.set_password('Strong-test-password!');db.session.commit()
     mine=app.test_client()
-    assert mine.post('/auth/login',data={'identifier':user.email,'password':'Strong-test-password!'}).status_code==302
+    assert mine.post('/auth/login',data={'role':'resident','identifier':user.email,'password':'Strong-test-password!'}).status_code==302
     assert mine.get('/resident/registration-files/proof').status_code==200
     other=login(app,'other-test')
     assert other.get('/resident/registration-files/proof').status_code==404

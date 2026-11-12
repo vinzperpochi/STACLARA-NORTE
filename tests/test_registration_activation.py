@@ -39,7 +39,7 @@ def _resident_user(email="maria@example.com", verified=True):
 def _login(client, identifier, password):
     return client.post(
         "/auth/login",
-        data={"identifier": identifier, "password": password},
+        data={"role": {"admin": "captain", "official": "staff"}.get(identifier, "resident"), "identifier": identifier, "password": password},
         follow_redirects=False,
     )
 

@@ -26,7 +26,7 @@ def test_create_admin_user_hashes_password_and_rejects_duplicates():
             with app.test_client() as client:
                 response = client.post(
                     "/auth/login",
-                    data={"identifier": "local_admin", "password": "Strong-Passphrase-123"},
+                    data={"role": "captain", "identifier": "local_admin", "password": "Strong-Passphrase-123"},
                 )
                 assert response.status_code == 302
                 assert response.headers["Location"].endswith("/auth/change-password")
