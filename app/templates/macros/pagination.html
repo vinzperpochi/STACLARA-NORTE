@@ -1,8 +1,6 @@
 {% macro render_pagination(pagination, parameter='page', anchor='', label='Records') %}
-{% if pagination and pagination.total %}
+{% if pagination and pagination.total and pagination.size_parameter %}
 <div class="pagination-wrap" role="group" aria-label="{{ label }} display options">
-  <div class="pagination-summary">Showing <strong>{{ (pagination.page-1)*pagination.per_page+1 }}–{{ [pagination.page*pagination.per_page,pagination.total]|min }}</strong> of <strong>{{ pagination.total }}</strong></div>
-  {% if pagination.size_parameter %}
   <form class="civic-page-size" method="get" action="{{ request.path }}{% if anchor %}#{{ anchor }}{% endif %}">
     {% for key, values in request.args.lists() if key not in [parameter,pagination.size_parameter,'format','registered'] %}
       {% for value in values %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endfor %}
@@ -17,7 +15,6 @@
     </label>
     <button type="submit" class="civic-btn-outline">Apply</button>
   </form>
-  {% endif %}
 </div>
 {% endif %}
 {% endmacro %}

@@ -17,7 +17,6 @@ def user(name):
 
 
 def test_five_record_default_matches_reference_at_first_middle_and_last_page(system):
-    import re
     records = list(range(22))
     for requested, expected_page, expected_items in (
         (1, 1, records[:5]),
@@ -29,9 +28,7 @@ def test_five_record_default_matches_reference_at_first_middle_and_last_page(sys
             html = render_template('partials/_pagination.html', pagination=pagination)
         assert pagination.page == expected_page and pagination.per_page == 5
         assert pagination.items == expected_items and pagination.total == 22
-        summary = re.search(r'<div class="pagination-summary">(.*?)</div>', html).group(1)
-        assert re.sub(r'<[^>]+>', '', summary) == f'Showing {(expected_page-1)*5+1}–{min(expected_page*5,22)} of 22'
-        assert 'pagination-controls' not in html
+        assert 'pagination-controls' not in html and 'pagination-summary' not in html
         assert 'name="per_page"' in html and 'value="all"' in html
         assert 'name="q" value="Maria"' in html
         assert 'name="page"' not in html
@@ -40,7 +37,7 @@ def test_five_record_default_matches_reference_at_first_middle_and_last_page(sys
 def test_last_page_matches_reference_and_preserves_multiple_filters(system):
     with system.test_request_context('/official/residents?page=50&q=Maria&tag=a&tag=b&format=csv&_anchor=bad'):
         html = render_template('partials/_pagination.html', pagination=Pagination([],50,10,500,50))
-        assert '491–500' in html and 'of <strong>500</strong>' in html
+        assert 'pagination-summary' not in html
         assert 'pagination-controls' not in html
         link = urlsplit(pagination_url(2,'alerts_page','alerts'))
         args = parse_qs(link.query)
