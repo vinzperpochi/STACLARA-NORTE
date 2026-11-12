@@ -373,3 +373,15 @@
 @media (prefers-reduced-motion: reduce) {
   body[class*="workspace-"] *, body[class*="workspace-"] *::before, body[class*="workspace-"] *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+@media screen {
+  body.workspace-official #portal-main .drrm-publish-alert {
+    color: #fff !important;
+    background: #b91c1c !important;
+    border-color: #b91c1c;
+  }
+  body.workspace-official #portal-main .drrm-publish-alert:hover {
+    background: #991b1b !important;
+    border-color: #991b1b;
+  }
+}
