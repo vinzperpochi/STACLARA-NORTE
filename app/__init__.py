@@ -158,6 +158,9 @@ def register_session_hooks(app: Flask) -> None:
 
     @app.after_request
     def apply_security_headers(response):
+        worker_wasm = " 'wasm-unsafe-eval'" if request.endpoint == "static" and (
+            request.view_args or {}
+        ).get("filename") == "ocr/worker.min.js" else ""
         response.headers.setdefault("X-Content-Type-Options", "nosniff")
         response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
         response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
@@ -165,7 +168,7 @@ def register_session_hooks(app: Flask) -> None:
         response.headers.setdefault(
             "Content-Security-Policy",
             "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; "
+            f"script-src 'self' 'unsafe-inline'{worker_wasm} https://cdn.jsdelivr.net https://unpkg.com; "
             "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; "
             "img-src 'self' data: https://*.tile.openstreetmap.org https://avatars.githubusercontent.com; "
             "font-src 'self' data: https://cdn.jsdelivr.net https://unpkg.com; "

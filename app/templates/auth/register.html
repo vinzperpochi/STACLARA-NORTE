@@ -239,7 +239,9 @@
         <div class="space-y-4 mt-8">
           <h3 class="registration-section-title">2. Verification Credentials &amp; Proof of Residency</h3>
           <p class="text-[12px] text-muted">Upload a barangay residency document, utility bill, or another document showing your address. Images are stored privately and accessible only to you and authorized staff.</p>
-          <div class="registration-fields-grid"><div class="registration-upload-card">{{ profile_field(form.proof_of_residency) }}</div><div class="registration-upload-card">{{ profile_field(form.philsys_card) }}</div></div>
+          <div class="registration-fields-grid"><div class="registration-upload-card">{{ profile_field(form.proof_of_residency) }}</div><div class="registration-upload-card">{{ profile_field(form.philsys_card) }}
+            <p class="small mt-2 mb-0" id="id-match-status" role="status" data-ocr-assets="{{ url_for('static', filename='ocr/') }}">The ID photo is read in your browser to compare your name and date of birth. An official still reviews the ID.</p>
+          </div></div>
         </div>
         <div class="space-y-4 mt-8">
           <h3 class="registration-section-title">3. Special Status &amp; Welfare Classifications</h3>
@@ -307,4 +309,8 @@
 {% endblock %}
 
 {% block extra_head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/registration.css') }}">{% endblock %}
-{% block scripts %}<script src="{{ url_for('static', filename='js/registration-uploads.js') }}"></script>{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/registration-uploads.js') }}"></script>
+<script defer src="{{ url_for('static', filename='ocr/tesseract.min.js') }}"></script>
+<script defer src="{{ url_for('static', filename='js/id-match.js') }}"></script>
+{% endblock %}

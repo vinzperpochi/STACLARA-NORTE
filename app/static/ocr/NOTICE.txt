@@ -1,0 +1,8 @@
+Browser OCR dependencies distributed under Apache License 2.0:
+
+Tesseract.js 6.0.1 — https://github.com/naptha/tesseract.js
+Tesseract.js Core 6.0.0 — https://github.com/naptha/tesseract.js-core
+English trained data — https://github.com/tesseract-ocr/tessdata_best
+The compressed integer model is distributed by @tesseract.js-data/eng 1.0.0.
+
+See tesseract.js-core-LICENSE.txt for the Apache License 2.0 text.

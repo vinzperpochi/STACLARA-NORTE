@@ -16,6 +16,14 @@
     {% if item.image_available %}{% set image_url=url_for('official.document_requirement_view',request_id=doc_request.id,requirement_id=item.id) %}
       <a href="{{ image_url }}" target="_blank" rel="noopener" class="civic-review-image-link"><img class="civic-review-id" src="{{ image_url }}" alt="Uploaded {{ item.requirement_name }}"></a>
       <a class="civic-btn-outline mt-3" href="{{ image_url }}" target="_blank" rel="noopener">View full-size ID / image</a>
+      {% if item.requirement_name in ['Valid government-issued ID', 'Valid ID or proof of identity'] %}
+        <div class="mt-3" data-id-review data-id-image="{{ image_url }}" data-ocr-assets="{{ url_for('static', filename='ocr/') }}"
+             data-first="{{ doc_request.resident.first_name or '' }}" data-last="{{ doc_request.resident.last_name or '' }}"
+             data-birth="{{ doc_request.resident.birth_date or '' }}">
+          <button type="button" class="civic-btn-outline">Read ID and compare</button>
+          <p class="small mt-2 mb-0" role="status">Compare the ID with the resident record before marking the requirement verified.</p>
+        </div>
+      {% endif %}
     {% else %}<p class="text-muted mb-0">No image is available yet. Ask the resident to upload this requirement.</p>{% endif %}</article>
   {% else %}<p>No requirements on file.</p>{% endfor %}
   {% if doc_request.status in ['UNDER_REVIEW','PROCESSING'] %}<details class="mt-3"><summary>Request an additional document</summary><form class="mt-3" method="post" action="{{ url_for('official.document_additional_requirement',request_id=doc_request.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label class="form-label">Requirement<input required class="civic-input" name="requirement_name" maxlength="200"></label><label class="form-label mt-2">Instructions<input class="civic-input" name="notes" maxlength="2000"></label><button class="civic-btn-outline mt-3">Request additional</button></form></details>{% endif %}
@@ -59,4 +67,9 @@
 {% if doc_request.issued_document %}<section class="civic-panel p-4 mb-4"><h2 class="h5">Issued certificate</h2><p>{{ doc_request.issued_document.document_number }} · {{ doc_request.issued_document.authorized_signatory }} · {{ doc_request.issued_document.status }}</p>{% if doc_request.issued_document.status!='revoked' %}<div class="d-flex flex-wrap gap-2"><a class="civic-btn-outline" target="_blank" rel="noopener" href="{{ url_for('official.document_preview',request_id=doc_request.id) }}">Preview Certificate</a><a class="civic-btn-outline" href="{{ url_for('official.document_pdf',request_id=doc_request.id) }}">Generate PDF</a><a class="civic-btn" target="_blank" rel="noopener" href="{{ url_for('official.document_preview',request_id=doc_request.id,print=1) }}">Print Certificate</a>{% if doc_request.status in ['PRINTED','READY_FOR_RELEASE'] %}<form method="post" action="{{ url_for('official.document_release',request_id=doc_request.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="civic-btn">Release document</button></form>{% endif %}</div>{% endif %}{% if is_admin %}<details class="mt-3"><summary>Revoke certificate</summary><form class="mt-3" method="post" action="{{ url_for('official.document_revoke',request_id=doc_request.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input required class="civic-input" name="notes" maxlength="2000" placeholder="Revocation reason"><button class="civic-btn-danger mt-3">Revoke certificate</button></form></details>{% endif %}</section>{% endif %}
 <section class="civic-panel p-4"><h2 class="h5 mb-3">Request history</h2><ol class="civic-review-history">{% for event in doc_request.status_history %}<li><strong>{{ event.to_status.replace('_',' ')|title }}</strong><span class="small text-muted d-block">{{ event.created_at }} · {{ event.changed_by.username }}</span>{% if event.notes %}<p class="small mb-0">{{ event.notes }}</p>{% endif %}</li>{% endfor %}</ol></section>
 </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script defer src="{{ url_for('static', filename='ocr/tesseract.min.js') }}"></script>
+<script defer src="{{ url_for('static', filename='js/id-match.js') }}"></script>
 {% endblock %}
