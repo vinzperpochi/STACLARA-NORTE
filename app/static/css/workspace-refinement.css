@@ -201,13 +201,15 @@
   body[class*="workspace-"] #portal-main .report-export-field:first-child {
     flex-basis: 15rem;
   }
+  body[class*="workspace-"] #portal-main .report-export-actions { align-self: flex-end; }
+  body[class*="workspace-"] #portal-main .report-export-grid .card-body > p { margin-bottom: 12px; }
   body[class*="workspace-"] #portal-main .report-export-actions.civic-record-actions > button {
     min-height: 44px;
   }
   body[class*="workspace-"] #portal-main .report-export-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-    gap: var(--workspace-card-gap);
+    gap: clamp(14px, 2vw, 20px);
   }
   body[class*="workspace-"] #portal-main .civic-summary-stat {
     display: flex;
