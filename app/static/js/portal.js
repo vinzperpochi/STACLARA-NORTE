@@ -282,12 +282,22 @@
 
   document.addEventListener("submit", (event) => {
     const form = event.target.closest("[data-confirm]");
-    if (!form || form.dataset.confirmed === "1") return;
+    if (!form || event.defaultPrevented || form.dataset.confirmed === "1") return;
     event.preventDefault();
+    if (form.dataset.confirmPending) return;
     if (!window.confirm(form.dataset.confirm || "Kumpirmahin?")) return;
-    form.dataset.confirmed = "1";
-    if (form.requestSubmit) form.requestSubmit();
-    else form.submit();
+    const submitter = event.submitter;
+    form.dataset.confirmPending = "1";
+    setTimeout(() => {
+      delete form.dataset.confirmPending;
+      form.dataset.confirmed = "1";
+      try {
+        if (form.requestSubmit) form.requestSubmit(submitter || undefined);
+        else form.submit();
+      } finally {
+        delete form.dataset.confirmed;
+      }
+    }, 0);
   }, true);
 
   $$("[data-portal-filter-rows]").forEach((input) => {

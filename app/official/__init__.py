@@ -9,6 +9,7 @@ from uuid import uuid4
 from flask import Blueprint, abort, current_app, flash, jsonify, redirect, render_template, request, send_from_directory, url_for
 from flask_login import current_user
 from sqlalchemy import and_, func, or_, asc, desc
+from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
 from app.auth.decorators import official_account_required
@@ -24,7 +25,7 @@ from app.forms.official import (
     CollectionForm, CorrectionReviewForm, QueueUpdateForm, WelfareForm, AssistanceForm
 )
 from app.validation import ValidationService
-from app.pagination import paginate
+from app.pagination import paginate_named
 from app.registration import store_profile_uploads, profile_upload_snapshot, cleanup_replaced_uploads, cleanup_files
 from app.models import (
     Household,
@@ -132,9 +133,9 @@ def dashboard():
 @official_account_required
 def account_approvals():
     """Review resident registrations; available only to officials and system admins."""
-    pagination = paginate(db.select(User)
+    pagination = paginate_named(db.select(User)
         .where(User.resident_id.is_not(None), User.is_active.is_(False))
-        .order_by(User.created_at.asc(), User.id.asc()), request.args.get("page",1,type=int),5)
+        .order_by(User.created_at.asc(), User.id.asc()))
     return render_template("official/account_approvals.html", pending_accounts=pagination.items, pagination=pagination)
 
 
@@ -266,7 +267,7 @@ def resident_list():
     else:
         query = apply_sort(query, Resident, default_column='last_name', default_order='asc')
     
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     
     return render_template(
         "official/residents.html", 
@@ -287,7 +288,7 @@ def household_list():
     # Apply sorting
     query = apply_sort(query, Household, default_column='household_number', default_order='asc')
     
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     
     return render_template(
         "official/households.html", 
@@ -442,7 +443,7 @@ def correction_requests():
     # Apply sorting
     query = apply_sort(query, ResidentCorrectionRequest, default_column='created_at', default_order='desc')
     
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     
     return render_template(
         "official/correction_requests.html", 
@@ -552,7 +553,7 @@ def document_requests():
     # Apply sorting
     query = apply_sort(query, Request, default_column='created_at', default_order='desc')
     
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     
     return render_template(
         "official/document_requests.html", 
@@ -711,7 +712,7 @@ def blotter_list():
     # Apply sorting
     query = query.order_by(BlotterCase.id.asc())
     
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     from app.blotter.submissions import queue_position
     for case in pagination.items:
         case.queue_position = queue_position(case)
@@ -931,7 +932,7 @@ def business_list():
         query = query.where(or_(BusinessRecord.business_name.ilike(pattern), BusinessRecord.permit_number.ilike(pattern), BusinessRecord.business_address.ilike(pattern)))
     if request.args.get("status"):
         query = query.where(BusinessRecord.status == request.args["status"].upper())
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     businesses = pagination.items
     today = date.today()
     renewal_due = [item for item in businesses if item.expiration_date <= today.replace(day=today.day) or (item.expiration_date - today).days <= 30]
@@ -948,10 +949,14 @@ def business_create():
             expiration_date = _date_field("expiration_date")
             if not all(required) or not owner_id or not registration_date or not expiration_date:
                 raise ValueError("Business name, owner, address, type, permit number, and both dates are required.")
+            if not db.session.get(Resident, owner_id):
+                raise ValueError("Select an existing business owner.")
             db.session.add(BusinessRecord(business_name=required[0], owner_id=owner_id, business_address=required[1], business_type=required[2], permit_number=required[3], registration_date=registration_date, expiration_date=expiration_date, status=request.form.get("status", "ACTIVE").upper()))
             db.session.commit(); flash("Business record created.", "success"); return redirect(url_for("official.business_list"))
         except (ValueError, TypeError) as error:
             db.session.rollback(); flash(str(error), "danger")
+        except IntegrityError:
+            db.session.rollback(); flash("The permit number is already assigned or the record conflicts with an existing entry.", "danger")
     return render_template("official/business_form.html", business=None, residents=_official_residents())
 
 @official_bp.route("/businesses/<int:business_id>/edit", methods=["GET", "POST"])
@@ -966,10 +971,15 @@ def business_edit(business_id):
             business.registration_date = _date_field("registration_date", business.registration_date)
             business.expiration_date = _date_field("expiration_date", business.expiration_date)
             business.status = request.form.get("status", "ACTIVE").upper()
-            if not business.business_name or not business.owner_id or not business.permit_number: raise ValueError("Business name, owner, and permit number are required.")
+            if not all((business.business_name, business.business_address, business.business_type, business.permit_number)):
+                raise ValueError("Business name, address, type, and permit number are required.")
+            if not business.owner_id or not db.session.get(Resident, business.owner_id):
+                raise ValueError("Select an existing business owner.")
             db.session.commit(); flash("Business record updated.", "success"); return redirect(url_for("official.business_list"))
         except (ValueError, TypeError) as error:
             db.session.rollback(); flash(str(error), "danger")
+        except IntegrityError:
+            db.session.rollback(); flash("The permit number is already assigned or the record conflicts with an existing entry.", "danger")
     return render_template("official/business_form.html", business=business, residents=_official_residents())
 
 @official_bp.get("/business-clearance-requests")
@@ -977,7 +987,7 @@ def business_edit(business_id):
 def business_clearance_requests():
     query = db.select(BusinessClearanceRequest).order_by(BusinessClearanceRequest.created_at.desc())
     if request.args.get("status"): query = query.where(BusinessClearanceRequest.status == request.args["status"].upper())
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     return render_template("official/business_requests.html", requests=pagination.items, pagination=pagination, filters=request.args)
 
 @official_bp.post("/businesses/<int:business_id>/request-clearance")
@@ -1005,8 +1015,7 @@ def welfare_registry():
     if request.args.get("application_status"): query = query.where(BeneficiaryRegistry.application_status == request.args["application_status"].upper())
     q = request.args.get("q", "").strip()
     if q: query = query.join(Resident).where(or_(Resident.first_name.ilike(f"%{q}%"), Resident.last_name.ilike(f"%{q}%")))
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
-    from app.pagination import paginate_named
+    pagination = paginate_named(query)
     assistance_pagination=paginate_named(db.select(AssistanceRecord).order_by(AssistanceRecord.assistance_date.desc(),AssistanceRecord.id.desc()),"assistance_page")
     return render_template("official/welfare.html", beneficiaries=pagination.items, pagination=pagination, categories=BENEFICIARY_CATEGORIES, filters=request.args, assistance=assistance_pagination.items, assistance_pagination=assistance_pagination)
 
@@ -1029,8 +1038,28 @@ def welfare_create():
 def welfare_edit(beneficiary_id):
     beneficiary = db.get_or_404(BeneficiaryRegistry, beneficiary_id)
     if request.method == "POST":
-        beneficiary.resident_id = strict_form_value("resident_id", type=int); beneficiary.category = request.form.get("category", beneficiary.category); beneficiary.application_status = request.form.get("application_status", beneficiary.application_status).upper(); beneficiary.registered_date = _date_field("registered_date", beneficiary.registered_date); beneficiary.application_notes = request.form.get("application_notes", "").strip() or None
-        db.session.commit(); flash("Beneficiary record updated.", "success"); return redirect(url_for("official.welfare_registry"))
+        try:
+            resident_id = strict_form_value("resident_id", type=int)
+            category = request.form.get("category", beneficiary.category)
+            status = request.form.get("application_status", beneficiary.application_status).upper()
+            if not resident_id or not db.session.get(Resident, resident_id) or category not in BENEFICIARY_CATEGORIES:
+                raise ValueError("Select a resident and a valid registry category.")
+            if status not in {"PENDING", "APPROVED", "REJECTED", "INACTIVE"}:
+                raise ValueError("Select a valid application status.")
+            beneficiary.resident_id = resident_id
+            beneficiary.category = category
+            beneficiary.application_status = status
+            beneficiary.registered_date = _date_field("registered_date", beneficiary.registered_date)
+            beneficiary.application_notes = request.form.get("application_notes", "").strip() or None
+            db.session.commit()
+            flash("Beneficiary record updated.", "success")
+            return redirect(url_for("official.welfare_registry"))
+        except (ValueError, TypeError) as error:
+            db.session.rollback()
+            flash(str(error), "danger")
+        except IntegrityError:
+            db.session.rollback()
+            flash("The beneficiary record conflicts with an existing entry.", "danger")
     return render_template("official/welfare_form.html", beneficiary=beneficiary, residents=_official_residents(), categories=BENEFICIARY_CATEGORIES)
 
 @official_bp.post("/welfare/<int:beneficiary_id>/assistance")
@@ -1055,7 +1084,7 @@ def queue_management():
     query = db.select(QueueRequest).order_by(QueueRequest.created_at.asc())
     if request.args.get("status"): query = query.where(QueueRequest.status == request.args["status"].upper())
     if request.args.get("request_type"): query = query.where(QueueRequest.request_type == request.args["request_type"].upper())
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     return render_template("official/queue.html", requests=pagination.items, pagination=pagination, statuses=QUEUE_STATUSES, request_types=QUEUE_TYPES, officials=db.session.scalars(db.select(User).order_by(User.username)).all(), filters=request.args)
 
 @official_bp.post("/queue/<int:queue_id>/update")
@@ -1076,14 +1105,17 @@ def queue_update(queue_id):
 def collections():
     today = date.today()
     month_start = today.replace(day=1)
-    pagination = paginate(db.select(CollectionEntry).order_by(CollectionEntry.transaction_date.desc(), CollectionEntry.created_at.desc()), request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(db.select(CollectionEntry).order_by(CollectionEntry.transaction_date.desc(), CollectionEntry.created_at.desc()))
     entries = pagination.items
-    daily = sum(float(item.amount) for item in entries if item.transaction_date == today)
-    monthly = sum(float(item.amount) for item in entries if item.transaction_date >= month_start and item.transaction_date <= today)
-    by_service = {}
-    for item in entries:
-        by_service[item.service] = by_service.get(item.service, 0) + float(item.amount)
-    return render_template("official/collections.html", entries=entries, pagination=pagination, daily=daily, monthly=monthly, by_service=sorted(by_service.items()), residents=_official_residents(), today=today)
+    amount = func.sum(CollectionEntry.amount)
+    daily, monthly = db.session.execute(db.select(
+        func.coalesce(amount.filter(CollectionEntry.transaction_date == today), 0),
+        func.coalesce(amount.filter(CollectionEntry.transaction_date.between(month_start, today)), 0),
+    )).one()
+    by_service = db.session.execute(db.select(CollectionEntry.service, amount)
+        .group_by(CollectionEntry.service).order_by(CollectionEntry.service)).all()
+    return render_template("official/collections.html", entries=entries, pagination=pagination,
+        daily=daily, monthly=monthly, by_service=by_service, residents=_official_residents(), today=today)
 
 
 @official_bp.get("/reports")
@@ -1122,7 +1154,8 @@ def drrm_dashboard():
     edit_alert = None
     if request.args.get("edit_alert_id", type=int):
         edit_alert = db.get_or_404(EmergencyAlert, request.args["edit_alert_id"])
-    from app.pagination import paginate_named
+    archived_alerts = request.args.get("alerts_view") == "archived"
+    alert_filter = EmergencyAlert.status == "ARCHIVED" if archived_alerts else EmergencyAlert.status != "ARCHIVED"
     queries = {
         'hazards': db.select(HazardZone).order_by(HazardZone.risk_level,HazardZone.name,HazardZone.id),
         'centers': db.select(EvacuationCenter).order_by(EvacuationCenter.name,EvacuationCenter.id),
@@ -1130,13 +1163,14 @@ def drrm_dashboard():
         'equipment': db.select(DRRMEquipment).order_by(DRRMEquipment.name,DRRMEquipment.id),
         'supplies': db.select(ReliefSupply).order_by(ReliefSupply.name,ReliefSupply.id),
         'incidents': db.select(DRRMIncident).order_by(DRRMIncident.started_at.desc(),DRRMIncident.id.desc()),
-        'alerts': db.select(EmergencyAlert).order_by(EmergencyAlert.issued_at.desc(),EmergencyAlert.id.desc()),
+        'alerts': db.select(EmergencyAlert).where(alert_filter).order_by(EmergencyAlert.issued_at.desc(),EmergencyAlert.id.desc()),
     }
     pagers={key:paginate_named(query,key+'_page') for key,query in queries.items()}
     return render_template("official/drrm.html", **{key:page.items for key,page in pagers.items()},
         pagers=pagers, all_centers=db.session.scalars(queries['centers']).all(),
         households=db.session.scalars(db.select(Household).order_by(Household.household_number)).all(),
-        puroks=db.session.scalars(db.select(Purok).order_by(Purok.name)).all(), edit_alert=edit_alert)
+        puroks=db.session.scalars(db.select(Purok).order_by(Purok.name)).all(), edit_alert=edit_alert,
+        archived_alerts=archived_alerts)
 
 @official_bp.post("/drrm/hazards")
 @official_account_required
@@ -1223,7 +1257,7 @@ def drrm_alert_create():
 @official_account_required
 def drrm_alert_edit(alert_id):
     item = db.get_or_404(EmergencyAlert, alert_id)
-    return redirect(url_for("official.drrm_dashboard", edit_alert_id=item.id))
+    return redirect(url_for("official.drrm_dashboard", edit_alert_id=item.id, _anchor="drrm-alerts"))
 
 
 @official_bp.post("/drrm/alerts/<int:alert_id>/update")
@@ -1234,10 +1268,13 @@ def drrm_alert_update(alert_id):
         item.title = request.form.get("title", item.title).strip()
         item.message = request.form.get("message", item.message).strip()
         item.alert_level = (request.form.get("alert_level", item.alert_level) or item.alert_level).strip().upper()
-        item.expires_at = datetime.fromisoformat(request.form["expires_at"]) if request.form.get("expires_at") else None
+        if "expires_at" in request.form:
+            item.expires_at = datetime.fromisoformat(request.form["expires_at"]) if request.form["expires_at"] else None
         item.status = request.form.get("status", item.status).strip().upper() or item.status
-        if not item.title or not item.message:
-            raise ValueError("Title and message are required.")
+        if not item.title or len(item.title) > 200 or not item.message:
+            raise ValueError("Enter a title of up to 200 characters and an alert message.")
+        if item.alert_level not in {"ADVISORY", "WARNING", "CRITICAL"} or item.status not in {"DRAFT", "PUBLISHED", "ARCHIVED"}:
+            raise ValueError("Choose a valid alert level and status.")
         if item.status == "PUBLISHED":
             archive_published_alerts(item.id)
             item.status = "PUBLISHED"
@@ -1245,7 +1282,9 @@ def drrm_alert_update(alert_id):
         flash("Emergency alert updated.", "success")
     except (TypeError, ValueError) as error:
         db.session.rollback(); flash(str(error), "danger")
-    return redirect(url_for("official.drrm_dashboard"))
+        return redirect(url_for("official.drrm_dashboard", edit_alert_id=alert_id, _anchor="drrm-alerts"))
+    return redirect(url_for("official.drrm_dashboard", alerts_view="archived" if item.status == "ARCHIVED" else None,
+                            _anchor="drrm-alerts"))
 
 
 @official_bp.post("/drrm/alerts/<int:alert_id>/delete")
@@ -1265,7 +1304,20 @@ def drrm_alert_archive(alert_id):
     item.status = "ARCHIVED"
     db.session.commit()
     flash("Emergency alert archived.", "success")
-    return redirect(url_for("official.drrm_dashboard"))
+    return redirect(url_for("official.drrm_dashboard", _anchor="drrm-alerts"))
+
+
+@official_bp.post("/drrm/alerts/<int:alert_id>/restore")
+@official_account_required
+def drrm_alert_restore(alert_id):
+    item = db.session.scalar(db.select(EmergencyAlert).where(EmergencyAlert.id == alert_id).with_for_update())
+    if item is None:
+        abort(404)
+    if item.status == "ARCHIVED":
+        item.status = "DRAFT"
+        db.session.commit()
+        flash("Emergency alert restored as a draft. Review it before publishing.", "success")
+    return redirect(url_for("official.drrm_dashboard", alerts_view="archived", _anchor="drrm-alerts"))
 
 
 @official_bp.get('/puroks')
@@ -1279,7 +1331,7 @@ def purok_list():
     term = request.args.get('q', '').strip()
     if term:
         query = query.where(Purok.name.ilike('%' + term + '%'))
-    pagination = paginate(query, request.args.get('page', 1, type=int), 5)
+    pagination = paginate_named(query)
     return render_template('official/puroks.html', puroks=pagination.items, pagination=pagination)
 
 

@@ -24,7 +24,7 @@ from app.forms.admin import (
     BulkOperationForm, MaintenanceModeForm
 )
 from app.validation import ValidationService
-from app.pagination import paginate, Pagination
+from app.pagination import paginate_named
 from app.email_service import send_official_credentials
 from app.models import (
     AuditLog,
@@ -248,7 +248,7 @@ def users():
     # Apply sorting
     query = apply_sort(query, User, default_column='username', default_order='asc')
     
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     users = pagination.items
     roles = db.session.scalars(db.select(Role).where(func.lower(Role.name) != "barangay official").order_by(Role.name)).all()
     
@@ -349,29 +349,13 @@ def official_accounts():
         ~User.roles.any(func.lower(Role.name) == "system administrator"),
     )
     official_filter = or_(User.official_id.is_not(None), official_role_only)
-    total_officials = db.session.scalar(
-        db.select(func.count(User.id)).where(official_filter)
-    ) or 0
-    per_page = 5
-    total_pages = max(1, (total_officials + per_page - 1) // per_page)
-    page = max(1, min(request.args.get("page", 1, type=int) or 1, total_pages))
-    officials = db.session.scalars(
-        db.select(User)
-        .where(official_filter)
-        .order_by(User.username)
-        .offset((page - 1) * per_page)
-        .limit(per_page)
-    ).all()
+    pagination = paginate_named(db.select(User).where(official_filter).order_by(User.username))
     return render_template(
-        "admin/official_accounts.html",
-        form=form,
-        officials=officials,
-        total_officials=total_officials,
-        page=page,
-        per_page=per_page,
-        total_pages=total_pages,
-        pagination=Pagination(officials,page,per_page,total_officials,total_pages),
+        "admin/official_accounts.html", form=form, officials=pagination.items,
+        total_officials=pagination.total, page=pagination.page, per_page=pagination.per_page,
+        total_pages=pagination.pages, pagination=pagination,
     )
+
 
 
 @admin_bp.post("/official-accounts/<int:user_id>/delete")
@@ -456,7 +440,7 @@ def roles():
         log_action("create", "Role", role.id, role.name)
         if commit_or_flash("Role created successfully."):
             return redirect(url_for("admin.roles"))
-    pagination = paginate(db.select(Role).order_by(Role.name), request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(db.select(Role).order_by(Role.name))
     return render_template("admin/roles.html", roles=pagination.items, pagination=pagination, permissions=db.session.scalars(db.select(Permission).order_by(Permission.resource, Permission.action)).all())
 
 @admin_bp.route("/permissions", methods=["GET", "POST"])
@@ -476,7 +460,7 @@ def permissions():
         log_action("create", "Permission", permission.id, f"{permission.resource}:{permission.action}")
         if commit_or_flash("Permission created successfully."):
             return redirect(url_for("admin.permissions"))
-    pagination = paginate(db.select(Permission).order_by(Permission.resource, Permission.action), request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(db.select(Permission).order_by(Permission.resource, Permission.action))
     from .management import BUILTIN_PERMISSIONS, permission_key
     return render_template("admin/permissions.html", permissions=pagination.items, pagination=pagination, protected_permissions=BUILTIN_PERMISSIONS, permission_key=permission_key)
 
@@ -508,12 +492,14 @@ def puroks():
         except (IntegrityError, ValueError):
             db.session.rollback()
             form.name.errors.append("This Purok already exists or its name is invalid.")
-    query = db.select(Purok)
+    archived = request.args.get("view") == "archived"
+    query = db.select(Purok).where(Purok.status != "active" if archived else Purok.status == "active")
     search = request.args.get("q", "").strip()
     if search:
         query = query.where(Purok.name.ilike(f"%{search}%"))
-    pagination = paginate(query.order_by(Purok.name), request.args.get("page", 1, type=int), 5)
-    return render_template("admin/puroks.html", form=form, puroks=pagination.items, pagination=pagination)
+    pagination = paginate_named(query.order_by(Purok.name))
+    return render_template("admin/puroks.html", form=form, puroks=pagination.items,
+                           pagination=pagination, archived=archived)
 
 
 @admin_bp.route("/puroks/<int:purok_id>/edit", methods=["GET", "POST"])
@@ -541,12 +527,21 @@ def purok_edit(purok_id):
 @admin_bp.post("/puroks/<int:purok_id>/archive")
 @admin_required
 def purok_archive(purok_id):
-    purok = db.get_or_404(Purok, purok_id)
-    purok.status = "inactive" if purok.status == "active" else "active"
-    log_action("archive" if purok.status == "inactive" else "restore", "Purok", purok.id)
-    db.session.commit()
-    flash("Purok status updated. Linked records were preserved.", "success")
-    return redirect(url_for("admin.puroks"))
+    purok = db.session.scalar(db.select(Purok).where(Purok.id == purok_id).with_for_update())
+    if purok is None:
+        abort(404)
+    action = request.form.get("archive_action") or ("archive" if purok.status == "active" else "restore")
+    if action not in {"archive", "restore"}:
+        abort(400)
+    status = "inactive" if action == "archive" else "active"
+    if purok.status != status:
+        purok.status = status
+        log_action(action, "Purok", purok.id)
+        db.session.commit()
+    flash("Purok archived." if action == "archive" else "Purok restored.", "success")
+    return redirect(url_for("admin.puroks", view="archived" if action == "restore" else None,
+                            q=request.args.get("q"), page=request.args.get("page"),
+                            per_page=request.args.get("per_page")))
 
 
 @admin_bp.route("/document-types", methods=["GET", "POST"])
@@ -566,8 +561,11 @@ def document_types():
         log_action("create", "DocumentType", document_type.id, document_type.code)
         if commit_or_flash("Document type created successfully."):
             return redirect(url_for("admin.document_types"))
-    pagination = paginate(db.select(DocumentType).order_by(DocumentType.name), request.args.get("page", 1, type=int), 5)
-    return render_template("admin/document_types.html", document_types=pagination.items, pagination=pagination)
+    archived = request.args.get("view") == "archived"
+    query = db.select(DocumentType).where(DocumentType.status == ("inactive" if archived else "active"))
+    pagination = paginate_named(query.order_by(DocumentType.name))
+    return render_template("admin/document_types.html", document_types=pagination.items, pagination=pagination,
+                           archived=archived, archive_endpoint="admin.document_types")
 
 @admin_bp.route("/fees", methods=["GET", "POST"])
 @admin_required
@@ -586,8 +584,12 @@ def fees():
         log_action("create", "FeeConfiguration", fee.id)
         if commit_or_flash("Fee configuration saved."):
             return redirect(url_for("admin.fees"))
-    pagination = paginate(db.select(FeeConfiguration).order_by(FeeConfiguration.effective_from.desc()), request.args.get("page", 1, type=int), 5)
-    return render_template("admin/fees.html", fees=pagination.items, pagination=pagination, document_types=db.session.scalars(db.select(DocumentType).order_by(DocumentType.name)).all())
+    archived = request.args.get("view") == "archived"
+    query = db.select(FeeConfiguration).where(FeeConfiguration.status == ("inactive" if archived else "active"))
+    pagination = paginate_named(query.order_by(FeeConfiguration.effective_from.desc()))
+    document_types = db.session.scalars(db.select(DocumentType).where(DocumentType.status == "active").order_by(DocumentType.name)).all()
+    return render_template("admin/fees.html", fees=pagination.items, pagination=pagination,
+                           document_types=document_types, archived=archived, archive_endpoint="admin.fees")
 
 @admin_bp.route("/settings", methods=["GET", "POST"])
 @admin_required
@@ -616,7 +618,7 @@ def settings():
         log_action("upsert", "SystemSetting", setting.id, key)
         if commit_or_flash("System setting saved."):
             return redirect(url_for("admin.settings"))
-    pagination = paginate(db.select(SystemSetting).order_by(SystemSetting.setting_key), request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(db.select(SystemSetting).order_by(SystemSetting.setting_key))
     return render_template("admin/settings.html", settings=pagination.items, pagination=pagination,
                            barangay_form=barangay_form, barangay_info_groups=FIELD_GROUPS)
 
@@ -636,7 +638,7 @@ def audit_logs():
         return redirect(url_for("admin.audit_logs"))
     if audit_start: query = query.where(AuditLog.created_at >= datetime.combine(audit_start, datetime.min.time()))
     if audit_end: query = query.where(AuditLog.created_at < datetime.combine(audit_end, datetime.max.time()))
-    pagination = paginate(query, request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(query)
     logs = pagination.items
     return render_template("admin/audit_logs.html", logs=logs, pagination=pagination, filters=request.args, users=db.session.scalars(db.select(User).order_by(User.username)).all())
 

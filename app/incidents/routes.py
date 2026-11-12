@@ -136,8 +136,8 @@ def dashboard():
     if request.args.get('emergency')=='1': query=query.where(ResidentComplaint.classification=='EMERGENCY')
     if request.args.get('assigned')=='1': query=query.where(ResidentComplaint.id.in_(select(ComplaintAssignment.complaint_id).where(ComplaintAssignment.user_id==current_user.id,ComplaintAssignment.active.is_(True))))
     all_visible=db.session.scalars(visible_query()).all()
-    from app.pagination import paginate
-    pagination=paginate(query.order_by((ResidentComplaint.classification=='EMERGENCY').desc(),ResidentComplaint.created_at.desc()),request.args.get('page',1,type=int),5)
+    from app.pagination import paginate_named
+    pagination=paginate_named(query.order_by((ResidentComplaint.classification=='EMERGENCY').desc(),ResidentComplaint.created_at.desc()))
     items=pagination.items
     stats={'Total complaints':len(all_visible),'Pending':sum(c.status=='SUBMITTED' for c in all_visible),'Active emergencies':sum(c.classification=='EMERGENCY' and c.status not in {'RESOLVED','CLOSED'} for c in all_visible),'Investigating':sum(c.status=='UNDER_INVESTIGATION' for c in all_visible),'Referrals':sum(len(c.referrals) for c in all_visible),'Resolved':sum(c.status in {'RESOLVED','CLOSED'} for c in all_visible)}
     resolved=[(c.resolved_at.replace(tzinfo=timezone.utc)-c.created_at.replace(tzinfo=timezone.utc)).total_seconds()/86400 for c in all_visible if c.resolved_at]

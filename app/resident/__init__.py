@@ -23,7 +23,7 @@ from app.forms.resident import (
     QueueRequestForm, RequirementUploadForm
 )
 from app.validation import ValidationService
-from app.pagination import paginate, Pagination
+from app.pagination import paginate_named
 
 resident_bp = Blueprint("resident", __name__, url_prefix="/resident")
 CORRECTABLE_FIELDS = {
@@ -230,7 +230,7 @@ def profile_photo():
 def requests():
     """View all document requests."""
     resident = current_user_resident()
-    pagination = paginate(db.select(Request).where(Request.resident_id == resident.id).order_by(Request.created_at.desc()), request.args.get("page", 1, type=int), 5)
+    pagination = paginate_named(db.select(Request).where(Request.resident_id == resident.id).order_by(Request.created_at.desc()))
     return render_template("areas/resident_requests.html", requests=pagination.items, pagination=pagination)
 
 
@@ -289,7 +289,7 @@ def correction_requests():
                 flash(f"Error: {error}", "danger")
     
     try:
-        pagination = paginate(db.select(ResidentCorrectionRequest).where(ResidentCorrectionRequest.resident_id == resident.id).order_by(ResidentCorrectionRequest.created_at.desc()), request.args.get("page", 1, type=int), 5)
+        pagination = paginate_named(db.select(ResidentCorrectionRequest).where(ResidentCorrectionRequest.resident_id == resident.id).order_by(ResidentCorrectionRequest.created_at.desc()))
         requests = pagination.items
         return render_template(
             "resident/correction_requests.html", 
@@ -324,7 +324,7 @@ def documents():
         resident = current_user_resident()
         ensure_catalog()
         
-        pagination = paginate(db.select(Request).where(Request.resident_id == resident.id).order_by(Request.created_at.desc()), request.args.get("page", 1, type=int), 5)
+        pagination = paginate_named(db.select(Request).where(Request.resident_id == resident.id).order_by(Request.created_at.desc()))
         items = pagination.items
         
         document_types = db.session.scalars(
@@ -647,7 +647,7 @@ def notifications():
         counts=dict(db.session.execute(db.select(classification,func.count(Notification.id)).where(query.whereclause).group_by(classification)).all())
         if category in {'emergency','health','event','service','announcement'}: query=query.where(classification==category)
         else: category='all'
-        pagination=paginate(query.order_by(Notification.created_at.desc(),Notification.id.desc()),request.args.get('page',1,type=int),5)
+        pagination=paginate_named(query.order_by(Notification.created_at.desc(),Notification.id.desc()))
         unread_count=db.session.scalar(db.select(func.count(Notification.id)).where(Notification.user_id==current_user.id,Notification.is_read.is_(False))) or 0
         category_counts={**counts,'all':sum(counts.values())}
         category_links={key:url_for('resident.notifications',q=q,unread='1' if unread else '',category=key) for key in ['all','emergency','health','event','service','announcement']}
@@ -745,7 +745,7 @@ def queue_requests():
     """View all queue requests."""
     try:
         resident = current_user_resident()
-        pagination = paginate(db.select(QueueRequest).where(QueueRequest.resident_id == resident.id).order_by(QueueRequest.created_at.desc()), request.args.get("page", 1, type=int), 5)
+        pagination = paginate_named(db.select(QueueRequest).where(QueueRequest.resident_id == resident.id).order_by(QueueRequest.created_at.desc()))
         items = pagination.items
         
         return render_template(
@@ -822,30 +822,14 @@ def queue_request_create():
 def emergency_alerts():
     """View emergency alerts."""
     try:
-        page = max(1, request.args.get("page", 1, type=int) or 1)
-        per_page = 5
-        total_items = db.session.scalar(
-            db.select(db.func.count(EmergencyAlert.id)).where(EmergencyAlert.status == "PUBLISHED")
-        ) or 0
-        total_pages = max(1, (total_items + per_page - 1) // per_page) if total_items else 1
-        if page > total_pages:
-            page = total_pages
-        offset = (page - 1) * per_page
-        items = db.session.scalars(
-            db.select(EmergencyAlert)
-            .where(EmergencyAlert.status == "PUBLISHED")
+        pagination = paginate_named(
+            db.select(EmergencyAlert).where(EmergencyAlert.status == "PUBLISHED")
             .order_by(EmergencyAlert.issued_at.desc())
-            .offset(offset)
-            .limit(per_page)
-        ).all()
+        )
         return render_template(
-            "resident/emergency_alerts.html",
-            alerts=items,
-            page=page,
-            total_pages=total_pages,
-            total_items=total_items,
-            per_page=per_page,
-            pagination=Pagination(items,page,per_page,total_items,total_pages),
+            "resident/emergency_alerts.html", alerts=pagination.items, page=pagination.page,
+            total_pages=pagination.pages, total_items=pagination.total,
+            per_page=pagination.per_page, pagination=pagination,
         )
     except HTTPException:
         raise

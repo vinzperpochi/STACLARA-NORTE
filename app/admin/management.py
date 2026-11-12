@@ -89,6 +89,29 @@ def manage_delete(entity,item_id):
         db.session.rollback();flash(str(error) if isinstance(error,ValueError) else 'This record is still referenced and cannot be deleted.','danger')
     return redirect(url_for(back))
 
+
+@admin_bp.post('/<entity>/<int:item_id>/restore')
+@admin_required
+def manage_restore(entity, item_id):
+    if entity not in {'document-types', 'fees'}:
+        abort(404)
+    model, back, _ = CONFIG[entity]
+    item = db.session.scalar(db.select(model).where(model.id == item_id).with_for_update())
+    if item is None:
+        abort(404)
+    if entity == 'fees' and item.document_type.status != 'active':
+        flash('Restore the document type before restoring this fee.', 'danger')
+    elif item.status == 'inactive':
+        item.status = 'active'
+        log_action('restore', model.__name__, item.id, 'Archived administration record restored')
+        try:
+            db.session.commit()
+            flash('Record restored.', 'success')
+        except IntegrityError:
+            db.session.rollback()
+            flash('This record conflicts with an active entry and could not be restored.', 'danger')
+    return redirect(url_for(back, view='archived', per_page=request.args.get('per_page')))
+
 @admin_bp.route('/roles/<int:role_id>/access',methods=['GET','POST'])
 @admin_required
 def role_access(role_id):

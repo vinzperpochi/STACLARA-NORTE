@@ -24,11 +24,22 @@
 
   document.addEventListener("submit", (e) => {
     const f = e.target.closest("[data-confirm]");
-    if (!f || f.dataset.confirmed) return;
+    if (!f || e.defaultPrevented || f.dataset.confirmed) return;
     e.preventDefault();
+    if (f.dataset.confirmPending) return;
+    const submitter = e.submitter;
     const go = () => {
-      f.dataset.confirmed = "1";
-      f.requestSubmit ? f.requestSubmit() : f.submit();
+      if (f.dataset.confirmPending) return;
+      f.dataset.confirmPending = "1";
+      setTimeout(() => {
+        delete f.dataset.confirmPending;
+        f.dataset.confirmed = "1";
+        try {
+          f.requestSubmit ? f.requestSubmit(submitter || undefined) : f.submit();
+        } finally {
+          delete f.dataset.confirmed;
+        }
+      }, 0);
     };
     const m = $("#confirmModal");
     if (!m || !window.bootstrap) {

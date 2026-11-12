@@ -52,9 +52,21 @@
     }));
   });
   document.querySelectorAll('form').forEach(form => {
+    if (form.method.toLowerCase() === 'get') {
+      form.addEventListener('formdata', event => {
+        const action = new URL(form.action, location.href);
+        if (action.origin !== location.origin || action.pathname !== location.pathname) return;
+        for (const [key, value] of new URLSearchParams(location.search)) {
+          if (/^(?:[a-z]+_)*per_page$/.test(key) && ['5','10','25','50'].includes(value) &&
+              !event.formData.has(key)) event.formData.set(key, value);
+        }
+      });
+      return;
+    }
     if (form.method.toLowerCase() !== 'post') return;
     const reset = () => {
       form.removeAttribute('aria-busy');
+      form.removeAttribute('data-civic-in-flight');
       form.querySelectorAll('[data-civic-submitting]').forEach(button => {
         button.classList.remove('is-submitting');
         button.removeAttribute('aria-disabled');
@@ -64,13 +76,20 @@
     window.addEventListener('pageshow', reset);
     form.addEventListener('reset', reset);
     form.addEventListener('submit', event => {
+      if (form.hasAttribute('data-civic-in-flight')) {
+        event.preventDefault();
+        return;
+      }
       // Wait for validation, confirmations and async handlers to cancel submission.
       queueMicrotask(() => {
         if (event.defaultPrevented || (!form.noValidate && !form.checkValidity())) return;
         const button = event.submitter;
         const target = button?.formTarget || form.target;
-        if ((target && target !== '_self') || button?.hasAttribute('data-no-loading')) return;
+        const method = button?.getAttribute('formmethod') || form.method;
+        if (method.toLowerCase() !== 'post' || (target && target !== '_self') ||
+            button?.hasAttribute('data-no-loading')) return;
         form.dataset.dirty = '';
+        form.setAttribute('data-civic-in-flight', '');
         form.setAttribute('aria-busy', 'true');
         if (button) {
           button.classList.add('is-submitting');
