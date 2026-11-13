@@ -164,13 +164,14 @@ def register_session_hooks(app: Flask) -> None:
         response.headers.setdefault("X-Content-Type-Options", "nosniff")
         response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
         response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
-        response.headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+        geolocation = "(self)" if request.endpoint == "incidents.submit" else "()"
+        response.headers.setdefault("Permissions-Policy", f"camera=(), microphone=(), geolocation={geolocation}")
         response.headers.setdefault(
             "Content-Security-Policy",
             "default-src 'self'; "
             f"script-src 'self' 'unsafe-inline'{worker_wasm} https://cdn.jsdelivr.net https://unpkg.com; "
             "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; "
-            "img-src 'self' data: https://*.tile.openstreetmap.org https://avatars.githubusercontent.com; "
+            "img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://avatars.githubusercontent.com; "
             "font-src 'self' data: https://cdn.jsdelivr.net https://unpkg.com; "
             "connect-src 'self'; " +
             ("frame-ancestors 'self'; " if request.endpoint in {'official.document_certificate', 'official.document_application'} else "frame-ancestors 'none'; ") + "base-uri 'self'; form-action 'self'",
