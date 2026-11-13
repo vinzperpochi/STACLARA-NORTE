@@ -47,12 +47,19 @@ NATIONAL_SOURCE='https://www.pna.gov.ph/articles/1281331'
 
 
 def ensure_directory():
+    existing_agencies = set(db.session.scalars(
+        select(GovernmentAgency.code).where(GovernmentAgency.code.in_(list(AGENCIES)))
+    ))
+    existing_categories = set(db.session.scalars(
+        select(IncidentCategory.code).where(
+            IncidentCategory.code.in_([rule[0] for rule in INITIAL_RULES])
+        )
+    ))
     for code,name in AGENCIES.items():
-        if not db.session.scalar(select(GovernmentAgency).where(GovernmentAgency.code==code)):
+        if code not in existing_agencies:
             db.session.add(GovernmentAgency(code=code,name=name,service_area='Philippines' if code=='911' else 'Pila, Laguna'))
     for priority,(code,name,classification,agencies,keywords,sensitive) in enumerate(INITIAL_RULES):
-        category=db.session.scalar(select(IncidentCategory).where(IncidentCategory.code==code))
-        if not category:
+        if code not in existing_categories:
             category=IncidentCategory(code=code,name=name,sensitive=sensitive);db.session.add(category);db.session.flush()
             db.session.add(IncidentRoutingRule(category_id=category.id,agency_codes=agencies,keywords=keywords,classification=classification,priority=priority))
     db.session.flush()

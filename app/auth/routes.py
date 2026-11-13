@@ -491,7 +491,11 @@ def forgot_password():
                 db.session.commit()
             except Exception:
                 current_app.logger.exception("Password reset OTP delivery failed for user id %s", user.id)
-        flash("If an active account matches that email, a one-time code has been sent.", "info")
+        flash(
+            "If an active account matches that email, a 6-digit code will be sent. "
+            "Check your Inbox and Spam/Junk folder. If no code arrives, contact the barangay office.",
+            "info",
+        )
         return redirect(url_for("auth.reset_password"))
     return render_template("auth/forgot_password.html", form=form)
 
