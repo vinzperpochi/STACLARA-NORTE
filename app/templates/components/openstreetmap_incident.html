@@ -101,6 +101,8 @@
 }
 </style>
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/barangay-map.css') }}">
+<script src="{{ url_for('static', filename='js/barangay-map.js') }}"></script>
 <script>
 // OpenStreetMap Incident Location Handler with Nominatim Geocoding
 let _geocodeController = null;
@@ -109,8 +111,6 @@ class OpenStreetMapIncidentHandler {
   constructor() {
     this.map = null;
     this.marker = null;
-    this.defaultCenter = [14.2353, 121.3669]; // Sta. Clara Norte, Pila, Laguna
-    this.defaultZoom = 16;
     this.lastGeocodeTime = 0;
     this.geocodeMinInterval = 1000; // Nominatim rate limit
     this.geocodeDebounceTimeout = null;
@@ -135,7 +135,7 @@ class OpenStreetMapIncidentHandler {
     }
     
     // Initialize map with OSM tiles
-    this.map = L.map('incident-map').setView(this.defaultCenter, this.defaultZoom);
+    this.map = BarangayMap.create('incident-map');
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -144,7 +144,7 @@ class OpenStreetMapIncidentHandler {
     
     // Map click handler
     this.map.on('click', (e) => {
-      this.setLocation(e.latlng.lat, e.latlng.lng);
+      if (this.map.options.maxBounds.contains(e.latlng)) this.setLocation(e.latlng.lat, e.latlng.lng);
     });
     
     // Load existing location if any
@@ -172,7 +172,7 @@ class OpenStreetMapIncidentHandler {
       (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        this.map.setView([lat, lng], 16);
+        if (this.map.options.maxBounds.contains([lat, lng])) this.map.setView([lat, lng], 17);
         // Don't auto-place marker, let user click
       },
       (error) => {
@@ -189,12 +189,17 @@ class OpenStreetMapIncidentHandler {
     }
     
     // Add new draggable marker
-    this.marker = L.marker([lat, lng], { draggable: true }).addTo(this.map);
+    this.marker = L.marker([lat, lng], { draggable: true, icon: BarangayMap.icon(BarangayMap.symbols.UNKNOWN) }).addTo(this.map);
     
     // Handle marker drag
     this.marker.on('dragend', (e) => {
       const pos = e.target.getLatLng();
-      this.updateLocation(pos.lat, pos.lng);
+      if (this.map.options.maxBounds.contains(pos)) this.updateLocation(pos.lat, pos.lng);
+      else e.target.setLatLng([lat, lng]);
+      if (this.map.options.maxBounds.contains(pos)) {
+        lat = pos.lat;
+        lng = pos.lng;
+      }
     });
     
     // Update form fields and UI

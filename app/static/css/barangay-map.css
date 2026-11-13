@@ -1,0 +1,3 @@
+.incident-map-marker { display: grid; justify-items: center; align-items: start; }
+.incident-map-pin { position: relative; display: grid; place-items: center; width: 36px; height: 36px; border: 2px solid #075b21; border-radius: 50%; background: #fff; color: #075b21; font-size: 19px; box-shadow: 0 2px 5px #0004; }
+.incident-map-pin::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top: 9px solid #075b21; }

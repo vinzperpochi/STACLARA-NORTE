@@ -11,15 +11,8 @@
     const { latitude, longitude, category, location: address } = panel.closest('form').elements;
     canvas.hidden = false;
     locate.hidden = !navigator.geolocation;
-    // Local viewport around Santa Clara Norte, not an administrative boundary.
-    const localBounds = L.latLngBounds([14.230, 121.353], [14.241, 121.367]);
-    const map = L.map(canvas, {
-        scrollWheelZoom: false,
-        maxBounds: localBounds,
-        maxBoundsViscosity: 1,
-        minZoom: 16,
-        maxZoom: 19
-    }).setView([14.23540, 121.35962], 17);
+    const map = BarangayMap.create(canvas);
+    const localBounds = map.options.maxBounds;
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -29,27 +22,13 @@
     let pending;
 
     const indicator = panel.querySelector('[data-map-indicator]');
-    const symbols = {
-        FIRE: '🔥', MEDICAL: '🚑', VIOLENCE: '⚠️', ACCIDENT: '🚗',
-        DISASTER: '🌊', ROBBERY: '🔒', VAWC: '🛡️', CHILD: '🧒',
-        HEALTH: '✚', GARBAGE: '🗑️', NOISE: '🔊', DISPUTE: '💬',
-        PROPERTY: '🏠', INFRASTRUCTURE: '🚧', ELECTRICITY: '⚡',
-        WATER: '💧', ANIMAL: '🐾', SANITATION: '🧼', UNKNOWN: '📍'
-    };
-
     function updateIndicator() {
+        const symbols = BarangayMap.symbols;
         const symbol = symbols[category.value] || symbols.UNKNOWN;
         const label = category.selectedOptions[0]?.textContent.trim() || 'Other incident';
         indicator.textContent = symbol + ' ' + label;
         if (!marker) return;
-        const pin = document.createElement('span');
-        pin.className = 'incident-map-pin';
-        pin.textContent = symbol;
-        pin.setAttribute('aria-hidden', 'true');
-        marker.setIcon(L.divIcon({
-            className: 'incident-map-marker', html: pin,
-            iconSize: [36, 44], iconAnchor: [18, 44], tooltipAnchor: [0, -38]
-        }));
+        marker.setIcon(BarangayMap.icon(symbol));
         const tooltip = document.createElement('span');
         tooltip.textContent = label;
         marker.setTooltipContent(tooltip);

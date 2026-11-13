@@ -10,9 +10,6 @@
 <p class="mb-2"><strong>Pin indicator:</strong> <span data-map-indicator aria-live="polite"></span></p>
 <style>
 [data-map-canvas] { width: 100%; min-width: 0; height: clamp(220px, 38vw, 360px); border: 1px solid #dbe7de; border-radius: 12px; overflow: hidden; }
-.incident-map-marker { display: grid; justify-items: center; align-items: start; }
-.incident-map-pin { position: relative; display: grid; place-items: center; width: 36px; height: 36px; border: 2px solid #075b21; border-radius: 50%; background: #fff; color: #075b21; font-size: 19px; box-shadow: 0 2px 5px #0004; }
-.incident-map-pin::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top: 9px solid #075b21; }
 </style>
 <div data-map-canvas aria-label="Sta. Clara Norte map for choosing the incident location" hidden></div>
 <p class="ops-muted mt-2" data-map-status role="status"></p>
@@ -22,4 +19,6 @@
 {{ super() }}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/barangay-map.css') }}">
+<script defer src="{{ url_for('static', filename='js/barangay-map.js') }}"></script>
 <script defer src="{{ url_for('static',filename='js/incident-map.js') }}"></script><script src="{{ url_for('static',filename='js/incident-routing.js') }}"></script>{% endblock %}
