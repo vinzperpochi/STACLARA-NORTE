@@ -7,6 +7,12 @@
 <h3 class="h6">Pin incident location</h3>
 <p>Click the map or use your current location. You can edit the suggested address.</p>
 <button type="button" class="civic-btn-outline mb-2" data-locate-incident hidden>Use my current location</button>
+<p class="mb-2"><strong>Pin indicator:</strong> <span data-map-indicator aria-live="polite"></span></p>
+<style>
+.incident-map-marker { display: grid; justify-items: center; align-items: start; }
+.incident-map-pin { position: relative; display: grid; place-items: center; width: 36px; height: 36px; border: 2px solid #075b21; border-radius: 50%; background: #fff; color: #075b21; font-size: 19px; box-shadow: 0 2px 5px #0004; }
+.incident-map-pin::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top: 9px solid #075b21; }
+</style>
 <div data-map-canvas style="height: 320px" aria-label="Map for choosing the incident location" hidden></div>
 <p class="ops-muted mt-2" data-map-status role="status"></p>
 <input type="hidden" name="latitude" value="{{ request.form.get('latitude','') }}">

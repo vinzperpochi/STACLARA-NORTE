@@ -8,7 +8,7 @@
     }
     const canvas = panel.querySelector('[data-map-canvas]');
     const locate = panel.querySelector('[data-locate-incident]');
-    const { latitude, longitude, location: address } = panel.closest('form').elements;
+    const { latitude, longitude, category, location: address } = panel.closest('form').elements;
     canvas.hidden = false;
     locate.hidden = !navigator.geolocation;
     const map = L.map(canvas, {scrollWheelZoom: false}).setView([14.24, 121.37], 14);
@@ -20,10 +20,42 @@
     let selection = 0;
     let pending;
 
+    const indicator = panel.querySelector('[data-map-indicator]');
+    const symbols = {
+        FIRE: '🔥', MEDICAL: '🚑', VIOLENCE: '⚠️', ACCIDENT: '🚗',
+        DISASTER: '🌊', ROBBERY: '🔒', VAWC: '🛡️', CHILD: '🧒',
+        HEALTH: '✚', GARBAGE: '🗑️', NOISE: '🔊', DISPUTE: '💬',
+        PROPERTY: '🏠', INFRASTRUCTURE: '🚧', ELECTRICITY: '⚡',
+        WATER: '💧', ANIMAL: '🐾', SANITATION: '🧼', UNKNOWN: '📍'
+    };
+
+    function updateIndicator() {
+        const symbol = symbols[category.value] || symbols.UNKNOWN;
+        const label = category.selectedOptions[0]?.textContent.trim() || 'Other incident';
+        indicator.textContent = symbol + ' ' + label;
+        if (!marker) return;
+        const pin = document.createElement('span');
+        pin.className = 'incident-map-pin';
+        pin.textContent = symbol;
+        pin.setAttribute('aria-hidden', 'true');
+        marker.setIcon(L.divIcon({
+            className: 'incident-map-marker', html: pin,
+            iconSize: [36, 44], iconAnchor: [18, 44], tooltipAnchor: [0, -38]
+        }));
+        const tooltip = document.createElement('span');
+        tooltip.textContent = label;
+        marker.setTooltipContent(tooltip);
+        marker.getElement().setAttribute('aria-label', label);
+    }
+
     function showPin(point) {
         if (marker) marker.setLatLng(point);
-        else marker = L.circleMarker(point, {radius: 9, color: '#075b21', fillOpacity: 1}).addTo(map);
+        else marker = L.marker(point, {icon: L.divIcon()}).addTo(map).bindTooltip('');
+        updateIndicator();
     }
+
+    category.addEventListener('change', updateIndicator);
+    updateIndicator();
 
     async function pin(point) {
         const version = ++selection;
@@ -34,7 +66,7 @@
         latitude.value = point.lat.toFixed(6);
         longitude.value = point.lng.toFixed(6);
         const previous = address.value;
-        status.textContent = 'Pin set. Looking up the address…';
+        status.textContent = 'Pin set. Looking up the addressâ€¦';
         const url = new URL(panel.dataset.reverseUrl, location.href);
         url.searchParams.set('lat', latitude.value);
         url.searchParams.set('lon', longitude.value);
@@ -63,7 +95,7 @@
     locate.addEventListener('click', () => {
         const version = selection;
         locate.disabled = true;
-        status.textContent = 'Finding your current location…';
+        status.textContent = 'Finding your current locationâ€¦';
         navigator.geolocation.getCurrentPosition(({coords}) => {
             locate.disabled = false;
             if (version !== selection) return;
