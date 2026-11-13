@@ -8,7 +8,7 @@ from flask import current_app
 from PIL import Image, ImageOps, UnidentifiedImageError
 
 
-def save_image(file_storage, folder, crop=None):
+def prepare_image(file_storage, folder, crop=None, *, limit=None):
     if not file_storage or not file_storage.filename:
         raise ValueError('Please select a JPEG or PNG image.')
     ext = Path(file_storage.filename).suffix.lower()
@@ -17,10 +17,12 @@ def save_image(file_storage, folder, crop=None):
         formats['.webp'] = ('WEBP', 'image/webp')
     if ext not in formats or file_storage.mimetype != formats[ext][1]:
         raise ValueError('Only JPEG, PNG or WebP profile photos are allowed.' if folder == 'profile_photos' else 'Only JPEG and PNG images are allowed.')
-    limit = current_app.config.get('MAX_IMAGE_BYTES', 5 * 1024 * 1024)
+    if limit is None:
+        limit = current_app.config.get('MAX_IMAGE_BYTES', 5 * 1024 * 1024)
     data = file_storage.stream.read(limit + 1)
     if not data or len(data) > limit:
-        raise ValueError('Image must be nonempty and no larger than 5 MB.')
+        max_mb = 4 if limit == 4_000_000 else 5
+        raise ValueError(f'Image must be nonempty and no larger than {max_mb} MB.')
     try:
         with warnings.catch_warnings():
             warnings.simplefilter('error', Image.DecompressionBombWarning)
@@ -54,9 +56,14 @@ def save_image(file_storage, folder, crop=None):
     if folder not in {'profile_photos', 'document_requirements', 'registration_documents', 'incident_evidence'}:
         raise ValueError('Invalid image storage location.')
     filename = uuid4().hex + {'JPEG': '.jpg', 'PNG': '.png', 'WEBP': '.webp'}[formats[ext][0]]
+    return filename, output.getvalue()
+
+
+def save_image(file_storage, folder, crop=None):
+    filename, data = prepare_image(file_storage, folder, crop)
     directory = Path(current_app.config['STORAGE_ROOT']) / folder
     directory.mkdir(parents=True, exist_ok=True)
-    (directory / filename).write_bytes(output.getvalue())
+    (directory / filename).write_bytes(data)
     return filename
 
 

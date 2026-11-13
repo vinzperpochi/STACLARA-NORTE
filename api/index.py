@@ -8,4 +8,6 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 app = create_app("production", vercel=True)
 app.config["ATTENDANCE_SHARED_CAPTURE"] = True
 app.config["DOCUMENT_BROWSER_PDF"] = True
+app.config["DOCUMENT_REQUIREMENT_MAX_BYTES"] = 4_000_000
+app.config["INCIDENT_EVIDENCE_TOTAL_BYTES"] = 4_000_000
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_for=1)

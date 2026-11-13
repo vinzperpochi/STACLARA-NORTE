@@ -40,8 +40,22 @@ def test_unverified_stale_hotlines_hidden_and_verified_local_used(system):
     assert any(c['code']=='BFP' and c['tel']=='0123456789' for c in classify('FIRE')['contacts'])
 
 
-def test_private_report_evidence_and_role_pages(system):
-    resident=login(system);item=submit(resident,'FIRE','Fire emergency',evidence=(image_bytes(),'incident.png','image/png'))
+def test_private_report_evidence_and_role_pages(system, tmp_path):
+    resident=login(system);item=submit(resident,'FIRE','Fire emergency',evidence=[
+        (image_bytes(), 'incident.png', 'image/png'),
+        (image_bytes('JPEG'), 'second.jpg', 'image/jpeg'),
+    ])
+    system.config['STORAGE_ROOT'] = str(tmp_path)
+    db.session.expire_all()
+    assert len(item.evidence) == 2
+    admin = login(system, 'admin-test')
+    detail = admin.get(f'/incidents/{item.id}')
+    assert detail.status_code == 200
+    for attachment in item.evidence:
+        assert attachment.original_name.encode() in detail.data
+        response = admin.get(f'/incidents/evidence/{attachment.id}')
+        assert response.status_code == 200 and response.data == attachment.file_data
+        response.close()
     assert item.classification=='EMERGENCY' and item.response_status=='NOT_CONFIRMED'
     url=f'/incidents/{item.id}';assert resident.get(url).status_code==200
     assert login(system,'other-test').get(url).status_code==404

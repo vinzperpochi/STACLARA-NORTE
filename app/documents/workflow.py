@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import secrets
 from datetime import datetime, timezone
+from io import BytesIO
 from pathlib import Path
 from uuid import uuid4
 
-from flask import current_app
+from flask import abort, current_app, send_file
 
 from app.extensions import db
 from app.models import DocumentRequestEvent, DocumentType, IssuedDocument, Notification, Request, Resident
@@ -28,6 +29,11 @@ ALLOWED_TRANSITIONS = {
  "PROCESSING":{"NEEDS_CORRECTION","APPROVED","REJECTED"}, "NEEDS_CORRECTION":{"PENDING","UNDER_REVIEW"},
  "APPROVED":{"READY_FOR_PRINTING"}, "READY_FOR_PRINTING":{"PRINTED"}, "PRINTED":{"PRINTED","RELEASED"},
  "READY_FOR_RELEASE":{"PRINTED","RELEASED"},
+}
+IDENTITY_REQUIREMENTS = {
+    "Valid government-issued ID",
+    "Valid ID or proof of identity",
+    "Valid ID of owner / operator",
 }
 REQUIREMENT_EXTENSIONS = {"jpg", "jpeg", "png"}
 
@@ -52,7 +58,7 @@ def evidence_source(evidence):
     if evidence.filename:
         return "document_requirements", evidence.filename
     resident = evidence.request.resident
-    if evidence.requirement_name in {"Valid government-issued ID", "Valid ID or proof of identity", "Valid ID of owner / operator"}:
+    if evidence.is_identity_requirement:
         return "registration_documents", resident.philsys_card_filename
     if evidence.requirement_name.startswith("Proof of residency") or evidence.requirement_name == "Proof of address":
         return "registration_documents", resident.proof_of_residency_filename
@@ -60,6 +66,8 @@ def evidence_source(evidence):
 
 
 def evidence_available(evidence):
+    if evidence.filename and evidence.image_data is not None:
+        return True
     folder, filename = evidence_source(evidence)
     from app.private_storage import private_image_path
     return private_image_path(folder,filename) is not None
@@ -119,9 +127,29 @@ def transition_request(request_record: Request, new_status: str, actor, notes: s
     notify_resident(request_record, f"Document request {request_record.request_number} updated", f"Your request is now {new_status.replace('_', ' ').title()}.")
 
 
-def save_requirement_upload(file_storage) -> str:
-    from app.image_uploads import save_image
-    return save_image(file_storage, "document_requirements")
+def prepare_requirement_upload(file_storage) -> tuple[str, bytes]:
+    from app.image_uploads import prepare_image
+
+    limit = current_app.config.get("DOCUMENT_REQUIREMENT_MAX_BYTES")
+    filename, data = prepare_image(file_storage, "document_requirements", limit=limit)
+    if limit is not None and len(data) > limit:
+        raise ValueError("The processed image exceeds 4 MB. Please use a smaller image.")
+    return filename, data
+
+
+def send_requirement_image(evidence, *, as_attachment=False):
+    from app.private_storage import private_image_path
+
+    folder, filename = evidence_source(evidence)
+    if evidence.filename and evidence.image_data is not None:
+        source = BytesIO(evidence.image_data)
+    else:
+        source = private_image_path(folder, filename)
+        if source is None:
+            abort(404)
+    response = send_file(source, download_name=filename, as_attachment=as_attachment)
+    response.headers["Cache-Control"] = "private, no-store"
+    return response
 
 
 def validate_approval(item, *, require_complete=True):

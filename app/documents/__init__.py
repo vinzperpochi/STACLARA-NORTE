@@ -7,7 +7,7 @@ from .workflow import (
     generate_document,
     release_document,
     requirement_names,
-    save_requirement_upload,
+    prepare_requirement_upload,
     transition_request,
 )
 from .verification import qr_data_uri, verification_url
@@ -19,7 +19,7 @@ __all__ = [
     "generate_document",
     "release_document",
     "requirement_names",
-    "save_requirement_upload",
+    "prepare_requirement_upload",
     "transition_request",
     "qr_data_uri",
     "verification_url",

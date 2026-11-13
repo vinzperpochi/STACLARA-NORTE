@@ -1,15 +1,16 @@
 """Authenticated incident submission, restricted review and documented referrals."""
 from datetime import date, datetime, timezone, timedelta
+from io import BytesIO
 from pathlib import Path
 from uuid import uuid4
 import re
-from flask import Blueprint, abort, current_app, flash, jsonify, redirect, render_template, request, send_from_directory, url_for
+from flask import Blueprint, abort, current_app, flash, jsonify, redirect, render_template, request, send_file, send_from_directory, url_for
 from flask_login import current_user
 from sqlalchemy import select, func, or_
 from app.extensions import db
 from app.auth.decorators import resident_owner_required, official_account_required, roles_required
 from app.models import ResidentComplaint, IncidentCategory, IncidentRoutingRule, GovernmentAgency, AgencyHotline, HotlineVerification, EmergencyIncident, ComplaintAssignment, ComplaintReferral, ComplaintEvidence, ComplaintStatusHistory, User, Role
-from app.image_uploads import save_image, remove_image
+from app.image_uploads import prepare_image
 from app.operations_common import text_field, export_report
 from .service import ensure_directory, classify, contacts, admin, can_view, can_review, audit, notify, transition, TRANSITIONS, STATUSES
 
@@ -41,12 +42,12 @@ def visible_query():
 
 def save_evidence(upload):
     if upload.mimetype in {'image/jpeg','image/png'}:
-        return save_image(upload,'incident_evidence'),upload.mimetype
+        filename, data = prepare_image(upload, 'incident_evidence')
+        return filename, upload.mimetype, data
     if Path(upload.filename or '').suffix.lower()!='.pdf' or upload.mimetype!='application/pdf': raise ValueError('Evidence must be JPEG, PNG or PDF.')
     data=upload.stream.read(5*1024*1024+1)
     if not data.startswith(b'%PDF-') or len(data)>5*1024*1024: raise ValueError('PDF must be valid and no larger than 5 MB.')
     from pypdf import PdfReader, PdfWriter
-    from io import BytesIO
     try:
         reader=PdfReader(BytesIO(data),strict=True)
         if reader.is_encrypted or not 1<=len(reader.pages)<=50: raise ValueError('Use an unencrypted PDF with 1â€“50 pages.')
@@ -57,14 +58,13 @@ def save_evidence(upload):
             writer.add_page(page)
         output=BytesIO();writer.write(output)
     except Exception as error: raise ValueError('Unable to validate this PDF. Upload a standard PDF or image.') from error
-    filename=uuid4().hex+'.pdf';directory=Path(current_app.config['STORAGE_ROOT'])/'incident_evidence';directory.mkdir(parents=True,exist_ok=True);(directory/filename).write_bytes(output.getvalue())
-    return filename,'application/pdf'
+    return uuid4().hex + '.pdf', 'application/pdf', output.getvalue()
 
 
 @incidents_bp.route('/submit',methods=['GET','POST'])
 @resident_owner_required
 def submit():
-    ensure_directory();db.session.commit();created=[]
+    ensure_directory();db.session.commit()
     if request.method=='POST':
         try:
             resident=current_user.resident
@@ -95,9 +95,23 @@ def submit():
             db.session.add(item);db.session.flush();item.reference=f'INC-{item.id:08d}'
             uploads=[u for u in request.files.getlist('evidence') if u.filename]
             if len(uploads)>4: raise ValueError('Attach at most four evidence files.')
+            total_limit = current_app.config.get('INCIDENT_EVIDENCE_TOTAL_BYTES')
+            if total_limit:
+                total_bytes = 0
+                for upload in uploads:
+                    total_bytes += upload.stream.seek(0, 2)
+                    upload.stream.seek(0)
+                if total_bytes > total_limit:
+                    raise ValueError('Combined evidence files must be 4 MB or smaller.')
             for upload in uploads:
-                filename,mime=save_evidence(upload);created.append(filename)
-                db.session.add(ComplaintEvidence(complaint_id=item.id,filename=filename,mime_type=mime,original_name=Path(upload.filename).name[:200],uploaded_by_id=current_user.id))
+                filename, mime, data = save_evidence(upload)
+                if total_limit and len(data) > total_limit:
+                    raise ValueError('A processed evidence file exceeds 4 MB. Please choose a smaller file.')
+                db.session.add(ComplaintEvidence(
+                    complaint_id=item.id, filename=filename, mime_type=mime,
+                    file_data=data, original_name=Path(upload.filename).name[:200],
+                    uploaded_by_id=current_user.id,
+                ))
             if routing['classification']=='EMERGENCY': db.session.add(EmergencyIncident(complaint_id=item.id))
             db.session.add(ComplaintStatusHistory(complaint_id=item.id,actor_id=current_user.id,to_status='SUBMITTED',public_response='Report received by the barangay system. Emergency response is not confirmed.'))
             audit(item,'SUBMITTED',current_user,'Routing recommendation saved with rule/version; no external transmission')
@@ -107,11 +121,9 @@ def submit():
             return redirect(url_for('incidents.detail',complaint_id=item.id))
         except (ValueError,KeyError) as error:
             db.session.rollback()
-            for filename in created: remove_image('incident_evidence',filename)
             flash(str(error),'danger')
         except Exception:
             db.session.rollback()
-            for filename in created: remove_image('incident_evidence',filename)
             raise
     from app.attendance.service import MANILA
     return render_template('incidents/submit.html',categories=db.session.scalars(select(IncidentCategory).where(IncidentCategory.active.is_(True)).order_by(IncidentCategory.id)).all(),resident=current_user.resident,current_time=datetime.now(MANILA).strftime('%Y-%m-%dT%H:%M'),emergency=request.args.get('emergency')=='1')
@@ -282,7 +294,18 @@ def referral_print(referral_id):
 def evidence(evidence_id):
     evidence=db.get_or_404(ComplaintEvidence,evidence_id);item=owned(evidence.complaint_id)
     audit(item,'EVIDENCE_VIEW',current_user,'Private evidence viewed');db.session.commit()
-    response=send_from_directory(Path(current_app.config['STORAGE_ROOT'])/'incident_evidence',evidence.filename,as_attachment=evidence.mime_type=='application/pdf',download_name=evidence.original_name)
+    options = {
+        'as_attachment': evidence.mime_type == 'application/pdf',
+        'download_name': evidence.original_name,
+        'mimetype': evidence.mime_type,
+    }
+    if evidence.file_data is not None:
+        response = send_file(BytesIO(evidence.file_data), **options)
+    else:
+        response = send_from_directory(
+            Path(current_app.config['STORAGE_ROOT']) / 'incident_evidence',
+            evidence.filename, **options,
+        )
     response.headers['Cache-Control']='private, no-store';response.headers['X-Content-Type-Options']='nosniff';return response
 
 

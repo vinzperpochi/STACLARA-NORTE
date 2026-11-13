@@ -12,7 +12,7 @@ from werkzeug.exceptions import HTTPException
 from app.auth.decorators import resident_owner_required
 from app.blotter import add_party, new_case_number
 from app.extensions import db
-from app.documents import ensure_catalog, requirement_names, save_requirement_upload
+from app.documents import ensure_catalog, requirement_names, prepare_requirement_upload
 from app.models import (
     BlotterCase, BlotterCaseAccess, BlotterCaseEvent, BlotterParty, 
     DocumentRequestEvent, DocumentRequirement, DocumentType, EmergencyAlert, 
@@ -501,7 +501,7 @@ def document_requirement_upload(request_id: int, requirement_id: int):
             db.select(Request).where(
                 Request.id == request_id, 
                 Request.resident_id == resident.id
-            )
+            ).with_for_update()
         )
         
         # Verify requirement exists
@@ -519,14 +519,22 @@ def document_requirement_upload(request_id: int, requirement_id: int):
             flash("Requirements cannot be changed after processing has started.", "warning")
             return redirect(url_for("resident.document_request_detail", request_id=request_id))
         
+        if (
+            requirement.is_identity_requirement
+            and requirement.image_available
+            and item.status != "NEEDS_CORRECTION"
+        ):
+            flash("Your ID is already on file.", "info")
+            return redirect(url_for("resident.document_request_detail", request_id=request_id))
+
         form = RequirementUploadForm()
         
         if form.validate_on_submit():
             previous_filename = requirement.filename
-            new_filename = None
             try:
-                new_filename = save_requirement_upload(form.requirement_file.data)
-                requirement.filename = new_filename
+                requirement.filename, requirement.image_data = prepare_requirement_upload(
+                    form.requirement_file.data
+                )
                 requirement.uploaded_by_id = current_user.id
                 requirement.uploaded_at = datetime.now(timezone.utc)
                 requirement.status = "uploaded"
@@ -557,13 +565,9 @@ def document_requirement_upload(request_id: int, requirement_id: int):
                 
             except ValueError as e:
                 db.session.rollback()
-                from app.image_uploads import remove_image
-                remove_image("document_requirements", new_filename)
                 flash(str(e), "danger")
             except Exception as e:
                 db.session.rollback()
-                from app.image_uploads import remove_image
-                remove_image("document_requirements", new_filename)
                 current_app.logger.error(f"Error uploading requirement: {e}")
                 flash("Error uploading file. Please try again.", "danger")
         else:
@@ -988,31 +992,30 @@ def document_requirement_view(request_id, requirement_id):
     requirement = db.session.scalar(db.select(DocumentRequirement).where(DocumentRequirement.id == requirement_id, DocumentRequirement.request_id == request_id))
     if item is None or requirement is None:
         abort(404)
-    from app.documents.workflow import evidence_source, evidence_available
-    if not evidence_available(requirement): abort(404)
-    folder, filename = evidence_source(requirement)
+    from app.documents.workflow import send_requirement_image
+    response = send_requirement_image(requirement)
     from app.audit import record
     record('DOCUMENT_VIEW', 'documents', 'DocumentRequirement', requirement.id)
     db.session.commit()
-    from app.private_storage import private_image_path
-    image_path = private_image_path(folder, filename)
-    if image_path is None: abort(404)
-    response = send_from_directory(image_path.parent, image_path.name, as_attachment=False)
-    response.headers['Cache-Control'] = 'private, no-store'
     return response
 
 
 @resident_bp.post('/documents/<int:request_id>/requirements/<int:requirement_id>/remove')
 @resident_owner_required
 def document_requirement_remove(request_id, requirement_id):
-    item = db.session.scalar(db.select(Request).where(Request.id == request_id, Request.resident_id == current_user.resident.id))
+    item = db.session.scalar(
+        db.select(Request)
+        .where(Request.id == request_id, Request.resident_id == current_user.resident.id)
+        .with_for_update()
+    )
     requirement = db.session.scalar(db.select(DocumentRequirement).where(DocumentRequirement.id == requirement_id, DocumentRequirement.request_id == request_id))
     if item is None or requirement is None:
         abort(404)
-    if item.status not in {'PENDING', 'UNDER_REVIEW'}:
+    if requirement.is_identity_requirement or item.status not in {'PENDING', 'UNDER_REVIEW'}:
         abort(403)
     old = requirement.filename
     requirement.filename = None
+    requirement.image_data = None
     requirement.uploaded_by_id = None
     requirement.uploaded_at = None
     requirement.status = 'pending'

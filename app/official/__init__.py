@@ -668,12 +668,8 @@ def document_requirement_download(request_id: int, requirement_id: int):
     requirement = db.session.scalar(db.select(DocumentRequirement).where(DocumentRequirement.id == requirement_id, DocumentRequirement.request_id == request_id))
     if requirement is None or not requirement.filename:
         abort(404)
-    from app.private_storage import private_image_path
-    image_path = private_image_path("document_requirements",requirement.filename)
-    if image_path is None: abort(404)
-    response=send_from_directory(image_path.parent,image_path.name,as_attachment=True)
-    response.headers["Cache-Control"]="private, no-store"
-    return response
+    from app.documents.workflow import send_requirement_image
+    return send_requirement_image(requirement, as_attachment=True)
 
 
 @official_bp.get("/document-requests/<int:request_id>/requirements/<int:requirement_id>/view")
@@ -682,18 +678,11 @@ def document_requirement_view(request_id: int, requirement_id: int):
     requirement = db.session.scalar(db.select(DocumentRequirement).where(DocumentRequirement.id == requirement_id, DocumentRequirement.request_id == request_id))
     if requirement is None:
         abort(404)
-    from app.documents.workflow import evidence_source, evidence_available
-    if not evidence_available(requirement): abort(404)
-    folder, filename = evidence_source(requirement)
-    from app.private_storage import private_image_path
-    image_path = private_image_path(folder, filename)
-    if image_path is None: abort(404)
-    directory = image_path.parent
+    from app.documents.workflow import send_requirement_image
+    response = send_requirement_image(requirement)
     from app.audit import record
     record("DOCUMENT_REQUIREMENT_VIEW", "documents", "DocumentRequirement", requirement.id, "Private requirement image viewed by staff")
     db.session.commit()
-    response = send_from_directory(directory, filename, as_attachment=False)
-    response.headers["Cache-Control"] = "private, no-store"
     return response
 
 

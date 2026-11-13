@@ -111,19 +111,23 @@ def requirement_fixture():
     return item, req
 
 
-def test_private_id_upload_view_replace_remove_and_ownership(system):
+def test_private_id_upload_preserves_original_until_correction(system):
     item, req = requirement_fixture()
     client = login(system)
     url = f'/resident/documents/{item.id}/requirements/{req.id}'
     assert client.post(url+'/upload', data={'requirement_file': (image_bytes(), 'id.png', 'image/png')}).status_code == 302
-    assert client.get(url+'/view').status_code == 200
+    assert client.get(url+'/view').mimetype == 'image/png'
     assert login(system, 'other-test').get(url+'/view').status_code == 404
     assert login(system, 'other-test').post(url+'/remove').status_code == 404
+    assert client.post(url+'/remove').status_code == 403
+
+    item.status = 'NEEDS_CORRECTION'
+    db.session.commit()
+    client.post(url+'/upload', data={'requirement_file': (BytesIO(b'invalid'), 'id.jpg', 'image/jpeg')})
+    assert client.get(url+'/view').mimetype == 'image/png'
     assert client.post(url+'/upload', data={'requirement_file': (image_bytes('JPEG'), 'id.jpg', 'image/jpeg')}).status_code == 302
-    assert b'View uploaded requirement' in client.get(f'/resident/documents/{item.id}').data
-    assert client.post(url+'/remove').status_code == 302
-    assert client.get(url+'/view').status_code == 404
-    assert db.session.scalar(db.select(db.func.count(AuditLog.id)).where(AuditLog.action == 'DOCUMENT_REMOVE')) == 1
+    assert client.get(url+'/view').mimetype == 'image/jpeg'
+    assert client.post(url+'/remove').status_code == 403
 
 
 def test_id_processing_lock_and_pdf_rejection(system):

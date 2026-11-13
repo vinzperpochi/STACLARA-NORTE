@@ -1,6 +1,6 @@
 """Incident routing records complement, rather than replace, existing blotter cases."""
-from sqlalchemy import Column, String, Integer, Boolean, DateTime, Date, Text, JSON, Float, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, Integer, Boolean, DateTime, Date, Text, JSON, Float, ForeignKey, LargeBinary
+from sqlalchemy.orm import deferred, relationship
 from .base import TimestampedModel
 
 
@@ -129,6 +129,7 @@ class ComplaintEvidence(TimestampedModel):
     __tablename__='complaint_evidence'
     complaint_id=Column(ForeignKey('resident_complaints.id',ondelete='RESTRICT'),nullable=False,index=True)
     filename=Column(String(255),nullable=False)
+    file_data=deferred(Column(LargeBinary))
     original_name=Column(String(200),nullable=False)
     mime_type=Column(String(80),nullable=False)
     uploaded_by_id=Column(ForeignKey('users.id',ondelete='RESTRICT'),nullable=False)

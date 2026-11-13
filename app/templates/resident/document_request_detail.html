@@ -26,18 +26,20 @@
           </div>
           {% if item.image_available %}
           {% if not item.filename %}<p class="text-sm mb-2">ID / evidence submitted during registration.</p>{% endif %}
-          <a class="civic-btn-outline" href="{{ url_for('resident.document_requirement_view', request_id=request.id, requirement_id=item.id) }}" target="_blank" rel="noopener">View uploaded requirement</a>
-          {% if item.image_available %}<img class="mt-3 rounded-lg" style="max-width:240px;max-height:180px;object-fit:contain" src="{{ url_for('resident.document_requirement_view', request_id=request.id, requirement_id=item.id) }}" alt="Uploaded {{ item.requirement_name }}">{% endif %}
+          <a class="civic-btn-outline" href="{{ url_for('resident.document_requirement_view', request_id=request.id, requirement_id=item.id) }}">View uploaded requirement</a>
+          <img class="mt-3 rounded-lg" style="display:block;max-width:min(100%,240px);max-height:180px;object-fit:contain" src="{{ url_for('resident.document_requirement_view', request_id=request.id, requirement_id=item.id) }}" alt="Uploaded {{ item.requirement_name }}">
           {% endif %}
-          {% if request.status in ['PENDING','UNDER_REVIEW','NEEDS_CORRECTION'] %}
+          {% if item.is_identity_requirement and item.image_available and request.status != 'NEEDS_CORRECTION' %}
+          <p class="mt-3 text-sm text-on-surface-muted">Your ID is saved on this request.</p>
+          {% elif request.status in ['PENDING','UNDER_REVIEW','NEEDS_CORRECTION'] %}
           <form class="mt-3" method="post" enctype="multipart/form-data" action="{{ url_for('resident.document_requirement_upload', request_id=request.id, requirement_id=item.id) }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <label class="block" for="requirement-{{ item.id }}">{{ 'Replace' if item.filename else 'Upload' }} {{ item.requirement_name }} — JPEG or PNG, up to 5 MB</label>
+            <label class="block" for="requirement-{{ item.id }}">{{ 'Replace' if item.filename else 'Upload' }} {{ item.requirement_name }} — JPEG or PNG, up to {{ 4 if config.get('DOCUMENT_REQUIREMENT_MAX_BYTES') else 5 }} MB</label>
             <input required id="requirement-{{ item.id }}" type="file" class="civic-input" name="requirement_file" accept="image/jpeg,image/png" data-image-preview>
             <img hidden alt="Selected requirement preview" width="160" height="120" data-preview-image>
             <button class="civic-btn mt-2" type="submit">{{ 'Replace image' if item.filename else 'Upload image' }}</button>
           </form>
-          {% if item.filename %}<form class="mt-2" method="post" action="{{ url_for('resident.document_requirement_remove', request_id=request.id, requirement_id=item.id) }}" data-confirm="Remove this uploaded requirement?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="civic-btn-outline">Remove image</button></form>{% endif %}
+          {% if item.filename and not item.is_identity_requirement %}<form class="mt-2" method="post" action="{{ url_for('resident.document_requirement_remove', request_id=request.id, requirement_id=item.id) }}" data-confirm="Remove this uploaded requirement?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="civic-btn-outline">Remove image</button></form>{% endif %}
           {% endif %}
         </div>
         {% endfor %}

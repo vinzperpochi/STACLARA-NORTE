@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
-from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Index, Numeric, String, Text, UniqueConstraint, JSON, Integer
+from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Index, Numeric, String, Text, UniqueConstraint, JSON, Integer, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import StatusMixin, TimestampedModel
@@ -125,6 +125,7 @@ class DocumentRequirement(TimestampedModel):
     request_id: Mapped[int] = mapped_column(ForeignKey("requests.id", ondelete="CASCADE"), nullable=False)
     requirement_name: Mapped[str] = mapped_column(String(200), nullable=False)
     filename: Mapped[str | None] = mapped_column(String(255))
+    image_data: Mapped[bytes | None] = mapped_column(LargeBinary, deferred=True)
     uploaded_by_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
     uploaded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     is_required: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
@@ -132,6 +133,11 @@ class DocumentRequirement(TimestampedModel):
     notes: Mapped[str | None] = mapped_column(Text)
     request: Mapped[Request] = relationship(back_populates="requirements")
     uploaded_by: Mapped["User | None"] = relationship()
+
+    @property
+    def is_identity_requirement(self):
+        from app.documents.workflow import IDENTITY_REQUIREMENTS
+        return self.requirement_name in IDENTITY_REQUIREMENTS
 
     @property
     def image_available(self):
