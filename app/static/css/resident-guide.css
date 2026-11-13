@@ -39,3 +39,16 @@
 .msg-launcher[aria-expanded="true"] + .resident-guide-launcher {
     visibility: hidden;
 }
+.msg-widget .resident-guide-launcher {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    width: max-content;
+    height: 2.75rem;
+    padding-inline: .8rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    white-space: nowrap;
+}
+.msg-widget .resident-guide-launcher .icon-svg { font-size: 1.15rem; }

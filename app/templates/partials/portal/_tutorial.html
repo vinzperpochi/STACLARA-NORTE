@@ -3,25 +3,27 @@
 <dialog class="resident-guide" data-resident-guide="{{ current_user.get_id() }}" aria-labelledby="resident-guide-title">
   <header class="resident-guide-header">
     <span class="resident-guide-brand">Barangay Sta. Clara Norte</span>
-    <h2 id="resident-guide-title" tabindex="-1">Gabay sa Resident Portal</h2>
+    <h2 id="resident-guide-title" tabindex="-1">Tutorial Mode</h2>
   </header>
   <div class="resident-guide-body">
     <p class="resident-guide-progress" data-guide-progress aria-live="polite"></p>
-  <div data-guide-step>
-    <span class="resident-guide-icon" aria-hidden="true">{{ icon('dashboard', '', size='26px') }}</span>
-    <h3>Dashboard</h3>
-    <p>Dito makikita ang mga anunsyo at mga serbisyo ng barangay. Buksan ang Navigation menu sa phone para makita ang ibang seksyon.</p>
-  </div>
-  <div data-guide-step hidden>
-    <span class="resident-guide-icon" aria-hidden="true">{{ icon('description', '', size='26px') }}</span>
-    <h3>Dokumento at Queue Status</h3>
-    <p>Sa Documents &amp; Clearances, puwede kang humiling ng dokumento. Tingnan ang Queue Status para masubaybayan ang iyong request.</p>
-  </div>
-  <div data-guide-step hidden>
-    <span class="resident-guide-icon" aria-hidden="true">{{ icon('account_circle', '', size='26px') }}</span>
-    <h3>Profile at mga ulat</h3>
-    <p>Sa My Profile, tingnan ang iyong impormasyon. Gamitin ang Corrections kung may kailangang itama. Sa menu, piliin ang File a Complaint o Report Incident ayon sa nais mong iulat.</p>
-  </div>
+    {% set steps = [
+      ('dashboard', 'Dashboard at Navigation', 'Tingnan ang mga anunsyo at shortcut sa Dashboard. Sa phone, buksan ang Navigation para makita ang buong menu.'),
+      ('account_circle', 'My Profile, Household at Corrections', 'Suriin ang personal at household records. Kung may mali, buksan ang Corrections at isumite ang detalye na kailangang itama.'),
+      ('description', 'Documents & Clearances', 'Piliin ang dokumentong kailangan, sagutan ang form, at isumite ang request.'),
+      ('hourglass_top', 'Queue Status', 'Buksan ang Queue Status at hanapin ang request para makita ang kasalukuyang status nito.'),
+      ('gavel', 'Complaints & Blotter', 'Piliin ang File a Complaint para sa pormal na reklamo. Para mag-ulat ng insidente, piliin ang Report Incident, ilagay ang detalye, at markahan ang lokasyon sa mapa kung alam mo ito.'),
+      ('fmd_bad', 'Emergency Alerts', 'Buksan ang Emergency Alerts para makita ang mga babala at abiso mula sa barangay.'),
+      ('campaign', 'Notifications', 'Tingnan ang Notifications para sa mga bagong abiso at update sa iyong mga request.'),
+      ('support_agent', 'Barangay Chat', 'Pindutin ang Message icon para magtanong tungkol sa mga serbisyo ng barangay. Pindutin ang Tutorial Mode anumang oras para balikan ang gabay.')
+    ] %}
+    {% for glyph, title, instructions in steps %}
+    <section data-guide-step{% if not loop.first %} hidden{% endif %}>
+      <span class="resident-guide-icon" aria-hidden="true">{{ icon(glyph, '', size='26px') }}</span>
+      <h3>{{ title }}</h3>
+      <p>{{ instructions }}</p>
+    </section>
+    {% endfor %}
   </div>
   <footer class="resident-guide-actions">
     <button type="button" class="btn btn-outline-success" data-guide-skip>Laktawan</button>
