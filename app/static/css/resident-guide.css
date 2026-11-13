@@ -1,0 +1,32 @@
+.resident-guide {
+    width: min(34rem, calc(100% - 2rem));
+    max-height: calc(100dvh - 2rem);
+    padding: 0;
+    border: 1px solid #c7dbce;
+    border-radius: 1.25rem;
+    background: #fff;
+    color: #153625;
+    box-shadow: 0 24px 72px #05291755;
+    overflow: auto;
+}
+.resident-guide::backdrop { background: #082419aa; }
+.resident-guide-header {
+    background: linear-gradient(125deg, #104529, #17643d);
+    color: #fff;
+    padding: 1.4rem clamp(1rem, 5vw, 2rem);
+}
+.resident-guide-header h2 { margin: .35rem 0 0; color: inherit; font-size: clamp(1.3rem, 5vw, 1.8rem); }
+.resident-guide-brand { font-size: .875rem; color: #def7e8; }
+.resident-guide-body { padding: 1.25rem clamp(1rem, 5vw, 2rem); }
+.resident-guide-progress { font-weight: 650; font-size: .875rem; color: #216344; }
+.resident-guide [data-guide-step] { background: #f1f8f4; border: 1px solid #dcece2; border-radius: 1rem; padding: 1rem; }
+.resident-guide [data-guide-step] h3 { margin: .7rem 0 .4rem; font-size: 1.15rem; }
+.resident-guide [data-guide-step] p { margin: 0; line-height: 1.55; }
+.resident-guide-icon { display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; background: #dcefe2; color: #195737; border-radius: .75rem; }
+.resident-guide-actions { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0 clamp(1rem, 5vw, 2rem) 1.25rem; }
+.resident-guide-actions button { min-height: 44px; }
+.resident-guide-actions [data-guide-next] { margin-inline-start: auto; }
+.resident-guide-actions [data-guide-back]:not([hidden]) + [data-guide-next] { margin-inline-start: 0; }
+@media print {
+    .resident-guide { display: none !important; }
+}

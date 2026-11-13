@@ -1,28 +1,36 @@
+{% from 'components/icons.html' import icon %}
 {% if current_user.is_authenticated %}
 <div class="px-3 pt-2 d-print-none">
-  <button type="button" class="btn btn-outline-success btn-sm" data-resident-guide-open>Tutorial</button>
+  <button type="button" class="btn btn-outline-success btn-sm" data-resident-guide-open>{{ icon('help', '', size='1em') }} Tutorial</button>
 </div>
-<dialog class="border rounded-4 p-4 shadow" style="width: min(30rem, calc(100% - 2rem)); max-height: 85vh"
-        data-resident-guide="{{ current_user.get_id() }}" aria-labelledby="resident-guide-title">
-  <p class="small text-success fw-semibold" data-guide-progress aria-live="polite"></p>
-  <h2 class="h5" id="resident-guide-title" tabindex="-1">Gabay sa Resident Portal</h2>
+<dialog class="resident-guide" data-resident-guide="{{ current_user.get_id() }}" aria-labelledby="resident-guide-title">
+  <header class="resident-guide-header">
+    <span class="resident-guide-brand">Barangay Sta. Clara Norte</span>
+    <h2 id="resident-guide-title" tabindex="-1">Gabay sa Resident Portal</h2>
+  </header>
+  <div class="resident-guide-body">
+    <p class="resident-guide-progress" data-guide-progress aria-live="polite"></p>
   <div data-guide-step>
-    <h3 class="h6">Dashboard</h3>
+    <span class="resident-guide-icon" aria-hidden="true">{{ icon('dashboard', '', size='26px') }}</span>
+    <h3>Dashboard</h3>
     <p>Dito makikita ang mga anunsyo at mga serbisyo ng barangay. Buksan ang Navigation menu sa phone para makita ang ibang seksyon.</p>
   </div>
   <div data-guide-step hidden>
-    <h3 class="h6">Dokumento at Queue Status</h3>
+    <span class="resident-guide-icon" aria-hidden="true">{{ icon('description', '', size='26px') }}</span>
+    <h3>Dokumento at Queue Status</h3>
     <p>Sa Documents &amp; Clearances, puwede kang humiling ng dokumento. Tingnan ang Queue Status para masubaybayan ang iyong request.</p>
   </div>
   <div data-guide-step hidden>
-    <h3 class="h6">Profile at mga ulat</h3>
+    <span class="resident-guide-icon" aria-hidden="true">{{ icon('account_circle', '', size='26px') }}</span>
+    <h3>Profile at mga ulat</h3>
     <p>Sa My Profile, tingnan ang iyong impormasyon. Gamitin ang Corrections kung may kailangang itama. Sa menu, piliin ang File a Complaint o Report Incident ayon sa nais mong iulat.</p>
   </div>
-  <div class="d-flex flex-wrap gap-2 mt-3">
+  </div>
+  <footer class="resident-guide-actions">
     <button type="button" class="btn btn-outline-success" data-guide-skip>Laktawan</button>
     <button type="button" class="btn btn-outline-success ms-auto" data-guide-back>Bumalik</button>
     <button type="button" class="btn btn-success" data-guide-next>Susunod</button>
-  </div>
+  </footer>
 </dialog>
 <script defer src="{{ url_for('static', filename='js/resident-guide.js') }}"></script>
 {% endif %}
