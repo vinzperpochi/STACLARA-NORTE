@@ -11,7 +11,15 @@
     const { latitude, longitude, category, location: address } = panel.closest('form').elements;
     canvas.hidden = false;
     locate.hidden = !navigator.geolocation;
-    const map = L.map(canvas, {scrollWheelZoom: false}).setView([14.24, 121.37], 14);
+    // Local viewport around Santa Clara Norte, not an administrative boundary.
+    const localBounds = L.latLngBounds([14.230, 121.353], [14.241, 121.367]);
+    const map = L.map(canvas, {
+        scrollWheelZoom: false,
+        maxBounds: localBounds,
+        maxBoundsViscosity: 1,
+        minZoom: 16,
+        maxZoom: 19
+    }).setView([14.23540, 121.35962], 17);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -88,10 +96,18 @@
         const lng = Number(longitude.value);
         if (Math.abs(lat) <= 90 && Math.abs(lng) <= 180) {
             showPin([lat, lng]);
-            map.setView([lat, lng], 16);
+            if (localBounds.contains([lat, lng])) map.setView([lat, lng], 17);
         }
     }
-    map.on('click', event => pin(event.latlng.wrap()));
+    function selectLocalPoint(point) {
+        if (!localBounds.contains(point)) {
+            status.textContent = 'Choose a pin within the Sta. Clara Norte map area.';
+            return;
+        }
+        pin(point);
+    }
+
+    map.on('click', event => selectLocalPoint(event.latlng));
     locate.addEventListener('click', () => {
         const version = selection;
         locate.disabled = true;
@@ -100,8 +116,8 @@
             locate.disabled = false;
             if (version !== selection) return;
             const point = L.latLng(coords.latitude, coords.longitude);
-            map.setView(point, 17);
-            pin(point);
+            if (localBounds.contains(point)) map.setView(point, 18);
+            selectLocalPoint(point);
         }, () => {
             locate.disabled = false;
             if (version === selection) status.textContent = 'Current location unavailable. Click the map to place a pin.';
