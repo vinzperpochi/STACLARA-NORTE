@@ -47,7 +47,9 @@
   {% include "partials/portal/_tutorial.html" %}
   {% include "partials/portal/_footer.html" %}
   {% include "partials/portal/_modals.html" %}
-  {% include "partials/messaging/_widget.html" %}
+  {% with show_resident_tutorial = current_user.is_authenticated %}
+    {% include "partials/messaging/_widget.html" %}
+  {% endwith %}
 
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}

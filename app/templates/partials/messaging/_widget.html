@@ -6,6 +6,12 @@
     <span class="msg-launcher-label">{{ 'Kumusta? Chat sa barangay' if is_resident else 'Resident messages' }}</span>
     <span class="msg-unread hidden" data-msg-unread>0</span>
   </button>
+  {% if show_resident_tutorial and is_resident %}
+  <button class="msg-launcher resident-guide-launcher d-print-none" type="button" data-resident-guide-open
+          aria-haspopup="dialog" aria-label="Buksan ang tutorial" title="Tutorial">
+    {{ icon('help', '') }}
+  </button>
+  {% endif %}
   <section class="msg-panel hidden" id="msg-panel" aria-label="Messaging">
     <header class="msg-header">
       <div><strong>{{ chatbot_name if is_resident else 'Resident inbox' }}</strong><small>{{ 'Assistant ang unang sasagot; official handoff kapag kailangan' if is_resident else 'Makipag-ugnayan sa mga residente' }}</small></div>

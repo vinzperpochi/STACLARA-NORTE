@@ -24,7 +24,7 @@
         dialog.querySelector('h2').focus();
     }
 
-    trigger.addEventListener('click', openGuide);
+    trigger?.addEventListener('click', openGuide);
     back.addEventListener('click', () => {
         index -= 1;
         render();
@@ -41,7 +41,7 @@
     dialog.querySelector('[data-guide-skip]').addEventListener('click', () => dialog.close());
     dialog.addEventListener('close', () => {
         try { localStorage.setItem(key, 'seen'); } catch {}
-        trigger.focus();
+        trigger?.focus();
     });
 
     try {

@@ -30,3 +30,12 @@
 @media print {
     .resident-guide { display: none !important; }
 }
+
+.msg-widget .resident-guide-launcher {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + .75rem);
+}
+.msg-launcher[aria-expanded="true"] + .resident-guide-launcher {
+    visibility: hidden;
+}

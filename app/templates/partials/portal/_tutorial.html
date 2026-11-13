@@ -1,8 +1,5 @@
 {% from 'components/icons.html' import icon %}
 {% if current_user.is_authenticated %}
-<div class="px-3 pt-2 d-print-none">
-  <button type="button" class="btn btn-outline-success btn-sm" data-resident-guide-open>{{ icon('help', '', size='1em') }} Tutorial</button>
-</div>
 <dialog class="resident-guide" data-resident-guide="{{ current_user.get_id() }}" aria-labelledby="resident-guide-title">
   <header class="resident-guide-header">
     <span class="resident-guide-brand">Barangay Sta. Clara Norte</span>
