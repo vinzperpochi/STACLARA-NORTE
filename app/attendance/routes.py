@@ -188,6 +188,14 @@ def personnel_detail(personnel_id):
                 today=datetime.now(MANILA).date()
                 if schedule.effective_from>=today: schedule.active=False
                 else: schedule.effective_until=today-timedelta(days=1)
+            elif action=='schedule_on':
+                schedule=db.get_or_404(EmployeeSchedule,int(request.form.get('schedule_id','0')))
+                if schedule.personnel_id!=person.id: abort(404)
+                today=datetime.now(MANILA).date()
+                if schedule.effective_until and (schedule.effective_until<today or schedule.effective_until<schedule.effective_from):
+                    schedule.effective_from=today
+                    schedule.effective_until=None
+                schedule.active=True
             elif action=='pin':
                 pin=text_field(request.form,'pin',32)
                 if not pin.isdigit() or len(pin)<6: raise ValueError('PIN must contain at least six digits.')
