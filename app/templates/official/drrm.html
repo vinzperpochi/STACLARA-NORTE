@@ -21,4 +21,17 @@
   </div>
 </form>
 {% endif %}
-{% for alert in alerts %}<div class="p-3 rounded-lg bg-error-container border border-error/30 mt-3 mb-0"><strong>{{ alert.alert_level }} — {{ alert.title }}</strong><br>{{ alert.message }}<small class="d-block">{{ alert.status|title }} · Issued {{ alert.issued_at }}</small><div class="d-flex gap-2 flex-wrap mt-2"><a class="civic-btn-outline btn btn-sm" href="{{ url_for('official.drrm_alert_edit', alert_id=alert.id) }}">Edit</a>{% if archived_alerts %}<form method="post" action="{{ url_for('official.drrm_alert_restore', alert_id=alert.id) }}" data-confirm="Restore this emergency alert as a draft?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="civic-btn-outline" type="submit">Restore</button></form>{% else %}<form method="post" action="{{ url_for('official.drrm_alert_archive', alert_id=alert.id) }}" data-confirm="Archive this emergency alert?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="civic-btn-outline" type="submit">Archive</button></form>{% endif %}<form method="post" action="{{ url_for('official.drrm_alert_delete', alert_id=alert.id) }}" data-confirm="Permanently delete this emergency alert?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-danger btn-sm" type="submit">Delete</button></form></div></div>{% else %}<p class="text-on-surface-muted mt-3 mb-0">{{ 'No archived emergency alerts.' if archived_alerts else 'No active or draft emergency alerts.' }}</p>{% endfor %}{{ render_pagination(pagers['alerts'],'alerts_page','drrm-alerts','Emergency alerts') }}</div>{% endblock %}
+{% for alert in alerts %}
+<div class="drrm-alert-card p-3 rounded-lg bg-error-container border border-error/30 mt-3 mb-0">
+  <div class="drrm-alert-copy"><strong>{{ alert.alert_level }} — {{ alert.title }}</strong><br>{{ alert.message }}<small class="d-block">{{ alert.status|title }} · Issued {{ alert.issued_at }}</small></div>
+  <div class="drrm-alert-actions">
+    <a class="civic-btn-outline drrm-alert-action" href="{{ url_for('official.drrm_alert_edit', alert_id=alert.id) }}">Edit</a>
+    {% if archived_alerts %}
+    <form method="post" action="{{ url_for('official.drrm_alert_restore', alert_id=alert.id) }}" data-confirm="Restore this emergency alert as a draft?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="civic-btn-outline drrm-alert-action drrm-alert-restore" type="submit">Restore</button></form>
+    {% else %}
+    <form method="post" action="{{ url_for('official.drrm_alert_archive', alert_id=alert.id) }}" data-confirm="Archive this emergency alert?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="civic-btn-outline drrm-alert-action drrm-alert-archive" type="submit">Archive</button></form>
+    {% endif %}
+    <form method="post" action="{{ url_for('official.drrm_alert_delete', alert_id=alert.id) }}" data-confirm="Permanently delete this emergency alert?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="drrm-alert-action drrm-alert-delete" type="submit">Delete</button></form>
+  </div>
+</div>
+{% else %}<p class="text-on-surface-muted mt-3 mb-0">{{ 'No archived emergency alerts.' if archived_alerts else 'No active or draft emergency alerts.' }}</p>{% endfor %}{{ render_pagination(pagers['alerts'],'alerts_page','drrm-alerts','Emergency alerts') }}</div>{% endblock %}
