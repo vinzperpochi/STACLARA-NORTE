@@ -17,12 +17,13 @@ body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sideba
 body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar .resident-nav-link .resident-nav-subtitle{font-size:10px;line-height:1.5;margin-top:3px;color:#b9d1c3!important;opacity:1}
 body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a.resident-nav-link svg{width:19px;height:19px;color:#c5dccd;flex:0 0 auto}
 body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a.resident-nav-link:hover{background:#ffffff0d!important;border-color:#ffffff14}
-body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a.resident-nav-link[aria-current="page"]{background:#ffd84b!important;border-color:#ffe57b;color:#083E14!important;box-shadow:0 4px 14px -8px #00000050}
-body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a.resident-nav-link[aria-current="page"] .resident-nav-subtitle{color:#0A5C1E!important}
+body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a.resident-nav-link[aria-current="page"]{background:#B9E8CB!important;border-color:#10B981;color:#064E3B!important;box-shadow:0 4px 14px -8px #00000050}
+body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a.resident-nav-link[aria-current="page"] .resident-nav-subtitle{color:#176044!important}
+body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a.resident-nav-link[aria-current="page"] svg{color:#064E3B!important}
 body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar .resident-nav-badge{display:inline-flex;align-items:center;justify-content:center;min-width:23px;height:23px;padding:0 6px;font-size:10px;font-weight:700;border:1px solid #ffffff18;border-radius:7px;background:#ffffff15;color:#eef7f0!important;flex:0 0 auto}
 body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar .resident-nav-unread{background:#bd3f37;border-color:#ffffff15;color:white!important;border-radius:20px}
 body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a[aria-current="page"] .resident-nav-badge{background:#083E1420;color:#083E14!important;border-color:#083E1410}
-body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a[aria-current="page"]>span:last-child:not(.resident-nav-badge){background:#0A5C1E}
+body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar nav a[aria-current="page"]>span:last-child:not(.resident-nav-badge){background:#10B981}
 body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar .resident-sidebar-footer{flex:0 0 auto;margin:0!important;padding:12px 0 0;border-top:1px solid #ffffff20}
 body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar .civic-sidebar-identity{margin:0!important;padding:12px;border:1px solid #ffffff25;border-radius:12px;background:#ffffff0a;gap:10px}
 body:is(.workspace-resident,.workspace-official,.workspace-admin) #portal-sidebar .civic-avatar{width:38px;height:38px;border:2px solid #ffffffb0;font-size:12px}
