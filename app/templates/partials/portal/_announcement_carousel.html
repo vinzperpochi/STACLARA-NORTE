@@ -7,7 +7,7 @@
   {% set announcement_message = 'Tingnan ang mga abiso at update mula sa Barangay Sta. Clara Norte.' %}
   {% set announcement_url = url_for('resident.notifications') %}
 {% endif %}
-<section class="portal-ticker" aria-label="Barangay announcement" data-overflowing="false">
+<section class="portal-ticker" aria-label="Barangay announcement">
   <div class="portal-ticker-inner">
     <a class="portal-ticker-card" href="{{ announcement_url }}" aria-label="{{ announcement_title }}. {{ announcement_message }}">
       <span class="portal-ticker-label">

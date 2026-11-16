@@ -9,22 +9,6 @@
     if (!json.success) throw new Error(json.message || 'Unable to load data.');
     return json.data;
   };
-  document.querySelectorAll('.portal-ticker').forEach(ticker => {
-    const tickerWindow = ticker.querySelector('.portal-ticker-window');
-    const track = ticker.querySelector('.portal-ticker-track');
-    const item = track?.querySelector('.portal-ticker-item:not([aria-hidden="true"])');
-    if (!tickerWindow || !track || !item) return;
-    const update = () => {
-      const overflowing = item.scrollWidth > tickerWindow.clientWidth + 2;
-      ticker.dataset.overflowing = String(overflowing);
-      if (overflowing) track.style.setProperty('--ticker-duration', `${Math.max(18, item.scrollWidth / 45)}s`);
-      else track.style.removeProperty('--ticker-duration');
-    };
-    if ('ResizeObserver' in window) new ResizeObserver(update).observe(tickerWindow);
-    else addEventListener('resize', update);
-    update();
-    document.fonts?.ready.then(update);
-  });
   document.querySelectorAll('[data-notifications]').forEach(root => {
     const trigger = root.querySelector('[data-notification-trigger]'), panel = root.querySelector('.notification-panel'), count = root.querySelector('[data-notification-count]'), status = root.querySelector('[data-notification-status]'), items = root.querySelector('[data-notification-items]');
     let loading = false;
