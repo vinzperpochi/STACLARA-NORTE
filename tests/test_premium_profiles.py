@@ -118,8 +118,9 @@ def test_profile_posts_require_csrf_when_enabled(system):
 
 
 def test_registration_and_document_templates_keep_correct_asset_boundaries(system):
-    assert b'image/jpeg,image/png,image/webp' in system.test_client().get('/auth/register').data
-    assert b'Remove selected photo' in system.test_client().get('/auth/register').data
+    registration = system.test_client().get('/auth/register').data
+    assert b'Resident identification photo' not in registration
+    assert b'Remove selected photo' not in registration
     for layout in ['admin/_admin_base.html','official/_official_base.html','resident/_portal_base.html','layouts/auth_base.html','base.html']:
         source=system.jinja_loader.get_source(system.jinja_env,layout)[0]
         assert 'civic-premium.css' in source and 'bootstrap/bootstrap.min.css' in source
