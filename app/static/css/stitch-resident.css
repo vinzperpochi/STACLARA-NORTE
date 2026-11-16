@@ -108,7 +108,9 @@ body.portal-stitch .border-primary { border-color: var(--civic-primary) !importa
 .portal-ticker-window { display: block; flex: 1 1 auto; min-width: 0; overflow: hidden; padding-top: 4px; }
 .portal-ticker-track { display: flex; width: max-content; animation: civic-ticker 34s linear infinite; }
 .portal-ticker-item + .portal-ticker-item { border-left: 1px solid #e7d68f; }
-.portal-ticker-card:hover .portal-ticker-track,
+@media (hover: hover) {
+  .portal-ticker-card:hover .portal-ticker-track { animation-play-state: paused; }
+}
 .portal-ticker-card:focus-visible .portal-ticker-track { animation-play-state: paused; }
 .portal-ticker-item { display: flex; flex: 0 0 auto; flex-direction: column; gap: 3px; min-width: 0; padding-right: 88px; white-space: nowrap; }
 .portal-ticker-item strong { color: #123d2b; font-size: 16px; line-height: 1.15; font-weight: 850; text-decoration: underline; text-decoration-color: #10a66a; text-decoration-thickness: 1px; text-underline-offset: 3px; text-transform: uppercase; }
@@ -366,9 +368,24 @@ body.portal-stitch .border-primary { border-color: var(--civic-primary) !importa
   .portal-ticker-card { min-height: 74px; margin-top: 14px; padding: 20px 60px 7px 14px; border-radius: 12px; }
   .portal-ticker-label { top: -12px; left: 10px; min-height: 27px; gap: 6px; padding: 4px 13px 5px 9px; font-size: 11px; }
   .portal-ticker-news-icon { width: 16px; height: 16px; }
-  .portal-ticker-track { display: block; width: 100%; animation: none; }
-  .portal-ticker-item { gap: 4px; padding-right: 0; white-space: normal; overflow-wrap: anywhere; }
-  .portal-ticker-item + .portal-ticker-item { display: none; }
+  .portal-ticker-track {
+    width: 100%;
+    animation: civic-ticker-mobile calc(8s * var(--ticker-items)) linear 1s infinite;
+  }
+  .portal-ticker-item {
+    flex-basis: 100%;
+    gap: 4px;
+    padding-right: 12px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .portal-ticker-item + .portal-ticker-item { border-left: 0; }
+  @keyframes civic-ticker-mobile {
+    to { transform: translateX(calc(-100% * var(--ticker-items))); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .portal-ticker-item + .portal-ticker-item { display: none; }
+  }
   .portal-stitch .dashboard-calendar { max-width: none; scroll-margin-top: 6rem; }
   .portal-stitch .calendar-event { overflow-wrap: anywhere; }
   .portal-ticker-item strong { font-size: 13px; line-height: 1.15; }

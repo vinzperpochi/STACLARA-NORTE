@@ -22,7 +22,7 @@
         <span>ANNOUNCEMENT</span>
       </span>
       <span class="portal-ticker-window" aria-hidden="true">
-        <span class="portal-ticker-track">
+        <span class="portal-ticker-track" style="--ticker-items: {{ ticker_events|length if ticker_events and not ticker_alert else 1 }}">
           {% if ticker_alert %}
           <span class="portal-ticker-item"><strong>{{ announcement_title }}</strong><span>{{ announcement_message }}</span></span>
           <span class="portal-ticker-item" aria-hidden="true"><strong>{{ announcement_title }}</strong><span>{{ announcement_message }}</span></span>
