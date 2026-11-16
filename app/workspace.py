@@ -74,7 +74,7 @@ def calendar():
     events = db.session.scalars(db.select(Event).where(Event.status.in_(statuses), Event.starts_at < end.astimezone(timezone.utc), or_(Event.ends_at >= start.astimezone(timezone.utc), (Event.ends_at.is_(None) & (Event.starts_at >= start.astimezone(timezone.utc))))).order_by(Event.starts_at, Event.id).limit(200)).all()
     def local(value):
         return (value.replace(tzinfo=timezone.utc) if value.tzinfo is None else value).astimezone(zone).isoformat()
-    return jsonify(success=True, data={'today': now.date().isoformat(), 'timezone': zone.key, 'year': year, 'month': month, 'events': [{'id': e.id, 'title': e.title, 'starts_at': local(e.starts_at), 'ends_at': local(e.ends_at) if e.ends_at else None, 'venue': e.venue} for e in events]})
+    return jsonify(success=True, data={'today': now.date().isoformat(), 'timezone': zone.key, 'year': year, 'month': month, 'events': [{'id': e.id, 'title': e.title, 'description': e.description, 'starts_at': local(e.starts_at), 'ends_at': local(e.ends_at) if e.ends_at else None, 'venue': e.venue} for e in events]})
 
 
 @workspace_bp.route('/profile', methods=['GET', 'POST'])

@@ -74,7 +74,7 @@
           grid.append(cell);
         }
         events.replaceChildren();
-        data.events.forEach(event => { const row = element('article', null, 'calendar-event'); row.append(element('strong', event.title), element('p', new Intl.DateTimeFormat('en', {dateStyle: 'medium', timeStyle: 'short', timeZone: data.timezone}).format(new Date(event.starts_at)) + (event.venue ? ` · ${event.venue}` : ''))); events.append(row); });
+        data.events.forEach(event => { const row = element('article', null, 'calendar-event'); row.append(element('strong', event.title), element('p', new Intl.DateTimeFormat('en', {dateStyle: 'medium', timeStyle: 'short', timeZone: data.timezone}).format(new Date(event.starts_at)) + (event.venue ? ` · ${event.venue}` : ''))); if (event.description) row.append(element('p', event.description)); events.append(row); });
         if (!data.events.length) events.append(element('p', 'No events scheduled for this month.'));
         status.textContent = '';
       } catch (error) { status.textContent = error.message; }

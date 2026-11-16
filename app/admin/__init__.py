@@ -10,6 +10,7 @@ import io
 from collections import Counter, defaultdict
 from datetime import date, datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from flask import Blueprint, current_app, flash, jsonify, redirect, render_template, request, send_file, url_for
 from sqlalchemy import and_, func, or_, asc, desc
@@ -46,6 +47,7 @@ from app.models import (
     Role,
     SocialWelfareRegistry,
     BusinessRecord,
+    Event,
     SystemSetting,
     User,
 )
@@ -167,7 +169,111 @@ def dashboard():
         period=period,
         official_form=OfficialAccountForm(),
         recent_audit=db.session.scalars(db.select(AuditLog).order_by(AuditLog.created_at.desc(), AuditLog.id.desc()).limit(5)).all(),
+        manage_events=True,
     )
+
+
+def _event_datetime(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    parsed = datetime.fromisoformat(value)
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=ZoneInfo(current_app.config["SYSTEM_TIMEZONE"]))
+    return parsed.astimezone(timezone.utc)
+
+
+def _event_local_value(value: datetime | None) -> str:
+    if value is None:
+        return ""
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+    return value.astimezone(ZoneInfo(current_app.config["SYSTEM_TIMEZONE"])).strftime("%Y-%m-%dT%H:%M")
+
+
+@admin_bp.route("/events", methods=["GET", "POST"])
+@admin_required
+def events():
+    if request.method == "POST":
+        try:
+            title = (request.form.get("title") or "").strip()
+            starts_at = _event_datetime(request.form.get("starts_at"))
+            ends_at = _event_datetime(request.form.get("ends_at"))
+            if not title or len(title) > 200:
+                raise ValueError("Enter an event title (up to 200 characters).")
+            venue = (request.form.get("venue") or "").strip()
+            if len(venue) > 255:
+                raise ValueError("Keep the venue under 255 characters.")
+            if starts_at is None:
+                raise ValueError("Choose the event start date and time.")
+            if ends_at and ends_at <= starts_at:
+                raise ValueError("The end time must be after the start time.")
+            event = Event(
+                title=title,
+                description=(request.form.get("description") or "").strip() or None,
+                venue=venue or None,
+                starts_at=starts_at,
+                ends_at=ends_at,
+                organizer_id=current_user.id,
+                status="active",
+            )
+            db.session.add(event)
+            db.session.flush()
+            log_action("CREATE", "Event", event.id, f"Published barangay event: {title}")
+            db.session.commit()
+            flash("Barangay event published to the calendars.", "success")
+            return redirect(url_for("admin.events"))
+        except ValueError as error:
+            db.session.rollback()
+            flash(str(error), "danger")
+
+    items = db.session.scalars(db.select(Event).order_by(Event.starts_at.desc(), Event.id.desc()).limit(200)).all()
+    return render_template("admin/events.html", events=items, edit_event=None)
+
+
+@admin_bp.route("/events/<int:event_id>/edit", methods=["GET", "POST"])
+@admin_required
+def event_edit(event_id: int):
+    event = db.get_or_404(Event, event_id)
+    if request.method == "POST":
+        try:
+            title = (request.form.get("title") or "").strip()
+            starts_at = _event_datetime(request.form.get("starts_at"))
+            ends_at = _event_datetime(request.form.get("ends_at"))
+            if not title or len(title) > 200:
+                raise ValueError("Enter an event title (up to 200 characters).")
+            venue = (request.form.get("venue") or "").strip()
+            if len(venue) > 255:
+                raise ValueError("Keep the venue under 255 characters.")
+            if starts_at is None:
+                raise ValueError("Choose the event start date and time.")
+            if ends_at and ends_at <= starts_at:
+                raise ValueError("The end time must be after the start time.")
+            event.title = title
+            event.description = (request.form.get("description") or "").strip() or None
+            event.venue = venue or None
+            event.starts_at = starts_at
+            event.ends_at = ends_at
+            event.status = "active"
+            log_action("UPDATE", "Event", event.id, f"Updated barangay event: {title}")
+            db.session.commit()
+            flash("Barangay event updated.", "success")
+            return redirect(url_for("admin.events"))
+        except ValueError as error:
+            db.session.rollback()
+            event = db.get_or_404(Event, event_id)
+            flash(str(error), "danger")
+    return render_template("admin/events.html", events=db.session.scalars(db.select(Event).order_by(Event.starts_at.desc(), Event.id.desc()).limit(200)).all(), edit_event=event, event_starts_local=_event_local_value(event.starts_at), event_ends_local=_event_local_value(event.ends_at))
+
+
+@admin_bp.post("/events/<int:event_id>/cancel")
+@admin_required
+def event_cancel(event_id: int):
+    event = db.get_or_404(Event, event_id)
+    event.status = "cancelled"
+    log_action("CANCEL", "Event", event.id, f"Cancelled barangay event: {event.title}")
+    db.session.commit()
+    flash("Event cancelled and removed from public calendars.", "success")
+    return redirect(url_for("admin.events"))
 
 
 @admin_bp.get("/dashboard-data")

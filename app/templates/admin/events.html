@@ -1,0 +1,62 @@
+{% extends "admin/_admin_base.html" %}
+{% block title %}Barangay Events{% endblock %}
+{% block active_nav %}admin.dashboard{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+  <div>
+    <h1 class="text-headline-sm font-headline-sm text-on-surface">Barangay events</h1>
+    <p class="text-on-surface-muted">Publish events to the calendar shown on resident, official, and admin dashboards. Times use Asia/Manila.</p>
+  </div>
+  <a class="civic-btn-outline" href="{{ url_for('admin.dashboard') }}">Back to dashboard</a>
+</div>
+
+<section class="civic-panel mb-4">
+  <h2 class="text-title-md mb-3">{{ 'Edit event' if edit_event else 'Announce an event' }}</h2>
+  <form method="post" action="{{ url_for('admin.event_edit', event_id=edit_event.id) if edit_event else url_for('admin.events') }}" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="md:col-span-2">Event title
+      <input required maxlength="200" name="title" class="form-control" value="{{ request.form.get('title', edit_event.title if edit_event else '') }}">
+    </label>
+    <label>Description
+      <textarea name="description" rows="4" class="form-control">{{ request.form.get('description', edit_event.description if edit_event and edit_event.description else '') }}</textarea>
+    </label>
+    <label>Venue
+      <input maxlength="255" name="venue" class="form-control" value="{{ request.form.get('venue', edit_event.venue if edit_event and edit_event.venue else '') }}">
+    </label>
+    <label>Start date and time
+      <input required type="datetime-local" name="starts_at" class="form-control" value="{{ request.form.get('starts_at', event_starts_local if edit_event else '') }}">
+    </label>
+    <label>End date and time <span class="text-on-surface-muted">(optional)</span>
+      <input type="datetime-local" name="ends_at" class="form-control" value="{{ request.form.get('ends_at', event_ends_local if edit_event else '') }}">
+    </label>
+    <div class="md:col-span-2 flex flex-wrap gap-2">
+      <button class="civic-btn">{{ 'Save changes' if edit_event else 'Publish event' }}</button>
+      {% if edit_event %}<a class="civic-btn-outline" href="{{ url_for('admin.events') }}">Cancel editing</a>{% endif %}
+    </div>
+  </form>
+</section>
+
+<section class="civic-panel">
+  <h2 class="text-title-md mb-3">Published and past events</h2>
+  <div class="grid gap-3">
+    {% for event in events %}
+    <article class="rounded-xl border border-outline-border p-4 flex flex-wrap items-start justify-between gap-3">
+      <div class="min-w-0">
+        <h3 class="font-bold">{{ event.title }}{% if event.status != 'active' and event.status != 'PUBLISHED' and event.status != 'published' %} <span class="text-sm text-on-surface-muted">({{ event.status|title }})</span>{% endif %}</h3>
+        <p class="text-sm text-on-surface-muted mb-1">{{ event.starts_at|datetime_manila }}{% if event.ends_at %} – {{ event.ends_at|datetime_manila }}{% endif %}{% if event.venue %} · {{ event.venue }}{% endif %}</p>
+        {% if event.description %}<p class="text-sm mb-0 whitespace-pre-line">{{ event.description }}</p>{% endif %}
+      </div>
+      <div class="flex flex-wrap gap-2 shrink-0">
+        <a class="civic-btn-outline" href="{{ url_for('admin.event_edit', event_id=event.id) }}">Edit</a>
+        {% if event.status == 'active' or event.status == 'PUBLISHED' or event.status == 'published' %}
+        <form method="post" action="{{ url_for('admin.event_cancel', event_id=event.id) }}" onsubmit="return confirm('Cancel this event? It will disappear from public calendars.');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="civic-btn-outline" type="submit">Cancel event</button>
+        </form>
+        {% endif %}
+      </div>
+    </article>
+    {% else %}<p class="text-on-surface-muted">No events have been announced yet.</p>{% endfor %}
+  </div>
+</section>
+{% endblock %}
