@@ -366,7 +366,11 @@ body.portal-stitch .border-primary { border-color: var(--civic-primary) !importa
   .portal-ticker-card { min-height: 74px; margin-top: 14px; padding: 20px 60px 7px 14px; border-radius: 12px; }
   .portal-ticker-label { top: -12px; left: 10px; min-height: 27px; gap: 6px; padding: 4px 13px 5px 9px; font-size: 11px; }
   .portal-ticker-news-icon { width: 16px; height: 16px; }
-  .portal-ticker-item { gap: 4px; padding-right: 44px; }
+  .portal-ticker-track { display: block; width: 100%; animation: none; }
+  .portal-ticker-item { gap: 4px; padding-right: 0; white-space: normal; overflow-wrap: anywhere; }
+  .portal-ticker-item + .portal-ticker-item { display: none; }
+  .portal-stitch .dashboard-calendar { max-width: none; scroll-margin-top: 6rem; }
+  .portal-stitch .calendar-event { overflow-wrap: anywhere; }
   .portal-ticker-item strong { font-size: 13px; line-height: 1.15; }
   .portal-ticker-item>span { font-size: 12px; line-height: 1.25; }
   .portal-ticker-seal { right: 8px; width: 42px; height: 42px; }
