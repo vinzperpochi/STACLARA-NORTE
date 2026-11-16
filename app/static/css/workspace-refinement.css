@@ -46,7 +46,7 @@
   body[class*="workspace-"] :is(nav, header.portal-header) input[type="search"] { padding-left: 38px !important; }
 
   /* Keep navigation scrollable while its identity and help stay accessible. */
-  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar { width: 256px; overflow: visible; }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar { width: 244px; overflow: visible; }
   body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar > .portal-sidebar-card {
     height: calc(100dvh - 158px);
     max-height: calc(100dvh - 158px);
@@ -343,7 +343,7 @@
   body[class*="workspace-"] .dashboard-calendar { position: static; width: 100%; max-width: none; }
 }
 @media screen and (min-width: 768px) and (max-width: 1099px) {
-  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar { width: 224px; }
+  body:is(.workspace-admin, .workspace-official, .workspace-resident) #portal-sidebar { width: 216px; }
   body[class*="workspace-"] > div.max-w-7xl { padding-inline: 20px; gap: 20px; }
   body[class*="workspace-"] #portal-main :is(.civic-hero, .stitch-hero) > .flex { flex-wrap: wrap; }
 }
