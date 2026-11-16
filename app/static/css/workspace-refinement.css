@@ -384,9 +384,16 @@
     background: #991b1b !important;
     border-color: #991b1b;
   }
-  body.workspace-official #portal-main .drrm-alert-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 18px !important; }
+  body.workspace-official #portal-main .drrm-alert-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 18px !important; border: 1px solid transparent; border-left-width: 5px; border-radius: 12px; }
+  body.workspace-official #portal-main .drrm-alert-level-advisory { color: #164c2c; background: #eaf8ee; border-color: #bfe2c8; border-left-color: #0a7a42; }
+  body.workspace-official #portal-main .drrm-alert-level-warning { color: #674b08; background: #fff7df; border-color: #edd18a; border-left-color: #b98200; }
+  body.workspace-official #portal-main .drrm-alert-level-critical { color: #76251f; background: #fff0ee; border-color: #ebb9b4; border-left-color: #b42318; }
   body.workspace-official #portal-main .drrm-alert-copy { flex: 1 1 360px; min-width: 0; line-height: 1.5; }
-  body.workspace-official #portal-main .drrm-alert-copy small { margin-top: 5px; color: #53665a; }
+  body.workspace-official #portal-main .drrm-alert-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+  body.workspace-official #portal-main .drrm-alert-heading strong { color: inherit; font-size: 14px; }
+  body.workspace-official #portal-main .drrm-alert-level-chip { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 9px; border: 1px solid currentColor; border-radius: 999px; color: inherit; font-size: 10px; line-height: 1; font-weight: 800; letter-spacing: .04em; }
+  body.workspace-official #portal-main .drrm-alert-copy p { margin: 5px 0 0; color: inherit; }
+  body.workspace-official #portal-main .drrm-alert-copy small { display: block; margin-top: 5px; color: inherit; opacity: .8; }
   body.workspace-official #portal-main .drrm-alert-actions { display: flex; flex: 0 0 auto; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin-left: auto; }
   body.workspace-official #portal-main .drrm-alert-actions form { margin: 0; }
   body.workspace-official #portal-main .drrm-alert-actions .drrm-alert-action { display: inline-flex; align-items: center; justify-content: center; min-width: 88px; min-height: 40px; padding: 8px 14px; border-radius: 9px !important; font-size: 13px; line-height: 1.2; font-weight: 700; text-decoration: none; white-space: nowrap; }

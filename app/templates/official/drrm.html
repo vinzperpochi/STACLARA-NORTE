@@ -22,8 +22,8 @@
 </form>
 {% endif %}
 {% for alert in alerts %}
-<div class="drrm-alert-card p-3 rounded-lg bg-error-container border border-error/30 mt-3 mb-0">
-  <div class="drrm-alert-copy"><strong>{{ alert.alert_level }} — {{ alert.title }}</strong><br>{{ alert.message }}<small class="d-block">{{ alert.status|title }} · Issued {{ alert.issued_at }}</small></div>
+<div class="drrm-alert-card drrm-alert-level-{{ alert.alert_level|lower }} mt-3 mb-0">
+  <div class="drrm-alert-copy"><div class="drrm-alert-heading"><span class="drrm-alert-level-chip">{{ alert.alert_level }}</span><strong>{{ alert.title }}</strong></div><p>{{ alert.message }}</p><small>{{ alert.status|title }} · Issued {{ alert.issued_at }}</small></div>
   <div class="drrm-alert-actions">
     <a class="civic-btn-outline drrm-alert-action" href="{{ url_for('official.drrm_alert_edit', alert_id=alert.id) }}">Edit</a>
     {% if archived_alerts %}
