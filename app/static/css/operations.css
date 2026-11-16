@@ -55,6 +55,7 @@ html[data-civic-theme="dark"] .ops-attendance .ops-duty-days[data-empty=true] .o
 @media(min-width:1500px){.ops-day-grid{grid-template-columns:repeat(7,minmax(0,1fr))}}
 @media(max-width:1100px){.ops-attendance-nav{grid-template-columns:1fr}.ops-attendance-nav .ops-page-link{min-height:84px}.ops-day-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:575px){.ops-day-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ops-attendance .ops-duty-days{padding:14px}.ops-attendance .ops-day-option{padding:10px;gap:8px}.ops-attendance .ops-panel details>.ops-form{padding:14px}.ops-attendance .ops-calendar>a{min-height:54px}.ops-duty-presets>.ops-choice-button{flex:1}.ops-report-actions>*{width:100%}}
+.ops-attendance .ops-form>button{align-self:end;min-height:44px}
 @media(prefers-reduced-motion:reduce){.ops-attendance *{transition:none!important}}
 
 /* Keep growing attendance lists contained within the existing workspace. */
