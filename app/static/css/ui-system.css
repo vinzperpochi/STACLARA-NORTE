@@ -177,3 +177,6 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--ui-primary); }
 
 /* Local SVG icon system */
 .icon-svg { display:inline-block; width:1em; height:1em; vertical-align:-0.125em; flex:0 0 auto; }
+
+/* Keep multiline fields consistent across all system workspaces. */
+textarea { resize: none !important; }
