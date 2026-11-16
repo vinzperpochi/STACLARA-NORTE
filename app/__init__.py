@@ -48,6 +48,7 @@ def create_app(config_name: str | None = None, *, vercel: bool = False) -> Flask
     app.jinja_env.filters['datetime_local'] = lambda value: utc(value).astimezone(MANILA).strftime('%Y-%m-%dT%H:%M') if value else ''
     app.jinja_env.filters['datetime_utc_iso'] = lambda value: utc(value).isoformat() if value else ''
     app.jinja_env.filters['time_manila'] = lambda value: utc(value).astimezone(MANILA).strftime('%I:%M %p') if value else ''
+    app.jinja_env.filters['time_short_manila'] = lambda value: utc(value).astimezone(MANILA).strftime('%I:%M %p').lstrip('0') if value else ''
     app.jinja_env.filters['date_manila'] = lambda value: utc(value).astimezone(MANILA).strftime('%b %d') if value else ''
     from .operations_retention import register_retention_command
     register_retention_command(app)
@@ -187,7 +188,7 @@ def register_template_helpers(app: Flask) -> None:
     """Workspace chrome data available to every template."""
     from .pagination import pagination_url
     app.jinja_env.globals["pagination_url"] = pagination_url
-    from sqlalchemy import func, or_
+    from sqlalchemy import and_, func, or_
     import xml.etree.ElementTree as ET
     symbols = ET.parse(Path(app.static_folder) / "img" / "icons.svg")
     from app.registration import EDUCATION, RELATIONSHIPS, DURATIONS, CATEGORIES
@@ -208,6 +209,7 @@ def register_template_helpers(app: Flask) -> None:
         unread = 0
         role_names: set[str] = set()
         ticker_alert = None
+        ticker_events = []
         if current_user.is_authenticated:
             role_names = {role.name for role in current_user.roles}
             from .models import Notification
@@ -222,7 +224,7 @@ def register_template_helpers(app: Flask) -> None:
                 or 0
             )
             if request.blueprint == "resident":
-                from .models import EmergencyAlert
+                from .models import EmergencyAlert, Event
 
                 try:
                     ticker_alert = db.session.scalar(
@@ -237,6 +239,19 @@ def register_template_helpers(app: Flask) -> None:
                         .order_by(EmergencyAlert.issued_at.desc())
                         .limit(1)
                     )
+                    now_utc = datetime.now(timezone.utc)
+                    ticker_events = db.session.scalars(
+                        db.select(Event)
+                        .where(
+                            Event.status.in_(["active", "PUBLISHED", "published"]),
+                            or_(
+                                Event.starts_at >= now_utc,
+                                and_(Event.ends_at.is_not(None), Event.ends_at >= now_utc),
+                            ),
+                        )
+                        .order_by(Event.starts_at, Event.id)
+                        .limit(8)
+                    ).all()
                 except Exception:
                     db.session.rollback()
         from .auth.session import session_payload
@@ -261,6 +276,7 @@ def register_template_helpers(app: Flask) -> None:
             "chatbot_name": app.config.get("CHATBOT_NAME") or app.config["BARANGAY_NAME"] + " Assistant",
             "system_timezone": app.config["SYSTEM_TIMEZONE"],
             "ticker_alert": ticker_alert,
+            "ticker_events": ticker_events,
             "is_admin": "System Administrator" in role_names,
             # Keep the Super Admin and official workspaces separate.
             "is_official": "Barangay Official" in role_names and "System Administrator" not in role_names,

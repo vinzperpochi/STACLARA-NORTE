@@ -2,6 +2,10 @@
   {% set announcement_title = ticker_alert.title %}
   {% set announcement_message = ticker_alert.message %}
   {% set announcement_url = url_for('resident.emergency_alerts') %}
+{% elif ticker_events %}
+  {% set announcement_title = 'Upcoming barangay events' %}
+  {% set announcement_message = 'Event dates, times, and venues.' %}
+  {% set announcement_url = url_for('resident.dashboard') ~ '#barangay-calendar' %}
 {% else %}
   {% set announcement_title = 'Opisyal na anunsyo' %}
   {% set announcement_message = 'Tingnan ang mga abiso at update mula sa Barangay Sta. Clara Norte.' %}
@@ -19,8 +23,20 @@
       </span>
       <span class="portal-ticker-window" aria-hidden="true">
         <span class="portal-ticker-track">
+          {% if ticker_alert %}
           <span class="portal-ticker-item"><strong>{{ announcement_title }}</strong><span>{{ announcement_message }}</span></span>
           <span class="portal-ticker-item" aria-hidden="true"><strong>{{ announcement_title }}</strong><span>{{ announcement_message }}</span></span>
+          {% elif ticker_events %}
+            {% for ticker_event in ticker_events %}
+            <span class="portal-ticker-item"><strong>{{ ticker_event.title }}</strong><span>{{ ticker_event.starts_at|date_manila|upper }} · {{ ticker_event.starts_at|time_short_manila|upper }} · {{ (ticker_event.venue or 'PLACE TBA')|upper }}</span></span>
+            {% endfor %}
+            {% for ticker_event in ticker_events %}
+            <span class="portal-ticker-item" aria-hidden="true"><strong>{{ ticker_event.title }}</strong><span>{{ ticker_event.starts_at|date_manila|upper }} · {{ ticker_event.starts_at|time_short_manila|upper }} · {{ (ticker_event.venue or 'PLACE TBA')|upper }}</span></span>
+            {% endfor %}
+          {% else %}
+          <span class="portal-ticker-item"><strong>{{ announcement_title }}</strong><span>{{ announcement_message }}</span></span>
+          <span class="portal-ticker-item" aria-hidden="true"><strong>{{ announcement_title }}</strong><span>{{ announcement_message }}</span></span>
+          {% endif %}
         </span>
       </span>
       <img class="portal-ticker-seal" src="{{ url_for('static', filename='img/barangay-seal.png') }}" alt="" aria-hidden="true">

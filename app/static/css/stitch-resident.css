@@ -111,8 +111,8 @@ body.portal-stitch .border-primary { border-color: var(--civic-primary) !importa
 .portal-ticker-card:hover .portal-ticker-track,
 .portal-ticker-card:focus-visible .portal-ticker-track { animation-play-state: paused; }
 .portal-ticker-item { display: flex; flex: 0 0 auto; flex-direction: column; gap: 3px; min-width: 0; padding-right: 88px; white-space: nowrap; }
-.portal-ticker-item strong { color: #123d2b; font-size: 17px; line-height: 1.15; font-weight: 850; text-decoration: underline; text-decoration-color: #10a66a; text-decoration-thickness: 1px; text-underline-offset: 3px; text-transform: uppercase; }
-.portal-ticker-item>span { color: #385648; font-size: 15px; line-height: 1.25; }
+.portal-ticker-item strong { color: #123d2b; font-size: 16px; line-height: 1.15; font-weight: 850; text-decoration: underline; text-decoration-color: #10a66a; text-decoration-thickness: 1px; text-underline-offset: 3px; text-transform: uppercase; }
+.portal-ticker-item>span { color: #385648; font-size: 14px; line-height: 1.25; }
 .portal-ticker-seal { position: absolute; top: 50%; right: 17px; width: 56px; height: 56px; border-radius: 50%; object-fit: cover; transform: translateY(-50%); mix-blend-mode: multiply; }
 @keyframes civic-ticker { to { transform: translateX(-50%); } }
 
@@ -367,8 +367,8 @@ body.portal-stitch .border-primary { border-color: var(--civic-primary) !importa
   .portal-ticker-label { top: -12px; left: 10px; min-height: 27px; gap: 6px; padding: 4px 13px 5px 9px; font-size: 11px; }
   .portal-ticker-news-icon { width: 16px; height: 16px; }
   .portal-ticker-item { gap: 4px; padding-right: 44px; }
-  .portal-ticker-item strong { font-size: 14px; line-height: 1.15; }
-  .portal-ticker-item>span { font-size: 13px; line-height: 1.25; }
+  .portal-ticker-item strong { font-size: 13px; line-height: 1.15; }
+  .portal-ticker-item>span { font-size: 12px; line-height: 1.25; }
   .portal-ticker-seal { right: 8px; width: 42px; height: 42px; }
   .stitch-card-header,.stitch-card-body { padding:15px; }
   .stitch-hero { border-radius:12px; }
