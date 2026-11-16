@@ -198,7 +198,7 @@ def approve_resident_account(user_id: int):
     except Exception:
         db.session.rollback()
         current_app.logger.exception("Resident account approval/activation failed for user id %s", user_id)
-        flash("Hindi naaprubahan ang account. Suriin ang SMTP configuration at subukang muli.", "danger")
+        flash("Hindi naaprubahan ang account. Kailangang gumagana ang email delivery para maipadala ang login credentials; ipasuri ang SMTP configuration at subukang muli.", "danger")
     return redirect(url_for("official.account_approvals"))
 
 

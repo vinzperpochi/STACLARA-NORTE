@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1 class="text-headline-sm font-headline-sm text-on-surface">Resident account approvals</h1>
-<p class="text-body-sm text-on-surface-muted -mt-4">Admin at barangay officials lamang. Click "Activate" para ma-activate ang account at makapag-login na ang resident.</p>
+<p class="text-body-sm text-on-surface-muted -mt-4">Suriin muna ang profile at uploads. Maaaring i-approve ang account kapag verified na ang email at kumpleto ang birthdate; ipapadala ang Resident ID at pansamantalang password sa email ng resident.</p>
 <div class="overflow-x-auto bg-surface-card rounded-xl border border-outline-border">
 <table class="civic-table">
 <thead>
@@ -12,6 +12,7 @@
 <th>Petsa ng Registration</th>
 <th>Pangalan</th>
 <th>Email</th>
+<th>Email verification</th>
 <th>Birthdate</th>
 <th>Aksyon</th>
 </tr>
@@ -32,6 +33,13 @@
 </td>
 <td>{{ account.email }}</td>
 <td>
+{% if account.email_verified_at %}
+<span class="badge text-bg-success">Verified</span>
+{% else %}
+<span class="badge text-bg-warning">Not verified</span>
+{% endif %}
+</td>
+<td>
 {% if account.resident and account.resident.birth_date %}
 {{ account.resident.birth_date.strftime('%Y-%m-%d') }}
 {% else %}
@@ -39,15 +47,18 @@
 {% endif %}
 </td>
 <td>
-<form method="post" action="{{ url_for('official.approve_resident_account', user_id=account.id) }}" class="d-inline" data-confirm="Approve at i-activate ang account na ito? Magsisimula ang email notification.">
+{% set can_approve = account.resident and account.resident.birth_date and account.email_verified_at %}
+<form method="post" action="{{ url_for('official.approve_resident_account', user_id=account.id) }}" class="d-inline" data-confirm="Approve at i-activate ang account na ito? Ipapadala sa email ang login credentials.">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-<button class="civic-btn-sm" {% if not account.resident or not account.resident.birth_date %}disabled{% endif %}>Activate</button>
+<button type="submit" class="btn btn-success fw-semibold px-3" {% if not can_approve %}disabled{% endif %}>Approve account</button>
 </form>
+{% if not account.email_verified_at %}<small class="d-block text-warning-emphasis mt-1">Kailangang i-verify muna ang email.</small>
+{% elif not account.resident or not account.resident.birth_date %}<small class="d-block text-danger mt-1">Kumpletuhin muna ang resident profile at birthdate.</small>{% endif %}
 </td>
 </tr>
 {% else %}
 <tr>
-<td colspan="5" class="text-center text-on-surface-muted py-8">Walang pending resident account registrations.</td>
+<td colspan="6" class="text-center text-on-surface-muted py-8">Walang pending resident account registrations.</td>
 </tr>
 {% endfor %}
 </tbody>
