@@ -926,8 +926,8 @@ def blotter_create():
                 'narrative': ValidationService.sanitize_input(form.narrative.data),
             }, current_user, ValidationService.sanitize_input(form.respondent_contact.data), ValidationService.sanitize_input(form.respondent_notes.data))
             db.session.commit()
-            flash(f"Identical submission associated with {case.case_number}." if associated else f"Complaint filed successfully as {case.case_number}.", "success")
-            return redirect(url_for("resident.blotter_detail", case_id=case.id))
+            flash(f"Similar report added to existing case {case.case_number}. Barangay staff will review both reports together." if associated else f"Complaint filed successfully as {case.case_number}.", "success")
+            return redirect(url_for("resident.blotter_cases")) if associated else redirect(url_for("resident.blotter_detail", case_id=case.id))
             
         except HTTPException:
             

@@ -1,7 +1,9 @@
-"""Transaction-local case submission with conservative exact-incident association."""
+"""Transaction-local blotter submission and conservative same-incident grouping."""
 from datetime import date, datetime
+from difflib import SequenceMatcher
 from hashlib import sha256
 import json
+import re
 from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError
 from app.extensions import db
@@ -31,10 +33,52 @@ def incident_fingerprint(values):
     return sha256(json.dumps(normalized, ensure_ascii=True).encode()).hexdigest()
 
 
+def _similar_incident(values):
+    """Find a conservative same-incident candidate without merging reports by name alone."""
+    location = clean_text(values.get('incident_location')).casefold()
+    respondent = clean_text(values.get('respondent_name')).casefold()
+    narrative = clean_text(values.get('narrative')).casefold()
+    if not location or not respondent or not narrative:
+        return None
+
+    candidates = db.session.scalars(
+        db.select(BlotterCase)
+        .where(
+            BlotterCase.status.in_(ACTIVE_STATUSES),
+            BlotterCase.incident_date == values.get('incident_date'),
+            func.lower(BlotterCase.category) == clean_text(values.get('category')).casefold(),
+        )
+        .order_by(BlotterCase.id.asc())
+    ).all()
+    tokens = set(re.findall(r"[\w]+", narrative))
+    for candidate in candidates:
+        if clean_text(candidate.incident_location).casefold() != location:
+            continue
+        if clean_text(candidate.respondent_name).casefold() != respondent:
+            continue
+        if values.get('purok_id') and candidate.purok_id and values['purok_id'] != candidate.purok_id:
+            continue
+        new_time, old_time = values.get('incident_datetime'), candidate.incident_datetime
+        if new_time and old_time:
+            new_time = new_time.replace(tzinfo=None)
+            old_time = old_time.replace(tzinfo=None)
+        if new_time and old_time and abs((new_time - old_time).total_seconds()) > 2 * 60 * 60:
+            continue
+        old_narrative = clean_text(candidate.narrative).casefold()
+        old_tokens = set(re.findall(r"[\w]+", old_narrative))
+        overlap = len(tokens & old_tokens) / max(1, len(tokens | old_tokens))
+        similarity = SequenceMatcher(None, narrative, old_narrative).ratio()
+        if overlap >= 0.45 or similarity >= 0.62:
+            return candidate
+    return None
+
+
 def submit_case(values, actor, contact=None, notes=None):
     """Return (case, associated); caller commits case, notifications and audit together."""
     fingerprint = incident_fingerprint(values)
     existing = db.session.scalar(db.select(BlotterCase).where(BlotterCase.incident_fingerprint == fingerprint)) if fingerprint else None
+    if existing is None:
+        existing = _similar_incident(values)
     if existing is None:
         try:
             with db.session.begin_nested():
@@ -52,13 +96,16 @@ def submit_case(values, actor, contact=None, notes=None):
                 raise
     associated = existing is not None
     case = existing if associated else case
-    db.session.add(BlotterCaseEvent(case_id=case.id, from_status=case.status if associated else None, to_status=case.status, changed_by_id=actor.id, notes='Identical incident submission associated with original case; original preserved.' if associated else 'Complaint filed by resident.'))
-    record('BLOTTER_ASSOCIATE' if associated else 'BLOTTER_CREATE', 'blotter', 'BlotterCase', case.id, 'Exact-incident association' if associated else 'Complaint created')
+    event_notes = (
+        'Similar incident report associated with this case. The original case remains in the queue. '
+        f"Additional report: {clean_text(values.get('narrative'))}"
+    ) if associated else 'Complaint filed by resident.'
+    db.session.add(BlotterCaseEvent(case_id=case.id, from_status=case.status if associated else None, to_status=case.status, changed_by_id=actor.id, notes=event_notes))
+    record('BLOTTER_ASSOCIATE' if associated else 'BLOTTER_CREATE', 'blotter', 'BlotterCase', case.id, 'Similar-incident report associated; report kept in case history' if associated else 'Complaint created')
     db.session.add(Notification(user_id=actor.id, title='Complaint submission received', message=f'Your submission is associated with {case.case_number}.' if associated else f'Complaint {case.case_number} was filed.', status='active'))
-    if not associated:
-        officials = db.session.scalars(db.select(User).join(User.roles).where(Role.name.in_(['Barangay Official', 'System Administrator']), User.is_active.is_(True), User.status == 'active').distinct()).all()
-        for user in officials:
-            db.session.add(Notification(user_id=user.id, title='New complaint', message=f'Complaint {case.case_number} is waiting for review.', status='active'))
+    officials = db.session.scalars(db.select(User).join(User.roles).where(Role.name.in_(['Barangay Official', 'System Administrator']), User.is_active.is_(True), User.status == 'active').distinct()).all()
+    for user in officials:
+        db.session.add(Notification(user_id=user.id, title='Additional blotter report' if associated else 'New complaint', message=f'Another report was added to {case.case_number}; review its case history.' if associated else f'Complaint {case.case_number} is waiting for review.', status='active'))
     return case, associated
 
 
