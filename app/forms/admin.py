@@ -123,14 +123,14 @@ class UserForm(BaseForm):
             # Edit mode - exclude current user from check
             existing = db.session.scalar(
                 db.select(User).where(
-                    User.username == field.data,
+                    func.lower(User.username) == field.data.lower(),
                     User.id != self.edit_user_id
                 )
             )
         else:
             # Create mode
             existing = db.session.scalar(
-                db.select(User).where(User.username == field.data)
+                db.select(User).where(func.lower(User.username) == field.data.lower())
             )
         
         if existing:

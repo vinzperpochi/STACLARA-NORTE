@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
-from sqlalchemy import Boolean, DateTime, ForeignKey, Index, String, Table, Column, UniqueConstraint
+from sqlalchemy import Boolean, DateTime, ForeignKey, Index, String, Table, Column, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import StatusMixin, TimestampedModel
@@ -85,6 +85,9 @@ class User(UserMixin, StatusMixin, TimestampedModel):
 
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password_hash, password)
+
+
+Index("uq_users_username_lower", func.lower(User.username), unique=True)
 
 
 class Role(StatusMixin, TimestampedModel):
